@@ -1,0 +1,30 @@
+.all-law-catgory-part {
+  padding-left: 0;
+}
+.all-law-catgory-chapter {
+  padding-left: 20px;
+}
+.all-law-catgory-section {
+  padding-left: 40px;
+}
+.all-law-catgory-option {
+  padding: 10px 0px 10px 40px;
+  font-size: 28px;
+  max-width: 600px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #6190E8;
+
+}
+
+.all-law-catgory-title {
+  padding: 24px;
+  font-size: 28px;
+  color: #333333;
+}
+
+.border {
+  box-sizing: border-box;
+  border-left: 2px solid #6190E8;
+}

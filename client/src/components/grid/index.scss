@@ -1,24 +1,29 @@
-.search-item {
-  display: block;
-  margin: 15px 10px 25px 10px;
-  padding: 10px 15px;
-  box-sizing: border-box;
+.grid-item {
+  position: relative;
+  width: 300px;
+  height: 200px;
+  box-shadow: 0px 0px 20px -1px rgba(199,199,199,1);
   border-radius: 20px;
-  font-size: 26px;
-  white-space: pre-wrap;
-  background: white;
-
-  .crime {
-    background: darkred !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 30px 30px;
+  box-sizing: border-box;
+  .float-item {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 30px;
+    height: 10px;
+    border-radius: 5px;
+    background: #6190E8;
   }
 
-  .tag {
-    font-size: 32px;
-    display: inline-block;
-    padding: 3px 10px;
-    border-radius: 20px;
-    background: dodgerblue;
-    color: white;
-
+  .title {
+    font-size: 30px;
+    font-weight: bold;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }

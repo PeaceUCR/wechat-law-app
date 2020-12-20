@@ -1,0 +1,17 @@
+
+.my-collection {
+
+  .sub-title {
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .text {
+      padding: 0px 20px;
+    }
+    .divider {
+      flex-grow: 1;
+      border: 2px solid #6190E8;
+    }
+  }
+}

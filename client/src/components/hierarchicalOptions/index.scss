@@ -1,0 +1,25 @@
+.hierarchical-options {
+  margin: 30px 10px;
+  font-size: 32px;
+  .hierarchical-option {
+    margin-top: 15px;
+    border: 2px solid #6190E8;
+    border-radius: 10px;
+    background: #f6f6f6;
+    .chapter-option{
+      padding-top: 5px;
+      color: #6190E8;
+      font-size: 40px;
+      text-align: center;
+      background: white;
+      border-radius: 10px;
+    }
+
+    .section-options {
+      margin: 5px 10px;
+      .section-option {
+        margin-bottom: 5px;
+      }
+    }
+  }
+}

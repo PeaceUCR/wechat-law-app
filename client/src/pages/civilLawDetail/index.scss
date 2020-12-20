@@ -1,0 +1,27 @@
+.term-detail-page {
+  padding: 10px 20px;
+  .header {
+    font-size: 28px;
+    color: gray;
+  }
+
+  .section {
+    white-space: pre-wrap;
+    font-size: 32px;
+    margin-bottom: 50px;
+    .section-title {
+      color: #6190E8;
+    }
+  }
+
+  .example {
+    white-space: pre-wrap;
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
+  .favorite-container {
+    position: fixed;
+    right: 6%;
+    top: 10px;
+  }
+}

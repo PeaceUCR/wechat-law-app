@@ -1,0 +1,14 @@
+node_modules/
+client/node_modules
+cloud/node_modules
+**/node_modules
+*/node_modules/*
+
+.idea
+dist/
+deploy_versions/
+.temp/
+.rn_temp/
+node_modules/
+.DS_Store
+yarn-error.log

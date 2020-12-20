@@ -1,20 +1,27 @@
-import Taro from '@tarojs/taro'
-import {Image, Input, Text, View} from "@tarojs/components";
+import Taro, { useState} from '@tarojs/taro'
+import {Text, View} from "@tarojs/components";
+import { AtIcon } from 'taro-ui'
+import {removeStringFrom, removeFirstLineBreak} from '../../util/util'
 import './index.scss'
 
-const TermSearchItem = (props) => {
-  let {term} = props;
-  term = term ? term : {};
-  const {text, crime, tag, _id} = term;
-  const isCrime = tag === crime;
-  return (<View className='search-item' onClick={() => {
-    Taro.navigateTo({
-      url: `/pages/termDetail/index?id=${_id}`,
-    })
-  }} >
-    <View className={isCrime? 'crime tag':'tag'}>{tag}</View>
-    <View>{text}</View>
+const DropDownItem = (props) => {
+  let {data, type} = props;
+  data = data ? data : {};
+  const [isHidden, setIsHidden] = useState(true);
+  if (type === 'example') {
+    const {name, number, text} = data;
+
+    return (<View className='drop-down-item' onClick={() => setIsHidden(!isHidden)}>
+      <View className='toggle'><Text>{number}{name}</Text> <AtIcon value={isHidden ? 'chevron-down' : 'chevron-up'} size='20' color='#6190E8'></AtIcon></View>
+      {!isHidden && <View className='text'>{removeFirstLineBreak(removeStringFrom(removeStringFrom(text, number), name))}</View>}
+    </View>)
+  }
+  const {name, number, text} = data;
+
+  return (<View className='drop-down-item' onClick={() => setIsHidden(!isHidden)}>
+    <View className='toggle'><Text>{number}{name}</Text> <AtIcon value={isHidden ? 'chevron-down' : 'chevron-up'} size='20' color='#6190E8'></AtIcon></View>
+    {!isHidden && <View className='text'>{text}</View>}
   </View>)
 }
 
-export default TermSearchItem;
+export default DropDownItem;

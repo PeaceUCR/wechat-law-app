@@ -1,0 +1,55 @@
+.index-page {
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding-top: 120px;
+  background: #fff;
+  overflow-y: scroll;
+
+  .float-help {
+    position: fixed;
+    top: 16%;
+    right: 60px;
+  }
+
+  .icon-container {
+    margin-top: 50px;
+    margin-bottom: 80px;
+    display: flex;
+    justify-content: center;
+    .icon-title {
+      width: 300px;
+      height: 300px;
+    }
+  }
+
+  .grids {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .grid-container {
+    margin: 20px 30px;
+  }
+
+  .footer-container {
+    padding-top: 100px;
+  }
+
+  .footer {
+    display: flex;
+    align-items: center;
+
+    .text {
+      font-size: 28px;
+      color: #222222;
+      margin-left: 20px;
+    }
+    .logo {
+      width: 78px;
+      height: 60px;
+    }
+  }
+}

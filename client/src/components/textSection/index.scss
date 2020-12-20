@@ -1,0 +1,32 @@
+.text-section {
+  &.zoom-in {
+    .content {
+      font-size: 40px;
+    }
+
+    .line {
+      padding-bottom: 30px;
+      color: #222;
+    }
+  }
+  .content {
+    font-size: 28px;
+  }
+
+  .line {
+    padding-bottom: 20px;
+    color: #333;
+  }
+  .highlight {
+    font-weight: bold;
+    color: black;
+  }
+  .highlight-keyword {
+    color: black;
+    font-weight: bold;
+    font-style: italic;
+    background: gold;
+    padding: 0px 10px 0px 5px;
+  }
+
+}

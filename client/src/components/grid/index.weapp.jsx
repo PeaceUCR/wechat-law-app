@@ -1,20 +1,41 @@
 import Taro from '@tarojs/taro'
-import {Image, Input, Text, View} from "@tarojs/components";
+import {View} from "@tarojs/components";
+import { AtBadge } from "taro-ui";
+import throttle from 'lodash/throttle';
 import './index.scss'
 
-const TermSearchItem = (props) => {
-  let {term} = props;
-  term = term ? term : {};
-  const {text, crime, tag, _id} = term;
-  const isCrime = tag === crime;
-  return (<View className='search-item' onClick={() => {
-    Taro.navigateTo({
-      url: `/pages/termDetail/index?id=${_id}`,
-    })
-  }} >
-    <View className={isCrime? 'crime tag':'tag'}>{tag}</View>
-    <View>{text}</View>
-  </View>)
+const GridItem = (props) => {
+  let {option, disabled} = props;
+  option = option ? option : {title: '', url: ''};
+  const {title, url, isNew} = option;
+  const redirect = throttle(
+    () => {
+      if(disabled) {
+        return ;
+      }
+      if (url) {
+        Taro.navigateTo({
+          url: option.url,
+        })
+      } else {
+        Taro.showToast({
+          title: '敬请期待',
+          icon: 'none',
+          duration: 1000
+        })
+      }
+    },
+    2000,
+    { trailing: false }
+  );
+
+  return (
+    <AtBadge value={isNew?'NEW':''}>
+      <View className='grid-item' onClick={redirect} >
+        <View className='float-item'></View>
+        <View className='title'>{title}</View>
+      </View>
+    </AtBadge>)
 }
 
-export default TermSearchItem;
+export default GridItem;
