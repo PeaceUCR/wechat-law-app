@@ -6,6 +6,12 @@
     border: 2px solid #6190E8;
     border-radius: 10px;
     background: #f6f6f6;
+    &.read-mode {
+      background: #F4ECD8;
+      .chapter-option{
+        background: #F4ECD8;
+      }
+    }
     .chapter-option{
       padding-top: 5px;
       color: #6190E8;

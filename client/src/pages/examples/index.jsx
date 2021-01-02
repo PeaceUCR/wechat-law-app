@@ -1,11 +1,10 @@
-import Taro, { Component } from '@tarojs/taro'
+import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {View, Text, Picker, Image} from '@tarojs/components'
-import { AtSearchBar, AtActivityIndicator, AtFab } from 'taro-ui'
+import { AtSearchBar, AtActivityIndicator, AtFab, AtBadge, AtIcon } from 'taro-ui'
 import {isEmpty} from 'lodash';
 import { db } from '../../util/db'
 import { courtExampleTitleMap, procuratorateExampleTitleMap, procuratorateMap, courtMap } from '../../util/util'
 import { ExampleSearchItem } from '../../components/exampleSearchItem/index.weapp'
-import {setGlobalData} from '../../util/global'
 import {convertNumberToChinese} from '../../util/convertNumber'
 import clickIcon from '../../static/down.png';
 import './index.scss'
@@ -19,7 +18,8 @@ export default class Index extends Component {
     isLoading: false,
     isExpandLabel: false,
     selected: '搜关键字',
-    options: ['搜关键字', '搜案例名', '搜相关法条']
+    options: ['搜关键字', '搜案例名', '搜相关法条'],
+    isReadMode: false
   }
 
   config = {
@@ -32,6 +32,15 @@ export default class Index extends Component {
     };
   }
   componentWillMount () {
+    const setting = getStorageSync('setting');
+    this.setState({isReadMode: setting && setting.isReadMode})
+    if (setting && setting.isReadMode) {
+      console.log('read')
+      Taro.setNavigationBarColor({
+        frontColor: '#000000',
+        backgroundColor: '#F4ECD8'
+      })
+    }
   }
 
   componentDidMount () { }
@@ -44,19 +53,18 @@ export default class Index extends Component {
   componentDidHide () { }
 
   renderSearchList = () => {
-    const {searchCourtResult, searchProcuratorateResult} = this.state
+    const {searchCourtResult, searchProcuratorateResult, isReadMode} = this.state
     return (<View>
       <View>
-        {searchCourtResult.map(((example) => {return (<ExampleSearchItem example={example} type='court' key={`example-${example._id}`} />)}))}
+        {searchCourtResult.map(((example) => {return (<ExampleSearchItem isReadMode={isReadMode} example={example} type='court' key={`example-${example._id}`} />)}))}
       </View>
       <View>
-        {searchProcuratorateResult.map(((example) => {return (<ExampleSearchItem example={example} type='procuratorate' key={`example-${example._id}`} />)}))}
+        {searchProcuratorateResult.map(((example) => {return (<ExampleSearchItem isReadMode={isReadMode} example={example} type='procuratorate' key={`example-${example._id}`} />)}))}
       </View>
     </View>)
   }
 
   onChange = (searchValue) => {
-    setGlobalData('searchValue', searchValue)
     this.setState({searchValue})
   }
 
@@ -215,9 +223,9 @@ export default class Index extends Component {
   }
 
   render () {
-    const {searchValue, searchCourtResult, searchProcuratorateResult, isLoading, selected, options, isExpandLabel} = this.state;
+    const {searchValue, searchCourtResult, searchProcuratorateResult, isLoading, selected, options, isExpandLabel, isReadMode} = this.state;
     return (
-      <View className='example-page'>
+      <View className={`example-page ${isReadMode ? 'read-mode' : ''}`}>
           <View className='header'>
             <View className='select'>
               <View>
@@ -250,6 +258,16 @@ export default class Index extends Component {
             {isLoading && <View className='loading-container'>
               <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
             </View>}
+          </View>
+          <View className='float-help' onClick={() => {
+            Taro.navigateTo({
+              url: '/pages/other/index?id=examples'
+            })
+          }}
+          >
+            <AtBadge value='帮助'>
+              <AtIcon value='help' size='30' color='#000'></AtIcon>
+            </AtBadge>
           </View>
       </View>
     )

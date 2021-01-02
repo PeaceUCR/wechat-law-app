@@ -1,4 +1,6 @@
 .example-detail-page {
+  min-height: 100vh;
+  box-sizing: border-box;
   &.read-mode {
     background: #F4ECD8;
   }

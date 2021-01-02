@@ -23,6 +23,9 @@
   align-items: center;
   font-size: 28px;
   height: 50px;
+  &.zoom-in {
+    font-size: 40px;
+  }
   .title {
     max-width: 92%;
     overflow: hidden;

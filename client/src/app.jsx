@@ -24,7 +24,8 @@ class App extends Component {
       'pages/user/index',
       'pages/consultant/index',
       'pages/civilLaw/index',
-      'pages/civilLawDetail/index'
+      'pages/civilLawDetail/index',
+      'pages/courtOpen/index'
     ],
     window: {
       backgroundTextStyle: 'light',

@@ -1,6 +1,6 @@
 import Taro, { Component, setStorageSync, getStorageSync } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import {AtActivityIndicator, AtIcon} from "taro-ui";
+import {AtActivityIndicator, AtIcon, AtFab} from "taro-ui";
 import DataPopup from '../../components/dataPopup/index.weapp'
 import { db } from '../../util/db'
 import './index.scss'
@@ -22,7 +22,9 @@ export default class TermDetail extends Component {
     isCourtExampleLoading: true,
     isExplanationLoading: true,
     isComplementLoading: true,
-    isCollected: false
+    isCollected: false,
+    isReadMode: false,
+    zoomIn: false
   }
 
   config = {
@@ -98,6 +100,16 @@ export default class TermDetail extends Component {
     that.setState({
       isCollected: collection[id] === true
     })
+
+    const setting = getStorageSync('setting');
+    this.setState({isReadMode: setting && setting.isReadMode})
+    if (setting && setting.isReadMode) {
+      console.log('read')
+      Taro.setNavigationBarColor({
+        frontColor: '#000000',
+        backgroundColor: '#F4ECD8'
+      })
+    }
   }
 
   componentDidMount () {
@@ -122,51 +134,51 @@ export default class TermDetail extends Component {
   }
 
   renderExample = () => {
-    const {examples, term} = this.state;
+    const {examples, term, zoomIn} = this.state;
     const num = getTermNumber(term.text).replace('第', '').replace('条', '');
     return (<View>
       {examples.map(example => (<View className='example' key={`example-${example._id}`}>
-        <DataPopup data={example} type='procuratorate' num={num} />
+        <DataPopup data={example} type='procuratorate' num={num} zoomIn={zoomIn} />
       </View>))}
     </View>)
   }
 
   renderCourtExample = () => {
-    const {courtExamples, term} = this.state;
+    const {courtExamples, term, zoomIn} = this.state;
     const num = getTermNumber(term.text).replace('第', '').replace('条', '');
     return (<View>
       {courtExamples.map(example => (<View className='example' key={`court-example-${example._id}`}>
-        <DataPopup data={example} type='court' num={num} />
+        <DataPopup data={example} type='court' num={num} zoomIn={zoomIn} />
       </View>))}
     </View>)
   }
 
   renderExplanation = () => {
-    const {explanations, term} = this.state;
+    const {explanations, term, zoomIn} = this.state;
     const num = getTermNumber(term.text).replace('第', '').replace('条', '');
     return (<View>
       {explanations.map(explanation => (<View className='example' key={`explanation-${explanation._id}`}>
-        <DataPopup data={explanation} type='explanation' num={num} />
+        <DataPopup data={explanation} type='explanation' num={num} zoomIn={zoomIn} />
       </View>))}
     </View>)
   }
 
   renderComplement = () => {
-    const { complements, term } = this.state;
+    const { complements, term, zoomIn } = this.state;
     const num = getTermNumber(term.text).replace('第', '').replace('条', '');
     return (<View>
       {complements.map(complement => (<View className='example' key={`complement-${complement._id}`}>
-        <DataPopup data={complement} type='complement' num={num} />
+        <DataPopup data={complement} type='complement' num={num} zoomIn={zoomIn} />
       </View>))}
     </View>)
   }
 
   renderCourtComplementExamples = () => {
-    const { courtComplementExamples, term } = this.state;
+    const { courtComplementExamples, term, zoomIn } = this.state;
     const num = getTermNumber(term.text).replace('第', '').replace('条', '');
     return (<View>
       {courtComplementExamples.map(complement => (<View className='example' key={`complement-${complement._id}`}>
-        <DataPopup data={complement} type='complement' num={num} />
+        <DataPopup data={complement} type='complement' num={num} zoomIn={zoomIn} />
       </View>))}
     </View>)
   }
@@ -192,16 +204,32 @@ export default class TermDetail extends Component {
 
   };
 
+  renderTermText = () => {
+    const {term} = this.state;
+    term.text = term.text ? term.text : ''
+    const lines = term.text.split('\n').filter(l => l.trim())
+    return (lines.map((line, index) => {
+      return (<View className='term-line' key={`key-civil-${index}`}>{line}</View>)
+    }))
+  }
+
+  handleZoom = () => {
+    const {zoomIn} = this.state;
+    this.setState({zoomIn: !zoomIn})
+  }
+
   render () {
-    const {term, examples, explanations, courtExamples, complements, courtComplementExamples, isProcuratorateExampleLoading, isCourtExampleLoading, isExplanationLoading, isComplementLoading, isCollected} = this.state;
+    const {examples, explanations, courtExamples, complements, courtComplementExamples,
+      isProcuratorateExampleLoading, isCourtExampleLoading, isExplanationLoading, isComplementLoading,
+      isCollected, isReadMode, zoomIn} = this.state;
     return (
-      <View className='term-detail-page'>
+      <View className={`term-detail-page ${isReadMode ? 'read-mode' : ''} ${zoomIn ? 'zoom-in' : ''}`}>
           <View className='main section'>
             <View>
               {this.renderSectionAndChapter()}
             </View>
             <View>
-              {term.text}
+              {this.renderTermText()}
             </View>
           </View>
           <View className='examples section'>
@@ -228,8 +256,11 @@ export default class TermDetail extends Component {
           <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
         </View>}
         <View className='favorite-container' onClick={this.handleCollect} >
-          <AtIcon value={isCollected ? 'star-2' : 'star'} size='32' color={isCollected ? '#ffcc00' : 'rgba(0, 0, 0, 0.6)'}></AtIcon>
+          <AtIcon value={isCollected ? 'star-2' : 'star'} size='34' color={isCollected ? '#ffcc00' : 'rgba(0, 0, 0, 0.6)'}></AtIcon>
         </View>
+        <AtFab size='small' className='float-zoom' onClick={() => {this.handleZoom()}}>
+          <View  className={`zoom ${zoomIn ? 'zoom-in': 'zoom-out'}`} mode='widthFix' />
+        </AtFab>
       </View>
     )
   }

@@ -13,14 +13,14 @@ export default class Index extends Component {
     searchValue: '',
     searchResult: [],
     isLoading: false,
-    selected: '搜案例名',
-    options: ['搜案例名', '搜案例号'],
+    selected: '全文搜索',
+    options: ['全文搜索'],
     status: 'more',
     isReadMode: false
   }
 
   config = {
-    navigationBarTitleText: '刑事审判参考搜索'
+    navigationBarTitleText: '最高法公报案例搜索'
   }
 
   onShareAppMessage() {
@@ -50,17 +50,18 @@ export default class Index extends Component {
   componentDidHide () { }
 
   renderSearchList = () => {
-    const {searchResult} = this.state
+    const {searchResult,searchValue} = this.state
     return (<View>
       <View>
         {searchResult.map(((example) => {return (
           <AtListItem
             key={`example-${example._id}`}
-            title={`[第${example.number}号]${example.name}`}
+            title={`${example.title}`}
+            note={example.date}
             arrow='right'
             onClick={() => {
               Taro.navigateTo({
-                url: `/pages/exampleDetail/index?type=consultant&id=${example._id}`,
+                url: `/pages/exampleDetail/index?type=court-open&id=${example._id}&keyword=${searchValue}`,
               })
             }}
           />
@@ -86,8 +87,8 @@ export default class Index extends Component {
       })
       return ;
     }
-    if (selected === '搜案例名') {
-      db.collection('consult').orderBy('number', 'asc').skip(skip).where({name: db.RegExp({
+    if (selected === '全文搜索') {
+      db.collection('court-open').orderBy('date', 'desc').skip(skip).where({text: db.RegExp({
           regexp: '.*' + searchValue,
           options: 'i',
         })}).get({
@@ -95,41 +96,12 @@ export default class Index extends Component {
           if (isEmpty(res.data)) {
             if (skip === 0) {
               Taro.showToast({
-                title: `未找到含有${searchValue}的刑事审判参考`,
-                icon: 'none',
-                duration: 3000
-              })
-            } else {
-              Taro.showToast({
-                title: `没有更多啦`,
-                icon: 'none',
-                duration: 3000
-              })
-              that.setState({status: 'noMore', isLoading: false})
-            }
-          } else {
-            if (skip === 0) {
-              that.setState({searchResult: [...res.data], isLoading: false});
-            } else {
-              that.setState({searchResult: [...searchResult, ...res.data], isLoading: false});
-            }
-          }
-
-        }
-      });
-    }
-
-    if (selected === '搜案例号') {
-      db.collection('consult').orderBy('number', 'asc').skip(skip).where({number: parseInt(searchValue)}).get({
-        success: (res) => {
-          if (isEmpty(res.data)) {
-            if (skip === 0) {
-              Taro.showToast({
-                title: `未找到含有${searchValue}的刑事审判参考`,
+                title: `未找到含有${searchValue}的最高法公报`,
                 icon: 'none',
                 duration: 3000
               })
               that.setState({isLoading: false})
+              return;
             } else {
               Taro.showToast({
                 title: `没有更多啦`,
@@ -148,7 +120,6 @@ export default class Index extends Component {
 
         }
       });
-
     }
 
   }
@@ -193,7 +164,7 @@ export default class Index extends Component {
                 onChange={this.onChange}
                 onActionClick={() => this.onSearch(0)}
                 onClear={this.onClear}
-                placeholder={selected === '搜案例号' ? '123' : '诈骗'}
+                placeholder={selected === '全文搜索' ? '案由，关键词' : ''}
               />
             </View>
           </View>
@@ -212,7 +183,7 @@ export default class Index extends Component {
             </View>}
             <View className='float-help' onClick={() => {
               Taro.navigateTo({
-                url: '/pages/other/index?id=consultant'
+                url: '/pages/other/index?id=courtOpen'
               })
             }}
             >

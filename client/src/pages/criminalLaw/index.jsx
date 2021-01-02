@@ -1,13 +1,12 @@
-import Taro, {Component } from '@tarojs/taro'
+import Taro, {Component, getStorageSync } from '@tarojs/taro'
 import {View, Text, Picker, Image} from '@tarojs/components'
-import {AtSearchBar, AtActivityIndicator, AtFab} from 'taro-ui'
+import {AtSearchBar, AtActivityIndicator, AtFab, AtBadge, AtIcon} from 'taro-ui'
 import {isEmpty} from 'lodash';
 import { db } from '../../util/db'
 import { rank } from '../../util/rank'
 import { TermSearchItem } from '../../components/termSearchItem/index.weapp'
 import { LawCategory } from '../../components/lawCategory/index.weapp'
-import {setGlobalData} from '../../util/global'
-import {convertNumberToChinese} from '../../util/convertNumber'
+import {getNumber, isNumber} from '../../util/convertNumber'
 import {lawMap, keys, categoryLines, criminalTermsComplement } from '../../util/util'
 import clickIcon from '../../static/down.png';
 import './index.scss'
@@ -20,10 +19,11 @@ export default class Index extends Component {
     searchResult: [],
     isLoading: false,
     selected: "搜全文",
-    options: ["搜全文", "搜罪名", "搜法条"],
+    options: ["搜全文", "搜罪名", "搜序号"],
     crimes: [],
     terms: [],
-    showAllCategories: false
+    showAllCategories: false,
+    isReadMode: false
   }
 
   config = {
@@ -49,6 +49,15 @@ export default class Index extends Component {
           isLoading: false});
       }
     });
+
+    const setting = getStorageSync('setting');
+    this.setState({isReadMode: setting && setting.isReadMode})
+    if (setting && setting.isReadMode) {
+      Taro.setNavigationBarColor({
+        frontColor: '#000000',
+        backgroundColor: '#F4ECD8'
+      })
+    }
   }
 
   componentWillUnmount () { }
@@ -86,9 +95,9 @@ export default class Index extends Component {
   }
 
   renderSearchList = () => {
-    const {searchResult} = this.state
+    const {searchResult, isReadMode} = this.state
     return (<View>
-      {searchResult.map(((term) => {return (<TermSearchItem term={term} key={`term${term._id}`} />)}))}
+      {searchResult.map(((term) => {return (<TermSearchItem term={term} isReadMode={isReadMode} key={`term${term._id}`} />)}))}
     </View>)
   }
 
@@ -103,7 +112,7 @@ export default class Index extends Component {
       </View>)})}</View>
       <View className='option-title'>常用法条关键字</View>
       <View className='sub-options'>{terms && terms.length >0 && terms.map((term, index) => {
-        return (<View className='term-option option' key={`term-option-${index}`} onClick={() => that.onClickOptionItem("搜法条", term)}>
+        return (<View className='term-option option' key={`term-option-${index}`} onClick={() => that.onClickOptionItem("搜序号", term)}>
           {term}
         </View>)})}</View>
     </View>)
@@ -119,7 +128,6 @@ export default class Index extends Component {
   }
 
   onChange = (searchValue) => {
-    setGlobalData('searchValue', searchValue)
     this.setState({searchValue})
   }
 
@@ -171,11 +179,8 @@ export default class Index extends Component {
       });
     }
 
-    if (selected === '搜法条') {
-      db.collection('terms').where({text: db.RegExp({
-          regexp: '.*' + convertNumberToChinese(searchValue),
-          options: 'i',
-        })}).get({
+    if (selected === '搜序号') {
+      db.collection('terms').where({number: isNumber(searchValue) ? parseInt(searchValue) : getNumber(searchValue)}).get({
         success: (res) => {
           if (isEmpty(res.data)) {
             Taro.showToast({
@@ -205,9 +210,9 @@ export default class Index extends Component {
   }
 
   render () {
-    const {searchValue, searchResult, isLoading, selected, options, showAllCategories} = this.state;
+    const {searchValue, searchResult, isLoading, selected, options, showAllCategories, isReadMode} = this.state;
     return (
-      <View className='criminal-page'>
+      <View className={`criminal-page ${isReadMode ? 'read-mode' : ''}`}>
           <View className='header'>
             <View className='select'>
               <View>
@@ -252,6 +257,16 @@ export default class Index extends Component {
           {searchResult.length === 0 && <AtFab className='float' onClick={() => this.setState({showAllCategories: !showAllCategories})}>
             <Text>{`${showAllCategories ? '返回' : '目录'}`}</Text>
           </AtFab>}
+        <View className='float-help' onClick={() => {
+          Taro.navigateTo({
+            url: '/pages/other/index?id=criminalLaw'
+          })
+        }}
+        >
+          <AtBadge value='帮助'>
+            <AtIcon value='help' size='30' color='#000'></AtIcon>
+          </AtBadge>
+        </View>
       </View>
     )
   }

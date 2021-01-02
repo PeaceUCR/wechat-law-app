@@ -8,6 +8,10 @@
   white-space: pre-wrap;
   background: white;
   position: relative;
+  box-shadow: 0px 0px 20px -1px rgba(199,199,199,1);
+  &.read-mode {
+    background: #F4ECD8;
+  }
 
   .procuratorate {
     background: darkred !important;

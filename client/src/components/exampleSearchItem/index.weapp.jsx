@@ -4,7 +4,7 @@ import throttle from 'lodash/throttle';
 import './index.scss'
 
 const ExampleSearchItem = (props) => {
-  let {example, type, disableRedirect} = props;
+  let {example, type, disableRedirect, isReadMode} = props;
   example = example ? example : {};
   const {title, terms, keyword, name, number, _id} = example;
   const redirect = throttle(
@@ -20,14 +20,14 @@ const ExampleSearchItem = (props) => {
     { trailing: false }
   );
   if (type === 'court') {
-    return (<View className='search-item' onClick={redirect} >
+    return (<View className={`search-item ${isReadMode ? 'read-mode' : ''}`} onClick={redirect} >
       <Text className='tag'>法</Text>
       <View className='title'>{title}</View>
       <View>关键词:{keyword.replace('关键词', '')}</View>
       <View>{terms}</View>
     </View>)
   }
-  return (<View className='search-item' onClick={redirect} >
+  return (<View className={`search-item ${isReadMode ? 'read-mode' : ''}`} onClick={redirect} >
     <Text className='tag procuratorate'>检</Text>
     <View className='title'>{number}:{name}</View>
     <View>关键词:{keyword}</View>

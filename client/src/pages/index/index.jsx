@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {View, Image, Text} from '@tarojs/components'
-import {AtIcon, AtDivider, AtBadge} from "taro-ui";
+import {AtIcon, AtDivider, AtBadge, AtNoticebar} from "taro-ui";
+import throttle from 'lodash/throttle';
 import { GridItem } from '../../components/grid/index.weapp'
 import { LoginPopup } from '../../components/loginPopup/index.weapp'
 import { UserFloatButton } from '../../components/userFloatButton/index.weapp'
@@ -18,6 +19,10 @@ export default class Index extends Component {
         title:'刑法',
         url: '/pages/criminalLaw/index'
       }, {
+        title: '民法典',
+        url: '/pages/civilLaw/index',
+        isNew: true
+      }, {
         title: '刑事诉讼法',
         url: '/pages/litigationLaw/index'
       }, {
@@ -30,12 +35,13 @@ export default class Index extends Component {
         title: '刑事审判参考',
         url: '/pages/consultant/index'
       }, {
-        title: '民法典',
-        url: '/pages/civilLaw/index',
+        title: '最高法公报案例',
+        url: '/pages/courtOpen/index',
         isNew: true
       }],
     isNewUser: false,
-    showFooter: true
+    showFooter: false,
+    isReadMode: false
   }
 
   config = {
@@ -68,11 +74,23 @@ export default class Index extends Component {
         }
       }
     });
+
   }
 
   componentWillUnmount () { }
 
-  componentDidShow () { }
+  componentDidShow () {
+    console.log('show')
+    const setting = getStorageSync('setting');
+    this.setState({isReadMode: setting && setting.isReadMode})
+    if (setting && setting.isReadMode) {
+      console.log('read')
+      Taro.setNavigationBarColor({
+        frontColor: '#000000',
+        backgroundColor: '#F4ECD8'
+      })
+    }
+  }
 
   componentDidHide () { }
 
@@ -96,10 +114,20 @@ export default class Index extends Component {
     Taro.hideLoading();
   }
 
+  handleShowFooter = () => {
+    const that = this;
+    that.setState({showFooter: true})
+    setTimeout(() => {
+      that.setState({showFooter: false})
+    }, 8000)
+  }
   render () {
-    const {options, isNewUser} = this.state;
+    const {options, isNewUser, isReadMode, showFooter} = this.state;
     return (
-      <View className='index-page'>
+      <View className={`index-page ${isReadMode ? 'read-mode' : ''}`}>
+        <AtNoticebar marquee speed={60}>
+          本小程序数据信息均来源于最高检，最高法，公安部，司法部等权威发布
+        </AtNoticebar>
           <View className='icon-container'>
             <Image src={lawIcon} className='icon-title' />
           </View>
@@ -109,7 +137,7 @@ export default class Index extends Component {
             })
           }}
           >
-            <AtBadge value='NEW'>
+            <AtBadge value='帮助'>
               <AtIcon value='help' size='30' color='#000'></AtIcon>
             </AtBadge>
           </View>
@@ -120,9 +148,12 @@ export default class Index extends Component {
           {!isNewUser && this.renderUserFloatButton()}
           <View className='footer-container'>
             <AtDivider height='100'>
-              <View className='footer'>
+              <View className='footer' onClick={
+                throttle(this.handleShowFooter, 8000, { trailing: false })
+              }
+              >
                 <Image src={logo} className='logo' />
-                <Text className='text'>武汉满屏星科技有限公司</Text>
+                {showFooter && <Text className='footer-logo'>武汉满屏星科技有限公司</Text>}
               </View>
             </AtDivider>
           </View>

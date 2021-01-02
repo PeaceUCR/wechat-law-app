@@ -4,11 +4,11 @@ import {AtIcon} from "taro-ui";
 import './index.scss'
 
 const DataPopup = (props) => {
-  let {data ,type, num} = props;
+  let {data ,type, num, zoomIn} = props;
   data = data ? data: {};
   const {name, number, title,  _id} = data;
   return (<View>
-    <View className='line-center' onClick={() => Taro.navigateTo({
+    <View className={`line-center  ${zoomIn ? 'zoom-in' : ''}`} onClick={() => Taro.navigateTo({
       url: `/pages/exampleDetail/index?type=${type}&id=${_id}&keyword=${num}`,
     })}
     >

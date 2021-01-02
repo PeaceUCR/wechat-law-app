@@ -3,6 +3,10 @@
   min-height: 100vh;
   background: #ddd;
   overflow-y: scroll;
+  box-sizing: border-box;
+  &.read-mode {
+    background: #F4ECD8;
+  }
   .category {
     position: relative;
     display: flex;
@@ -75,6 +79,9 @@
     box-shadow: 0px 0px 5px 999px rgba(0,0,0,0.5);
     border-radius: 20px;
     z-index: 999;
+    &.read-mode {
+      background: #F4ECD8;
+    }
 
     .modal-content {
       padding: 20px 10px 20px 20px;
@@ -91,6 +98,7 @@
       border-bottom-right-radius: 20px;
       border-top: 1px solid #aaa;
       color: #777777;
+      background: transparent;
     }
   }
 }

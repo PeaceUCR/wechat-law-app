@@ -1,15 +1,27 @@
 import Taro, { getStorageSync} from '@tarojs/taro'
 import { AtListItem} from "taro-ui";
 import {View} from "@tarojs/components";
-import {lawIdLabelMap, courtExampleTitleMap, courtExampleTitleComplementMap, procuratorateExampleTitleMap, procuratorateExampleTitleComplementMap} from '../../util/util';
+import {
+  lawIdLabelMap,
+  courtExampleTitleMap,
+  courtExampleTitleComplementMap,
+  procuratorateExampleTitleMap,
+  procuratorateExampleTitleComplementMap,
+  civilTagMap,
+  civilLawIdNumberMap
+} from '../../util/util';
 import './index.scss'
 
 const MyCollection = (props) => {
   let collection = getStorageSync('collection');
   collection = collection ? collection : {};
+  let civilCollection = getStorageSync('civilCollection');
+  civilCollection = civilCollection ? civilCollection : {};
   let cachedItems = getStorageSync('cachedItems');
   cachedItems = cachedItems ? cachedItems : {};
   const allKeys = Object.keys(collection).filter(key => collection[key])
+  const civilKeys = Object.keys(civilCollection)
+    .filter(key => civilCollection[key]).filter(key => civilLawIdNumberMap[key])
 
   const termKeys = allKeys.filter(key => lawIdLabelMap[key])
   const courtExampleKeys = allKeys.filter(key => courtExampleTitleMap[key] || courtExampleTitleComplementMap[key])
@@ -35,6 +47,25 @@ const MyCollection = (props) => {
           }}
         />
         ))}
+    </View>
+    <View>
+      {civilKeys.length > 0 && <View className='sub-title'>
+        <View className='divider'></View>
+        <View className='text'>民法典法条</View>
+        <View className='divider'></View>
+      </View>}
+      {civilKeys.map(civilKey => (
+        <AtListItem
+          key={civilKey}
+          title={`${civilLawIdNumberMap[civilKey]} ${civilTagMap[civilLawIdNumberMap[civilKey]]}`}
+          arrow='right'
+          onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/civilLawDetail/index?id=${civilKey}`,
+            })
+          }}
+        />
+      ))}
     </View>
     <View>
       {procuratorateExampleKeys.length > 0 && <View className='sub-title'>
@@ -78,7 +109,7 @@ const MyCollection = (props) => {
     <View>
       {otherKeys.length > 0 && <View className='sub-title'>
         <View className='divider'></View>
-        <View className='text'>相关法定解释、规定，指导意见，审判参考</View>
+        <View className='text'>相关解释、规定、指导意见、案例、公报</View>
         <View className='divider'></View>
       </View>}
       {otherKeys.map(otherKey => (
@@ -94,7 +125,7 @@ const MyCollection = (props) => {
         />
       ))}
     </View>
-    {allKeys.length === 0 && <View className='sub-title'>
+    {allKeys.length === 0 && civilKeys.length === 0 && <View className='sub-title'>
       <View className='divider'></View>
       <View className='text'>没有任何收藏</View>
       <View className='divider'></View>

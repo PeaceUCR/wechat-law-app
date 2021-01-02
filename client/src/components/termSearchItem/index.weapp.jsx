@@ -4,7 +4,7 @@ import throttle from 'lodash/throttle';
 import './index.scss'
 
 const TermSearchItem = (props) => {
-  let {term, disableRedirect, type} = props;
+  let {term, disableRedirect, type, isReadMode} = props;
   term = term ? term : {};
   const {text, crime, tag, _id} = term;
   const isCrime = tag === crime;
@@ -26,7 +26,7 @@ const TermSearchItem = (props) => {
     2000,
     { trailing: false }
   );
-  return (<View className='search-item' onClick={redirect} >
+  return (<View className={`search-item ${isReadMode ? 'read-mode' : ''}`} onClick={redirect} >
     <View className={isCrime? 'crime tag':'tag'}>{tag}</View>
     <View>{text}</View>
   </View>)

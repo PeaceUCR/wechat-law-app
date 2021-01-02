@@ -3,10 +3,14 @@
   margin: 25px 10px 20px 10px;
   padding: 10px 15px;
   box-sizing: border-box;
-  border-radius: 20px;
+  border-radius: 10px;
   font-size: 26px;
   white-space: pre-wrap;
   background: white;
+  box-shadow: 0px 0px 20px -1px rgba(199,199,199,1);
+  &.read-mode {
+    background: #F4ECD8;
+  }
 
   .crime {
     background: darkred !important;
@@ -16,7 +20,8 @@
     font-size: 32px;
     display: inline-block;
     padding: 3px 10px;
-    border-radius: 20px;
+    margin-bottom: 10px;
+    border-radius: 10px;
     background: dodgerblue;
     color: white;
 

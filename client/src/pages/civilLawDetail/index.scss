@@ -1,7 +1,12 @@
-.term-detail-page {
+.civil-term-detail-page {
   padding: 10px 20px;
+  min-height: 100vh;
+  box-sizing: border-box;
+  font-size: 32px;
+  &.read-mode {
+    background: #F4ECD8;
+  }
   .header {
-    font-size: 28px;
     color: gray;
   }
 
@@ -24,4 +29,45 @@
     right: 6%;
     top: 10px;
   }
+
+  .tag-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding-bottom: 20px;
+    margin-top: 30px;
+    font-size: 32px;
+    .pre-tag {
+      margin-bottom: 20px;
+      margin-right: 10px;
+    }
+    .tag {
+      font-size: 32px;
+      display: inline-block;
+      padding: 3px 10px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      background: dodgerblue;
+      color: white;
+    }
+  }
 }
+
+.link {
+  color: #444;
+  margin: 10px 0px 10px 0px;
+  .title {
+    color: #6190E8;
+    font-weight: bold;
+  }
+}
+.link_reason {
+  color: #888;
+}
+.center {
+  text-align: center;
+}
+.pane {
+  background: #F4ECD8;
+}
+

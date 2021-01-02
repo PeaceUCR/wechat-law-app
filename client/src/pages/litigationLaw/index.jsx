@@ -1,4 +1,4 @@
-import Taro, { Component } from '@tarojs/taro'
+import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {Button, View} from '@tarojs/components'
 import { AtSearchBar, AtActivityIndicator, AtButton } from 'taro-ui'
 import {isEmpty} from "lodash"
@@ -16,7 +16,8 @@ export default class Index extends Component {
     litigationLawOptions: [],
     isLoading: false,
     modalContent: '',
-    isOpened: false
+    isOpened: false,
+    isReadMode: false
   }
 
   config = {
@@ -31,7 +32,17 @@ export default class Index extends Component {
   componentWillMount () {
   }
 
-  componentDidMount () { }
+  componentDidMount () {
+    const setting = getStorageSync('setting');
+    this.setState({isReadMode: setting && setting.isReadMode})
+    if (setting && setting.isReadMode) {
+      console.log('read')
+      Taro.setNavigationBarColor({
+        frontColor: '#000000',
+        backgroundColor: '#F4ECD8'
+      })
+    }
+  }
 
   componentWillUnmount () { }
 
@@ -50,9 +61,9 @@ export default class Index extends Component {
   componentDidHide () { }
 
   renderSearchList = () => {
-    const {searchResult} = this.state
+    const {searchResult,isReadMode} = this.state
     return (<View>
-      {searchResult.map(((data) => {return (<LitigationSearchItem data={data} key={`term-${data._id}`} onSearchResultClick={this.onSearchResultClick}/>)}))}
+      {searchResult.map(((data) => {return (<LitigationSearchItem isReadMode={isReadMode} data={data} key={`term-${data._id}`} onSearchResultClick={this.onSearchResultClick} />)}))}
     </View>)
   }
 
@@ -195,9 +206,9 @@ export default class Index extends Component {
   }
 
   render () {
-    const {searchValue, searchResult, litigationLawOptions, isLoading, modalContent, isOpened} = this.state;
+    const {searchValue, searchResult, litigationLawOptions, isLoading, modalContent, isOpened, isReadMode} = this.state;
     return (
-      <View className='litigation-law-page'>
+      <View className={`litigation-law-page ${isReadMode ? 'read-mode' : ''}`}>
           <View>
             <AtSearchBar
               value={searchValue}
@@ -210,7 +221,7 @@ export default class Index extends Component {
           <View>
             <View>
               {searchResult.length === 0 &&
-              <HierarchicalOptions options={litigationLawOptions} onClick={this.onClickOptionItem} />}
+              <HierarchicalOptions isReadMode={isReadMode} options={litigationLawOptions} onClick={this.onClickOptionItem} />}
             </View>
             <View>
               {searchResult.length > 0 && this.renderSearchList()}
@@ -219,7 +230,7 @@ export default class Index extends Component {
               <AtActivityIndicator mode='center' color='black'  size={82}></AtActivityIndicator>
             </View>}
           </View>
-        {isOpened && <View className='modal'>
+        {isOpened && <View className={`modal ${isReadMode ? 'read-mode' : ''}`}>
           <View className='modal-content'>{modalContent.join('\n')}</View>
           <Button onClick={this.onModalClose} className='modal-button'>确定</Button>
         </View>}

@@ -4,6 +4,10 @@
   padding-bottom: 200px;
   background: lightgrey;
   overflow-y: scroll;
+  box-sizing: border-box;
+  &.read-mode {
+    background: #F4ECD8;
+  }
   .header {
     display: flex;
     .search {
@@ -82,6 +86,12 @@
     background: green;
     bottom: 5%;
     right: 5%;
+  }
+
+  .float-help {
+    position: fixed;
+    top: 9%;
+    right: 60px;
   }
 
 }

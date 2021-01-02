@@ -1,8 +1,13 @@
 .criminal-page {
   width: 100%;
   min-height: 100vh;
+  box-sizing: border-box;
   background: lightgrey;
   overflow-y: scroll;
+  &.read-mode {
+    background: #F4ECD8;
+  }
+
   .header {
     display: flex;
     .search {
@@ -88,7 +93,7 @@
   }
 
   .all-law-categories {
-    background: white;
+    background: transparent;
     margin-bottom: 10px;
   }
   .float {
@@ -109,5 +114,11 @@
     &:last-of-type {
       padding-bottom: 60px;
     }
+  }
+
+  .float-help {
+    position: fixed;
+    top: 9%;
+    right: 60px;
   }
 }

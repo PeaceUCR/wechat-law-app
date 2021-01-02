@@ -60,6 +60,18 @@ export default class ExampleDetail extends Component {
           that.setState({example: res.data[0], type, id, keyword});
         }
       });
+    } else if (type ==='court-open') {
+      db.collection('court-open').where({_id: id}).get({
+        success: (res) => {
+          that.setState({example: res.data[0], type, id, keyword});
+        }
+      });
+    } else if (type ==='civil') {
+      db.collection('civil-law-link-example-detail').where({_id: id}).get({
+        success: (res) => {
+          that.setState({example: res.data[0], type, id, keyword});
+        }
+      });
     }
 
     let collection = getStorageSync('collection');
@@ -157,7 +169,12 @@ export default class ExampleDetail extends Component {
       collection[_id] = true
       setStorageSync('collection', collection)
 
-      if (type === 'terms-complement' || type === 'explanation' || type === 'complement' || type === 'consultant')  {
+      if (type === 'terms-complement'
+        || type === 'explanation'
+        || type === 'complement'
+        || type === 'consultant'
+        || type === 'court-open'
+        || type === 'civil')  {
         let cachedItems = getStorageSync('cachedItems');
         cachedItems = cachedItems ? cachedItems : {};
         cachedItems[_id] = {type, title: type === 'explanation' ? example.name : example.title}
@@ -165,6 +182,8 @@ export default class ExampleDetail extends Component {
           cachedItems[_id].title = example.name
         } else if (type === 'consultant') {
           cachedItems[_id].title = `第${example.number}号${example.name}`
+        } else if (type === 'civil') {
+          cachedItems[_id].title = example.content.split('\n').filter(line => line.trim() && line.trim().length > 0)[0]
         } else {
           cachedItems[_id].title = example.title
 
@@ -185,11 +204,11 @@ export default class ExampleDetail extends Component {
     return (
       <View className={`example-detail-page ${zoomIn ? 'zoom-in' : ''} ${isReadMode ? 'read-mode' : ''}`}>
         {type === 'court' && this.renderCourtExample()}
-        {(type === 'procuratorate' || type === 'explanation') && this.renderProcuratorateExample()}
+        {(type === 'procuratorate' || type === 'explanation' || type === 'court-open') && this.renderProcuratorateExample()}
         {type === 'terms-complement' && this.renderTermComplement()}
-        {(type === 'complement' || type ==='consultant') && this.renderComplement()}
+        {(type === 'complement' || type ==='consultant' || type === 'civil') && this.renderComplement()}
         <AtFab  className={`float ${zoomIn ? 'zoom-in': 'zoom-out'}`} onClick={() => {this.handleZoom()}}>
-          <View  className={`zoom ${zoomIn ? 'zoom-in': 'zoom-out'}`} mode='widthFix' onClick={() => {this.handleZoom()}} />
+          <View  className={`zoom ${zoomIn ? 'zoom-in': 'zoom-out'}`} mode='widthFix' />
         </AtFab>
         <View className='favorite-container' onClick={this.handleCollect} >
           <AtIcon value={isCollected ? 'star-2' : 'star'} size='42' color={isCollected ? '#ffcc00' : 'rgba(0, 0, 0, 0.6)'}></AtIcon>

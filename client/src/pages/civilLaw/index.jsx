@@ -1,11 +1,11 @@
-import Taro, {Component } from '@tarojs/taro'
+import Taro, {Component,getStorageSync } from '@tarojs/taro'
 import {View, Text, Picker, Image} from '@tarojs/components'
-import {AtSearchBar, AtActivityIndicator} from 'taro-ui'
+import {AtSearchBar, AtActivityIndicator, AtBadge, AtIcon} from 'taro-ui'
+import throttle from "lodash/throttle";
 import {isEmpty} from 'lodash';
 import { db } from '../../util/db'
 import { TermSearchItem } from '../../components/termSearchItem/index.weapp'
 import { LawCategory } from '../../components/lawCategory/index.weapp'
-import {setGlobalData} from '../../util/global'
 import {convertNumberToChinese} from '../../util/convertNumber'
 import {civilLawCategoryLines} from '../../util/util'
 import clickIcon from '../../static/down.png';
@@ -19,8 +19,11 @@ export default class Index extends Component {
     searchResult: [],
     isLoading: false,
     selected: "搜全文",
-    options: ["搜全文", "搜法条"],
-    showAllCategories: true
+    options: ["搜全文", "搜序号", "搜条旨"],
+    showAllCategories: true,
+    isReadMode: false,
+    civilLawLines: [],
+    isCategoryLoading: true
   }
 
   config = {
@@ -33,9 +36,23 @@ export default class Index extends Component {
     };
   }
   componentWillMount () {
+    const setting = getStorageSync('setting');
+    this.setState({isReadMode: setting && setting.isReadMode})
+    if (setting && setting.isReadMode) {
+      console.log('read')
+      Taro.setNavigationBarColor({
+        frontColor: '#000000',
+        backgroundColor: '#F4ECD8'
+      })
+    }
   }
 
   componentDidMount () {
+    const that = this;
+    that.setState({
+      civilLawLines: civilLawCategoryLines,
+      isCategoryLoading: false
+    })
   }
 
   componentWillUnmount () { }
@@ -46,47 +63,21 @@ export default class Index extends Component {
   componentDidHide () { }
 
   renderAllCatgories = () => {
-    return civilLawCategoryLines
+    const {civilLawLines} = this.state
+    return civilLawLines
       .map((catgoryLine, index)=> {
         return (<LawCategory catgoryLine={catgoryLine} key={`all-law-catgoryLine-${index}`} type='civil' />)
       })
   }
 
   renderSearchList = () => {
-    const {searchResult} = this.state
+    const {searchResult,isReadMode} = this.state
     return (<View>
-      {searchResult.map(((term) => {return (<TermSearchItem term={term} key={`term${term._id}`} type='civil' />)}))}
+      {searchResult.map(((term) => {return (<TermSearchItem isReadMode={isReadMode} term={term} key={`term${term._id}`} type='civil' />)}))}
     </View>)
-  }
-
-  renderHintOptions = () => {
-    const {crimes, terms} = this.state;
-    const that = this;
-    return (<View className='options'>
-      <View className='option-title'>常用罪名关键字</View>
-      <View className='sub-options'>{crimes && crimes.length > 0 && crimes.map((crime, index) => {
-        return (<View className='crime-option option' key={`crime-option-${index}`} onClick={() => that.onClickOptionItem("搜罪名", crime)}>
-          {crime}
-      </View>)})}</View>
-      <View className='option-title'>常用法条关键字</View>
-      <View className='sub-options'>{terms && terms.length >0 && terms.map((term, index) => {
-        return (<View className='term-option option' key={`term-option-${index}`} onClick={() => that.onClickOptionItem("搜法条", term)}>
-          {term}
-        </View>)})}</View>
-    </View>)
-  }
-
-  onClickOptionItem = (category, searchValue) => {
-    this.setState({
-      selected: category,
-      searchValue
-    }, () => {
-      this.onSearch()
-    });
   }
 
   onChange = (searchValue) => {
-    setGlobalData('searchValue', searchValue)
     this.setState({searchValue})
   }
 
@@ -120,9 +111,27 @@ export default class Index extends Component {
       });
     }
 
-    if (selected === '搜法条') {
+    if (selected === '搜序号') {
       db.collection('civil-law').where({number: db.RegExp({
           regexp: '.*' + convertNumberToChinese(searchValue),
+          options: 'i',
+        })}).get({
+        success: (res) => {
+          if (isEmpty(res.data)) {
+            Taro.showToast({
+              title: `未找到含有${searchValue}的法条`,
+              icon: 'none',
+              duration: 3000
+            })
+          }
+          that.setState({searchResult: res.data, isLoading: false, hasSearched: true});
+        }
+      })
+    }
+
+    if (selected === '搜条旨') {
+      db.collection('civil-law').where({tag: db.RegExp({
+          regexp: '.*' + searchValue,
           options: 'i',
         })}).get({
         success: (res) => {
@@ -154,9 +163,20 @@ export default class Index extends Component {
   }
 
   render () {
-    const {searchValue, searchResult, isLoading, selected, options, showAllCategories} = this.state;
+    const {searchValue, searchResult, isLoading, selected,
+      options, showAllCategories, isReadMode, isCategoryLoading} = this.state;
+    let placeholder;
+    if (selected === "搜全文") {
+      placeholder = "搜法条全文，如合同"
+    }
+    if (selected === "搜序号") {
+      placeholder = "搜法条序号，比如第一条"
+    }
+    if (selected === "搜条旨") {
+      placeholder = "搜法条要旨，比如代理的效力"
+    }
     return (
-      <View className='criminal-page'>
+      <View className={`civil-law-page ${isReadMode ? 'read-mode' : ''}`}>
           <View className='header'>
             <View className='select'>
               <View>
@@ -172,7 +192,7 @@ export default class Index extends Component {
                 onChange={this.onChange}
                 onActionClick={this.onSearch}
                 onClear={this.onClear}
-                placeholder={selected === "搜全文" ? "搜全文" :'搜法律条文，比如第一条'}
+                placeholder={placeholder}
               />
             </View>
           </View>
@@ -196,6 +216,19 @@ export default class Index extends Component {
             {isLoading && <View className='loading-container'>
               <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
             </View>}
+            {
+              isCategoryLoading && <AtActivityIndicator mode='center' color='black' content='目录加载中...' size={62}></AtActivityIndicator>
+            }
+          </View>
+          <View className='float-help' onClick={() => {
+            Taro.navigateTo({
+              url: '/pages/other/index?id=civilLaw'
+            })
+          }}
+          >
+            <AtBadge value='帮助'>
+              <AtIcon value='help' size='30' color='#000'></AtIcon>
+            </AtBadge>
           </View>
       </View>
     )

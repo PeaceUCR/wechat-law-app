@@ -5,11 +5,35 @@
 }
 .at-accordion__info__note {
   color: #333333;
+  border-left: 6px solid #6190E8;
+  padding-left: 6px;
+  font-size: 30px;
 }
 .at-accordion__header {
-  padding: 12px;
-  border-left: 6px solid #6190E8;
+  padding: 10px 12px 10px 20px;
 }
 .at-list__item {
-  background: white;
+  background: rgba(256, 256, 256, 0.6);
+  .item-extra__icon-arrow {
+    color: #6190E8;
+  }
+}
+.at-accordion__arrow{
+  color: #6190E8;
+}
+.at-switch {
+  background-color: transparent;
+}
+.at-switch__container {
+  background-color: transparent;
+}
+.at-divider__content {
+  background: #F4ECD8;
+}
+.at-list__item {
+  border-bottom: 1px solid #888888;
+}
+
+.at-list__item::after {
+  border-bottom: none;
 }

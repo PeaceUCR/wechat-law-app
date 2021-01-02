@@ -1,4 +1,9 @@
 .user-page {
   padding: 0px 20px;
+  min-height: 100vh;
+  box-sizing: border-box;
+  &.read-mode {
+    background: #F4ECD8;
+  }
 }
 

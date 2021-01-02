@@ -1,8 +1,12 @@
-.criminal-page {
+.civil-law-page {
   width: 100%;
   min-height: 100vh;
-  background: lightgrey;
+  box-sizing: border-box;
+  background: white;
   overflow-y: scroll;
+  &.read-mode {
+    background: #F4ECD8;
+  }
   .header {
     display: flex;
     .search {
@@ -57,7 +61,7 @@
     left: 0;
     height: calc( 100vh - 90px );
     width: 100%;
-    background: lightgray;
+    background: rgba(0, 0, 0, 0.6);
   }
 
   .all-law-options {
@@ -88,7 +92,7 @@
   }
 
   .all-law-categories {
-    background: white;
+    background: transparent;
     margin-bottom: 10px;
   }
   .float {
@@ -109,5 +113,11 @@
     &:last-of-type {
       padding-bottom: 60px;
     }
+  }
+
+  .float-help {
+    position: fixed;
+    top: 10%;
+    right: 60px;
   }
 }
