@@ -3,7 +3,7 @@
 	"cloudfunctionRoot": "cloud/functions/",
 	"projectname": "lawApp-cloud",
 	"description": "lawApp",
-	"appid": "wxf6d4249d423ff2a3",
+	"appid": "",
 	"setting": {
 		"urlCheck": true,
 		"es6": false,
