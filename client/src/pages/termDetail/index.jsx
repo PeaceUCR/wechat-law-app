@@ -3,8 +3,10 @@ import { View, Text } from '@tarojs/components'
 import {AtActivityIndicator, AtIcon, AtFab} from "taro-ui";
 import DataPopup from '../../components/dataPopup/index.weapp'
 import { db } from '../../util/db'
+import {checkIfNewUser, redirectToIndexIfNewUser} from '../../util/login'
 import {lawIdLabelMap} from '../../util/util'
 import './index.scss'
+import throttle from "lodash/throttle";
 
 const getTermNumber = (text) => {
   return text.substring(0, text.indexOf('条') + 1);
@@ -203,7 +205,13 @@ export default class TermDetail extends Component {
     </View>)
   }
 
-  handleCollect = () => {
+  handleCollect = throttle(() => {
+    console.log('collect')
+    if (checkIfNewUser()) {
+      redirectToIndexIfNewUser()
+      return ;
+    }
+
     const that = this;
     const { isCollected, term } = this.state;
     const {_id} = term
@@ -243,7 +251,7 @@ export default class TermDetail extends Component {
         }
       })
     }
-  };
+  }, 3000, { trailing: false })
 
   renderTermText = () => {
     const {term} = this.state;

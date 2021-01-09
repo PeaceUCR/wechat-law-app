@@ -1,4 +1,4 @@
-import Taro, { Component, getStorageSync } from '@tarojs/taro'
+import Taro, { Component, getStorageSync, setStorageSync } from '@tarojs/taro'
 import {View, Image, Text} from '@tarojs/components'
 import {AtIcon, AtDivider, AtBadge, AtNoticebar, AtTabs, AtTabsPane} from "taro-ui";
 import throttle from 'lodash/throttle';
@@ -61,6 +61,7 @@ export default class Index extends Component {
     isNewUser: false,
     showFooter: false,
     isReadMode: false,
+    isUserLoaded: false,
     current: 0
   }
 
@@ -82,7 +83,17 @@ export default class Index extends Component {
       success: (res) => {
         if(res.data[0].forceLogin) {
           if(checkIfNewUser()) {
-            that.setState({isNewUser: true});
+            Taro.cloud.callFunction({
+              name: 'getUserInfo',
+              complete: r => {
+                if (r &&  r.result && r.result.data && r.result.data.length > 0 ) {
+                  setStorageSync('user', r.result.data[0]);
+                  that.setState({isUserLoaded: true})
+                } else {
+                  that.setState({isNewUser: true});
+                }
+              }
+            })
           }
         } else {
           that.setState({showFooter: false})
@@ -141,7 +152,8 @@ export default class Index extends Component {
 
 
   renderUserFloatButton () {
-    return (<UserFloatButton avatarUrl={getUserAvatar()} />)
+    const {isUserLoaded} = this.state;
+    return (<UserFloatButton isUserLoaded={isUserLoaded} avatarUrl={getUserAvatar()} />)
   }
 
   handleLoginSuccess = () => {
@@ -149,13 +161,14 @@ export default class Index extends Component {
     Taro.hideLoading();
   }
 
-  handleShowFooter = () => {
+  handleShowFooter = throttle(() => {
     const that = this;
     that.setState({showFooter: true})
     setTimeout(() => {
       that.setState({showFooter: false})
     }, 8000)
-  }
+  }, 8000, { trailing: false })
+
   handleClick = (value) => {
     this.setState({
       current: value
@@ -208,10 +221,7 @@ export default class Index extends Component {
           {!isNewUser && this.renderUserFloatButton()}
           <View className='footer-container'>
             <AtDivider height='100'>
-              <View className='footer' onClick={
-                throttle(this.handleShowFooter, 8000, { trailing: false })
-              }
-              >
+              <View className='footer' onClick={this.handleShowFooter}>
                 <Image src={logo} className='logo' />
                 {showFooter && <Text className='footer-logo'>武汉满屏星科技有限公司</Text>}
               </View>

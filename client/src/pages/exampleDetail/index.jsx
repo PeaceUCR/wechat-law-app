@@ -4,6 +4,8 @@ import {AtFab, AtIcon, AtActivityIndicator} from "taro-ui";
 import { db } from '../../util/db'
 import TextSection from '../../components/textSection/index.weapp'
 import './index.scss'
+import {checkIfNewUser, redirectToIndexIfNewUser} from "../../util/login";
+import throttle from "lodash/throttle";
 
 export default class ExampleDetail extends Component {
 
@@ -228,7 +230,12 @@ export default class ExampleDetail extends Component {
   //   this.setState({isCollected : !isCollected})
   // };
 
-  handleCollect = () => {
+  handleCollect = throttle(() => {
+    if (checkIfNewUser()) {
+      redirectToIndexIfNewUser()
+      return ;
+    }
+
     const that = this;
     const { isCollected, example, type } = this.state;
     const {_id} = example;
@@ -274,7 +281,8 @@ export default class ExampleDetail extends Component {
         }
       })
     }
-  }
+  }, 3000, { trailing: false })
+
   render () {
     const {type, zoomIn, isCollected, isReadMode, isLoading} = this.state;
     return (

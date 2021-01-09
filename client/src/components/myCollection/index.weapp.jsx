@@ -14,11 +14,10 @@ import './index.scss'
 
 const otherTypes = ['explanation', 'terms-complement','complement','consultant','court-open','civilLawExplaination','civilLawExample']
 const MyCollection = (props) => {
-  const {collection} = props;
-  console.log(collection)
+  let {collection} = props;
+  collection = collection ? collection : []
   const collectionObj = {};
   collection.forEach(c => collectionObj[c.collectionId] = c)
-  console.log(collectionObj)
   const allKeys = Object.keys(collectionObj)
   const civilKeys = Object.keys(collectionObj).filter(key => civilLawIdNumberMap[key])
 

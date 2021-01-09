@@ -1,11 +1,13 @@
 import Taro, { Component, setStorageSync, getStorageSync } from '@tarojs/taro'
 import { View, Text, RichText } from '@tarojs/components'
 import { AtDivider, AtActivityIndicator, AtTabs, AtTabsPane, AtListItem, AtIcon } from "taro-ui";
+import throttle from 'lodash/throttle';
 import DataPopup from '../../components/dataPopup/index.weapp'
 import { db } from '../../util/db'
 import {getNumber} from '../../util/convertNumber'
 import './index.scss'
 import {lawIdLabelMap} from "../../util/util";
+import {checkIfNewUser, redirectToIndexIfNewUser} from "../../util/login";
 
 const getTermNumber = (text) => {
   return text.substring(0, text.indexOf('条') + 1);
@@ -209,7 +211,12 @@ export default class CivilLawDetail extends Component {
     </View>)
   }
 
-  handleCollect = () => {
+  handleCollect = throttle(() => {
+    if (checkIfNewUser()) {
+      redirectToIndexIfNewUser()
+      return ;
+    }
+
     const that = this;
     const { isCollected, term } = this.state;
     const {_id} = term
@@ -251,7 +258,7 @@ export default class CivilLawDetail extends Component {
       })
     }
 
-  };
+  }, 3000, { trailing: false })
 
   renderTermText = () => {
     const {term} = this.state;
