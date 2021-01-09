@@ -1,0 +1,19 @@
+.user-page {
+  padding: 0px 20px;
+  min-height: 100vh;
+  box-sizing: border-box;
+  &.read-mode {
+    background: #F4ECD8;
+  }
+
+  .loading-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: transparent;
+    z-index: 1000;
+  }
+}
+

@@ -12,21 +12,20 @@ import {
 } from '../../util/util';
 import './index.scss'
 
+const otherTypes = ['explanation', 'terms-complement','complement','consultant','court-open','civilLawExplaination','civilLawExample']
 const MyCollection = (props) => {
-  let collection = getStorageSync('collection');
-  collection = collection ? collection : {};
-  let civilCollection = getStorageSync('civilCollection');
-  civilCollection = civilCollection ? civilCollection : {};
-  let cachedItems = getStorageSync('cachedItems');
-  cachedItems = cachedItems ? cachedItems : {};
-  const allKeys = Object.keys(collection).filter(key => collection[key])
-  const civilKeys = Object.keys(civilCollection)
-    .filter(key => civilCollection[key]).filter(key => civilLawIdNumberMap[key])
+  const {collection} = props;
+  console.log(collection)
+  const collectionObj = {};
+  collection.forEach(c => collectionObj[c.collectionId] = c)
+  console.log(collectionObj)
+  const allKeys = Object.keys(collectionObj)
+  const civilKeys = Object.keys(collectionObj).filter(key => civilLawIdNumberMap[key])
 
   const termKeys = allKeys.filter(key => lawIdLabelMap[key])
   const courtExampleKeys = allKeys.filter(key => courtExampleTitleMap[key] || courtExampleTitleComplementMap[key])
   const procuratorateExampleKeys = allKeys.filter(key => procuratorateExampleTitleMap[key] || procuratorateExampleTitleComplementMap[key])
-  const otherKeys = allKeys.filter(key => cachedItems[key])
+  const otherKeys = allKeys.filter(key => otherTypes.indexOf(collectionObj[key].type) !== -1)
 
   return (<View className='my-collection' >
     <View>
@@ -38,7 +37,7 @@ const MyCollection = (props) => {
       {termKeys.map(termKey => (
         <AtListItem
           key={termKey}
-          title={lawIdLabelMap[termKey]}
+          title={collectionObj[termKey].title}
           arrow='right'
           onClick={() => {
             Taro.navigateTo({
@@ -76,7 +75,7 @@ const MyCollection = (props) => {
       {procuratorateExampleKeys.map(procuratorateExampleKey => (
         <AtListItem
           key={procuratorateExampleKey}
-          title={procuratorateExampleTitleMap[procuratorateExampleKey] || procuratorateExampleTitleComplementMap[procuratorateExampleKey]}
+          title={collectionObj[procuratorateExampleKey].title}
           arrow='right'
           onClick={() => {
             Taro.navigateTo({
@@ -95,7 +94,7 @@ const MyCollection = (props) => {
       {courtExampleKeys.map(courtExampleKey => (
         <AtListItem
           key={courtExampleKey}
-          title={courtExampleTitleMap[courtExampleKey] || courtExampleTitleComplementMap[courtExampleKey]}
+          title={collectionObj[courtExampleKey].title}
           arrow='right'
           onClick={() => {
             Taro.navigateTo({
@@ -115,11 +114,11 @@ const MyCollection = (props) => {
       {otherKeys.map(otherKey => (
         <AtListItem
           key={otherKey}
-          title={cachedItems[otherKey].title}
+          title={collectionObj[otherKey].title}
           arrow='right'
           onClick={() => {
             Taro.navigateTo({
-              url: `/pages/exampleDetail/index?type=${cachedItems[otherKey].type}&id=${otherKey}`,
+              url: `/pages/exampleDetail/index?type=${collectionObj[otherKey].type}&id=${otherKey}`,
             })
           }}
         />

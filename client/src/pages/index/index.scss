@@ -2,22 +2,28 @@
   width: 100%;
   min-height: 100vh;
   box-sizing: border-box;
-  padding-top: 120px;
+  padding-top: 60px;
   background: #fff;
   overflow-y: scroll;
+  position: relative;
   &.read-mode {
     background: #F4ECD8;
   }
 
   .float-help {
-    position: fixed;
-    top: 16%;
+    position: absolute;
+    top: 140px;
     right: 60px;
   }
 
+  .float-analytics {
+    position: absolute;
+    top: 140px;
+    left: 60px;
+  }
   .icon-container {
-    margin-top: 50px;
-    margin-bottom: 80px;
+    margin-top: 20px;
+    margin-bottom: 30px;
     display: flex;
     justify-content: center;
     .icon-title {
@@ -34,6 +40,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
+    margin-top: 16px;
   }
 
   .grid-container {
@@ -51,6 +58,20 @@
       z-index: 99;
       width: 78px;
       height: 60px;
+    }
+  }
+
+  .sub-title {
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .text {
+      padding: 0px 20px;
+    }
+    .divider {
+      flex-grow: 1;
+      border: 2px solid #6190E8;
     }
   }
 }

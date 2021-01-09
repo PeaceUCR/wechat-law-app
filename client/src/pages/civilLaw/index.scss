@@ -117,7 +117,18 @@
 
   .float-help {
     position: fixed;
-    top: 10%;
+    top: 12%;
     right: 60px;
+    &.search-mode {
+      top: 18%;
+    }
+  }
+  .switch-line {
+    position: relative;
+    .arrow {
+      position: absolute;
+      top: 16%;
+      left: 50%;
+    }
   }
 }

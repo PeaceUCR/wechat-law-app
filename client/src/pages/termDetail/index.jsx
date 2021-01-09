@@ -3,6 +3,7 @@ import { View, Text } from '@tarojs/components'
 import {AtActivityIndicator, AtIcon, AtFab} from "taro-ui";
 import DataPopup from '../../components/dataPopup/index.weapp'
 import { db } from '../../util/db'
+import {lawIdLabelMap} from '../../util/util'
 import './index.scss'
 
 const getTermNumber = (text) => {
@@ -22,6 +23,7 @@ export default class TermDetail extends Component {
     isCourtExampleLoading: true,
     isExplanationLoading: true,
     isComplementLoading: true,
+    isCollectedLoading: true,
     isCollected: false,
     isReadMode: false,
     zoomIn: false
@@ -32,8 +34,9 @@ export default class TermDetail extends Component {
   }
 
   onShareAppMessage() {
+    const {term} = this.state
     return {
-      path: 'pages/index/index'
+      path: `pages/termDetail/index?id=${term._id}`
     };
   }
 
@@ -95,10 +98,27 @@ export default class TermDetail extends Component {
       }
     })
 
-    let collection = getStorageSync('collection');
-    collection = collection ? collection : {};
-    that.setState({
-      isCollected: collection[id] === true
+    Taro.cloud.callFunction({
+      name: 'isCollected',
+      data: {
+        id: id,
+        type: 'criminalLawTermDetail'
+      },
+      complete: (r) => {
+
+        if (r && r.result && r.result.data && r.result.data.length > 0) {
+          that.setState({isCollected: true})
+        }
+        that.setState({isCollectedLoading: false});
+      },
+      fail: (e) => {
+        that.setState({isCollectedLoading: false});
+        Taro.showToast({
+          title: `获取收藏数据失败:${JSON.stringify(e)}`,
+          icon: 'none',
+          duration: 1000
+        })
+      }
     })
 
     const setting = getStorageSync('setting');
@@ -184,24 +204,45 @@ export default class TermDetail extends Component {
   }
 
   handleCollect = () => {
+    const that = this;
     const { isCollected, term } = this.state;
     const {_id} = term
-    let collection = getStorageSync('collection');
-    collection = collection ? collection : {};
-    if (isCollected) {
-      collection[_id] = false
-      setStorageSync('collection', collection)
-    } else {
-      collection[_id] = true
-      setStorageSync('collection', collection)
-    }
-    Taro.showToast({
-      title: isCollected ? '收藏取消' : '收藏成功',
-      icon: 'none',
-      duration: 1000
-    })
-    this.setState({isCollected : !isCollected})
 
+    that.setState({isLoading: true})
+    if (isCollected) {
+      Taro.cloud.callFunction({
+        name: 'deleteCollection',
+        data: {
+          id: _id,
+          type: 'criminalLawTermDetail'
+        },
+        complete: () => {
+          Taro.showToast({
+            title: '收藏取消',
+            icon: 'none',
+            duration: 1000
+          })
+          that.setState({isLoading: false, isCollected: false});
+        }
+      })
+    } else {
+      Taro.cloud.callFunction({
+        name: 'collect',
+        data: {
+          id: _id,
+          type: 'criminalLawTermDetail',
+          title: lawIdLabelMap[_id]
+        },
+        complete: () => {
+          Taro.showToast({
+            title: '收藏成功',
+            icon: 'none',
+            duration: 1000
+          })
+          that.setState({isLoading: false, isCollected: true});
+        }
+      })
+    }
   };
 
   renderTermText = () => {
@@ -221,7 +262,7 @@ export default class TermDetail extends Component {
   render () {
     const {examples, explanations, courtExamples, complements, courtComplementExamples,
       isProcuratorateExampleLoading, isCourtExampleLoading, isExplanationLoading, isComplementLoading,
-      isCollected, isReadMode, zoomIn} = this.state;
+      isCollectedLoading, isCollected, isReadMode, zoomIn} = this.state;
     return (
       <View className={`term-detail-page ${isReadMode ? 'read-mode' : ''} ${zoomIn ? 'zoom-in' : ''}`}>
           <View className='main section'>
@@ -252,7 +293,7 @@ export default class TermDetail extends Component {
               {courtComplementExamples.length > 0 && this.renderCourtComplementExamples()}
             </View>
           </View>
-        {(isProcuratorateExampleLoading || isCourtExampleLoading || isExplanationLoading || isComplementLoading) && <View className='loading-container'>
+        {(isProcuratorateExampleLoading || isCourtExampleLoading || isExplanationLoading || isComplementLoading || isCollectedLoading) && <View className='loading-container'>
           <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
         </View>}
         <View className='favorite-container' onClick={this.handleCollect} >

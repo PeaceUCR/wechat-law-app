@@ -5,6 +5,7 @@ import DataPopup from '../../components/dataPopup/index.weapp'
 import { db } from '../../util/db'
 import {getNumber} from '../../util/convertNumber'
 import './index.scss'
+import {lawIdLabelMap} from "../../util/util";
 
 const getTermNumber = (text) => {
   return text.substring(0, text.indexOf('条') + 1);
@@ -18,6 +19,7 @@ export default class CivilLawDetail extends Component {
     isReadMode: false,
     isLinkLoading: true,
     isExampleLinkLoading: true,
+    isLoading: false,
     links: [],
     exampleLinks: []
   }
@@ -27,8 +29,9 @@ export default class CivilLawDetail extends Component {
   }
 
   onShareAppMessage() {
+    const {term} = this.state
     return {
-      path: 'pages/index/index'
+      path: `pages/civilLawDetail/index?id=${term._id}`
     };
   }
 
@@ -100,10 +103,28 @@ export default class CivilLawDetail extends Component {
       }
     })
 
-    let civilCollection = getStorageSync('civilCollection');
-    civilCollection = civilCollection ? civilCollection : {};
-    that.setState({
-      isCollected: civilCollection[id] === true
+    that.setState({isLoading: true})
+    Taro.cloud.callFunction({
+      name: 'isCollected',
+      data: {
+        id: id,
+        type: 'civilLawTermDetail'
+      },
+      complete: (r) => {
+
+        if (r && r.result && r.result.data && r.result.data.length > 0) {
+          that.setState({isCollected: true})
+        }
+        that.setState({isLoading: false})
+      },
+      fail: (e) => {
+        that.setState({isLoading: false})
+        Taro.showToast({
+          title: `获取收藏数据失败:${JSON.stringify(e)}`,
+          icon: 'none',
+          duration: 1000
+        })
+      }
     })
 
     const setting = getStorageSync('setting');
@@ -189,23 +210,46 @@ export default class CivilLawDetail extends Component {
   }
 
   handleCollect = () => {
+    const that = this;
     const { isCollected, term } = this.state;
     const {_id} = term
-    let collection = getStorageSync('civilCollection');
-    collection = collection ? collection : {};
+
+    that.setState({isLoading: true})
+
     if (isCollected) {
-      delete collection[_id]
-      setStorageSync('civilCollection', collection)
+      Taro.cloud.callFunction({
+        name: 'deleteCollection',
+        data: {
+          id: _id,
+          type: 'civilLawTermDetail'
+        },
+        complete: () => {
+          Taro.showToast({
+            title: '收藏取消',
+            icon: 'none',
+            duration: 1000
+          })
+          that.setState({isLoading: false, isCollected: false});
+        }
+      })
     } else {
-      collection[_id] = true
-      setStorageSync('civilCollection', collection)
+      Taro.cloud.callFunction({
+        name: 'collect',
+        data: {
+          id: _id,
+          type: 'civilLawTermDetail',
+          title: lawIdLabelMap[_id]
+        },
+        complete: () => {
+          Taro.showToast({
+            title: '收藏成功',
+            icon: 'none',
+            duration: 1000
+          })
+          that.setState({isLoading: false, isCollected: true});
+        }
+      })
     }
-    Taro.showToast({
-      title: isCollected ? '收藏取消' : '收藏成功',
-      icon: 'none',
-      duration: 1000
-    })
-    this.setState({isCollected : !isCollected})
 
   };
 
@@ -224,7 +268,7 @@ export default class CivilLawDetail extends Component {
     })
   }
   render () {
-    const {current, term, isLinkLoading, isExampleLinkLoading, links, exampleLinks, isCollected, isReadMode} = this.state;
+    const {current, term, isLinkLoading, isExampleLinkLoading, isLoading, links, exampleLinks, isCollected, isReadMode} = this.state;
     return (
       <View className={`civil-term-detail-page ${isReadMode ? 'read-mode' : ''}`}>
           <View className='main section'>
@@ -258,7 +302,7 @@ export default class CivilLawDetail extends Component {
                 {exampleLinks.map((link, index) => {
                   return (<View key={`civil-example-key-${index}`} onClick={() => {
                     Taro.navigateTo({
-                      url: `/pages/exampleDetail/index?type=civil&id=${link.detailId}`,
+                      url: `/pages/exampleDetail/index?type=civilLawExample&id=${link.detailId}`,
                     })
                   }
                   }
@@ -272,7 +316,7 @@ export default class CivilLawDetail extends Component {
           </AtTabs>
 
           {
-            isLinkLoading && isExampleLinkLoading && <AtActivityIndicator mode='center' color='black' content='数据加载中...' size={62}></AtActivityIndicator>
+            (isLinkLoading || isExampleLinkLoading || isLoading) && <AtActivityIndicator mode='center' color='black' content='数据加载中...' size={62}></AtActivityIndicator>
           }
         <View className='favorite-container' onClick={this.handleCollect} >
           <AtIcon value={isCollected ? 'star-2' : 'star'} size='32' color={isCollected ? '#ffcc00' : 'rgba(0, 0, 0, 0.6)'}></AtIcon>

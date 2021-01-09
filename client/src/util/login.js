@@ -13,3 +13,8 @@ export const getUserAvatar = () => {
   return user.avatarUrl;
 }
 
+export const getUserNickname = () => {
+  const user = getStorageSync('user');
+  return user.nickName;
+}
+

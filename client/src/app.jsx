@@ -14,6 +14,7 @@ class App extends Component {
   config = {
     pages: [
       'pages/index/index',
+      'pages/usage/index',
       'pages/examples/index',
       'pages/criminalLaw/index',
       'pages/other/index',
@@ -25,7 +26,8 @@ class App extends Component {
       'pages/consultant/index',
       'pages/civilLaw/index',
       'pages/civilLawDetail/index',
-      'pages/courtOpen/index'
+      'pages/courtOpen/index',
+      'pages/civilLawExplaination/index'
     ],
     window: {
       backgroundTextStyle: 'light',

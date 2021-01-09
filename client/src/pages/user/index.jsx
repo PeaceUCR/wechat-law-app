@@ -1,14 +1,15 @@
 import Taro, { Component, setStorageSync, getStorageSync} from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import {AtSwitch,AtNoticebar} from "taro-ui";
+import {AtSwitch,AtNoticebar,AtActivityIndicator} from "taro-ui";
 import MyCollection from '../../components/myCollection'
 import './index.scss'
 
 export default class User extends Component {
 
   state = {
-    load: false,
-    isReadMode: false
+    isReadMode: false,
+    collection: [],
+    isLoading: false
   }
 
   config = {
@@ -22,6 +23,7 @@ export default class User extends Component {
   }
 
   componentWillMount () {
+
     const setting = getStorageSync('setting');
     this.setState({isReadMode: setting && setting.isReadMode})
 
@@ -31,6 +33,7 @@ export default class User extends Component {
         backgroundColor: '#F4ECD8'
       })
     }
+
   }
 
   componentDidMount () {
@@ -40,8 +43,25 @@ export default class User extends Component {
 
   componentDidShow () {
     console.log('did show')
-    const {load} = this.state;
-    this.setState({load: !load})
+    const that =this;
+    that.setState({isLoading: true})
+    Taro.cloud.callFunction({
+      name: 'getCollections',
+      complete: (r) => {
+        // console.log(r)
+        that.setState({collection: r.result.data, isLoading: false})
+        // if (r && r.result && r.result.data && r.result.data.length > 0) {
+        //   that.setState({isCollected: true})
+        // }
+      },
+      fail: (e) => {
+        Taro.showToast({
+          title: `获取收藏数据失败:${JSON.stringify(e)}`,
+          icon: 'none',
+          duration: 1000
+        })
+      }
+    })
   }
 
   componentDidHide () { }
@@ -69,7 +89,7 @@ export default class User extends Component {
 }
 
   render () {
-    const {load, isReadMode} = this.state;
+    const {isLoading, isReadMode, collection} = this.state;
     return (
       <View className={`user-page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
@@ -78,7 +98,10 @@ export default class User extends Component {
         <View>
           <AtSwitch title='护眼模式' checked={isReadMode} onChange={this.handleChange} />
         </View>
-        <MyCollection load={load} />
+        <MyCollection collection={collection} />
+        {
+          isLoading && <AtActivityIndicator mode='center' color='black' content='数据加载中...' size={62}></AtActivityIndicator>
+        }
       </View>
     )
   }

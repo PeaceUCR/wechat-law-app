@@ -1,7 +1,6 @@
 import Taro, {Component,getStorageSync } from '@tarojs/taro'
 import {View, Text, Picker, Image} from '@tarojs/components'
-import {AtSearchBar, AtActivityIndicator, AtBadge, AtIcon} from 'taro-ui'
-import throttle from "lodash/throttle";
+import {AtSearchBar, AtActivityIndicator, AtBadge, AtIcon, AtSwitch} from 'taro-ui'
 import {isEmpty} from 'lodash';
 import { db } from '../../util/db'
 import { TermSearchItem } from '../../components/termSearchItem/index.weapp'
@@ -23,11 +22,12 @@ export default class Index extends Component {
     showAllCategories: true,
     isReadMode: false,
     civilLawLines: [],
-    isCategoryLoading: true
+    isCategoryLoading: true,
+    isSearchMode: false
   }
 
   config = {
-    navigationBarTitleText: '民法典搜索'
+    navigationBarTitleText: '民法典'
   }
 
   onShareAppMessage() {
@@ -162,9 +162,16 @@ export default class Index extends Component {
     })
   }
 
+  handleChange = () => {
+    const {isSearchMode} = this.state;
+    this.setState({
+      isSearchMode: !isSearchMode
+    })
+  }
   render () {
     const {searchValue, searchResult, isLoading, selected,
-      options, showAllCategories, isReadMode, isCategoryLoading} = this.state;
+      options, showAllCategories, isReadMode, isCategoryLoading,
+      isSearchMode} = this.state;
     let placeholder;
     if (selected === "搜全文") {
       placeholder = "搜法条全文，如合同"
@@ -177,7 +184,7 @@ export default class Index extends Component {
     }
     return (
       <View className={`civil-law-page ${isReadMode ? 'read-mode' : ''}`}>
-          <View className='header'>
+          {isSearchMode && <View className='header'>
             <View className='select'>
               <View>
                 <Picker mode='selector' mode='selector' range={options} onChange={this.onSelect}>
@@ -195,11 +202,19 @@ export default class Index extends Component {
                 placeholder={placeholder}
               />
             </View>
+          </View>}
+          <View className='switch-line' onClick={() => {
+            this.handleChange()
+          }}>
+            <AtSwitch title={`点我切换成${isSearchMode ? '目录模式' : '搜索模式'}`} checked={isSearchMode} />
+            <View className='arrow'>
+              <AtIcon value='arrow-right' size='40' color='#6190E8'></AtIcon>
+            </View>
           </View>
           <View>
-            <View className='all-law-categories'>
+            {!isSearchMode && <View className='all-law-categories'>
               {searchResult.length === 0 && showAllCategories && this.renderAllCatgories()}
-            </View>
+            </View>}
             {/*{searchResult.length === 0 && <View className='all-title' onClick={() => this.setState({showAllLaws: !showAllLaws})}>全部法条<AtIcon value={showAllLaws ?'chevron-up': 'chevron-down'} size='18' color='#6190E8'></AtIcon></View>}*/}
             {/*<View className='all-law-options'>*/}
             {/*  {searchResult.length === 0 && showAllLaws && this.renderAllOptions()}*/}
@@ -220,7 +235,7 @@ export default class Index extends Component {
               isCategoryLoading && <AtActivityIndicator mode='center' color='black' content='目录加载中...' size={62}></AtActivityIndicator>
             }
           </View>
-          <View className='float-help' onClick={() => {
+          <View className={`${isSearchMode? 'search-mode': ''} float-help`} onClick={() => {
             Taro.navigateTo({
               url: '/pages/other/index?id=civilLaw'
             })

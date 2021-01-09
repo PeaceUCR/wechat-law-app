@@ -1,47 +1,67 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {View, Image, Text} from '@tarojs/components'
-import {AtIcon, AtDivider, AtBadge, AtNoticebar} from "taro-ui";
+import {AtIcon, AtDivider, AtBadge, AtNoticebar, AtTabs, AtTabsPane} from "taro-ui";
 import throttle from 'lodash/throttle';
 import { GridItem } from '../../components/grid/index.weapp'
 import { LoginPopup } from '../../components/loginPopup/index.weapp'
 import { UserFloatButton } from '../../components/userFloatButton/index.weapp'
 import lawIcon from '../../static/law.png';
 import logo from '../../static/logo.png';
-import {checkIfNewUser, getUserAvatar} from '../../util/login';
+import {checkIfNewUser, getUserAvatar, getUserNickname} from '../../util/login';
 import './index.scss'
 import {db} from "../../util/db";
 
+const titles = [{title:'全部'}, {title:'刑法相关'}, {title:'民法典相关'}]
 export default class Index extends Component {
 
   state = {
-    options: [
-      {
-        title:'刑法',
-        url: '/pages/criminalLaw/index'
-      }, {
+    options: {
+      '刑法相关': [
+        {
+          title:'刑法',
+          url: '/pages/criminalLaw/index',
+          isHot: true
+        },
+        {
+          title: '刑事诉讼法',
+          url: '/pages/litigationLaw/index'
+        },
+        {
+          title: '刑事诉讼规则(检)',
+          url: '/pages/litigationRegulation/index'
+        },
+        {
+          title: '刑事审判参考',
+          url: '/pages/consultant/index'
+        }
+      ],
+      '民法典相关': [
+        {
         title: '民法典',
         url: '/pages/civilLaw/index',
-        isNew: true
-      }, {
-        title: '刑事诉讼法',
-        url: '/pages/litigationLaw/index'
-      }, {
-        title: '刑事诉讼规则(检)',
-        url: '/pages/litigationRegulation/index'
-      }, {
-        title: '指导案例',
-        url: '/pages/examples/index'
-      }, {
-        title: '刑事审判参考',
-        url: '/pages/consultant/index'
-      }, {
-        title: '最高法公报案例',
-        url: '/pages/courtOpen/index',
-        isNew: true
-      }],
+        isHot: true
+      },
+        {
+          title: '民法典相关司法解释',
+          url: '/pages/civilLawExplaination/index',
+          isNew: true
+        }
+      ],
+      '共有': [
+        {
+          title: '指导案例',
+          url: '/pages/examples/index'
+        },
+        {
+          title: '最高法公报案例',
+          url: '/pages/courtOpen/index'
+        }
+      ]
+    },
     isNewUser: false,
     showFooter: false,
-    isReadMode: false
+    isReadMode: false,
+    current: 0
   }
 
   config = {
@@ -95,15 +115,30 @@ export default class Index extends Component {
   componentDidHide () { }
 
   renderGridItems () {
-    const {options, isNewUser} = this.state;
-    return (<View className='grids'>
-      {options.map((option, index )=> {
-        return (<View className='grid-container' key={`grid-${index}`}>
-          <GridItem option={option} disabled={isNewUser} />
-        </View>)
+    const {options, isNewUser, current} = this.state;
+    let displayOptions;
+    if (current === 0) {
+      displayOptions = Object.values(options)
+    } else {
+      displayOptions = [options[titles[current].title], options['共有']]
+    }
+    return (<View>
+      {displayOptions.map((items, index) => {
+        return (
+          <View key={`section-${index}`}>
+            <View className='grids'>
+              {items.map((option, i )=> {
+                return (<View className='grid-container' key={`grid-${i}`}>
+                  <GridItem option={option} disabled={isNewUser} />
+                </View>)
+              })}
+            </View>
+          </View>
+        )
       })}
     </View>)
   }
+
 
   renderUserFloatButton () {
     return (<UserFloatButton avatarUrl={getUserAvatar()} />)
@@ -121,8 +156,13 @@ export default class Index extends Component {
       that.setState({showFooter: false})
     }, 8000)
   }
+  handleClick = (value) => {
+    this.setState({
+      current: value
+    })
+  }
   render () {
-    const {options, isNewUser, isReadMode, showFooter} = this.state;
+    const {isNewUser, isReadMode, showFooter, current} = this.state;
     return (
       <View className={`index-page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
@@ -131,6 +171,16 @@ export default class Index extends Component {
           <View className='icon-container'>
             <Image src={lawIcon} className='icon-title' />
           </View>
+          {(getUserNickname() === 'echo' || getUserNickname() === 'peace') && <View className='float-analytics' onClick={() => {
+            Taro.navigateTo({
+              url: '/pages/usage/index'
+            })
+          }}
+          >
+            <AtBadge value='统计'>
+              <AtIcon value='analytics' size='30' color='#000'></AtIcon>
+            </AtBadge>
+          </View>}
           <View className='float-help' onClick={() => {
             Taro.navigateTo({
               url: '/pages/other/index'
@@ -142,7 +192,17 @@ export default class Index extends Component {
             </AtBadge>
           </View>
           <View>
-            {options && options.length > 0 && this.renderGridItems()}
+            <AtTabs animated={false} current={current} tabList={titles} onClick={this.handleClick}>
+              <AtTabsPane current={current} index={0} >
+                {this.renderGridItems()}
+              </AtTabsPane>
+              <AtTabsPane current={current} index={1} >
+                {this.renderGridItems()}
+              </AtTabsPane>
+              <AtTabsPane current={current} index={2} >
+                {this.renderGridItems()}
+              </AtTabsPane>
+            </AtTabs>
           </View>
           {isNewUser && <LoginPopup handleLoginSuccess={this.handleLoginSuccess} />}
           {!isNewUser && this.renderUserFloatButton()}

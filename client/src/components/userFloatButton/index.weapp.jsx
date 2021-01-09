@@ -22,7 +22,7 @@ const UserFloatButton = (props) => {
       className='avatar-container'
       onClick={handleClick}
     >
-      <AtBadge value='NEW'>
+      <AtBadge value=''>
         <AtAvatar circle image={avatarUrl}></AtAvatar>
       </AtBadge>
     </View>
