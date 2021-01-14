@@ -93,7 +93,7 @@ export default class User extends Component {
     return (
       <View className={`user-page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
-          个人设置，收藏等数据存放于本地，清理小程序，或微信缓存可能会导致数据被清空，请见谅！
+          收藏功能已升级，数据已存放于云端，再也不怕丢失啦！
         </AtNoticebar>
         <View>
           <AtSwitch title='护眼模式' checked={isReadMode} onChange={this.handleChange} />

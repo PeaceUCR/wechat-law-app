@@ -4,7 +4,7 @@ import { AtSearchBar, AtActivityIndicator, AtButton } from 'taro-ui'
 import {isEmpty} from "lodash"
 import { db } from '../../util/db'
 import { LitigationSearchItem } from '../../components/litigationSearchItem/index.weapp'
-import {convertNumberToChinese} from '../../util/convertNumber'
+import {convertNumberToChinese, getNumber} from '../../util/convertNumber'
 import './index.scss'
 import {HierarchicalOptions} from "../../components/hierarchicalOptions/index.weapp";
 
@@ -62,16 +62,26 @@ export default class Index extends Component {
 
   renderSearchList = () => {
     const {searchResult,isReadMode} = this.state
+    searchResult.sort((a, b) => {
+      return getNumber(a.item) - getNumber(b.item)
+    })
     return (<View>
-      {searchResult.map(((data) => {return (<LitigationSearchItem isReadMode={isReadMode} data={data} key={`term-${data._id}`} onSearchResultClick={this.onSearchResultClick} />)}))}
+      {searchResult.map((
+        (data) => {
+          return (
+            <LitigationSearchItem
+              isReadMode={isReadMode}
+              data={data}
+              key={`term-${data._id}`}
+              onSearchResultClick={this.onSearchResultClick}
+            />)}))}
     </View>)
   }
 
   handleDBSearchSuccess = (res) => {
-    const { searchValue } = this.state;
     if (isEmpty(res.data)) {
       Taro.showToast({
-        title: `未找到含有${searchValue}的刑事诉讼法`,
+        title: `未搜到相应法条`,
         icon: 'none',
         duration: 3000
       })
@@ -105,10 +115,9 @@ export default class Index extends Component {
     });
   }
 
-  onSearchByChapter = () => {
+  onSearchByChapter = (searchValue) => {
     const that = this;
     this.setState({isLoading: true});
-    const { searchValue } = this.state;
     if(!searchValue.trim()) {
       Taro.showToast({
         title: '搜索不能为空',
@@ -125,10 +134,9 @@ export default class Index extends Component {
     });
   }
 
-  onSearchBySection = () => {
+  onSearchBySection = (searchValue) => {
     const that = this;
     this.setState({isLoading: true});
-    const { searchValue } = this.state;
     if(!searchValue.trim()) {
       Taro.showToast({
         title: '搜索不能为空',
@@ -145,10 +153,9 @@ export default class Index extends Component {
     });
   }
 
-  onSearchByPart = () => {
+  onSearchByPart = (searchValue) => {
     const that = this;
     this.setState({isLoading: true});
-    const { searchValue } = this.state;
     if(!searchValue.trim()) {
       Taro.showToast({
         title: '搜索不能为空',
@@ -165,18 +172,27 @@ export default class Index extends Component {
     });
   }
 
+  // onClickOptionItem = (category, searchValue) => {
+  //   this.setState({
+  //     searchValue
+  //   }, () => {
+  //     if(searchValue === '执行') {
+  //       this.onSearchByPart(searchValue);
+  //     } else if (category === "chapter") {
+  //       this.onSearchByChapter(searchValue);
+  //     } else {
+  //       this.onSearchBySection(searchValue);
+  //     }
+  //   });
+  // }
   onClickOptionItem = (category, searchValue) => {
-    this.setState({
-      searchValue
-    }, () => {
-      if(searchValue === '执行') {
-        this.onSearchByPart();
-      } else if (category === "chapter") {
-        this.onSearchByChapter();
-      } else {
-        this.onSearchBySection();
-      }
-    });
+    if(searchValue === '执行') {
+      this.onSearchByPart(searchValue);
+    } else if (category === "chapter") {
+      this.onSearchByChapter(searchValue);
+    } else {
+      this.onSearchBySection(searchValue);
+    }
   }
 
   onChange = (searchValue) => {
@@ -190,12 +206,18 @@ export default class Index extends Component {
     });
   }
 
-  onSearchResultClick = (content) => {
-    const that = this;
-    that.setState({
-      isOpened: true,
-      modalContent: content
-    });
+  // onSearchResultClick = (content) => {
+  //   const that = this;
+  //   that.setState({
+  //     isOpened: true,
+  //     modalContent: content
+  //   });
+  // }
+  onSearchResultClick = (data) => {
+    const {_id} = data
+    Taro.navigateTo({
+      url: `/pages/regulationDetail/index?id=${_id}&type=litigation-law`,
+    })
   }
 
   onModalClose = () => {

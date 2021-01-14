@@ -241,7 +241,16 @@ export default class TermDetail extends Component {
           type: 'criminalLawTermDetail',
           title: lawIdLabelMap[_id]
         },
-        complete: () => {
+        complete: (r) => {
+          if (r && r.result && r.result.errMsg !== 'collection.add:ok') {
+            Taro.showToast({
+              title: `收藏失败:${r.result.errMsg}`,
+              icon: 'none',
+              duration: 3000
+            })
+            that.setState({isLoading: false})
+            return ;
+          }
           Taro.showToast({
             title: '收藏成功',
             icon: 'none',

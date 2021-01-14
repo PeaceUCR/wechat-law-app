@@ -6,7 +6,7 @@ import { db } from '../../util/db'
 import { rank } from '../../util/rank'
 import { TermSearchItem } from '../../components/termSearchItem/index.weapp'
 import { LawCategory } from '../../components/lawCategory/index.weapp'
-import {getNumber, isNumber} from '../../util/convertNumber'
+import {convertNumberToChinese, getNumber, isNumber} from '../../util/convertNumber'
 import {lawMap, keys, categoryLines, criminalTermsComplement } from '../../util/util'
 import clickIcon from '../../static/down.png';
 import './index.scss'
@@ -144,6 +144,21 @@ export default class Index extends Component {
       return ;
     }
     if (selected === '搜全文') {
+      if (!isNaN(parseInt(searchValue))) {
+        db.collection('terms').where({number: isNumber(searchValue) ? parseInt(searchValue) : getNumber(searchValue)}).get({
+          success: (res) => {
+            if (isEmpty(res.data)) {
+              Taro.showToast({
+                title: `未找到序号${searchValue}的法条`,
+                icon: 'none',
+                duration: 3000
+              })
+            }
+            that.setState({searchResult: res.data, isLoading: false, hasSearched: true});
+          }
+        })
+        return ;
+      }
       db.collection('terms').where({text: db.RegExp({
           regexp: '.*' + searchValue,
           options: 'i',

@@ -1,13 +1,13 @@
 import Taro from '@tarojs/taro'
-import {View} from "@tarojs/components";
+import {View,RichText} from "@tarojs/components";
 import throttle from 'lodash/throttle';
 import './index.scss'
 
 const TermSearchItem = (props) => {
-  let {term, disableRedirect, type, isReadMode} = props;
+  let {term, disableRedirect, type, isReadMode, keyword} = props;
   term = term ? term : {};
   const {text, crime, tag, _id} = term;
-  const isCrime = tag === crime;
+  const isCrime = crime && tag === crime;
   const redirect = throttle(
     () => {
       if (disableRedirect) {
@@ -15,6 +15,10 @@ const TermSearchItem = (props) => {
       } else if (type === 'civil') {
         Taro.navigateTo({
           url: `/pages/civilLawDetail/index?id=${_id}`,
+        })
+      } else if (type === 'police') {
+        Taro.navigateTo({
+          url: `/pages/regulationDetail/index?id=${_id}&type=${type}&keyword=${keyword}`,
         })
       } else {
         Taro.navigateTo({
@@ -26,9 +30,23 @@ const TermSearchItem = (props) => {
     2000,
     { trailing: false }
   );
+  const findAndHighlight = (str, key) => {
+    var regExp =new RegExp(key,"g");
+    if (key) {
+      return '<div>' + key ? str.replace(regExp, `<span class='highlight-keyword'>${key}</span>`) : str + '</div>'
+    } else {
+      return '<div>' + str + '</div>'
+    }
+  }
+
   return (<View className={`search-item ${isReadMode ? 'read-mode' : ''}`} onClick={redirect} >
     <View className={isCrime? 'crime tag':'tag'}>{tag}</View>
-    <View>{text}</View>
+    {type !== 'police' && <View>{text}</View>}
+    {type === 'police' && (text.map((t, index) => {
+      return <View key={`police-${index}`}>
+        <RichText nodes={findAndHighlight(t, keyword)}></RichText>
+      </View>
+    }))}
   </View>)
 }
 

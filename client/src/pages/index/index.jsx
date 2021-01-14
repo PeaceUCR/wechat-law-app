@@ -1,12 +1,13 @@
 import Taro, { Component, getStorageSync, setStorageSync } from '@tarojs/taro'
 import {View, Image, Text} from '@tarojs/components'
-import {AtIcon, AtDivider, AtBadge, AtNoticebar, AtTabs, AtTabsPane} from "taro-ui";
+import {AtIcon, AtDivider, AtBadge, AtNoticebar, AtTabs, AtTabsPane, AtCurtain} from "taro-ui";
 import throttle from 'lodash/throttle';
 import { GridItem } from '../../components/grid/index.weapp'
 import { LoginPopup } from '../../components/loginPopup/index.weapp'
 import { UserFloatButton } from '../../components/userFloatButton/index.weapp'
 import lawIcon from '../../static/law.png';
 import logo from '../../static/logo.png';
+import poster2 from '../../static/poster2.png';
 import {checkIfNewUser, getUserAvatar, getUserNickname} from '../../util/login';
 import './index.scss'
 import {db} from "../../util/db";
@@ -31,6 +32,11 @@ export default class Index extends Component {
           url: '/pages/litigationRegulation/index'
         },
         {
+          title: '公安机关办理刑事案件程序规定',
+          url: '/pages/policeRegulation/index',
+          isNew: true
+        },
+        {
           title: '刑事审判参考',
           url: '/pages/consultant/index'
         }
@@ -40,17 +46,22 @@ export default class Index extends Component {
         title: '民法典',
         url: '/pages/civilLaw/index',
         isHot: true
-      },
+        },
+        {
+          title: '民事诉讼法',
+          url: '/pages/civilLawRegulation/index',
+          isNew: true
+        },
         {
           title: '民法典相关司法解释',
-          url: '/pages/civilLawExplaination/index',
-          isNew: true
+          url: '/pages/civilLawExplaination/index'
         }
       ],
       '共有': [
         {
           title: '指导案例',
-          url: '/pages/examples/index'
+          url: '/pages/examples/index',
+          isUpdated: true
         },
         {
           title: '最高法公报案例',
@@ -62,6 +73,7 @@ export default class Index extends Component {
     showFooter: false,
     isReadMode: false,
     isUserLoaded: false,
+    showPoster: false,
     current: 0
   }
 
@@ -89,11 +101,20 @@ export default class Index extends Component {
                 if (r &&  r.result && r.result.data && r.result.data.length > 0 ) {
                   setStorageSync('user', r.result.data[0]);
                   that.setState({isUserLoaded: true})
+                  
+                  if (!getStorageSync('poster2-collection')) {
+                    that.setState({showPoster: true})
+                  }
+
                 } else {
                   that.setState({isNewUser: true});
                 }
               }
             })
+          } else {
+            if (!getStorageSync('poster2-collection')) {
+              that.setState({showPoster: true})
+            }
           }
         } else {
           that.setState({showFooter: false})
@@ -136,14 +157,12 @@ export default class Index extends Component {
     return (<View>
       {displayOptions.map((items, index) => {
         return (
-          <View key={`section-${index}`}>
-            <View className='grids'>
-              {items.map((option, i )=> {
-                return (<View className='grid-container' key={`grid-${i}`}>
-                  <GridItem option={option} disabled={isNewUser} />
-                </View>)
-              })}
-            </View>
+          <View key={`section-${index}`} className='grids'>
+            {items.map((option, i )=> {
+              return (<View className='grid-container' key={`grid-${i}`}>
+                <GridItem option={option} disabled={isNewUser} />
+              </View>)
+            })}
           </View>
         )
       })}
@@ -175,7 +194,7 @@ export default class Index extends Component {
     })
   }
   render () {
-    const {isNewUser, isReadMode, showFooter, current} = this.state;
+    const {isNewUser, isReadMode, showFooter, current, showPoster, showPosterCollect} = this.state;
     return (
       <View className={`index-page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
@@ -227,6 +246,28 @@ export default class Index extends Component {
               </View>
             </AtDivider>
           </View>
+          <AtCurtain isOpened={showPoster} onClose={() => {
+            this.setState({showPoster: false})
+            setStorageSync('poster2-collection', 'showed')
+          }}
+          >
+            <Image
+              className='poster'
+              src={poster2}
+              mode='widthFix'
+            />
+          </AtCurtain>
+          {/*<AtCurtain isOpened={showPosterCollect} onClose={() => {*/}
+          {/*  this.setState({showPosterCollect: false})*/}
+          {/*  setStorageSync('poster-collect', true)*/}
+          {/*}}*/}
+          {/*>*/}
+          {/*  <Image*/}
+          {/*    className='poster-collect'*/}
+          {/*    src={posterCollect}*/}
+          {/*    mode='widthFix'*/}
+          {/*  />*/}
+          {/*</AtCurtain>*/}
       </View>
     )
   }

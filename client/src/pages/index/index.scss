@@ -12,13 +12,13 @@
 
   .float-help {
     position: absolute;
-    top: 140px;
+    top: 160px;
     right: 60px;
   }
 
   .float-analytics {
     position: absolute;
-    top: 140px;
+    top: 160px;
     left: 60px;
   }
   .icon-container {
@@ -27,8 +27,8 @@
     display: flex;
     justify-content: center;
     .icon-title {
-      width: 300px;
-      height: 300px;
+      width: 260px;
+      height: 260px;
     }
     .float-help {
 
@@ -40,7 +40,12 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    margin-top: 16px;
+    padding-top: 16px;
+    padding-bottom: 8px;
+    &:nth-child(2) {
+      background: rgba(160, 160, 160, 0.1);
+
+    }
   }
 
   .grid-container {
@@ -73,6 +78,16 @@
       flex-grow: 1;
       border: 2px solid #6190E8;
     }
+  }
+
+  .poster {
+    height: 794px;
+    width: 622px;
+  }
+
+  .poster-collect {
+    height: 800px;
+    width: 578px;
   }
 }
 

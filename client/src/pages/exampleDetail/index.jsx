@@ -271,7 +271,17 @@ export default class ExampleDetail extends Component {
           type: type,
           title: title
         },
-        complete: () => {
+        complete: (r) => {
+          if (r && r.result && r.result.errMsg !== 'collection.add:ok') {
+            Taro.showToast({
+              title: `收藏失败:${r.result.errMsg}`,
+              icon: 'none',
+              duration: 3000
+            })
+            that.setState({isLoading: false})
+            return ;
+          }
+
           that.setState({isLoading: false, isCollected: true});
           Taro.showToast({
             title: '收藏成功',

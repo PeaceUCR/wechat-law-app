@@ -27,7 +27,10 @@ class App extends Component {
       'pages/civilLaw/index',
       'pages/civilLawDetail/index',
       'pages/courtOpen/index',
-      'pages/civilLawExplaination/index'
+      'pages/civilLawExplaination/index',
+      'pages/policeRegulation/index',
+      'pages/regulationDetail/index',
+      'pages/civilLawRegulation/index'
     ],
     window: {
       backgroundTextStyle: 'light',

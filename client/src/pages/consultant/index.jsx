@@ -99,6 +99,7 @@ export default class Index extends Component {
                 icon: 'none',
                 duration: 3000
               })
+              that.setState({isLoading: false})
             } else {
               Taro.showToast({
                 title: `没有更多啦`,

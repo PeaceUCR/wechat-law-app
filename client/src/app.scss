@@ -7,7 +7,7 @@
   color: #333333;
   border-left: 6px solid #6190E8;
   padding-left: 6px;
-  font-size: 30px;
+  font-size: 34px;
 }
 .at-accordion__header {
   padding: 10px 12px 10px 20px;
@@ -29,9 +29,13 @@
 }
 .at-divider__content {
   background: #F4ECD8;
+  padding: 0;
 }
 .at-list__item {
   border-bottom: 1px solid #888888;
+  .item-content__info-note {
+    color: #666;
+  }
 }
 
 .at-list__item::after {
@@ -41,4 +45,15 @@
   padding: 10px 20px;
   margin: 0 20px;
   border-radius: 20px;
+}
+
+.at-curtain__container {
+  width: 90%;
+}
+.at-curtain__body {
+  display: flex;
+  justify-content: center;
+}
+.at-accordion__header {
+  font-size: 34px;
 }

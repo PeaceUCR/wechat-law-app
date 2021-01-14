@@ -8,8 +8,11 @@ const LitigationSearchItem = (props) => {
   const {content, chapter, section} = data;
   const text = content.join('\n');
 
-  return (<View className={`search-item ${isReadMode ? 'read-mode' : ''}`} onClick={() => {onSearchResultClick(content)}}>
-    {chapter && <View className='titles'><Text className='chapter title'>{chapter}</Text><Text className='section title'>{section}</Text></View>}
+  return (<View className={`search-item ${isReadMode ? 'read-mode' : ''}`} onClick={() => {onSearchResultClick(data)}}>
+    {chapter && <View className='titles'>
+      <Text className='chapter title'>{chapter}</Text>
+      <Text className='section title'>{section}</Text>
+    </View>}
     <View>{text}</View>
   </View>)
 }

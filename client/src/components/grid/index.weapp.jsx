@@ -7,7 +7,7 @@ import './index.scss'
 const GridItem = (props) => {
   let {option, disabled} = props;
   option = option ? option : {title: '', url: ''};
-  const {title, url, isNew, isHot} = option;
+  const {title, url, isNew, isHot, isUpdated} = option;
   const redirect = throttle(
     () => {
       if(disabled) {
@@ -30,7 +30,7 @@ const GridItem = (props) => {
   );
 
   return (
-    <AtBadge value={isNew?'NEW':(isHot?'Hot':'')}>
+    <AtBadge value={isNew?'NEW':(isHot?'Hot':'')} dot={isUpdated ? true : false}>
       <View className='grid-item' onClick={redirect} >
         <View className='float-item'></View>
         <View className='title'>{title}</View>

@@ -94,6 +94,25 @@ export default class Index extends Component {
       return ;
     }
     if (selected === '搜全文') {
+      if (!isNaN(parseInt(searchValue))) {
+        console.log(isNaN(parseInt(searchValue)))
+        db.collection('civil-law').where({number: db.RegExp({
+            regexp: '.*' + convertNumberToChinese(parseInt(searchValue)),
+            options: 'i',
+          })}).get({
+          success: (res) => {
+            if (isEmpty(res.data)) {
+              Taro.showToast({
+                title: `未找到含有${searchValue}的法条`,
+                icon: 'none',
+                duration: 3000
+              })
+            }
+            that.setState({searchResult: res.data, isLoading: false, hasSearched: true});
+          }
+        })
+        return ;
+      }
       db.collection('civil-law').where({text: db.RegExp({
           regexp: '.*' + searchValue,
           options: 'i',

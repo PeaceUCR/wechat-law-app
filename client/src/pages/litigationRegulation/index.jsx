@@ -5,7 +5,7 @@ import {isEmpty} from "lodash";
 import { db } from '../../util/db'
 import { LitigationSearchItem } from '../../components/litigationSearchItem/index.weapp'
 import { HierarchicalOptions } from '../../components/hierarchicalOptions/index.weapp'
-import {convertNumberToChinese} from '../../util/convertNumber'
+import {convertNumberToChinese, getNumber} from '../../util/convertNumber'
 import './index.scss'
 import {processLitigationOptions} from '../../util/util';
 
@@ -17,8 +17,6 @@ export default class Index extends Component {
     isLoading: false,
     litigationRegulationChapters: [],
     litigationRegulationSections: [],
-    modalContent: '',
-    isOpened: false,
     isReadMode: false
   }
 
@@ -65,8 +63,19 @@ export default class Index extends Component {
 
   renderSearchList = () => {
     const {searchResult,isReadMode} = this.state
+    searchResult.sort((a, b) => {
+      return getNumber(a.item) - getNumber(b.item)
+    })
     return (<View>
-      {searchResult.map(((data) => {return (<LitigationSearchItem isReadMode={isReadMode} data={data} key={`term-${data._id}`} onSearchResultClick={this.onSearchResultClick} />)}))}
+      {searchResult.map((
+        (data) => {
+          return (
+            <LitigationSearchItem
+              isReadMode={isReadMode}
+              data={data}
+              key={`term-${data._id}`}
+              onSearchResultClick={this.onSearchResultClick}
+            />)}))}
     </View>)
   }
 
@@ -75,10 +84,9 @@ export default class Index extends Component {
   }
 
   handleDBSearchSuccess = (res) => {
-    const { searchValue } = this.state;
     if (isEmpty(res.data)) {
       Taro.showToast({
-        title: `未找到含有${searchValue}的刑事诉讼法`,
+        title: `未找到相应的刑事诉讼法法条`,
         icon: 'none',
         duration: 3000
       })
@@ -93,10 +101,9 @@ export default class Index extends Component {
     this.setState({searchResult: res.data, isLoading: false});
   }
 
-  onSearch = () => {
+  onSearch = (searchValue) => {
     const that = this;
     this.setState({isLoading: true});
-    const { searchValue} = this.state;
     if(!searchValue.trim()) {
       Taro.showToast({
         title: '搜索不能为空',
@@ -113,10 +120,9 @@ export default class Index extends Component {
     });
   }
 
-  onSearchByChapter = () => {
+  onSearchByChapter = (searchValue) => {
     const that = this;
     this.setState({isLoading: true});
-    const { searchValue } = this.state;
     if(!searchValue.trim()) {
       Taro.showToast({
         title: '搜索不能为空',
@@ -133,10 +139,9 @@ export default class Index extends Component {
     });
   }
 
-  onSearchBySection = () => {
+  onSearchBySection = (searchValue) => {
     const that = this;
     this.setState({isLoading: true});
-    const { searchValue } = this.state;
     if(!searchValue.trim()) {
       Taro.showToast({
         title: '搜索不能为空',
@@ -161,15 +166,11 @@ export default class Index extends Component {
   }
 
   onClickOptionItem = (category, searchValue) => {
-    this.setState({
-      searchValue
-    }, () => {
-      if (category === "chapter") {
-        this.onSearchByChapter();
-      } else {
-        this.onSearchBySection();
-      }
-    });
+    if (category === "chapter") {
+      this.onSearchByChapter(searchValue);
+    } else {
+      this.onSearchBySection(searchValue);
+    }
   }
 
   renderOptions = () => {
@@ -189,30 +190,24 @@ export default class Index extends Component {
     </View>)
   }
 
-  onSearchResultClick = (content) => {
-    const that = this;
-    that.setState({
-      isOpened: true,
-      modalContent: content
-    });
-  }
-
-  onModalClose = () => {
-    this.setState({
-      isOpened: false,
-      modalContent: ''
-    });
+  onSearchResultClick = (data) => {
+    const {_id} = data
+    Taro.navigateTo({
+      url: `/pages/regulationDetail/index?id=${_id}&type=litigation-regulation`,
+    })
   }
 
   render () {
-    const {searchValue, searchResult, isLoading, litigationRegulationChapters, litigationRegulationSections, modalContent, isOpened, isReadMode} = this.state;
+    const {searchValue, searchResult, isLoading, litigationRegulationChapters, litigationRegulationSections, isReadMode} = this.state;
     return (
       <View className={`litigation-regulation-page ${isReadMode ? 'read-mode' : ''}`}>
           <View>
             <AtSearchBar
               value={searchValue}
               onChange={this.onChange}
-              onActionClick={this.onSearch}
+              onActionClick={() => {
+                this.onSearch(searchValue)
+              }}
               onClear={this.onClear}
               placeholder='搜索刑事诉讼规则'
             />
@@ -230,10 +225,6 @@ export default class Index extends Component {
               <AtActivityIndicator mode='center' color='black' size={82}></AtActivityIndicator>
             </View>}
           </View>
-        {isOpened && <View className={`modal ${isReadMode ? 'read-mode' : ''}`}>
-          <View className='modal-content'>{modalContent.join('\n')}</View>
-          <Button onClick={this.onModalClose} className='modal-button'>确定</Button>
-        </View>}
       </View>
     )
   }

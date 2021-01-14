@@ -90,7 +90,7 @@ export default class User extends Component {
       return (<AtListItem
         key={`user-item-${index}`}
         title={`昵称:${user.nickName}`}
-        note={`时间:${user.lastTimeLogin}`}
+        note={`时间:${new Date(Date.parse(user.lastTimeLogin)).toLocaleString('zh-CN')}`}
         thumb={user.avatarUrl}
       />)
     }))
