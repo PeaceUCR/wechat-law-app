@@ -47,6 +47,7 @@ export default class CivilLawDetail extends Component {
         db.collection('civil-law-links').where({number: getNumber(term.number)}).get({
           success: (r) => {
             if (r.data && r.data.length > 0) {
+              console.log(JSON.parse(r.data[0].data))
               that.setState({links: JSON.parse(r.data[0].data) || [], isLinkLoading: false});
             }
             that.setState({isLinkLoading: false});
@@ -62,46 +63,6 @@ export default class CivilLawDetail extends Component {
             that.setState({isExampleLinkLoading: false});
           }
         });
-        //
-        // db.collection('court-examples').where({criminalLaw: db.RegExp({
-        //     regexp: '.*' + getTermNumber(term.text),
-        //     options: 'i',
-        //   })}).get({
-        //   success: (res) => {
-        //     that.setState({courtExamples: res.data, isCourtExampleLoading: false});
-        //   }
-        // });
-        //
-        // db.collection('explanation').where({criminalLaw: db.RegExp({
-        //     regexp: '.*' + getTermNumber(term.text),
-        //     options: 'i',
-        //   })}).get({
-        //   success: (res) => {
-        //     that.setState({explanations: res.data, isExplanationLoading: false});
-        //   }
-        // });
-        //
-        // db.collection('complement').where({criminalLaw: db.RegExp({
-        //     regexp: '.*' + getTermNumber(term.text),
-        //     options: 'i',
-        //   })}).get({
-        //   success: (res) => {
-        //
-        //     if (res.data.length > 0) {
-        //       const courtComplementExamples = res.data.filter(item => item.title.indexOf('案例') !== -1)
-        //       if(courtComplementExamples.length > 0) {
-        //         const complements = res.data.filter(item => item.title.indexOf('案例') === -1)
-        //         that.setState({complements, courtComplementExamples, isComplementLoading: false});
-        //
-        //       } else {
-        //         that.setState({complements: res.data, isComplementLoading: false});
-        //       }
-        //     } else {
-        //       that.setState({isComplementLoading: false})
-        //     }
-        //
-        //   }
-        // })
       }
     })
 
@@ -149,18 +110,6 @@ export default class CivilLawDetail extends Component {
 
   componentDidHide () { }
 
-  renderSectionAndChapter = () => {
-    const {term} = this.state;
-    const {part, chapter, section} = term;
-    return (
-      <View className='header'>
-        <View>{part}</View>
-        <View>{chapter}</View>
-        <View>{section}</View>
-      </View>
-    )
-  }
-
   renderExample = () => {
     const {examples, term} = this.state;
     const num = getTermNumber(term.text).replace('第', '').replace('条', '');
@@ -171,41 +120,11 @@ export default class CivilLawDetail extends Component {
     </View>)
   }
 
-  renderCourtExample = () => {
-    const {courtExamples, term} = this.state;
-    const num = getTermNumber(term.text).replace('第', '').replace('条', '');
-    return (<View>
-      {courtExamples.map(example => (<View className='example' key={`court-example-${example._id}`}>
-        <DataPopup data={example} type='court' num={num} />
-      </View>))}
-    </View>)
-  }
-
-  renderExplanation = () => {
-    const {explanations, term} = this.state;
-    const num = getTermNumber(term.text).replace('第', '').replace('条', '');
-    return (<View>
-      {explanations.map(explanation => (<View className='example' key={`explanation-${explanation._id}`}>
-        <DataPopup data={explanation} type='explanation' num={num} />
-      </View>))}
-    </View>)
-  }
-
   renderComplement = () => {
     const { complements, term } = this.state;
     const num = getTermNumber(term.text).replace('第', '').replace('条', '');
     return (<View>
       {complements.map(complement => (<View className='example' key={`complement-${complement._id}`}>
-        <DataPopup data={complement} type='complement' num={num} />
-      </View>))}
-    </View>)
-  }
-
-  renderCourtComplementExamples = () => {
-    const { courtComplementExamples, term } = this.state;
-    const num = getTermNumber(term.text).replace('第', '').replace('条', '');
-    return (<View>
-      {courtComplementExamples.map(complement => (<View className='example' key={`complement-${complement._id}`}>
         <DataPopup data={complement} type='complement' num={num} />
       </View>))}
     </View>)
@@ -305,7 +224,7 @@ export default class CivilLawDetail extends Component {
             <AtTabsPane current={current} index={0}>
               <View className='pane'>
                 {links.map((link, index) => {
-                  return (<View className='link' key={`civil-key-${index}`}>
+                  return (<View className={`link ${link.title.indexOf('时效性：失效') === -1 ? '' : 'out-dated'}`} key={`civil-key-${index}`}>
                     <View className='title'><RichText nodes={link.title}></RichText></View>
                     <RichText nodes={link.content}></RichText>
                     <AtDivider lineColor='#777' height='60' />

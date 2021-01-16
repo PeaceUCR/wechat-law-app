@@ -1,6 +1,6 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import { View, RichText } from '@tarojs/components'
-import {AtFab} from "taro-ui";
+import {AtFab,AtIcon} from "taro-ui";
 import { db } from '../../util/db'
 import {checkIfNewUser, redirectToIndexIfNewUser} from '../../util/login'
 import {lawIdLabelMap} from '../../util/util'
@@ -121,7 +121,7 @@ export default class RegulationDetail extends Component {
     }
 
     const that = this;
-    const { isCollected, term } = this.state;
+    const {isCollected, term, type} = this.state;
     const {_id} = term
 
     that.setState({isLoading: true})
@@ -130,7 +130,7 @@ export default class RegulationDetail extends Component {
         name: 'deleteCollection',
         data: {
           id: _id,
-          type: 'criminalLawTermDetail'
+          type: type
         },
         complete: () => {
           Taro.showToast({
@@ -146,7 +146,7 @@ export default class RegulationDetail extends Component {
         name: 'collect',
         data: {
           id: _id,
-          type: 'criminalLawTermDetail',
+          type: type,
           title: lawIdLabelMap[_id]
         },
         complete: (r) => {

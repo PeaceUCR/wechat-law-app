@@ -1,7 +1,8 @@
-import Taro, { Component, setStorageSync, getStorageSync } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
-import {AtActivityIndicator, AtIcon, AtFab} from "taro-ui";
+import Taro, { Component, getStorageSync } from '@tarojs/taro'
+import { View, Text, Input } from '@tarojs/components'
+import {AtActivityIndicator, AtIcon, AtFab, AtButton} from "taro-ui";
 import DataPopup from '../../components/dataPopup/index.weapp'
+import {DiscussionArea} from '../../components/discussionArea/index.weapp'
 import { db } from '../../util/db'
 import {checkIfNewUser, redirectToIndexIfNewUser} from '../../util/login'
 import {lawIdLabelMap} from '../../util/util'
@@ -15,6 +16,8 @@ const getTermNumber = (text) => {
 export default class TermDetail extends Component {
 
   state = {
+    comment: '',
+    isSent: false,
     term: {},
     examples: [],
     courtExamples: [],
@@ -276,8 +279,71 @@ export default class TermDetail extends Component {
     this.setState({zoomIn: !zoomIn})
   }
 
+  handleCommentChange = (e) => {
+    this.setState({
+      comment: e.target.value
+    })
+  }
+  handleClear = () => {
+    this.setState({
+      comment: ''
+    })
+  }
+
+  handleSend = () => {
+    const {comment, term} = this.state
+    if (comment) {
+      this.setState({
+        isSent: false
+      })
+      Taro.showLoading({
+        title: '加载中',
+      })
+      Taro.cloud.callFunction({
+        name: 'addComment',
+        data: {
+          topicId: term._id,
+          page: 'criminalLaw',
+          type: 'criminalLaw',
+          content: comment
+        },
+        complete: (r) => {
+          console.log(r)
+          if ((r && r.errMsg !== 'cloud.callFunction:ok')
+            || (r.result && r.result.errMsg !== "collection.add:ok")) {
+            Taro.showToast({
+              title: `发表失败:${r.result.errMsg}`,
+              icon: 'none',
+              duration: 3000
+            })
+            return ;
+          } else {
+            this.setState({
+              comment: '',
+              isSent: true
+            })
+            Taro.showToast({
+              title: `发表成功`,
+              icon: 'none',
+              duration: 3000
+            })
+          }
+          Taro.hideLoading()
+        }
+      })
+    }
+  }
+
+  handleCommentsLoaded = () => {
+    setTimeout(() => {
+      Taro.pageScrollTo({
+        selector: `#comments`
+      })
+    }, 100)
+  }
+
   render () {
-    const {examples, explanations, courtExamples, complements, courtComplementExamples,
+    const {isSent, comment, term, examples, explanations, courtExamples, complements, courtComplementExamples,
       isProcuratorateExampleLoading, isCourtExampleLoading, isExplanationLoading, isComplementLoading,
       isCollectedLoading, isCollected, isReadMode, zoomIn} = this.state;
     return (
@@ -313,12 +379,30 @@ export default class TermDetail extends Component {
         {(isProcuratorateExampleLoading || isCourtExampleLoading || isExplanationLoading || isComplementLoading || isCollectedLoading) && <View className='loading-container'>
           <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
         </View>}
-        <View className='favorite-container' onClick={this.handleCollect} >
-          <AtIcon value={isCollected ? 'star-2' : 'star'} size='34' color={isCollected ? '#ffcc00' : 'rgba(0, 0, 0, 0.6)'}></AtIcon>
+
+        <View className='footer'>
+          <View className='text'>
+            <Input
+              className='input'
+              value={comment}
+              onChange={this.handleCommentChange}
+              onClear={this.handleClear}
+              type='text'
+              placeholder='欢迎发表你的观点'
+            />
+            <AtButton type='primary' size='small' onClick={this.handleSend}>
+              发表
+            </AtButton>
+          </View>
+          <View className='favorite-container' onClick={this.handleCollect} >
+            <AtIcon value={isCollected ? 'star-2' : 'star'} size='32' color={isCollected ? '#ffcc00' : 'rgba(0, 0, 0, 0.6)'}></AtIcon>
+          </View>
+          <AtFab size='small' className='float-zoom' onClick={() => {this.handleZoom()}}>
+            <View  className={`zoom ${zoomIn ? 'zoom-in': 'zoom-out'}`} mode='widthFix' />
+          </AtFab>
         </View>
-        <AtFab size='small' className='float-zoom' onClick={() => {this.handleZoom()}}>
-          <View  className={`zoom ${zoomIn ? 'zoom-in': 'zoom-out'}`} mode='widthFix' />
-        </AtFab>
+        <DiscussionArea topicId={term._id}  isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />
+        <View id='comments'></View>
       </View>
     )
   }

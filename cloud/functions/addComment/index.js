@@ -11,21 +11,14 @@ exports.main = async (event, context) => {
   const openId = wxContext.OPENID;
   const db = cloud.database()
 
-  const res = await db.collection('collection').where({
-    //下面这3行，为筛选条件
-    openId
-  }).get();
-
-  if (res.data && res.data.length >= 20) {
-    return {errMsg: '每个用户不能添加超过20个收藏！'};
-  }
-
-  return await db.collection("collection").add({
+  return await db.collection("comment").add({
     data: {
       openId: openId,//获取操作者_openid的方法
-      collectionId: event.id,
+      page: event.page,
       type: event.type,
-      title: event.title,
+      topicId: event.topicId,
+      content: event.content,
+      replyToCommentId: event.replyToCommentId,
       time: new Date()
     }
   })
