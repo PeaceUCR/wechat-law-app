@@ -1,6 +1,6 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
-import { View, Text, RichText, Input } from '@tarojs/components'
-import { AtDivider, AtActivityIndicator, AtTabs, AtTabsPane, AtListItem, AtIcon, AtButton } from "taro-ui";
+import { View, Text, RichText, Input, Button } from '@tarojs/components'
+import { AtDivider, AtActivityIndicator, AtTabs, AtTabsPane, AtListItem, AtIcon, AtButton, AtBadge } from "taro-ui";
 import throttle from 'lodash/throttle';
 import DataPopup from '../../components/dataPopup/index.weapp'
 import { db } from '../../util/db'
@@ -219,6 +219,10 @@ export default class CivilLawDetail extends Component {
   }
 
   handleSend = () => {
+    if (checkIfNewUser()) {
+      redirectToIndexIfNewUser()
+      return ;
+    }
     const {comment, term} = this.state
     if (comment) {
       this.setState({
@@ -343,6 +347,13 @@ export default class CivilLawDetail extends Component {
           </View>
           <View className='favorite-container' onClick={this.handleCollect} >
             <AtIcon value={isCollected ? 'star-2' : 'star'} size='32' color={isCollected ? '#ffcc00' : 'rgba(0, 0, 0, 0.6)'}></AtIcon>
+          </View>
+          <View className='share-container'>
+            <AtBadge value='分享'>
+              <Button className='share-button' openType='share'>
+                <AtIcon value='share-2' size='32' color='#6190E8'></AtIcon>
+              </Button>
+            </AtBadge>
           </View>
         </View>
         <DiscussionArea topicId={term._id}  isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />

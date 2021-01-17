@@ -7,7 +7,7 @@ import { LoginPopup } from '../../components/loginPopup/index.weapp'
 import { UserFloatButton } from '../../components/userFloatButton/index.weapp'
 import lawIcon from '../../static/law.png';
 import logo from '../../static/logo.png';
-import poster2 from '../../static/poster2.png';
+import poster3 from '../../static/poster3.png';
 import {checkIfNewUser, getUserAvatar, getUserNickname} from '../../util/login';
 import './index.scss'
 import {db} from "../../util/db";
@@ -101,8 +101,8 @@ export default class Index extends Component {
                 if (r &&  r.result && r.result.data && r.result.data.length > 0 ) {
                   setStorageSync('user', r.result.data[0]);
                   that.setState({isUserLoaded: true})
-                  
-                  if (!getStorageSync('poster2-collection')) {
+
+                  if (!getStorageSync('poster3-collection')) {
                     that.setState({showPoster: true})
                   }
 
@@ -112,7 +112,7 @@ export default class Index extends Component {
               }
             })
           } else {
-            if (!getStorageSync('poster2-collection')) {
+            if (!getStorageSync('poster3-collection')) {
               that.setState({showPoster: true})
             }
           }
@@ -248,12 +248,12 @@ export default class Index extends Component {
           </View>
           <AtCurtain isOpened={showPoster} onClose={() => {
             this.setState({showPoster: false})
-            setStorageSync('poster2-collection', 'showed')
+            setStorageSync('poster3-collection', 'showed')
           }}
           >
             <Image
               className='poster'
-              src={poster2}
+              src={poster3}
               mode='widthFix'
             />
           </AtCurtain>

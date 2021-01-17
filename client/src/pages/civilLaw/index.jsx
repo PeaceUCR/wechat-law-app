@@ -71,9 +71,9 @@ export default class Index extends Component {
   }
 
   renderSearchList = () => {
-    const {searchResult,isReadMode} = this.state
+    const {searchResult,isReadMode, searchValue} = this.state
     return (<View>
-      {searchResult.map(((term) => {return (<TermSearchItem isReadMode={isReadMode} term={term} key={`term${term._id}`} type='civil' />)}))}
+      {searchResult.map(((term) => {return (<TermSearchItem keyword={searchValue} isReadMode={isReadMode} term={term} key={`term${term._id}`} type='civil' />)}))}
     </View>)
   }
 

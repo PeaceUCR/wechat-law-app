@@ -72,7 +72,7 @@
 
   .float-zoom {
     background: rgba(97, 144, 232, 0.5);
-    margin-right: 40px;
+    margin-right: 10px;
   }
 
   .zoom {
@@ -106,5 +106,20 @@
   .at-fab--small {
     width: 66px;
     height: 66px;
+  }
+}
+
+.share-container {
+  margin: 0 60px 0 10px;
+  .share-button {
+    background: transparent;
+    border: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    line-height: 0;
+    &::after{
+      display: none;
+    }
   }
 }

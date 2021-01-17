@@ -72,7 +72,7 @@
     }
   }
   .favorite-container {
-    margin: 0 40px 0 20px;
+    margin: 0 10px 0 20px;
   }
 
   .float-zoom {
@@ -136,4 +136,20 @@
 .pane {
   background: #F4ECD8;
 }
+
+.share-container {
+  margin: 0 60px 0 10px;
+  .share-button {
+    background: transparent;
+    border: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    line-height: 0;
+    &::after{
+      display: none;
+    }
+  }
+}
+
 

@@ -1,6 +1,6 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
-import {View,Input} from '@tarojs/components'
-import {AtFab, AtIcon, AtActivityIndicator, AtNoticebar, AtButton} from "taro-ui";
+import {View,Input, Button} from '@tarojs/components'
+import {AtFab, AtIcon, AtActivityIndicator, AtNoticebar, AtButton, AtBadge} from "taro-ui";
 import { db } from '../../util/db'
 import TextSection from '../../components/textSection/index.weapp'
 import './index.scss'
@@ -139,18 +139,6 @@ export default class ExampleDetail extends Component {
 
   componentDidHide () { }
 
-  renderSectionAndChapter = () => {
-    const {term} = this.state;
-    const {part, chapter, section} = term;
-    return (
-      <View className='header'>
-        <View>{part}</View>
-        <View>{chapter}</View>
-        <View>{section}</View>
-      </View>
-    )
-  }
-
   renderCourtExample = () => {
     const {example, keyword, zoomIn} = this.state;
     const {content} = example;
@@ -265,6 +253,10 @@ export default class ExampleDetail extends Component {
   }
 
   handleSend = () => {
+    if (checkIfNewUser()) {
+      redirectToIndexIfNewUser()
+      return ;
+    }
     const {comment, example, type} = this.state
     if (comment) {
       this.setState({
@@ -356,6 +348,13 @@ export default class ExampleDetail extends Component {
           <AtFab size='small' className='float-zoom' onClick={() => {this.handleZoom()}}>
             <View  className={`zoom ${zoomIn ? 'zoom-in': 'zoom-out'}`} mode='widthFix' />
           </AtFab>
+          <View className='share-container'>
+            <AtBadge value='分享'>
+              <Button className='share-button' openType='share'>
+                <AtIcon value='share-2' size='32' color='#6190E8'></AtIcon>
+              </Button>
+            </AtBadge>
+          </View>
         </View>
         <DiscussionArea topicId={example._id}  isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />
         <View id='comments'></View>

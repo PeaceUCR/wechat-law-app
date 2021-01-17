@@ -1,6 +1,6 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
-import { View, Text, Input } from '@tarojs/components'
-import {AtActivityIndicator, AtIcon, AtFab, AtButton} from "taro-ui";
+import { View, Text, Input, Button } from '@tarojs/components'
+import {AtActivityIndicator, AtIcon, AtFab, AtButton, AtBadge} from "taro-ui";
 import DataPopup from '../../components/dataPopup/index.weapp'
 import {DiscussionArea} from '../../components/discussionArea/index.weapp'
 import { db } from '../../util/db'
@@ -291,6 +291,10 @@ export default class TermDetail extends Component {
   }
 
   handleSend = () => {
+    if (checkIfNewUser()) {
+      redirectToIndexIfNewUser()
+      return ;
+    }
     const {comment, term} = this.state
     if (comment) {
       this.setState({
@@ -406,8 +410,15 @@ export default class TermDetail extends Component {
           <AtFab size='small' className='float-zoom' onClick={() => {this.handleZoom()}}>
             <View  className={`zoom ${zoomIn ? 'zoom-in': 'zoom-out'}`} mode='widthFix' />
           </AtFab>
+          <View className='share-container'>
+            <AtBadge value='分享'>
+              <Button className='share-button' openType='share'>
+                <AtIcon value='share-2' size='32' color='#6190E8'></AtIcon>
+              </Button>
+            </AtBadge>
+          </View>
         </View>
-        <DiscussionArea topicId={term._id}  isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />
+        <DiscussionArea topicId={term._id} isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />
         <View id='comments'></View>
       </View>
     )

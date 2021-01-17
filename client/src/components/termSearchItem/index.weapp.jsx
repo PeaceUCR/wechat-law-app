@@ -41,8 +41,14 @@ const TermSearchItem = (props) => {
 
   return (<View className={`search-item ${isReadMode ? 'read-mode' : ''}`} onClick={redirect} >
     <View className={isCrime? 'crime tag':'tag'}>{tag}</View>
-    {type !== 'police' && <View>{text}</View>}
-    {type === 'police' && (text.map((t, index) => {
+    {type !== 'police' && text && <View>{
+      text.split('\n').filter(line => line.trim() && line.trim().length > 0).map((t, index) => {
+        return <View key={`term-${index}`}>
+          <RichText nodes={findAndHighlight(t, keyword)}></RichText>
+        </View>
+      })
+    }</View>}
+    {type === 'police'&& text && (text.map((t, index) => {
       return <View key={`police-${index}`}>
         <RichText nodes={findAndHighlight(t, keyword)}></RichText>
       </View>

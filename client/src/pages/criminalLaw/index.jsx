@@ -6,7 +6,7 @@ import { db } from '../../util/db'
 import { rank } from '../../util/rank'
 import { TermSearchItem } from '../../components/termSearchItem/index.weapp'
 import { LawCategory } from '../../components/lawCategory/index.weapp'
-import {convertNumberToChinese, getNumber, isNumber} from '../../util/convertNumber'
+import { getNumber, isNumber} from '../../util/convertNumber'
 import {lawMap, keys, categoryLines, criminalTermsComplement } from '../../util/util'
 import clickIcon from '../../static/down.png';
 import './index.scss'
@@ -95,9 +95,15 @@ export default class Index extends Component {
   }
 
   renderSearchList = () => {
-    const {searchResult, isReadMode} = this.state
+    const {searchResult, isReadMode, searchValue} = this.state
     return (<View>
-      {searchResult.map(((term) => {return (<TermSearchItem term={term} isReadMode={isReadMode} key={`term${term._id}`} />)}))}
+      {searchResult.map(((term) => {return (
+        <TermSearchItem
+          term={term}
+          isReadMode={isReadMode}
+          keyword={searchValue}
+          key={`term${term._id}`}
+        />)}))}
     </View>)
   }
 
