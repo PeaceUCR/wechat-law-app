@@ -47,7 +47,12 @@ const DiscussionArea = (props) => {
   }, [topicId, isSent])
 
   return (<View className='discussion-area' >
-    <View className='title'>讨论区</View>
+    <View className='title'>
+      讨论区
+      {isLoading && <View className='loading-container'>
+        <AtActivityIndicator mode='center' color='black' content='加载讨论区数据中...' size={62}></AtActivityIndicator>
+      </View>}
+    </View>
     {comments && comments.length === 0 && <View>暂无记录</View>}
     {comments && comments.length > 0 && <View>{
       comments.map((comment, index) => {
@@ -63,9 +68,6 @@ const DiscussionArea = (props) => {
         </View>)
       })
     }</View>}
-    {isLoading && <View className='loading-container'>
-      <AtActivityIndicator mode='center' color='black' content='加载讨论区数据中...' size={62}></AtActivityIndicator>
-    </View>}
   </View>)
 }
 

@@ -1,7 +1,9 @@
 .discussion-area {
   position: relative;
+  padding-top: 20px;
   padding-bottom: 200px;
   .title {
+    position: relative;
     font-size: 32px;
     padding: 16px 0px 16px 20px;
     margin-bottom: 10px;
@@ -47,10 +49,8 @@
 
   .loading-container {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.1);
-    top:0;
-    left:0;
+    top: 50%;
+    left: 30%;
+    transform: translate(-50%, -50%);
   }
 }

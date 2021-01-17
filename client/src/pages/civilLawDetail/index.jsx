@@ -282,6 +282,7 @@ export default class CivilLawDetail extends Component {
 
   render () {
     const {isSent, comment, current, term, isLinkLoading, isExampleLinkLoading, isLoading, links, exampleLinks, isCollected, isReadMode} = this.state;
+    const validLinks = links.filter(link => link.title.indexOf('时效性：失效') === -1)
     return (
       <View className={`civil-term-detail-page ${isReadMode ? 'read-mode' : ''}`}>
           <View className='main section'>
@@ -307,7 +308,7 @@ export default class CivilLawDetail extends Component {
                     <AtDivider lineColor='#777' height='60' />
                   </View>)
                 })}
-                {links.length === 0 && !isLinkLoading && (<View>暂无</View>)}
+                {validLinks.length === 0 && !isLinkLoading && (<View>暂无有效关联法条</View>)}
               </View>
             </AtTabsPane>
             <AtTabsPane current={current} index={1}>
