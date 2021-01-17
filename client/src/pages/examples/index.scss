@@ -48,6 +48,12 @@
         background: darkred;
       }
       &.court-option {
+        &.out-dated {
+          text-decoration: line-through;
+          text-decoration-color: black;
+          background: gray;
+
+        }
         background: dodgerblue;
       }
 

@@ -181,7 +181,7 @@ export default class RegulationDetail extends Component {
   }
 
   renderLitigation = () => {
-    const {term} = this.state;
+    const {term, keyword} = this.state;
     const {part, chapter, section, content} = term;
     return (
       <View>
@@ -190,7 +190,13 @@ export default class RegulationDetail extends Component {
           <View>{chapter}</View>
           <View>{section}</View>
         </View>
-        <View className='section'>{content}</View>
+        <View className='section'>
+          {content.map((t, index) => {
+            return <View className='regulation-line' key={`litigation-${index}`}>
+            <RichText nodes={this.findAndHighlight(t, keyword)}></RichText>
+            </View>
+          })}
+        </View>
       </View>
     )
 

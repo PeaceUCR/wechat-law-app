@@ -3,7 +3,13 @@ import {View, Text, Picker, Image} from '@tarojs/components'
 import { AtSearchBar, AtActivityIndicator, AtFab, AtBadge, AtIcon } from 'taro-ui'
 import {isEmpty} from 'lodash';
 import { db } from '../../util/db'
-import { courtExampleTitleMap, procuratorateExampleTitleMap, procuratorateMap, courtMap } from '../../util/util'
+import {
+  courtExampleTitleMap,
+  procuratorateExampleTitleMap,
+  procuratorateMap,
+  courtMap,
+  invalidCourtExample
+} from '../../util/util'
 import { ExampleSearchItem } from '../../components/exampleSearchItem/index.weapp'
 import {convertNumberToChinese} from '../../util/convertNumber'
 import clickIcon from '../../static/down.png';
@@ -217,7 +223,7 @@ export default class Index extends Component {
       <View className='options'>
         {Object.keys(courtMap)
           .map((number, index )=>
-          {return (<Text className={`court-option option ${isExpandLabel ? 'expand': ''}`} key={`court-option-${index}`} onClick={() => {this.onRedirect(courtMap[number], 'court')}}>{isExpandLabel ? courtExampleTitleMap[courtMap[number]] : number}</Text>)})}
+          {return (<Text className={`court-option option ${invalidCourtExample.has(number) ? 'out-dated' : ''} ${isExpandLabel ? 'expand': ''}`} key={`court-option-${index}`} onClick={() => {this.onRedirect(courtMap[number], 'court')}}>{isExpandLabel ? courtExampleTitleMap[courtMap[number]] : number}</Text>)})}
       </View>
     </View>)
   }

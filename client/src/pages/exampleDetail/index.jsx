@@ -1,6 +1,6 @@
 import Taro, { Component, setStorageSync, getStorageSync } from '@tarojs/taro'
 import {View} from '@tarojs/components'
-import {AtFab, AtIcon, AtActivityIndicator} from "taro-ui";
+import {AtFab, AtIcon, AtActivityIndicator, AtNoticebar} from "taro-ui";
 import { db } from '../../util/db'
 import TextSection from '../../components/textSection/index.weapp'
 import './index.scss'
@@ -294,9 +294,14 @@ export default class ExampleDetail extends Component {
   }, 3000, { trailing: false })
 
   render () {
-    const {type, zoomIn, isCollected, isReadMode, isLoading} = this.state;
+    const {example, type, zoomIn, isCollected, isReadMode, isLoading} = this.state;
     return (
       <View className={`example-detail-page ${zoomIn ? 'zoom-in' : ''} ${isReadMode ? 'read-mode' : ''}`}>
+        {(example._id === '89b4bfb25f7dbcac007cec4b1f087eb1' || example._id === '89b4bfb25f7dbcac007cec402fa9835f') &&
+        <AtNoticebar marquee speed={60}>
+          最高人民法院关于部分指导性案例不再参照的通知(2021.1.1):为保证国家法律统一正确适用,根据《中华人民共和国民法典》等有关法律规定和审判实际,经最高人民法院审判委员会讨论决定,9号、20号指导性案例不再参照。但该指导性案例的裁判以及参照该指导性案例作出的裁判仍然有效。
+        </AtNoticebar>
+        }
         {type === 'court' && this.renderCourtExample()}
         {(type === 'procuratorate' || type === 'explanation' || type === 'court-open') && this.renderProcuratorateExample()}
         {type === 'terms-complement' && this.renderTermComplement()}
@@ -307,6 +312,8 @@ export default class ExampleDetail extends Component {
         <View className='favorite-container' onClick={this.handleCollect} >
           <AtIcon value={isCollected ? 'star-2' : 'star'} size='42' color={isCollected ? '#ffcc00' : 'rgba(0, 0, 0, 0.6)'}></AtIcon>
         </View>
+
+
         {isLoading && <View className='loading-container'>
           <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
         </View>}

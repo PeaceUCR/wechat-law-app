@@ -145,7 +145,9 @@ export default class Index extends Component {
     }
     if (selected === '搜全文') {
       if (!isNaN(parseInt(searchValue))) {
-        db.collection('terms').where({number: isNumber(searchValue) ? parseInt(searchValue) : getNumber(searchValue)}).get({
+        db.collection('terms').where({number: isNumber(searchValue) ? parseInt(searchValue) : getNumber(searchValue)})
+          .orderBy('number', 'asc')
+          .get({
           success: (res) => {
             if (isEmpty(res.data)) {
               Taro.showToast({
@@ -162,7 +164,7 @@ export default class Index extends Component {
       db.collection('terms').where({text: db.RegExp({
           regexp: '.*' + searchValue,
           options: 'i',
-        })}).get({
+        })}).orderBy('number', 'asc').get({
         success: (res) => {
           if (isEmpty(res.data)) {
             Taro.showToast({
@@ -180,7 +182,7 @@ export default class Index extends Component {
       db.collection('terms').where({crime: db.RegExp({
           regexp: '.*' + searchValue,
           options: 'i',
-        })}).get({
+        })}).orderBy('number', 'asc').get({
         success: (res) => {
           if (isEmpty(res.data)) {
             Taro.showToast({
@@ -195,7 +197,9 @@ export default class Index extends Component {
     }
 
     if (selected === '搜序号') {
-      db.collection('terms').where({number: isNumber(searchValue) ? parseInt(searchValue) : getNumber(searchValue)}).get({
+      db.collection('terms').where({number: isNumber(searchValue) ? parseInt(searchValue) : getNumber(searchValue)})
+        .orderBy('number', 'asc')
+        .get({
         success: (res) => {
           if (isEmpty(res.data)) {
             Taro.showToast({
@@ -272,16 +276,16 @@ export default class Index extends Component {
           {searchResult.length === 0 && <AtFab className='float' onClick={() => this.setState({showAllCategories: !showAllCategories})}>
             <Text>{`${showAllCategories ? '返回' : '目录'}`}</Text>
           </AtFab>}
-        <View className='float-help' onClick={() => {
-          Taro.navigateTo({
-            url: '/pages/other/index?id=criminalLaw'
-          })
-        }}
-        >
-          <AtBadge value='帮助'>
-            <AtIcon value='help' size='30' color='#000'></AtIcon>
-          </AtBadge>
-        </View>
+          <View className='float-help' onClick={() => {
+            Taro.navigateTo({
+              url: '/pages/other/index?id=criminalLaw'
+            })
+          }}
+          >
+            <AtBadge value='帮助'>
+              <AtIcon value='help' size='30' color='#000'></AtIcon>
+            </AtBadge>
+          </View>
       </View>
     )
   }

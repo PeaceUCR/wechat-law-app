@@ -54,15 +54,20 @@
 }
 
 .link {
-  color: #444;
+  color: #222222;
   margin: 10px 0px 10px 0px;
+  &.out-dated {
+    display: none;
+    text-decoration: line-through;
+    text-decoration-color: rgba(0, 0, 0, 0.6);
+  }
   .title {
     color: #6190E8;
     font-weight: bold;
   }
 }
 .link_reason {
-  color: #888;
+  color: #666;
 }
 .center {
   text-align: center;
