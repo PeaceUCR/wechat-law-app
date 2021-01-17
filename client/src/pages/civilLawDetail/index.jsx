@@ -1,6 +1,6 @@
-import Taro, { Component, setStorageSync, getStorageSync } from '@tarojs/taro'
-import { View, Text, RichText } from '@tarojs/components'
-import { AtDivider, AtActivityIndicator, AtTabs, AtTabsPane, AtListItem, AtIcon } from "taro-ui";
+import Taro, { Component, getStorageSync } from '@tarojs/taro'
+import { View, Text, RichText, Input } from '@tarojs/components'
+import { AtDivider, AtActivityIndicator, AtTabs, AtTabsPane, AtListItem, AtIcon, AtButton } from "taro-ui";
 import throttle from 'lodash/throttle';
 import DataPopup from '../../components/dataPopup/index.weapp'
 import { db } from '../../util/db'
@@ -8,6 +8,7 @@ import {getNumber} from '../../util/convertNumber'
 import './index.scss'
 import {lawIdLabelMap} from "../../util/util";
 import {checkIfNewUser, redirectToIndexIfNewUser} from "../../util/login";
+import {DiscussionArea} from "../../components/discussionArea/index.weapp";
 
 const getTermNumber = (text) => {
   return text.substring(0, text.indexOf('条') + 1);
@@ -15,6 +16,8 @@ const getTermNumber = (text) => {
 export default class CivilLawDetail extends Component {
 
   state = {
+    comment: '',
+    isSent: false,
     term: {},
     examples: [],
     isCollected: false,
@@ -203,8 +206,78 @@ export default class CivilLawDetail extends Component {
       current: value
     })
   }
+
+  handleCommentChange = (e) => {
+    this.setState({
+      comment: e.target.value
+    })
+  }
+  handleClear = () => {
+    this.setState({
+      comment: ''
+    })
+  }
+
+  handleSend = () => {
+    const {comment, term} = this.state
+    if (comment) {
+      this.setState({
+        isSent: false
+      })
+      Taro.showLoading({
+        title: '发送中',
+      })
+      Taro.cloud.callFunction({
+        name: 'addComment',
+        data: {
+          topicId: term._id,
+          page: 'civilLaw',
+          type: 'civilLaw',
+          content: comment
+        },
+        complete: (r) => {
+          console.log(r)
+          if ((r && r.errMsg !== 'cloud.callFunction:ok')
+            || (r.result && r.result.errMsg !== "collection.add:ok")) {
+            Taro.showToast({
+              title: `发表失败:${r.result.errMsg}`,
+              icon: 'none',
+              duration: 3000
+            })
+            return ;
+          } else {
+            this.setState({
+              comment: '',
+              isSent: true
+            })
+            Taro.showToast({
+              title: `发表成功`,
+              icon: 'none',
+              duration: 3000
+            })
+          }
+          Taro.hideLoading()
+        }
+      })
+    } else {
+      Taro.showToast({
+        title: '发表内容不能为空',
+        icon: 'none',
+        duration: 3000
+      })
+    }
+  }
+
+  handleCommentsLoaded = () => {
+    setTimeout(() => {
+      Taro.pageScrollTo({
+        selector: `#comments`
+      })
+    }, 100)
+  }
+
   render () {
-    const {current, term, isLinkLoading, isExampleLinkLoading, isLoading, links, exampleLinks, isCollected, isReadMode} = this.state;
+    const {isSent, comment, current, term, isLinkLoading, isExampleLinkLoading, isLoading, links, exampleLinks, isCollected, isReadMode} = this.state;
     return (
       <View className={`civil-term-detail-page ${isReadMode ? 'read-mode' : ''}`}>
           <View className='main section'>
@@ -254,9 +327,26 @@ export default class CivilLawDetail extends Component {
           {
             (isLinkLoading || isExampleLinkLoading || isLoading) && <AtActivityIndicator mode='center' color='black' content='数据加载中...' size={62}></AtActivityIndicator>
           }
-        <View className='favorite-container' onClick={this.handleCollect} >
-          <AtIcon value={isCollected ? 'star-2' : 'star'} size='32' color={isCollected ? '#ffcc00' : 'rgba(0, 0, 0, 0.6)'}></AtIcon>
+        <View className='footer'>
+          <View className='text'>
+            <Input
+              className='input'
+              value={comment}
+              onInput={this.handleCommentChange}
+              onClear={this.handleClear}
+              type='text'
+              placeholder='欢迎发表你的观点'
+            />
+            <AtButton type='primary' size='small' onClick={this.handleSend}>
+              发表
+            </AtButton>
+          </View>
+          <View className='favorite-container' onClick={this.handleCollect} >
+            <AtIcon value={isCollected ? 'star-2' : 'star'} size='32' color={isCollected ? '#ffcc00' : 'rgba(0, 0, 0, 0.6)'}></AtIcon>
+          </View>
         </View>
+        <DiscussionArea topicId={term._id}  isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />
+        <View id='comments'></View>
       </View>
     )
   }

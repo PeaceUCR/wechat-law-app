@@ -1,15 +1,18 @@
-import Taro, { Component, setStorageSync, getStorageSync } from '@tarojs/taro'
-import {View} from '@tarojs/components'
-import {AtFab, AtIcon, AtActivityIndicator, AtNoticebar} from "taro-ui";
+import Taro, { Component, getStorageSync } from '@tarojs/taro'
+import {View,Input} from '@tarojs/components'
+import {AtFab, AtIcon, AtActivityIndicator, AtNoticebar, AtButton} from "taro-ui";
 import { db } from '../../util/db'
 import TextSection from '../../components/textSection/index.weapp'
 import './index.scss'
 import {checkIfNewUser, redirectToIndexIfNewUser} from "../../util/login";
 import throttle from "lodash/throttle";
+import {DiscussionArea} from "../../components/discussionArea/index.weapp";
 
 export default class ExampleDetail extends Component {
 
   state = {
+    comment: '',
+    isSent: false,
     id: '',
     type: '',
     example: {},
@@ -187,49 +190,6 @@ export default class ExampleDetail extends Component {
     this.setState({zoomIn: !zoomIn})
   }
 
-  // handleCollect = () => {
-  //   const { isCollected, example, type } = this.state;
-  //   const {_id} = example
-  //   let collection = getStorageSync('collection');
-  //   collection = collection ? collection : {};
-  //   if (isCollected) {
-  //     collection[_id] = false
-  //     setStorageSync('collection', collection)
-  //   } else {
-  //     collection[_id] = true
-  //     setStorageSync('collection', collection)
-  //
-  //     if (type === 'terms-complement'
-  //       || type === 'explanation'
-  //       || type === 'complement'
-  //       || type === 'consultant'
-  //       || type === 'court-open'
-  //       || type === 'civilLawExample'
-  //       || type === 'civilLawExplaination')  {
-  //       let cachedItems = getStorageSync('cachedItems');
-  //       cachedItems = cachedItems ? cachedItems : {};
-  //       cachedItems[_id] = {type, title: type === 'explanation' ? example.name : example.title}
-  //       if (type === 'explanation') {
-  //         cachedItems[_id].title = example.name
-  //       } else if (type === 'consultant') {
-  //         cachedItems[_id].title = `第${example.number}号${example.name}`
-  //       } else if (type === 'civilLawExample') {
-  //         cachedItems[_id].title = example.content.split('\n').filter(line => line.trim() && line.trim().length > 0)[0]
-  //       } else {
-  //         cachedItems[_id].title = example.title
-  //
-  //       }
-  //       setStorageSync('cachedItems', cachedItems)
-  //     }
-  //   }
-  //   Taro.showToast({
-  //     title: isCollected ? '收藏取消' : '收藏成功',
-  //     icon: 'none',
-  //     duration: 1000
-  //   })
-  //   this.setState({isCollected : !isCollected})
-  // };
-
   handleCollect = throttle(() => {
     if (checkIfNewUser()) {
       redirectToIndexIfNewUser()
@@ -293,8 +253,77 @@ export default class ExampleDetail extends Component {
     }
   }, 3000, { trailing: false })
 
+  handleCommentChange = (e) => {
+    this.setState({
+      comment: e.target.value
+    })
+  }
+  handleClear = () => {
+    this.setState({
+      comment: ''
+    })
+  }
+
+  handleSend = () => {
+    const {comment, example, type} = this.state
+    if (comment) {
+      this.setState({
+        isSent: false
+      })
+      Taro.showLoading({
+        title: '发送中',
+      })
+      Taro.cloud.callFunction({
+        name: 'addComment',
+        data: {
+          topicId: example._id,
+          page: 'exampleDetail',
+          type,
+          content: comment
+        },
+        complete: (r) => {
+          console.log(r)
+          if ((r && r.errMsg !== 'cloud.callFunction:ok')
+            || (r.result && r.result.errMsg !== "collection.add:ok")) {
+            Taro.showToast({
+              title: `发表失败:${r.result.errMsg}`,
+              icon: 'none',
+              duration: 3000
+            })
+            return ;
+          } else {
+            this.setState({
+              comment: '',
+              isSent: true
+            })
+            Taro.showToast({
+              title: `发表成功`,
+              icon: 'none',
+              duration: 3000
+            })
+          }
+          Taro.hideLoading()
+        }
+      })
+    } else {
+      Taro.showToast({
+        title: '发表内容不能为空',
+        icon: 'none',
+        duration: 3000
+      })
+    }
+  }
+
+  handleCommentsLoaded = () => {
+    setTimeout(() => {
+      Taro.pageScrollTo({
+        selector: `#comments`
+      })
+    }, 100)
+  }
+
   render () {
-    const {example, type, zoomIn, isCollected, isReadMode, isLoading} = this.state;
+    const {isSent, comment, example, type, zoomIn, isCollected, isReadMode, isLoading} = this.state;
     return (
       <View className={`example-detail-page ${zoomIn ? 'zoom-in' : ''} ${isReadMode ? 'read-mode' : ''}`}>
         {(example._id === '89b4bfb25f7dbcac007cec4b1f087eb1' || example._id === '89b4bfb25f7dbcac007cec402fa9835f') &&
@@ -306,14 +335,30 @@ export default class ExampleDetail extends Component {
         {(type === 'procuratorate' || type === 'explanation' || type === 'court-open') && this.renderProcuratorateExample()}
         {type === 'terms-complement' && this.renderTermComplement()}
         {(type === 'complement' || type ==='consultant' || type === 'civilLawExample' || type === 'civilLawExplaination') && this.renderComplement()}
-        <AtFab  className={`float ${zoomIn ? 'zoom-in': 'zoom-out'}`} onClick={() => {this.handleZoom()}}>
-          <View  className={`zoom ${zoomIn ? 'zoom-in': 'zoom-out'}`} mode='widthFix' />
-        </AtFab>
-        <View className='favorite-container' onClick={this.handleCollect} >
-          <AtIcon value={isCollected ? 'star-2' : 'star'} size='42' color={isCollected ? '#ffcc00' : 'rgba(0, 0, 0, 0.6)'}></AtIcon>
+
+        <View className='footer'>
+          <View className='text'>
+            <Input
+              className='input'
+              value={comment}
+              onInput={this.handleCommentChange}
+              onClear={this.handleClear}
+              type='text'
+              placeholder='欢迎发表你的观点'
+            />
+            <AtButton type='primary' size='small' onClick={this.handleSend}>
+              发表
+            </AtButton>
+          </View>
+          <View className='favorite-container' onClick={this.handleCollect} >
+            <AtIcon value={isCollected ? 'star-2' : 'star'} size='32' color={isCollected ? '#ffcc00' : 'rgba(0, 0, 0, 0.6)'}></AtIcon>
+          </View>
+          <AtFab size='small' className='float-zoom' onClick={() => {this.handleZoom()}}>
+            <View  className={`zoom ${zoomIn ? 'zoom-in': 'zoom-out'}`} mode='widthFix' />
+          </AtFab>
         </View>
-
-
+        <DiscussionArea topicId={example._id}  isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />
+        <View id='comments'></View>
         {isLoading && <View className='loading-container'>
           <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
         </View>}

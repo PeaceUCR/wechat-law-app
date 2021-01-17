@@ -297,7 +297,7 @@ export default class TermDetail extends Component {
         isSent: false
       })
       Taro.showLoading({
-        title: '加载中',
+        title: '发送中',
       })
       Taro.cloud.callFunction({
         name: 'addComment',
@@ -330,6 +330,12 @@ export default class TermDetail extends Component {
           }
           Taro.hideLoading()
         }
+      })
+    } else {
+      Taro.showToast({
+        title: '发表内容不能为空',
+        icon: 'none',
+        duration: 3000
       })
     }
   }
@@ -385,7 +391,7 @@ export default class TermDetail extends Component {
             <Input
               className='input'
               value={comment}
-              onChange={this.handleCommentChange}
+              onInput={this.handleCommentChange}
               onClear={this.handleClear}
               type='text'
               placeholder='欢迎发表你的观点'
