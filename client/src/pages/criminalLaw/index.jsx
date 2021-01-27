@@ -1,13 +1,13 @@
 import Taro, {Component, getStorageSync } from '@tarojs/taro'
 import {View, Text, Picker, Image} from '@tarojs/components'
-import {AtSearchBar, AtActivityIndicator, AtFab, AtBadge, AtIcon} from 'taro-ui'
+import {AtSearchBar, AtActivityIndicator, AtFab, AtBadge, AtIcon, AtDivider} from 'taro-ui'
 import {isEmpty} from 'lodash';
 import { db } from '../../util/db'
 import { rank } from '../../util/rank'
 import { TermSearchItem } from '../../components/termSearchItem/index.weapp'
 import { LawCategory } from '../../components/lawCategory/index.weapp'
 import { getNumber, isNumber} from '../../util/convertNumber'
-import {lawMap, keys, categoryLines, criminalTermsComplement } from '../../util/util'
+import {lawMap, keys, categoryLines, criminalTermsComplement, singleCriminalLaw } from '../../util/util'
 import clickIcon from '../../static/down.png';
 import './index.scss'
 
@@ -86,22 +86,39 @@ export default class Index extends Component {
   }
 
   renderComplement = () => {
-    return criminalTermsComplement.map(term => (<View className='term-complement' key={`complement-${term._id}`} onClick={() => Taro.navigateTo({
-      url: `/pages/exampleDetail/index?type=terms-complement&id=${term._id}`,
-    })}
-    >
+    return criminalTermsComplement.map(term => (
+      <View className='term-complement' key={`complement-${term._id}`}
+        onClick={() => {
+          const type = term.type ? term.type : 'terms-complement'
+          Taro.navigateTo({
+            url: `/pages/exampleDetail/index?type=${type}&id=${term._id}`,
+          })
+        }}
+      >
       {term.title}
     </View>) )
   }
+  renderSingleCriminalLaw = () => {
+    return singleCriminalLaw.map(term => (
+      <View className='term-complement' key={`complement-${term._id}`}
+        onClick={() => {
+              const type = term.type ? term.type : 'terms-complement'
+              Taro.navigateTo({
+                url: `/pages/exampleDetail/index?type=${type}&id=${term._id}`,
+              })
+            }}
+      >
+        {term.title}
+      </View>) )
+  }
 
   renderSearchList = () => {
-    const {searchResult, isReadMode, searchValue} = this.state
+    const {searchResult, isReadMode} = this.state
     return (<View>
       {searchResult.map(((term) => {return (
         <TermSearchItem
           term={term}
           isReadMode={isReadMode}
-          keyword={searchValue}
           key={`term${term._id}`}
         />)}))}
     </View>)
@@ -261,6 +278,8 @@ export default class Index extends Component {
             <View className='all-law-categories'>
               {searchResult.length === 0 && showAllCategories && this.renderAllCatgories()}
               {searchResult.length === 0 && showAllCategories && this.renderComplement()}
+              {searchResult.length === 0 && showAllCategories && <AtDivider content='单行刑法' />}
+              {searchResult.length === 0 && showAllCategories && this.renderSingleCriminalLaw()}
             </View>
             {/*{searchResult.length === 0 && <View className='all-title' onClick={() => this.setState({showAllLaws: !showAllLaws})}>全部法条<AtIcon value={showAllLaws ?'chevron-up': 'chevron-down'} size='18' color='#6190E8'></AtIcon></View>}*/}
             {/*<View className='all-law-options'>*/}

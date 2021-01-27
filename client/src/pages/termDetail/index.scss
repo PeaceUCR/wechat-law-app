@@ -27,7 +27,7 @@
   .section {
     white-space: pre-wrap;
     font-size: 32px;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 
     .section-title {
       color: #6190E8;
@@ -66,6 +66,7 @@
         margin-right: 10px;
         border-radius: 20px;
         background: #f6f6f6;
+        font-size: 32px;
       }
     }
   }
@@ -74,13 +75,14 @@
   }
 
   .float-zoom {
-    background: rgba(97, 144, 232, 0.5);
+    background: transparent;
+    box-shadow: none;
     margin-right: 10px;
   }
 
   .zoom {
-    width: 40px;
-    height: 40px;
+    width: 52px;
+    height: 52px;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;

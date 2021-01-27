@@ -1,9 +1,10 @@
 import Taro, { Component, setStorageSync, getStorageSync} from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import {AtSwitch,AtNoticebar,AtActivityIndicator} from "taro-ui";
+import {AtSwitch,AtNoticebar,AtActivityIndicator,AtButton} from "taro-ui";
 import MyCollection from '../../components/myCollection'
 import './index.scss'
 
+const tmpId = 'hxJ0NRqsrqGfUtxxAvOJvU9Eqe-ftY4k7lkKGOgbwiU'
 export default class User extends Component {
 
   state = {
@@ -34,6 +35,12 @@ export default class User extends Component {
       })
     }
 
+    Taro.getSetting({
+      withSubscriptions: true,
+      success: (res) => {
+        console.log(res)
+      }
+    })
   }
 
   componentDidMount () {
@@ -88,6 +95,26 @@ export default class User extends Component {
   setStorageSync('setting', { isReadMode: value })
 }
 
+  handleSubscribe = () => {
+    Taro.requestSubscribeMessage({
+      tmplIds: [tmpId],
+      success: function (res) {
+        console.log(res)
+        if (res[tmpId] === 'accept') {
+          Taro.cloud.callFunction({
+            name: 'subscribe'
+          })
+
+          Taro.showToast({
+            title: '订阅成功',
+            icon: 'none',
+            duration: 2000
+          });
+        }
+      }
+    })
+  }
+
   render () {
     const {isLoading, isReadMode, collection} = this.state;
     return (
@@ -97,6 +124,9 @@ export default class User extends Component {
         </AtNoticebar>
         <View>
           <AtSwitch title='护眼模式' checked={isReadMode} onChange={this.handleChange} />
+        </View>
+        <View>
+          <AtButton type='secondary' onClick={this.handleSubscribe}>点击订阅消息</AtButton>
         </View>
         <MyCollection collection={collection} />
         {

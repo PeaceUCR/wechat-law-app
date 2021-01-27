@@ -7,7 +7,7 @@ import { LoginPopup } from '../../components/loginPopup/index.weapp'
 import { UserFloatButton } from '../../components/userFloatButton/index.weapp'
 import lawIcon from '../../static/law.png';
 import logo from '../../static/logo.png';
-import poster3 from '../../static/poster3.png';
+import poster4 from '../../static/poster4.png';
 import {checkIfNewUser, getUserAvatar, getUserNickname} from '../../util/login';
 import './index.scss'
 import {db} from "../../util/db";
@@ -33,8 +33,7 @@ export default class Index extends Component {
         },
         {
           title: '公安机关办理刑事案件程序规定',
-          url: '/pages/policeRegulation/index',
-          isNew: true
+          url: '/pages/policeRegulation/index'
         },
         {
           title: '刑事审判参考',
@@ -49,8 +48,7 @@ export default class Index extends Component {
         },
         {
           title: '民事诉讼法',
-          url: '/pages/civilLawRegulation/index',
-          isNew: true
+          url: '/pages/civilLawRegulation/index'
         },
         {
           title: '民法典相关司法解释',
@@ -102,7 +100,7 @@ export default class Index extends Component {
                   setStorageSync('user', r.result.data[0]);
                   that.setState({isUserLoaded: true})
 
-                  if (!getStorageSync('poster3-collection')) {
+                  if (!getStorageSync('poster4-collection')) {
                     that.setState({showPoster: true})
                   }
 
@@ -112,7 +110,7 @@ export default class Index extends Component {
               }
             })
           } else {
-            if (!getStorageSync('poster3-collection')) {
+            if (!getStorageSync('poster4-collection')) {
               that.setState({showPoster: true})
             }
           }
@@ -248,12 +246,12 @@ export default class Index extends Component {
           </View>
           <AtCurtain isOpened={showPoster} onClose={() => {
             this.setState({showPoster: false})
-            setStorageSync('poster3-collection', 'showed')
+            setStorageSync('poster4-collection', 'showed')
           }}
           >
             <Image
               className='poster'
-              src={poster3}
+              src={poster4}
               mode='widthFix'
             />
           </AtCurtain>

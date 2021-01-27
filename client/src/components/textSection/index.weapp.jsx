@@ -3,7 +3,7 @@ import {RichText, View} from "@tarojs/components";
 import './index.scss'
 import {isStartWith} from "../../util/util";
 
-const highlights = ['指导案例', '裁判要点', '相关法条', '相关法律规定', '基本案情', '裁判结果', '裁判理由', '刑法', '关键词', '要旨', '基本案情', '诉讼过程', '检察工作情况', '检察机关监督情况', '指导意义', '相关规定', '一、基本案情', '二、主要问题', '三、裁判理由'];
+const highlights = ['指导案例', '裁判要点', '相关法条', '相关法律规定', '基本案情', '裁判结果', '裁判理由', '刑法', '关键词', '要旨', '基本案情', '诉讼过程', '检察工作情况', '检察机关监督情况', '指导意义', '相关规定', '一、基本案情', '二、主要问题', '三、裁判理由','检察机关履职过程'];
 const refine = (str) => {
   if(str && str.length > 0) {
     if(str.charAt(0) === '【' && str.charAt(str.length-1) === '】' ){

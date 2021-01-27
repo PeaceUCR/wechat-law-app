@@ -1,20 +1,22 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
-import { View, RichText } from '@tarojs/components'
-import {AtFab,AtIcon} from "taro-ui";
+import { View, RichText, Input, Button } from '@tarojs/components'
+import {AtFab,AtIcon,AtBadge,AtButton,AtActivityIndicator} from "taro-ui";
 import { db } from '../../util/db'
 import {checkIfNewUser, redirectToIndexIfNewUser} from '../../util/login'
-import {lawIdLabelMap} from '../../util/util'
 import './index.scss'
 import throttle from "lodash/throttle";
+import {DiscussionArea} from "../../components/discussionArea/index.weapp";
 
 
 export default class RegulationDetail extends Component {
 
   state = {
+    comment: '',
+    isSent: false,
     term: {},
     type: '',
     keyword: '',
-    isCollectedLoading: true,
+    isLoading: false,
     isCollected: false,
     isReadMode: false,
     zoomIn: false
@@ -70,28 +72,26 @@ export default class RegulationDetail extends Component {
       })
     }
 
-    // Taro.cloud.callFunction({
-    //   name: 'isCollected',
-    //   data: {
-    //     id: id,
-    //     type: 'criminalLawTermDetail'
-    //   },
-    //   complete: (r) => {
-    //
-    //     if (r && r.result && r.result.data && r.result.data.length > 0) {
-    //       that.setState({isCollected: true})
-    //     }
-    //     that.setState({isCollectedLoading: false});
-    //   },
-    //   fail: (e) => {
-    //     that.setState({isCollectedLoading: false});
-    //     Taro.showToast({
-    //       title: `获取收藏数据失败:${JSON.stringify(e)}`,
-    //       icon: 'none',
-    //       duration: 1000
-    //     })
-    //   }
-    // })
+    Taro.cloud.callFunction({
+      name: 'isCollected',
+      data: {
+        id: id,
+        type: type
+      },
+      complete: (r) => {
+
+        if (r && r.result && r.result.data && r.result.data.length > 0) {
+          that.setState({isCollected: true})
+        }
+      },
+      fail: (e) => {
+        Taro.showToast({
+          title: `获取收藏数据失败:${JSON.stringify(e)}`,
+          icon: 'none',
+          duration: 1000
+        })
+      }
+    })
 
     const setting = getStorageSync('setting');
     this.setState({isReadMode: setting && setting.isReadMode})
@@ -122,7 +122,7 @@ export default class RegulationDetail extends Component {
 
     const that = this;
     const {isCollected, term, type} = this.state;
-    const {_id} = term
+    const {_id, item, number} = term
 
     that.setState({isLoading: true})
     if (isCollected) {
@@ -147,7 +147,7 @@ export default class RegulationDetail extends Component {
         data: {
           id: _id,
           type: type,
-          title: lawIdLabelMap[_id]
+          title: (type === 'civil-law-regulation' || type === 'police') ? number : item
         },
         complete: (r) => {
           if (r && r.result && r.result.errMsg !== 'collection.add:ok') {
@@ -216,8 +216,81 @@ export default class RegulationDetail extends Component {
     }
   }
 
+  handleCommentChange = (e) => {
+    this.setState({
+      comment: e.target.value
+    })
+  }
+  handleClear = () => {
+    this.setState({
+      comment: ''
+    })
+  }
+
+  handleSend = () => {
+    if (checkIfNewUser()) {
+      redirectToIndexIfNewUser()
+      return ;
+    }
+    const {comment, term, type} = this.state
+    if (comment) {
+      this.setState({
+        isSent: false
+      })
+      Taro.showLoading({
+        title: '发送中',
+      })
+      Taro.cloud.callFunction({
+        name: 'addComment',
+        data: {
+          topicId: term._id,
+          page: 'exampleDetail',
+          type,
+          content: comment
+        },
+        complete: (r) => {
+          console.log(r)
+          if ((r && r.errMsg !== 'cloud.callFunction:ok')
+            || (r.result && r.result.errMsg !== "collection.add:ok")) {
+            Taro.showToast({
+              title: `发表失败:${r.result.errMsg}`,
+              icon: 'none',
+              duration: 3000
+            })
+            return ;
+          } else {
+            this.setState({
+              comment: '',
+              isSent: true
+            })
+            Taro.showToast({
+              title: `发表成功`,
+              icon: 'none',
+              duration: 3000
+            })
+          }
+          Taro.hideLoading()
+        }
+      })
+    } else {
+      Taro.showToast({
+        title: '发表内容不能为空',
+        icon: 'none',
+        duration: 3000
+      })
+    }
+  }
+
+  handleCommentsLoaded = () => {
+    setTimeout(() => {
+      Taro.pageScrollTo({
+        selector: `#comments`
+      })
+    }, 100)
+  }
+
   render () {
-    const {type, isCollected, isReadMode, zoomIn} = this.state;
+    const {isSent, comment, term, type, isCollected, isReadMode, zoomIn, isLoading} = this.state;
     return (
       <View className={`term-detail-page ${isReadMode ? 'read-mode' : ''} ${zoomIn ? 'zoom-in' : ''}`}>
           <View className='main section'>
@@ -226,12 +299,41 @@ export default class RegulationDetail extends Component {
               {(type === 'litigation-law' || type === 'litigation-regulation') && this.renderLitigation()}
             </View>
           </View>
-        {/*<View className='favorite-container' onClick={this.handleCollect} >*/}
-        {/*  <AtIcon value={isCollected ? 'star-2' : 'star'} size='34' color={isCollected ? '#ffcc00' : 'rgba(0, 0, 0, 0.6)'}></AtIcon>*/}
-        {/*</View>*/}
-        <AtFab size='small' className='float-zoom' onClick={() => {this.handleZoom()}}>
-          <View  className={`zoom ${zoomIn ? 'zoom-in': 'zoom-out'}`} mode='widthFix' />
-        </AtFab>
+
+        <View className='footer'>
+          <View className='text'>
+            <Input
+              className='input'
+              value={comment}
+              onInput={this.handleCommentChange}
+              onClear={this.handleClear}
+              type='text'
+              placeholder='欢迎发表你的观点'
+            />
+            <AtButton type='primary' size='small' onClick={this.handleSend}>
+              发表
+            </AtButton>
+          </View>
+          <View className='favorite-container' onClick={this.handleCollect} >
+            <AtIcon value={isCollected ? 'star-2' : 'star'} size='32' color={isCollected ? '#ffcc00' : 'rgba(0, 0, 0, 0.6)'}></AtIcon>
+          </View>
+          <AtFab size='small' className='float-zoom' onClick={() => {this.handleZoom()}}>
+            <View  className={`zoom ${zoomIn ? 'zoom-in': 'zoom-out'}`} mode='widthFix' />
+          </AtFab>
+          <View className='share-container'>
+            <AtBadge value='分享'>
+              <Button className='share-button' openType='share'>
+                <AtIcon value='share-2' size='32' color='#6190E8'></AtIcon>
+              </Button>
+            </AtBadge>
+          </View>
+        </View>
+        <DiscussionArea topicId={term._id}  isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />
+        <View id='comments'></View>
+
+        {isLoading && <View className='loading-container'>
+          <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
+        </View>}
       </View>
     )
   }

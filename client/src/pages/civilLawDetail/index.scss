@@ -68,6 +68,7 @@
         margin-right: 10px;
         border-radius: 20px;
         background: #f6f6f6;
+        font-size: 32px;
       }
     }
   }
@@ -76,13 +77,14 @@
   }
 
   .float-zoom {
-    background: rgba(97, 144, 232, 0.5);
+    background: transparent;
     margin-right: 40px;
+    box-shadow: none;
   }
 
   .zoom {
-    width: 40px;
-    height: 40px;
+    width: 52px;
+    height: 52px;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;

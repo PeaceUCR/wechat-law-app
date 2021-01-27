@@ -1,18 +1,20 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import { View, Text, Input, Button } from '@tarojs/components'
-import {AtActivityIndicator, AtIcon, AtFab, AtButton, AtBadge} from "taro-ui";
+import {AtActivityIndicator, AtIcon, AtFab, AtButton, AtBadge, AtDivider, AtTabs, AtTabsPane} from "taro-ui";
+import throttle from "lodash/throttle";
 import DataPopup from '../../components/dataPopup/index.weapp'
 import {DiscussionArea} from '../../components/discussionArea/index.weapp'
 import { db } from '../../util/db'
 import {checkIfNewUser, redirectToIndexIfNewUser} from '../../util/login'
 import {lawIdLabelMap} from '../../util/util'
 import './index.scss'
-import throttle from "lodash/throttle";
+import YiBenTongSection from "../../components/yibentongSection/index.weapp";
 
 const getTermNumber = (text) => {
   return text.substring(0, text.indexOf('条') + 1);
 }
 
+const tabs = [{title:'关联数据'}, {title: '其他'}]
 export default class TermDetail extends Component {
 
   state = {
@@ -23,15 +25,18 @@ export default class TermDetail extends Component {
     courtExamples: [],
     explanations: [],
     complements: [],
+    yibentongData:[],
     courtComplementExamples: [],
     isProcuratorateExampleLoading: true,
     isCourtExampleLoading: true,
     isExplanationLoading: true,
     isComplementLoading: true,
     isCollectedLoading: true,
+    isYibentongDataLoading: true,
     isCollected: false,
     isReadMode: false,
-    zoomIn: false
+    zoomIn: false,
+    currentTab: 0
   }
 
   config = {
@@ -52,7 +57,9 @@ export default class TermDetail extends Component {
       success: (res) => {
         const term = res.data[0];
         that.setState({term});
-        db.collection('procuratorate-examples').where({terms: db.RegExp({
+        db.collection('procuratorate-examples')
+          .orderBy('number', 'asc')
+          .where({terms: db.RegExp({
             regexp: '.*' + getTermNumber(term.text),
             options: 'i',
           })}).get({
@@ -98,6 +105,13 @@ export default class TermDetail extends Component {
               that.setState({isComplementLoading: false})
             }
 
+          }
+        })
+
+        db.collection('yi-ben-tong').where({number: term.number}).get({
+          success: (res) => {
+            // console.log(res.data)
+            that.setState({yibentongData: res.data, isYibentongDataLoading: false});
           }
         })
       }
@@ -206,6 +220,25 @@ export default class TermDetail extends Component {
         <DataPopup data={complement} type='complement' num={num} zoomIn={zoomIn} />
       </View>))}
     </View>)
+  }
+
+  renderYiBenTong = () => {
+    const {yibentongData, term, zoomIn} = this.state;
+    const num = getTermNumber(term.text).replace('第', '').replace('条', '')
+    return yibentongData.map((item, i) => {
+      return (<View key={`yibentong-item-${i}`}>
+        {item.contents.map((c, j) => {
+          return (<YiBenTongSection
+            key={`yibentong-item-${j}`}
+            data={c.content}
+            title={c.category}
+            zoomIn={zoomIn}
+            keyword={num}
+          >
+          </YiBenTongSection>)
+        })}
+      </View>)
+    })
   }
 
   handleCollect = throttle(() => {
@@ -352,10 +385,15 @@ export default class TermDetail extends Component {
     }, 100)
   }
 
+  handleChangeTab = (value) => {
+    this.setState({
+      currentTab: value
+    })
+  }
   render () {
     const {isSent, comment, term, examples, explanations, courtExamples, complements, courtComplementExamples,
       isProcuratorateExampleLoading, isCourtExampleLoading, isExplanationLoading, isComplementLoading,
-      isCollectedLoading, isCollected, isReadMode, zoomIn} = this.state;
+      isYibentongDataLoading, isCollectedLoading, isCollected, isReadMode, zoomIn, currentTab} = this.state;
     return (
       <View className={`term-detail-page ${isReadMode ? 'read-mode' : ''} ${zoomIn ? 'zoom-in' : ''}`}>
           <View className='main section'>
@@ -366,6 +404,18 @@ export default class TermDetail extends Component {
               {this.renderTermText()}
             </View>
           </View>
+          {/*<AtDivider lineColor='#d6e4ef' height='50' />*/}
+          {/*<AtTabs*/}
+          {/*  tabList={tabs}*/}
+          {/*  current={currentTab}*/}
+          {/*  onClick={this.handleChangeTab}*/}
+          {/*>*/}
+          {/*  <AtTabsPane current={currentTab} index={0} ></AtTabsPane>*/}
+          {/*  <AtTabsPane current={currentTab} index={1} ></AtTabsPane>*/}
+          {/*</AtTabs>*/}
+          {/*<View className='section'>*/}
+          {/*  {this.renderYiBenTong()}*/}
+          {/*</View>*/}
           <View className='examples section'>
             <Text className='section-title'>相关法定解释、规定和指导意见：{complements.length ===0 && explanations.length ===0 ? '暂无' : ''}</Text>
             <View>
@@ -379,6 +429,7 @@ export default class TermDetail extends Component {
               {examples.length > 0 && this.renderExample()}
             </View>
           </View>
+
           <View className='examples section'>
             <Text className='section-title'>相关法院案例：{courtExamples.length ===0 && courtComplementExamples.length ===0 ? '暂无' : ''}</Text>
             <View>
@@ -386,40 +437,42 @@ export default class TermDetail extends Component {
               {courtComplementExamples.length > 0 && this.renderCourtComplementExamples()}
             </View>
           </View>
-        {(isProcuratorateExampleLoading || isCourtExampleLoading || isExplanationLoading || isComplementLoading || isCollectedLoading) && <View className='loading-container'>
+
+        {(isProcuratorateExampleLoading || isCourtExampleLoading || isExplanationLoading
+          || isComplementLoading || isYibentongDataLoading || isCollectedLoading) && <View className='loading-container'>
           <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
         </View>}
 
-        <View className='footer'>
-          <View className='text'>
-            <Input
-              className='input'
-              value={comment}
-              onInput={this.handleCommentChange}
-              onClear={this.handleClear}
-              type='text'
-              placeholder='欢迎发表你的观点'
-            />
-            <AtButton type='primary' size='small' onClick={this.handleSend}>
-              发表
-            </AtButton>
+          <View className='footer'>
+            <View className='text'>
+              <Input
+                className='input'
+                value={comment}
+                onInput={this.handleCommentChange}
+                onClear={this.handleClear}
+                type='text'
+                placeholder='欢迎发表你的观点'
+              />
+              <AtButton type='primary' size='small' onClick={this.handleSend}>
+                发表
+              </AtButton>
+            </View>
+            <View className='favorite-container' onClick={this.handleCollect} >
+              <AtIcon value={isCollected ? 'star-2' : 'star'} size='32' color={isCollected ? '#ffcc00' : 'rgba(0, 0, 0, 0.6)'}></AtIcon>
+            </View>
+            <AtFab size='small' className='float-zoom' onClick={() => {this.handleZoom()}}>
+              <View  className={`zoom ${zoomIn ? 'zoom-in': 'zoom-out'}`} mode='widthFix' />
+            </AtFab>
+            <View className='share-container'>
+              <AtBadge value='分享'>
+                <Button className='share-button' openType='share'>
+                  <AtIcon value='share-2' size='32' color='#6190E8'></AtIcon>
+                </Button>
+              </AtBadge>
+            </View>
           </View>
-          <View className='favorite-container' onClick={this.handleCollect} >
-            <AtIcon value={isCollected ? 'star-2' : 'star'} size='32' color={isCollected ? '#ffcc00' : 'rgba(0, 0, 0, 0.6)'}></AtIcon>
-          </View>
-          <AtFab size='small' className='float-zoom' onClick={() => {this.handleZoom()}}>
-            <View  className={`zoom ${zoomIn ? 'zoom-in': 'zoom-out'}`} mode='widthFix' />
-          </AtFab>
-          <View className='share-container'>
-            <AtBadge value='分享'>
-              <Button className='share-button' openType='share'>
-                <AtIcon value='share-2' size='32' color='#6190E8'></AtIcon>
-              </Button>
-            </AtBadge>
-          </View>
-        </View>
-        <DiscussionArea topicId={term._id} isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />
-        <View id='comments'></View>
+          <DiscussionArea topicId={term._id} isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />
+          <View id='comments'></View>
       </View>
     )
   }
