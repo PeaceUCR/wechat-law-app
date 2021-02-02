@@ -11,6 +11,7 @@ import poster4 from '../../static/poster4.png';
 import {checkIfNewUser, getUserAvatar, getUserNickname} from '../../util/login';
 import './index.scss'
 import {db} from "../../util/db";
+import {tmpId} from '../../util/util'
 
 const titles = [{title:'全部'}, {title:'刑法相关'}, {title:'民法典相关'}]
 export default class Index extends Component {
@@ -64,6 +65,11 @@ export default class Index extends Component {
         {
           title: '最高法公报案例',
           url: '/pages/courtOpen/index'
+        },
+        {
+          title: '裁判文书',
+          url: '',
+          isUnderConstruction: true
         }
       ]
     },
@@ -155,7 +161,7 @@ export default class Index extends Component {
     return (<View>
       {displayOptions.map((items, index) => {
         return (
-          <View key={`section-${index}`} className='grids'>
+          <View key={`section-${current}-${index}`} className='grids'>
             {items.map((option, i )=> {
               return (<View className='grid-container' key={`grid-${i}`}>
                 <GridItem option={option} disabled={isNewUser} />
@@ -186,6 +192,29 @@ export default class Index extends Component {
     }, 8000)
   }, 8000, { trailing: false })
 
+  handleSubscribe = () => {
+    Taro.requestSubscribeMessage({
+      tmplIds: [tmpId],
+      success: function (res) {
+        console.log(res)
+        if (res[tmpId] === 'accept') {
+          Taro.cloud.callFunction({
+            name: 'subscribe',
+            data: {
+              tmpId
+            }
+          })
+
+          Taro.showToast({
+            title: '订阅成功',
+            icon: 'none',
+            duration: 2000
+          });
+        }
+      }
+    })
+  }
+
   handleClick = (value) => {
     this.setState({
       current: value
@@ -209,6 +238,11 @@ export default class Index extends Component {
           >
             <AtBadge value='统计'>
               <AtIcon value='analytics' size='30' color='#000'></AtIcon>
+            </AtBadge>
+          </View>}
+          {(!checkIfNewUser()) && <View className='float-subscribe' onClick={this.handleSubscribe}>
+            <AtBadge value='订阅'>
+              <AtIcon value='bell' size='30' color='#000'></AtIcon>
             </AtBadge>
           </View>}
           <View className='float-help' onClick={() => {

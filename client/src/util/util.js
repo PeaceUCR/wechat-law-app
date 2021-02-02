@@ -1,3 +1,4 @@
+export const tmpId = 'cZWxYVaMH0JFtk2NIxjsEBLZcpazvU5vkYJcQlKsnBo'
 
 export function removeStringFrom(target, toRemove){
   return target.replace(toRemove, '')

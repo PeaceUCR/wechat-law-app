@@ -9,6 +9,7 @@ import './index.scss'
 import {lawIdLabelMap} from "../../util/util";
 import {checkIfNewUser, redirectToIndexIfNewUser} from "../../util/login";
 import {DiscussionArea} from "../../components/discussionArea/index.weapp";
+import {CivilLawLinkExplanation} from "../../components/civilLawLinkExplanation/index.weapp"
 
 const getTermNumber = (text) => {
   return text.substring(0, text.indexOf('条') + 1);
@@ -283,13 +284,13 @@ export default class CivilLawDetail extends Component {
   render () {
     const {isSent, comment, current, term, isLinkLoading, isExampleLinkLoading, isLoading, links, exampleLinks, isCollected, isReadMode} = this.state;
     const validLinks = links.filter(link => link.title.indexOf('时效性：失效') === -1)
+
     return (
       <View className={`civil-term-detail-page ${isReadMode ? 'read-mode' : ''}`}>
           <View className='main section'>
             <View className='tag-line'><Text className='pre-tag'>法条要旨:</Text><Text className='tag'>{term.tag}</Text></View>
             {this.renderTermText()}
           </View>
-          {!isLinkLoading && links.length === 0 && <View className='center'>暂无</View>}
           <AtTabs
             current={current}
             scroll
@@ -301,14 +302,10 @@ export default class CivilLawDetail extends Component {
           >
             <AtTabsPane current={current} index={0}>
               <View className='pane'>
-                {links.map((link, index) => {
-                  return (<View className={`link ${link.title.indexOf('时效性：失效') === -1 ? '' : 'out-dated'}`} key={`civil-key-${index}`}>
-                    <View className='title'><RichText nodes={link.title}></RichText></View>
-                    <RichText nodes={link.content}></RichText>
-                    <AtDivider lineColor='#777' height='60' />
-                  </View>)
+                {validLinks.map((link, index) => {
+                  return (<CivilLawLinkExplanation link={link} key={`civil-key-${index}`} />)
                 })}
-                {validLinks.length === 0 && !isLinkLoading && (<View>暂无有效关联法条</View>)}
+                {validLinks.length === 0 && !isLinkLoading && (<View className='no-links'>暂无有效关联法条</View>)}
               </View>
             </AtTabsPane>
             <AtTabsPane current={current} index={1}>
@@ -324,7 +321,7 @@ export default class CivilLawDetail extends Component {
                     <AtListItem title={link.subhead} note={link.title} arrow='right' />
                   </View>)
                 })}
-                {exampleLinks.length === 0 && !isExampleLinkLoading && (<View>暂无</View>)}
+                {exampleLinks.length === 0 && !isExampleLinkLoading && (<View className='no-links'>暂无</View>)}
               </View>
             </AtTabsPane>
           </AtTabs>

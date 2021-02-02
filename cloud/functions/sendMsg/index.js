@@ -11,17 +11,14 @@ exports.main = async (event, context) => {
        touser: cloud.getWXContext().OPENID, // 通过 getWXContext 获取 OPENID
        page: 'pages/other/index',
        data: {
-         name2: {
-           value: 'Echo'
+         character_string1: {
+           value: '1.0.1'
          },
-         date1: {
-           value: '2021年01月18日 12:30'
-         },
-         thing4: {
-           value: 'Peace is my husband'
+         thing2: {
+           value: 'test version'
          }
        },
-       templateId: 'hxJ0NRqsrqGfUtxxAvOJvU9Eqe-ftY4k7lkKGOgbwiU'
+       templateId: 'cZWxYVaMH0JFtk2NIxjsEBLZcpazvU5vkYJcQlKsnBo'
      })
      // result 结构
      // { errCode: 0, errMsg: 'openapi.templateMessage.send:ok' }

@@ -3,8 +3,8 @@ import { View } from '@tarojs/components'
 import {AtSwitch,AtNoticebar,AtActivityIndicator,AtButton} from "taro-ui";
 import MyCollection from '../../components/myCollection'
 import './index.scss'
+import {tmpId} from '../../util/util'
 
-const tmpId = 'hxJ0NRqsrqGfUtxxAvOJvU9Eqe-ftY4k7lkKGOgbwiU'
 export default class User extends Component {
 
   state = {
@@ -125,9 +125,9 @@ export default class User extends Component {
         <View>
           <AtSwitch title='护眼模式' checked={isReadMode} onChange={this.handleChange} />
         </View>
-        <View>
-          <AtButton type='secondary' onClick={this.handleSubscribe}>点击订阅消息</AtButton>
-        </View>
+        {/*<View>*/}
+        {/*  <AtButton type='secondary' onClick={this.handleSubscribe}>点击订阅消息</AtButton>*/}
+        {/*</View>*/}
         <MyCollection collection={collection} />
         {
           isLoading && <AtActivityIndicator mode='center' color='black' content='数据加载中...' size={62}></AtActivityIndicator>

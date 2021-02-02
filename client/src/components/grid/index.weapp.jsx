@@ -1,13 +1,15 @@
 import Taro from '@tarojs/taro'
-import {View} from "@tarojs/components";
+import {View,Image} from "@tarojs/components";
 import { AtBadge } from "taro-ui";
 import throttle from 'lodash/throttle';
 import './index.scss'
+import constructionIcon from '../../static/under-construction.png';
+
 
 const GridItem = (props) => {
   let {option, disabled} = props;
   option = option ? option : {title: '', url: ''};
-  const {title, url, isNew, isHot, isUpdated} = option;
+  const {title, url, isNew, isHot, isUpdated, isUnderConstruction} = option;
   const redirect = throttle(
     () => {
       if(disabled) {
@@ -19,9 +21,9 @@ const GridItem = (props) => {
         })
       } else {
         Taro.showToast({
-          title: '敬请期待',
+          title: '全力开发中，点击左上角，订阅重大更新消息哦',
           icon: 'none',
-          duration: 1000
+          duration: 6000
         })
       }
     },
@@ -33,6 +35,7 @@ const GridItem = (props) => {
     <AtBadge value={isNew?'NEW':(isHot?'Hot':'')} dot={isUpdated ? true : false}>
       <View className='grid-item' onClick={redirect} >
         <View className='float-item'></View>
+        {isUnderConstruction && <View className='icon-container'><Image src={constructionIcon} className='construction-icon' /></View>}
         <View className='title'>{title}</View>
       </View>
     </AtBadge>)
