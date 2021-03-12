@@ -29,7 +29,7 @@ const ExampleSearchItem = (props) => {
   }
   return (<View className={`search-item ${isReadMode ? 'read-mode' : ''}`} onClick={redirect} >
     <Text className='tag procuratorate'>检</Text>
-    <View className='title'>{number}:{name}</View>
+    <View className='title'>(检例第{number}号):{name}</View>
     <View>关键词:{keyword}</View>
     <View>{terms}</View>
   </View>)

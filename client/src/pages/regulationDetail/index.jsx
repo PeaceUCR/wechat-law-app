@@ -72,6 +72,15 @@ export default class RegulationDetail extends Component {
       })
     }
 
+    if (type === 'litigation-explanation') {
+      db.collection('litigation-explanation').where({_id: id}).get({
+        success: (res) => {
+          const term = res.data[0];
+          that.setState({term, type, keyword});
+        }
+      })
+    }
+
     Taro.cloud.callFunction({
       name: 'isCollected',
       data: {
@@ -147,7 +156,7 @@ export default class RegulationDetail extends Component {
         data: {
           id: _id,
           type: type,
-          title: (type === 'civil-law-regulation' || type === 'police') ? number : item
+          title: (type === 'litigation-explanation' || type === 'civil-law-regulation' || type === 'police') ? number : item
         },
         complete: (r) => {
           if (r && r.result && r.result.errMsg !== 'collection.add:ok') {
@@ -296,7 +305,7 @@ export default class RegulationDetail extends Component {
           <View className='main section'>
             <View>
               {(type === 'police' || type === 'civil-law-regulation') &&this.renderTermText()}
-              {(type === 'litigation-law' || type === 'litigation-regulation') && this.renderLitigation()}
+              {(type === 'litigation-law' || type === 'litigation-regulation' || type === 'litigation-explanation') && this.renderLitigation()}
             </View>
           </View>
 

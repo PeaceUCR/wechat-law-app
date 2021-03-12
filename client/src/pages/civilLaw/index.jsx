@@ -20,7 +20,7 @@ export default class Index extends Component {
     selected: "搜全文",
     options: ["搜全文", "搜序号", "搜条旨"],
     showAllCategories: true,
-    isReadMode: false,
+    isReadMode: true,
     civilLawLines: [],
     isCategoryLoading: true,
     isSearchMode: false
@@ -36,7 +36,8 @@ export default class Index extends Component {
     };
   }
   componentWillMount () {
-    const setting = getStorageSync('setting');
+    // const setting = getStorageSync('setting');
+    const setting = {isReadMode: true};
     this.setState({isReadMode: setting && setting.isReadMode})
     if (setting && setting.isReadMode) {
       console.log('read')
@@ -99,7 +100,9 @@ export default class Index extends Component {
         db.collection('civil-law').where({number: db.RegExp({
             regexp: '.*' + convertNumberToChinese(parseInt(searchValue)),
             options: 'i',
-          })}).get({
+          })})
+          .orderBy('numberIndex', 'asc')
+          .get({
           success: (res) => {
             if (isEmpty(res.data)) {
               Taro.showToast({
@@ -116,7 +119,7 @@ export default class Index extends Component {
       db.collection('civil-law').where({text: db.RegExp({
           regexp: '.*' + searchValue,
           options: 'i',
-        })}).get({
+        })}).orderBy('numberIndex', 'asc').get({
         success: (res) => {
           if (isEmpty(res.data)) {
             Taro.showToast({
@@ -134,7 +137,7 @@ export default class Index extends Component {
       db.collection('civil-law').where({number: db.RegExp({
           regexp: '.*' + convertNumberToChinese(searchValue),
           options: 'i',
-        })}).get({
+        })}).orderBy('numberIndex', 'asc').get({
         success: (res) => {
           if (isEmpty(res.data)) {
             Taro.showToast({
@@ -152,7 +155,7 @@ export default class Index extends Component {
       db.collection('civil-law').where({tag: db.RegExp({
           regexp: '.*' + searchValue,
           options: 'i',
-        })}).get({
+        })}).orderBy('numberIndex', 'asc').get({
         success: (res) => {
           if (isEmpty(res.data)) {
             Taro.showToast({
@@ -232,17 +235,14 @@ export default class Index extends Component {
           </View>
           <View>
             {!isSearchMode && <View className='all-law-categories'>
-              {searchResult.length === 0 && showAllCategories && this.renderAllCatgories()}
+              {this.renderAllCatgories()}
             </View>}
             {/*{searchResult.length === 0 && <View className='all-title' onClick={() => this.setState({showAllLaws: !showAllLaws})}>全部法条<AtIcon value={showAllLaws ?'chevron-up': 'chevron-down'} size='18' color='#6190E8'></AtIcon></View>}*/}
             {/*<View className='all-law-options'>*/}
             {/*  {searchResult.length === 0 && showAllLaws && this.renderAllOptions()}*/}
             {/*</View>*/}
             <View>
-              {searchResult.length > 0 && this.renderSearchList()}
-            </View>
-            <View>
-              {searchResult.length === 0 && !showAllCategories && this.renderHintOptions()}
+              {searchResult.length > 0 && isSearchMode && this.renderSearchList()}
             </View>
             {/*<View>*/}
             {/*  {searchResult.length === 0 && this.renderHistories()}*/}

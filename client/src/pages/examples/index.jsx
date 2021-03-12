@@ -90,7 +90,7 @@ export default class Index extends Component {
       db.collection('court-examples').where({title: db.RegExp({
           regexp: '.*' + searchValue,
           options: 'i',
-        })}).get({
+        })}).orderBy('number', 'asc').get({
         success: (res) => {
           if (isEmpty(res.data)) {
             Taro.showToast({
@@ -106,7 +106,7 @@ export default class Index extends Component {
       db.collection('procuratorate-examples').where({name: db.RegExp({
           regexp: '.*' + searchValue,
           options: 'i',
-        })}).get({
+        })}).orderBy('number', 'asc').get({
         success: (res) => {
           if (isEmpty(res.data)) {
             Taro.showToast({
@@ -124,7 +124,7 @@ export default class Index extends Component {
       db.collection('court-examples').where({keyword: db.RegExp({
           regexp: '.*' + searchValue,
           options: 'i',
-        })}).get({
+        })}).orderBy('number', 'asc').get({
         success: (res) => {
           if (isEmpty(res.data)) {
             Taro.showToast({
@@ -140,7 +140,7 @@ export default class Index extends Component {
       db.collection('procuratorate-examples').where({keyword: db.RegExp({
           regexp: '.*' + searchValue,
           options: 'i',
-        })}).get({
+        })}).orderBy('number', 'asc').get({
         success: (res) => {
           if (isEmpty(res.data)) {
             Taro.showToast({
@@ -158,7 +158,7 @@ export default class Index extends Component {
       db.collection('court-examples').where({terms: db.RegExp({
           regexp: '.*' + convertNumberToChinese(searchValue),
           options: 'i',
-        })}).get({
+        })}).orderBy('number', 'asc').get({
         success: (res) => {
           if (isEmpty(res.data)) {
             Taro.showToast({
@@ -174,7 +174,7 @@ export default class Index extends Component {
       db.collection('procuratorate-examples').where({terms: db.RegExp({
           regexp: '.*' + convertNumberToChinese(searchValue),
           options: 'i',
-        })}).get({
+        })}).orderBy('number', 'asc').get({
         success: (res) => {
           if (isEmpty(res.data)) {
             Taro.showToast({

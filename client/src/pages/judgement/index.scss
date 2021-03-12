@@ -1,5 +1,4 @@
 .example-page {
-  padding-top: 80px;
   width: 100%;
   min-height: 100vh;
   padding-bottom: 200px;
@@ -94,58 +93,60 @@
     top: 9%;
     right: 60px;
   }
-
-  .civil-explanation-item {
-    position: relative;
-    background: #F4ECD8;
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    box-sizing: border-box;
-    border-bottom: 1px solid #888888;
-    &.tag {
-      border-bottom: none;
-      .title {
-        .text {
-          display: none;
-        }
-        color: darkred;
-        text-align: center;
-        justify-content: center;
-      }
-      .icon {
-        display: none;
-      }
-    }
-    .title {
-      flex-grow: 1;
-      margin: 10px 0px 10px 10px;
-      display: flex;
-    }
-    .icon {
-
-    }
-  }
-
-  .fixed {
-    position: fixed;
-    top:8px;
-    left:0;
-    width: 100%;
-    z-index: 999;
-  }
-
-  .highlight-keyword {
-    color: black;
-    font-weight: bold;
-    font-style: italic;
-    background: gold;
-    padding: 0px 10px 0px 5px;
-  }
 }
 
+.keyword-input-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.keyword-options {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  .option {
+    margin-right: 30px;
+    display: inline-flex;
+    align-items: center;
+    color: #6190E8;
+    border: 2px solid #6190E8;
+    border-radius: 10px;
+    font-size: 40px;
+    padding: 0 10px;
+    height: 80px;
+    background: white;
+  }
+}
 .at-input {
   padding: 10px 20px;
   margin: 0 20px;
   border-radius: 20px;
+}
+.at-icon-trash {
+  position: relative;
+  top: -3px
+}
+
+.icon-container {
+  border-radius: 50%;
+}
+.icon-animating {
+  animation: iconAnimation 2s infinite;
+}
+
+@keyframes iconAnimation {
+  0% {
+    box-shadow: 0px 0px 6px -1px rgba(140,140,140,1);
+  }
+  50% {
+    box-shadow: 0px 0px 6px -1px rgba(256,256,256,1);
+  }
+  100% {
+    box-shadow: 0px 0px 6px -1px rgba(140,140,140,1);
+  }
 }

@@ -90,7 +90,7 @@ export default class User extends Component {
       return (<AtListItem
         key={`user-item-${index}`}
         title={`昵称:${user.nickName}`}
-        note={`时间:${new Date(Date.parse(user.lastTimeLogin)).toLocaleString('zh-CN')}`}
+        note={`最后一次进入时间:${new Date(Date.parse(user.lastTimeLogin)).toLocaleString('zh-CN')}`}
         thumb={user.avatarUrl}
       />)
     }))
@@ -118,9 +118,6 @@ export default class User extends Component {
             placeholder='搜昵称'
           />
         </View>
-        <AtNoticebar marquee speed={60}>
-          这里的时间是指用户最后一次进入小程序的时间
-        </AtNoticebar>
         <AtList>
           {this.renderUserList()}
           {list.length > 0 && <AtLoadMore

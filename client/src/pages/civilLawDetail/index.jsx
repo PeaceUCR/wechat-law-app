@@ -94,7 +94,8 @@ export default class CivilLawDetail extends Component {
       }
     })
 
-    const setting = getStorageSync('setting');
+    // const setting = getStorageSync('setting');
+    const setting = {isReadMode: true};
     this.setState({isReadMode: setting && setting.isReadMode})
     if (setting && setting.isReadMode) {
       console.log('read')

@@ -1,6 +1,6 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
-import {Button, View} from '@tarojs/components'
-import { AtSearchBar, AtActivityIndicator } from 'taro-ui'
+import {View} from '@tarojs/components'
+import { AtSearchBar, AtActivityIndicator, AtNoticebar } from 'taro-ui'
 import {isEmpty} from "lodash";
 import { db } from '../../util/db'
 import { LitigationSearchItem } from '../../components/litigationSearchItem/index.weapp'
@@ -21,7 +21,7 @@ export default class Index extends Component {
   }
 
   config = {
-    navigationBarTitleText: '刑事诉讼规则搜索'
+    navigationBarTitleText: '(最高检)刑事诉讼规则搜索'
   }
 
   onShareAppMessage() {
@@ -201,6 +201,9 @@ export default class Index extends Component {
     const {searchValue, searchResult, isLoading, litigationRegulationChapters, litigationRegulationSections, isReadMode} = this.state;
     return (
       <View className={`litigation-regulation-page ${isReadMode ? 'read-mode' : ''}`}>
+          <AtNoticebar marquee speed={60}>
+            最高检公告:《人民检察院刑事诉讼规则》已经2019年12月2日最高检第十三届检察委员会第二十八次会议通过，现予公布，自2019年12月30日起施行。
+          </AtNoticebar>
           <View>
             <AtSearchBar
               value={searchValue}

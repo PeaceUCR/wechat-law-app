@@ -1,0 +1,23 @@
+.participator-list {
+  display: flex;
+  justify-content: flex-start;
+  width: 600px;
+  margin: 0 auto;
+
+  .avatar-container {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    width: 67px;
+    height: 67px;
+    box-sizing: border-box;
+    .avatar {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  }
+}

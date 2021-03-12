@@ -27,6 +27,7 @@ const MyCollection = (props) => {
   const otherKeys = allKeys.filter(key => otherTypes.indexOf(collectionObj[key].type) !== -1)
 
   const litigationLawKeys = allKeys.filter(key => collectionObj[key].type === 'litigation-law')
+  const litigationExplanationKeys = allKeys.filter(key => collectionObj[key].type === 'litigation-explanation')
   const litigationRegulationawKeys = allKeys.filter(key => collectionObj[key].type === 'litigation-regulation')
   const civilLawRegulationKeys = allKeys.filter(key => collectionObj[key].type === 'civil-law-regulation')
   const policeKeys = allKeys.filter(key => collectionObj[key].type === 'police')
@@ -141,6 +142,25 @@ const MyCollection = (props) => {
           onClick={() => {
             Taro.navigateTo({
               url: `/pages/regulationDetail/index?type=${collectionObj[litigationLawKey].type}&id=${litigationLawKey}`,
+            })
+          }}
+        />
+      ))}
+    </View>
+    <View>
+      {litigationExplanationKeys.length > 0 && <View className='sub-title'>
+        <View className='divider'></View>
+        <View className='text'>(最高法)适用刑事诉讼法的解释</View>
+        <View className='divider'></View>
+      </View>}
+      {litigationExplanationKeys.map(litigationExplanationKey => (
+        <AtListItem
+          key={litigationExplanationKey}
+          title={collectionObj[litigationExplanationKey].title}
+          arrow='right'
+          onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/regulationDetail/index?type=${collectionObj[litigationExplanationKey].type}&id=${litigationExplanationKey}`,
             })
           }}
         />

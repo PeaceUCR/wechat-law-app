@@ -115,6 +115,20 @@
   animation: blurFadeInOut 8s ease-in backwards;
 }
 
+.image-for-loading {
+  display: none;
+}
+.cake-container {
+  position: absolute;
+  top: 300px;
+  right: 80px;
+  .cake {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+
 @keyframes blurFadeInOut {
   0% {
     opacity: 0;

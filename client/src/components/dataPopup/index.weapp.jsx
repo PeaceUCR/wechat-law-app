@@ -12,7 +12,7 @@ const DataPopup = (props) => {
       url: `/pages/exampleDetail/index?type=${type}&id=${_id}&keyword=${num}`,
     })}
     >
-      <Text className='title'>{type === 'court' || type === 'complement' ? title : number + name }</Text>
+      <Text className='title'>{type === 'court' || type === 'complement' ? title : type === 'procuratorate' ? (number ? `检例第(${number})号:${name}`:name ): name }</Text>
       <AtIcon value='external-link' size='16' color='#6190E8'></AtIcon>
     </View>
   </View>)

@@ -58,9 +58,9 @@
 
   .loading-container {
     position: fixed;
-    top: 100px;
+    top: 130px;
     left: 0;
-    height: calc( 100vh - 90px );
+    height: calc( 100vh - 130px );
     width: 100%;
     background: lightgray;
   }
@@ -118,7 +118,7 @@
 
   .float-help {
     position: fixed;
-    top: 9%;
+    top: 14%;
     right: 60px;
   }
 }

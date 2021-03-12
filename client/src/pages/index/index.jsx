@@ -7,11 +7,11 @@ import { LoginPopup } from '../../components/loginPopup/index.weapp'
 import { UserFloatButton } from '../../components/userFloatButton/index.weapp'
 import lawIcon from '../../static/law.png';
 import logo from '../../static/logo.png';
-import poster4 from '../../static/poster4.png';
+import cake from '../../static/cake.png';
 import {checkIfNewUser, getUserAvatar, getUserNickname} from '../../util/login';
 import './index.scss'
 import {db} from "../../util/db";
-import {tmpId} from '../../util/util'
+import {tmpId, isTodayString, getTodayDateString} from '../../util/util'
 
 const titles = [{title:'全部'}, {title:'刑法相关'}, {title:'民法典相关'}]
 export default class Index extends Component {
@@ -29,7 +29,12 @@ export default class Index extends Component {
           url: '/pages/litigationLaw/index'
         },
         {
-          title: '刑事诉讼规则(检)',
+          title: '(最高法)适用刑事诉讼法的解释',
+          url: '/pages/litigationExplanation/index',
+          isNew: true
+        },
+        {
+          title: '(最高检)刑事诉讼规则',
           url: '/pages/litigationRegulation/index'
         },
         {
@@ -78,7 +83,10 @@ export default class Index extends Component {
     isReadMode: false,
     isUserLoaded: false,
     showPoster: false,
-    current: 0
+    current: 0,
+    posterUrlForLoading: '',
+    posterUrl: '',
+    isPosterLoading: true
   }
 
   config = {
@@ -97,6 +105,7 @@ export default class Index extends Component {
     const that = this;
     db.collection('configuration').where({}).get({
       success: (res) => {
+        that.setState({posterUrlForLoading: res.data[0].posterUrl})
         if(res.data[0].forceLogin) {
           if(checkIfNewUser()) {
             Taro.cloud.callFunction({
@@ -106,7 +115,7 @@ export default class Index extends Component {
                   setStorageSync('user', r.result.data[0]);
                   that.setState({isUserLoaded: true})
 
-                  if (!getStorageSync('poster4-collection')) {
+                  if (!isTodayString(getStorageSync('poster-shown-at'))) {
                     that.setState({showPoster: true})
                   }
 
@@ -116,7 +125,7 @@ export default class Index extends Component {
               }
             })
           } else {
-            if (!getStorageSync('poster4-collection')) {
+            if (!isTodayString(getStorageSync('poster-shown-at'))) {
               that.setState({showPoster: true})
             }
           }
@@ -220,13 +229,32 @@ export default class Index extends Component {
       current: value
     })
   }
+
+  onPosterLoaded = () => {
+    const { posterUrlForLoading } = this.state;
+    this.setState({
+      posterUrl: posterUrlForLoading,
+      isPosterLoading: false
+    });
+  };
+
   render () {
-    const {isNewUser, isReadMode, showFooter, current, showPoster, showPosterCollect} = this.state;
+    const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl} = this.state;
     return (
       <View className={`index-page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
           本小程序数据信息均来源于最高检，最高法，公安部，司法部等权威发布
         </AtNoticebar>
+        {getUserNickname() !== 'echo' && <View className='cake-container' onClick={() => {
+          Taro.navigateTo({
+            url: '/pages/cake/index'
+          })
+        }}
+        >
+          <AtBadge value='生日'>
+            <Image src={cake} className='cake' />
+          </AtBadge>
+        </View>}
           <View className='icon-container'>
             <Image src={lawIcon} className='icon-title' />
           </View>
@@ -278,28 +306,22 @@ export default class Index extends Component {
               </View>
             </AtDivider>
           </View>
-          <AtCurtain isOpened={showPoster} onClose={() => {
+          <AtCurtain isOpened={showPoster && !isPosterLoading && posterUrl} onClose={() => {
             this.setState({showPoster: false})
-            setStorageSync('poster4-collection', 'showed')
+            setStorageSync('poster-shown-at', getTodayDateString())
           }}
           >
             <Image
               className='poster'
-              src={poster4}
+              src={posterUrlForLoading}
               mode='widthFix'
             />
           </AtCurtain>
-          {/*<AtCurtain isOpened={showPosterCollect} onClose={() => {*/}
-          {/*  this.setState({showPosterCollect: false})*/}
-          {/*  setStorageSync('poster-collect', true)*/}
-          {/*}}*/}
-          {/*>*/}
-          {/*  <Image*/}
-          {/*    className='poster-collect'*/}
-          {/*    src={posterCollect}*/}
-          {/*    mode='widthFix'*/}
-          {/*  />*/}
-          {/*</AtCurtain>*/}
+          <Image
+            className='image-for-loading'
+            src={posterUrlForLoading}
+            onLoad={this.onPosterLoaded}
+          />
       </View>
     )
   }

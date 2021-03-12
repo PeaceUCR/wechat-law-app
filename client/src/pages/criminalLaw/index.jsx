@@ -1,6 +1,6 @@
 import Taro, {Component, getStorageSync } from '@tarojs/taro'
 import {View, Text, Picker, Image} from '@tarojs/components'
-import {AtSearchBar, AtActivityIndicator, AtFab, AtBadge, AtIcon, AtDivider} from 'taro-ui'
+import {AtSearchBar, AtActivityIndicator, AtFab, AtBadge, AtIcon, AtDivider, AtNoticebar} from 'taro-ui'
 import {isEmpty} from 'lodash';
 import { db } from '../../util/db'
 import { rank } from '../../util/rank'
@@ -255,6 +255,9 @@ export default class Index extends Component {
     const {searchValue, searchResult, isLoading, selected, options, showAllCategories, isReadMode} = this.state;
     return (
       <View className={`criminal-page ${isReadMode ? 'read-mode' : ''}`}>
+          <AtNoticebar marquee speed={60}>
+            中华人民共和国刑法修正案(十一)已于2021年3月1日起施行
+          </AtNoticebar>
           <View className='header'>
             <View className='select'>
               <View>
