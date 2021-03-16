@@ -1,8 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, Image, Video, Text} from '@tarojs/components'
-import {AtAvatar,AtButton, AtBadge, AtIcon} from 'taro-ui'
+import {AtAvatar,AtButton, AtBadge, AtIcon, AtMessage} from 'taro-ui'
 import wife from '../../static/wife.png';
 import SentUsers from '../../components/sentUsers'
+import {audio} from '../../util/audio';
 import './index.scss'
 
 const FAIL_AUTH_DENY = 'getUserInfo:fail auth deny';
@@ -106,9 +107,13 @@ export default class Other extends Component {
     clearInterval(this.timerID)
   }
 
-  componentDidShow () { }
+  componentDidShow () {
+    audio.play()
+  }
 
-  componentDidHide () { }
+  componentDidHide () {
+    audio.stop()
+  }
 
   handleCongrats = () => {
     Taro.showToast({
@@ -135,15 +140,33 @@ export default class Other extends Component {
         avatarUrl: res.detail.userInfo.avatarUrl
       },
       complete: r => {
+        // Taro.atMessage({
+        //   'message': `${res.detail.userInfo.nickName},谢谢你的祝福!`,
+        //   'type': 'success',
+        // })
         Taro.showToast({
           title: `${res.detail.userInfo.nickName},谢谢你的祝福!`,
           icon: 'none',
           duration: 3000
         });
-        Taro.hideLoading();
-        that.setState({
-          record: new Date().toLocaleString('zh-CN')
+
+        Taro.cloud.callFunction({
+          name: 'getCongrats',
+          complete: r => {
+            console.log(r)
+            const {countVisit, countSend, sends} = r.result
+            that.setState({
+              countVisit: countVisit.total,
+              countSend: countSend.total,
+              sends: sends.data
+            })
+            Taro.hideLoading();
+            that.setState({
+              record: new Date().toLocaleString('zh-CN')
+            })
+          }
         })
+
       }
     })
   }
@@ -171,17 +194,21 @@ export default class Other extends Component {
         </View>}
         {millis < 0 && <View className='center'>
           <View className='text-container'>
-            <View>🎉热烈庆祝黄漫琳生日快乐🎉</View>
+            <View className='pink'>飘落的樱花🌸 你我无尽的回忆 落下枝头</View>
+            <View className='pink'>我要定格美丽而短暂的瞬间</View>
+            <View className='pink'>直到永远......</View>
+            <View className='pink'>2021314</View>
+            <View>🎉亲爱的黄漫琳生日快乐🎉</View>
           </View>
         </View>}
         {loaded && <View>
-          {!record && <View className='button-line'>
+          {!record && <View className='button-line success-msg'>
             <AtButton
               type='secondary'
               openType='getUserInfo'
               onGetUserInfo={this.handleLogin}>🎂快点我送上生日祝福吧🎂</AtButton>
           </View>}
-          {record && <View className='center small'>{`🎂你已经在${record}送上祝福啦🎂`}</View>}
+          {record && <View className='center small success-msg'>{`🎂你已经在${record}送上祝福啦🎂`}</View>}
         </View>}
 
 
@@ -197,8 +224,8 @@ export default class Other extends Component {
         </View>
         <View>
           <SentUsers list={sends} />
-          <View className='center small gray'>
-            共有{countSend}人发送祝福,共围观{countVisit}次
+          <View className='center small gray record'>
+            共有{countSend}人发送祝福,共围观{countVisit}人次
           </View>
         </View>
         <View className='snow-container'>
@@ -223,7 +250,24 @@ export default class Other extends Component {
           <View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View>
           <View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View>
           <View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View>
+          <View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View>
+          <View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View>
+          <View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View>
+          <View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View>
+          <View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View>
+          <View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View>
+          <View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View>
+          <View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View>
+          <View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View>
+          <View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View>
+          <View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View>
+          <View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View><View className='snow'></View>
+          <View className='snow'></View><View className='snow'></View>
         </View>
+        <View>
+          <Image src='https://res.cloudinary.com/mini-store-2020/image/upload/v1615567522/sakura_zhtfia.png' className='background-image' mode='widthFix' />
+        </View>
+        <AtMessage />
       </View>
     )
   }

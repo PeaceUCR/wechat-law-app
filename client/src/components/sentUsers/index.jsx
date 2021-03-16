@@ -24,7 +24,7 @@ export default class SentUsers extends Component{
           </View>;
         })
       }
-      {list && list.length > 8 && <View>...</View>}
+      <View>...</View>
     </View>;
   }
 }
