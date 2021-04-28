@@ -112,7 +112,7 @@ const MyCollection = (props) => {
     <View>
       {otherKeys.length > 0 && <View className='sub-title'>
         <View className='divider'></View>
-        <View className='text'>相关解释、规定、指导意见、案例、公报</View>
+        <View className='text'>相关解释、规定、指导意见、案例、公报、参考</View>
         <View className='divider'></View>
       </View>}
       {otherKeys.map(otherKey => (

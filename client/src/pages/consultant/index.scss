@@ -70,7 +70,7 @@
     left: 0;
     height: calc( 100vh - 100px );
     width: 100%;
-    background: lightgray;
+    background: transparent;
   }
 
   .no-result {
@@ -90,7 +90,7 @@
 
   .float-help {
     position: fixed;
-    top: 9%;
+    top: 14%;
     right: 60px;
   }
 

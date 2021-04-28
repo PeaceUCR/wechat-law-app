@@ -4,10 +4,6 @@ import { AtSearchBar, AtActivityIndicator, AtFab, AtBadge, AtIcon } from 'taro-u
 import {isEmpty} from 'lodash';
 import { db } from '../../util/db'
 import {
-  courtExampleTitleMap,
-  procuratorateExampleTitleMap,
-  procuratorateMap,
-  courtMap,
   invalidCourtExample
 } from '../../util/util'
 import { ExampleSearchItem } from '../../components/exampleSearchItem/index.weapp'
@@ -25,7 +21,11 @@ export default class Index extends Component {
     isExpandLabel: false,
     selected: '搜关键字',
     options: ['搜关键字', '搜案例名', '搜相关法条'],
-    isReadMode: false
+    isReadMode: false,
+    procuratorateMap: {},
+    procuratorateExampleTitleMap: {},
+    courtMap: {},
+    courtExampleTitleMap: {}
   }
 
   config = {
@@ -37,7 +37,9 @@ export default class Index extends Component {
       path: 'pages/index/index'
     };
   }
+
   componentWillMount () {
+    const that = this;
     const setting = getStorageSync('setting');
     this.setState({isReadMode: setting && setting.isReadMode})
     if (setting && setting.isReadMode) {
@@ -47,6 +49,37 @@ export default class Index extends Component {
         backgroundColor: '#F4ECD8'
       })
     }
+
+    Taro.showLoading({
+      title: '目录加载中',
+    })
+    Taro.cloud.callFunction({
+      name: 'getExamples',
+      complete: r => {
+        const {result} = r;
+        const {courtExamples, procuratorateExamples} = result;
+        const procuratorateMap = {}
+        const procuratorateExampleTitleMap = {}
+        const courtMap = {}
+        const courtExampleTitleMap = {}
+        procuratorateExamples.forEach(e => {
+          procuratorateMap[e.number] = e._id
+          procuratorateExampleTitleMap[e._id] = `(检例第${e.number}号)${e.name}`
+        })
+        courtExamples.forEach(e => {
+          courtMap[e.number] = e._id
+          courtExampleTitleMap[e._id] = e.title
+        })
+        that.setState({
+          procuratorateMap,
+          procuratorateExampleTitleMap,
+          courtMap,
+          courtExampleTitleMap
+        })
+
+        Taro.hideLoading()
+      }
+    })
   }
 
   componentDidMount () { }
@@ -211,7 +244,13 @@ export default class Index extends Component {
   }
 
   renderOptionList = () => {
-    const { isExpandLabel } = this.state;
+    const {
+      isExpandLabel,
+      procuratorateMap,
+      procuratorateExampleTitleMap,
+      courtMap,
+      courtExampleTitleMap
+    } = this.state;
     return (<View>
       <View className='title'>检察院指导案例：</View>
       <View className='options'>

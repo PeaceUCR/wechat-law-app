@@ -7,7 +7,6 @@ import { LoginPopup } from '../../components/loginPopup/index.weapp'
 import { UserFloatButton } from '../../components/userFloatButton/index.weapp'
 import lawIcon from '../../static/law.png';
 import logo from '../../static/logo.png';
-import cake from '../../static/cake.png';
 import {checkIfNewUser, getUserAvatar, getUserNickname} from '../../util/login';
 import './index.scss'
 import {db} from "../../util/db";
@@ -30,8 +29,7 @@ export default class Index extends Component {
         },
         {
           title: '(最高法)适用刑事诉讼法的解释',
-          url: '/pages/litigationExplanation/index',
-          isNew: true
+          url: '/pages/litigationExplanation/index'
         },
         {
           title: '(最高检)刑事诉讼规则',
@@ -43,7 +41,8 @@ export default class Index extends Component {
         },
         {
           title: '刑事审判参考',
-          url: '/pages/consultant/index'
+          url: '/pages/consultant/index',
+          isUpdated: true
         }
       ],
       '民法典相关': [
@@ -64,8 +63,7 @@ export default class Index extends Component {
       '共有': [
         {
           title: '指导案例',
-          url: '/pages/examples/index',
-          isUpdated: true
+          url: '/pages/examples/index'
         },
         {
           title: '最高法公报案例',
@@ -245,16 +243,16 @@ export default class Index extends Component {
         <AtNoticebar marquee speed={60}>
           本小程序数据信息均来源于最高检，最高法，公安部，司法部等权威发布
         </AtNoticebar>
-        {getUserNickname() !== 'echo' && <View className='cake-container' onClick={() => {
-          Taro.navigateTo({
-            url: '/pages/cake/index'
-          })
-        }}
-        >
-          <AtBadge value='生日'>
-            <Image src={cake} className='cake' />
-          </AtBadge>
-        </View>}
+        {/*{getUserNickname() !== 'echo' && <View className='cake-container' onClick={() => {*/}
+        {/*  Taro.navigateTo({*/}
+        {/*    url: '/pages/cake/index'*/}
+        {/*  })*/}
+        {/*}}*/}
+        {/*>*/}
+        {/*  <AtBadge value='生日'>*/}
+        {/*    <Image src={cake} className='cake' />*/}
+        {/*  </AtBadge>*/}
+        {/*</View>}*/}
           <View className='icon-container'>
             <Image src={lawIcon} className='icon-title' />
           </View>

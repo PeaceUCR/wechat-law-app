@@ -14,7 +14,7 @@ class App extends Component {
   config = {
     pages: [
       'pages/index/index',
-      'pages/cake/index',
+      // 'pages/cake/index',
       'pages/judgement/index',
       'pages/usage/index',
       'pages/examples/index',
