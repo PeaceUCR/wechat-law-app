@@ -91,12 +91,13 @@ export default class Index extends Component {
   componentDidHide () { }
 
   renderSearchList = () => {
-    const {searchResult,isReadMode} = this.state
+    const {searchValue, searchResult,isReadMode} = this.state
     return (<View>
       {searchResult.map((
         (data) => {
           return (
             <LitigationSearchItem
+              keyword={searchValue}
               isReadMode={isReadMode}
               data={data}
               key={`term-${data._id}`}

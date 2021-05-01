@@ -55,6 +55,7 @@ export default class TermDetail extends Component {
     const that = this;
     db.collection('terms').where({_id: id}).get({
       success: (res) => {
+        console.log('res', res)
         const term = res.data[0];
         that.setState({term});
         db.collection('procuratorate-examples')
@@ -124,7 +125,7 @@ export default class TermDetail extends Component {
         type: 'criminalLawTermDetail'
       },
       complete: (r) => {
-
+        console.log(r)
         if (r && r.result && r.result.data && r.result.data.length > 0) {
           that.setState({isCollected: true})
         }

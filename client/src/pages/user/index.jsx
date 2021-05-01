@@ -1,6 +1,6 @@
 import Taro, { Component, setStorageSync, getStorageSync} from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import {AtSwitch,AtNoticebar,AtActivityIndicator,AtButton} from "taro-ui";
+import {AtSwitch,AtNoticebar,AtActivityIndicator} from "taro-ui";
 import MyCollection from '../../components/myCollection'
 import './index.scss'
 import {tmpId} from '../../util/util'
@@ -24,7 +24,6 @@ export default class User extends Component {
   }
 
   componentWillMount () {
-
     const setting = getStorageSync('setting');
     this.setState({isReadMode: setting && setting.isReadMode})
 

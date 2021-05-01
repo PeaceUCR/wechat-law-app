@@ -92,6 +92,13 @@ export default class Index extends Component {
           name: searchValue
         },
         complete: r => {
+          if (isEmpty(r.result.result.data)) {
+            Taro.showToast({
+              title: `未找到含有${searchValue}的案例`,
+              icon: 'none',
+              duration: 3000
+            })
+          }
           that.setState({searchResult: [...r.result.result.data], isLoading: false});
         }
       })
@@ -105,6 +112,13 @@ export default class Index extends Component {
           number: searchValue
         },
         complete: r => {
+          if (isEmpty(r.result.result.data)) {
+            Taro.showToast({
+              title: `未找到含有${searchValue}的案例`,
+              icon: 'none',
+              duration: 3000
+            })
+          }
           that.setState({searchResult: [...r.result.result.data], isLoading: false});
         }
       })

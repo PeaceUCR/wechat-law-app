@@ -1,4 +1,4 @@
-import Taro, {Component,getStorageSync } from '@tarojs/taro'
+import Taro, {Component} from '@tarojs/taro'
 import {View, Text, Picker, Image} from '@tarojs/components'
 import {AtSearchBar, AtActivityIndicator, AtBadge, AtIcon, AtSwitch} from 'taro-ui'
 import {isEmpty} from 'lodash';
@@ -97,13 +97,14 @@ export default class Index extends Component {
     if (selected === '搜全文') {
       if (!isNaN(parseInt(searchValue))) {
         console.log(isNaN(parseInt(searchValue)))
-        db.collection('civil-law').where({number: db.RegExp({
-            regexp: '.*' + convertNumberToChinese(parseInt(searchValue)),
-            options: 'i',
-          })})
-          .orderBy('numberIndex', 'asc')
-          .get({
-          success: (res) => {
+        Taro.cloud.callFunction({
+          name: 'getCivilLaws',
+          data: {
+            searchValue: convertNumberToChinese(parseInt(searchValue)),
+            type: '搜序号'
+          },
+          complete: (r) => {
+            const res = r.result
             if (isEmpty(res.data)) {
               Taro.showToast({
                 title: `未找到含有${searchValue}的法条`,
@@ -116,11 +117,15 @@ export default class Index extends Component {
         })
         return ;
       }
-      db.collection('civil-law').where({text: db.RegExp({
-          regexp: '.*' + searchValue,
-          options: 'i',
-        })}).orderBy('numberIndex', 'asc').get({
-        success: (res) => {
+
+      Taro.cloud.callFunction({
+        name: 'getCivilLaws',
+        data: {
+          searchValue: searchValue,
+          type: '搜全文'
+        },
+        complete: (r) => {
+          const res = r.result
           if (isEmpty(res.data)) {
             Taro.showToast({
               title: `未找到含有${searchValue}的法条`,
@@ -130,15 +135,19 @@ export default class Index extends Component {
           }
           that.setState({searchResult: res.data, isLoading: false, hasSearched: true});
         }
-      });
+      })
     }
 
     if (selected === '搜序号') {
-      db.collection('civil-law').where({number: db.RegExp({
-          regexp: '.*' + convertNumberToChinese(searchValue),
-          options: 'i',
-        })}).orderBy('numberIndex', 'asc').get({
-        success: (res) => {
+
+      Taro.cloud.callFunction({
+        name: 'getCivilLaws',
+        data: {
+          searchValue: convertNumberToChinese(searchValue),
+          type: '搜序号'
+        },
+        complete: (r) => {
+          const res = r.result
           if (isEmpty(res.data)) {
             Taro.showToast({
               title: `未找到含有${searchValue}的法条`,
@@ -152,11 +161,14 @@ export default class Index extends Component {
     }
 
     if (selected === '搜条旨') {
-      db.collection('civil-law').where({tag: db.RegExp({
-          regexp: '.*' + searchValue,
-          options: 'i',
-        })}).orderBy('numberIndex', 'asc').get({
-        success: (res) => {
+      Taro.cloud.callFunction({
+        name: 'getCivilLaws',
+        data: {
+          searchValue: searchValue,
+          type: '搜条旨'
+        },
+        complete: (r) => {
+          const res = r.result
           if (isEmpty(res.data)) {
             Taro.showToast({
               title: `未找到含有${searchValue}的法条`,

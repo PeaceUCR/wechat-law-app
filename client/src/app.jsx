@@ -1,4 +1,4 @@
-import Taro, { Component } from '@tarojs/taro'
+import Taro, { Component, getStorageSync, setStorageSync } from '@tarojs/taro'
 import Index from './pages/index'
 
 import './app.scss'
@@ -57,7 +57,6 @@ class App extends Component {
     Taro.cloud.callFunction({
       name: 'record'
     })
-
   }
 
   componentDidHide () {}

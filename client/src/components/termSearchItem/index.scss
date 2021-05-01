@@ -12,6 +12,19 @@
     background: #F4ECD8;
   }
 
+  &.deleted {
+    text-decoration: line-through;
+    text-decoration-color: yellow;
+    .crime {
+      text-decoration: line-through;
+      text-decoration-color: yellow;
+    }
+    .tag {
+      text-decoration: line-through;
+      text-decoration-color: yellow;
+    }
+  }
+
   .crime {
     background: darkred !important;
   }

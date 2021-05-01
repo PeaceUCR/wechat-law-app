@@ -32,6 +32,7 @@ const LawCategory = (props) => {
   return (
     <View className={`all-law-catgory-${catgoryLine.type}`}>
       {catgoryLine.laws && <AtAccordion
+        isAnimation={false}
         open={!isHidden}
         note={catgoryLine.value}
         hasBorder={false}
@@ -41,7 +42,7 @@ const LawCategory = (props) => {
           }
         }}
       >
-        {catgoryLine.laws && catgoryLine.laws.map((law, index) => {
+        {!isHidden && catgoryLine.laws && catgoryLine.laws.map((law, index) => {
             return (<View key={`all-law-catgoryLine-option-${index}`} className='all-law-catgory-option' onClick={() => {
               if (type === 'civil') {
                 Taro.navigateTo({

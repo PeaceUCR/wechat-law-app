@@ -62,7 +62,7 @@ export default class Index extends Component {
   componentDidHide () { }
 
   renderSearchList = () => {
-    const {searchResult,isReadMode} = this.state
+    const {searchValue, searchResult,isReadMode} = this.state
     searchResult.sort((a, b) => {
       return getNumber(a.item) - getNumber(b.item)
     })
@@ -71,6 +71,7 @@ export default class Index extends Component {
         (data) => {
           return (
             <LitigationSearchItem
+              keyword={searchValue}
               isReadMode={isReadMode}
               data={data}
               key={`term-${data._id}`}
@@ -112,12 +113,16 @@ export default class Index extends Component {
       })
       return ;
     }
-    db.collection('litigation-regulation').where({content: db.RegExp({
-        regexp: '.*' + convertNumberToChinese(searchValue),
-        options: 'i',
-      })}).get({
-      success: that.handleDBSearchSuccess
-    });
+    Taro.cloud.callFunction({
+      name: 'getLitigationRegulation',
+      data: {
+        searchValue: searchValue,
+      },
+      complete: (r) => {
+
+        that.handleDBSearchSuccess(r.result)
+      }
+    })
   }
 
   onSearchByChapter = (searchValue) => {
@@ -131,12 +136,18 @@ export default class Index extends Component {
       })
       return ;
     }
-    db.collection('litigation-regulation').where({chapter: db.RegExp({
-        regexp: '.*' + searchValue,
-        options: 'i',
-      })}).get({
-      success: that.handleDBSearchSuccess
-    });
+
+    Taro.cloud.callFunction({
+      name: 'getLitigationRegulation',
+      data: {
+        searchValue: searchValue,
+        type: 'chapter'
+      },
+      complete: (r) => {
+
+        that.handleDBSearchSuccess(r.result)
+      }
+    })
   }
 
   onSearchBySection = (searchValue) => {
@@ -150,12 +161,17 @@ export default class Index extends Component {
       })
       return ;
     }
-    db.collection('litigation-regulation').where({section: db.RegExp({
-        regexp: '.*' + searchValue,
-        options: 'i',
-      })}).get({
-      success: that.handleDBSearchSuccess
-    });
+    Taro.cloud.callFunction({
+      name: 'getLitigationRegulation',
+      data: {
+        searchValue: searchValue,
+        type: 'section'
+      },
+      complete: (r) => {
+
+        that.handleDBSearchSuccess(r.result)
+      }
+    })
   }
 
   onClear = () => {

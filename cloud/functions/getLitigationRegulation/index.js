@@ -11,25 +11,23 @@ exports.main = async (event, context) => {
 
   const type = event.type
   const searchValue = event.searchValue
+
   if (type === 'chapter') {
-    return await db.collection('litigation-explanation').where({chapter: db.RegExp({
+    return await db.collection('litigation-regulation').where({chapter: db.RegExp({
         regexp: '.*' + searchValue,
         options: 'i',
       })}).orderBy('number', 'asc').limit(1000).get()
   } else if (type === 'section') {
-    return await db.collection('litigation-explanation').where({section: db.RegExp({
+    return await db.collection('litigation-regulation').where({section: db.RegExp({
         regexp: '.*' + searchValue,
         options: 'i',
       })}).orderBy('number', 'asc').limit(1000).get()
   }
-  return await db.collection('litigation-explanation')
+  return await db.collection('litigation-regulation')
       .where({content: db.RegExp({
           regexp: '.*' + searchValue,
           options: 'i',
         })}).orderBy('number', 'asc').limit(1000).get()
 
-  //
-  // return {
-  //   openid: wxContext.OPENID
-  // }
+
 }

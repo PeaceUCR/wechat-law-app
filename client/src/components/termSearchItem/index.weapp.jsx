@@ -6,7 +6,7 @@ import './index.scss'
 const TermSearchItem = (props) => {
   let {term, disableRedirect, type, isReadMode, keyword} = props;
   term = term ? term : {};
-  const {text, crime, tag, _id} = term;
+  const {text, crime, tag, _id, isDeleted} = term;
   const isCrime = crime && tag === crime;
   const redirect = throttle(
     () => {
@@ -39,7 +39,7 @@ const TermSearchItem = (props) => {
     }
   }
 
-  return (<View className={`search-item ${isReadMode ? 'read-mode' : ''}`} onClick={redirect} >
+  return (<View className={`search-item ${isReadMode ? 'read-mode' : ''} ${isDeleted ? 'deleted' : ''}`} onClick={redirect} >
     <View className={isCrime? 'crime tag':'tag'}>{tag}</View>
     {type !== 'police' && text && <View>{
       text.split('\n').filter(line => line.trim() && line.trim().length > 0).map((t, index) => {
