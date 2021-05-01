@@ -145,8 +145,16 @@ export default class Index extends Component {
   componentDidShow () {
     console.log('show')
     const setting = getStorageSync('setting');
-    this.setState({isReadMode: setting && setting.isReadMode})
-    if (setting && setting.isReadMode) {
+    if (setting && setting.isReadMode === false) {
+      this.setState({isReadMode: false})
+    } else {
+      setStorageSync('setting', { isReadMode: true })
+      this.setState({isReadMode: true})
+      console.log('default set to read mode')
+    }
+
+    const {isReadMode} = this.state;
+    if ( isReadMode ) {
       console.log('read')
       Taro.setNavigationBarColor({
         frontColor: '#000000',
