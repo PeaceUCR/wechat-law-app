@@ -50,7 +50,7 @@ class App extends Component {
   }
 
   componentDidShow () {
-    console.log('show')
+    console.log('app jsx show')
     Taro.cloud.init({
       traceUser: true
     });

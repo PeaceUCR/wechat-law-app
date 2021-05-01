@@ -38,7 +38,7 @@ const DiscussionArea = (props) => {
     })
   }
 
-  console.log(topicId)
+  // console.log(topicId)
   useEffect(()=> {
     if ((topicId && comments.length === 0) || isSent) {
       fetchData()

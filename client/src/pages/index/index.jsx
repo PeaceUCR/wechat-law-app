@@ -143,7 +143,6 @@ export default class Index extends Component {
   componentWillUnmount () { }
 
   componentDidShow () {
-    console.log('show')
     const setting = getStorageSync('setting');
     if (setting && setting.isReadMode === false) {
       this.setState({isReadMode: false})
