@@ -1,6 +1,6 @@
 import Taro, { Component, getStorageSync, setStorageSync } from '@tarojs/taro'
-import {View, Image, Text} from '@tarojs/components'
-import {AtIcon, AtDivider, AtBadge, AtNoticebar, AtTabs, AtTabsPane, AtCurtain} from "taro-ui";
+import {View, Image, Text, Swiper, SwiperItem} from '@tarojs/components'
+import {AtIcon, AtDivider, AtBadge, AtNoticebar, AtTabs, AtTabsPane, AtCurtain } from "taro-ui";
 import throttle from 'lodash/throttle';
 import { GridItem } from '../../components/grid/index.weapp'
 import { LoginPopup } from '../../components/loginPopup/index.weapp'
@@ -21,27 +21,33 @@ export default class Index extends Component {
         {
           title:'刑法',
           url: '/pages/criminalLaw/index',
-          isHot: true
+          type: '刑法'
+          // isHot: true
         },
         {
           title: '刑事诉讼法',
-          url: '/pages/litigationLaw/index'
+          url: '/pages/litigationLaw/index',
+          type: '刑法'
         },
         {
           title: '(最高法)适用刑事诉讼法的解释',
-          url: '/pages/litigationExplanation/index'
+          url: '/pages/litigationExplanation/index',
+          type: '刑法'
         },
         {
           title: '(最高检)刑事诉讼规则',
-          url: '/pages/litigationRegulation/index'
+          url: '/pages/litigationRegulation/index',
+          type: '刑法'
         },
         {
           title: '公安机关办理刑事案件程序规定',
-          url: '/pages/policeRegulation/index'
+          url: '/pages/policeRegulation/index',
+          type: '刑法'
         },
         {
           title: '刑事审判参考',
           url: '/pages/consultant/index',
+          type: '刑法',
           isUpdated: true
         }
       ],
@@ -49,31 +55,36 @@ export default class Index extends Component {
         {
         title: '民法典',
         url: '/pages/civilLaw/index',
-        isHot: true
+        type: '民法典'
+        // isHot: true
         },
         {
           title: '民事诉讼法',
-          url: '/pages/civilLawRegulation/index'
+          url: '/pages/civilLawRegulation/index',
+          type: '民法典'
         },
         {
           title: '民法典相关司法解释',
-          url: '/pages/civilLawExplaination/index'
+          url: '/pages/civilLawExplaination/index',
+          type: '民法典'
         }
       ],
       '共有': [
         {
           title: '指导案例',
-          url: '/pages/examples/index'
+          url: '/pages/examples/index',
+          type: '共有'
         },
         {
           title: '最高法公报案例',
-          url: '/pages/courtOpen/index'
-        },
-        {
-          title: '裁判文书',
-          url: '',
-          isUnderConstruction: true
+          url: '/pages/courtOpen/index',
+          type: '共有'
         }
+        // {
+        //   title: '裁判文书',
+        //   url: '',
+        //   isUnderConstruction: true
+        // }
       ]
     },
     isNewUser: false,
@@ -84,7 +95,11 @@ export default class Index extends Component {
     current: 0,
     posterUrlForLoading: '',
     posterUrl: '',
-    isPosterLoading: true
+    isPosterLoading: true,
+    swiperPosters: [
+      'https://6465-dev-ial1c-1304492798.tcb.qcloud.la/swiper-0.jpg?sign=55ca212159e531874f4207a60a41e3cc&t=1620197528',
+      'https://6465-dev-ial1c-1304492798.tcb.qcloud.la/swiper-2.jpg?sign=5dc06a1a7508de64e3433660ad746606&t=1620123890'
+    ]
   }
 
   config = {
@@ -243,8 +258,21 @@ export default class Index extends Component {
     });
   };
 
+  handleClickMainSwiper = () => {
+    Taro.showToast({
+      title: '搜法～搜你想要的法律知识~',
+      icon: 'none',
+      duration: 2000
+    })
+  }
+
+  handleClickSecondSwiper = () => {
+    Taro.navigateTo({
+      url: '/pages/consultant/index'
+    })
+  }
   render () {
-    const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl} = this.state;
+    const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl, swiperPosters} = this.state;
     return (
       <View className={`index-page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
@@ -260,9 +288,27 @@ export default class Index extends Component {
         {/*    <Image src={cake} className='cake' />*/}
         {/*  </AtBadge>*/}
         {/*</View>}*/}
-          <View className='icon-container'>
-            <Image src={lawIcon} className='icon-title' />
-          </View>
+        {/*  <View className='icon-container'>*/}
+        {/*    <Image src={lawIcon} className='icon-title' />*/}
+        {/*  </View>*/}
+        <Swiper
+          className='main-swiper'
+          indicatorColor='#999'
+          indicatorActiveColor='#333'
+          circular
+          autoplay
+        >
+          <SwiperItem>
+            <View className='swiper-item-container' onClick={this.handleClickMainSwiper}>
+              <Image className='image' src={swiperPosters[0]} mode='aspectFill' />
+            </View>
+          </SwiperItem>
+          <SwiperItem>
+            <View className='swiper-item-container' onClick={this.handleClickSecondSwiper}>
+              <Image className='image' src={swiperPosters[1]} mode='aspectFill' />
+            </View>
+          </SwiperItem>
+        </Swiper>
           {(getUserNickname() === 'echo' || getUserNickname() === 'peace') && <View className='float-analytics' onClick={() => {
             Taro.navigateTo({
               url: '/pages/usage/index'
@@ -273,11 +319,11 @@ export default class Index extends Component {
               <AtIcon value='analytics' size='30' color='#000'></AtIcon>
             </AtBadge>
           </View>}
-          {(!checkIfNewUser()) && <View className='float-subscribe' onClick={this.handleSubscribe}>
-            <AtBadge value='订阅'>
-              <AtIcon value='bell' size='30' color='#000'></AtIcon>
-            </AtBadge>
-          </View>}
+          {/*{(!checkIfNewUser()) && <View className='float-subscribe' onClick={this.handleSubscribe}>*/}
+          {/*  <AtBadge value='订阅'>*/}
+          {/*    <AtIcon value='bell' size='30' color='#000'></AtIcon>*/}
+          {/*  </AtBadge>*/}
+          {/*</View>}*/}
           <View className='float-help' onClick={() => {
             Taro.navigateTo({
               url: '/pages/other/index'

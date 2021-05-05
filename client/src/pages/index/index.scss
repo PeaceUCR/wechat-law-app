@@ -24,7 +24,7 @@
 
   .float-analytics {
     position: absolute;
-    top: 300px;
+    top: 160px;
     left: 60px;
   }
   .icon-container {
@@ -36,26 +36,32 @@
       width: 260px;
       height: 260px;
     }
-    .float-help {
+  }
 
+  .main-swiper {
+    height: 400px;
+  }
+  .swiper-item-container {
+    .image {
+      height: 400px;
+      width: 100vw;
     }
   }
 
   .grids {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
     justify-content: center;
     padding-top: 16px;
     padding-bottom: 8px;
     &:nth-child(2) {
-      background: rgba(160, 160, 160, 0.1);
+      //background: rgba(160, 160, 160, 0.1);
 
     }
   }
 
   .grid-container {
-    margin: 10px 6px;
+    margin: 10px auto;
   }
 
   .footer-container {
@@ -146,3 +152,8 @@
     -moz-transform: scale(0);
   }
 }
+
+//.at-tabs__header {
+//  position: fixed;
+//  z-index: 999;
+//}
