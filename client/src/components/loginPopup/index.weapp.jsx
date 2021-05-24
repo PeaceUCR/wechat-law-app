@@ -1,6 +1,6 @@
-import Taro, { setStorageSync, useState, useEffect } from '@tarojs/taro'
-import {Image, Text, View} from "@tarojs/components";
-import { avatarUrl } from '../../util/util';
+import Taro, {setStorageSync, useState, useEffect} from '@tarojs/taro'
+import {Image, Text, View, Button} from "@tarojs/components";
+import {avatarUrl} from '../../util/util';
 import './index.scss'
 
 const FAIL_AUTH_DENY = 'getUserInfo:fail auth deny';
@@ -8,31 +8,46 @@ const title = '首次使用，点我登录';
 
 const LoginPopup = (props) => {
 
-  const handleLogin = (res) => {
-    if (res.detail && res.detail.errMsg === FAIL_AUTH_DENY){
-      return Taro.showToast({
-        title: '授权失败',
-        icon: 'none',
-        duration: 1000
-      });
-    }
-    Taro.showLoading();
-    Taro.cloud.callFunction({
-      name: 'login',
-      data: {
-        nickName: res.detail.userInfo.nickName,
-        avatarUrl: res.detail.userInfo.avatarUrl
-      },
-      complete: r => {
-        setStorageSync('user', r.result.data[0]);
-        props.handleLoginSuccess();
+  const handleLogin = () => {
+    // if (res.detail && res.detail.errMsg === FAIL_AUTH_DENY){
+    //   return Taro.showToast({
+    //     title: '授权失败',
+    //     icon: 'none',
+    //     duration: 1000
+    //   });
+    // }
+
+    wx.getUserProfile({
+      desc: '用于显示用户头像', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+      fail: () => {
         Taro.showToast({
-          title: `欢迎${r.result.data[0].nickName}`,
+          title: '授权失败',
           icon: 'none',
-          duration: 2000
+          duration: 1000
         });
+      },
+      success: (res) => {
+        console.log(res.userInfo)
+        Taro.showLoading();
+        Taro.cloud.callFunction({
+          name: 'login',
+          data: {
+            nickName: res.userInfo.nickName,
+            avatarUrl: res.userInfo.avatarUrl
+          },
+          complete: r => {
+            setStorageSync('user', r.result.data[0]);
+            props.handleLoginSuccess();
+            Taro.showToast({
+              title: `欢迎${r.result.data[0].nickName}`,
+              icon: 'none',
+              duration: 2000
+            });
+          }
+        })
       }
     })
+
   }
   const [text, setText] = useState('');
 
@@ -46,13 +61,12 @@ const LoginPopup = (props) => {
     }
   })
 
-  return (<View className='login-popup' >
+  return (<View className='login-popup'>
     <Button
       className='login-button'
-      openType='getUserInfo'
-      onGetUserInfo={handleLogin}
+      onClick={handleLogin}
     >
-      <Image src={avatarUrl} className='avatar' />
+      <Image src={avatarUrl} className='avatar'/>
       <Text className='text'>{text}<Text className='cursor'></Text></Text>
     </Button>
   </View>)

@@ -12,6 +12,11 @@ exports.main = async (event, context) => {
   const type = event.type
   const searchValue = event.searchValue
 
+  if (!isNaN(parseInt(searchValue))) {
+      return await db.collection('litigation-law')
+          .where({number: parseInt(searchValue)}).orderBy('number', 'asc').limit(1000).get()
+  }
+
   if (type === 'chapter') {
     return await db.collection('litigation-law').where({chapter: db.RegExp({
         regexp: '.*' + searchValue,
