@@ -1,5 +1,5 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
-import { View, RichText, Input, Button } from '@tarojs/components'
+import { View, Text, RichText, Input, Button } from '@tarojs/components'
 import {AtFab,AtIcon,AtBadge,AtButton,AtActivityIndicator} from "taro-ui";
 import { db } from '../../util/db'
 import {checkIfNewUser, redirectToIndexIfNewUser} from '../../util/login'
@@ -131,7 +131,7 @@ export default class RegulationDetail extends Component {
 
     const that = this;
     const {isCollected, term, type} = this.state;
-    const {_id, item, number} = term
+    const {_id, item, number, tag} = term
 
     that.setState({isLoading: true})
     if (isCollected) {
@@ -151,12 +151,22 @@ export default class RegulationDetail extends Component {
         }
       })
     } else {
+      let title;
+      if (type === 'litigation-explanation' || type === 'police') {
+        title = number
+      } else if (type === 'civil-law-regulation') {
+        title = `${number} ${tag}`
+      } else if (type === 'litigation-law') {
+        title = `${item} ${tag}`
+      } else {
+        title = item
+      }
       Taro.cloud.callFunction({
         name: 'collect',
         data: {
           id: _id,
           type: type,
-          title: (type === 'litigation-explanation' || type === 'civil-law-regulation' || type === 'police') ? number : item
+          title: title
         },
         complete: (r) => {
           if (r && r.result && r.result.errMsg !== 'collection.add:ok') {
@@ -302,9 +312,10 @@ export default class RegulationDetail extends Component {
     const {isSent, comment, term, type, isCollected, isReadMode, zoomIn, isLoading} = this.state;
     return (
       <View className={`term-detail-page ${isReadMode ? 'read-mode' : ''} ${zoomIn ? 'zoom-in' : ''}`}>
-          <View className='main section'>
+        {(type === 'civil-law-regulation' || type === 'litigation-law') && term.tag && <View className='tag-line'><Text className='pre-tag'>法条要旨:</Text><Text className='tag'>{term.tag}</Text></View>}
+        <View className='main section'>
             <View>
-              {(type === 'police' || type === 'civil-law-regulation') &&this.renderTermText()}
+              {(type === 'police' || type === 'civil-law-regulation') && this.renderTermText()}
               {(type === 'litigation-law' || type === 'litigation-regulation' || type === 'litigation-explanation') && this.renderLitigation()}
             </View>
           </View>

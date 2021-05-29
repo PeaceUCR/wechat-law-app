@@ -1,6 +1,6 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
-import {Button, View} from '@tarojs/components'
-import { AtSearchBar, AtActivityIndicator, AtButton } from 'taro-ui'
+import {Button, View, Text} from '@tarojs/components'
+import { AtSearchBar, AtActivityIndicator, AtFab, AtButton } from 'taro-ui'
 import {isEmpty} from "lodash"
 import { db } from '../../util/db'
 import { LitigationSearchItem } from '../../components/litigationSearchItem/index.weapp'
@@ -24,6 +24,12 @@ export default class Index extends Component {
     navigationBarTitleText: '刑事诉讼法搜索'
   }
 
+  reset = () => {
+    this.setState({
+      searchValue: '',
+      searchResult: []
+    })
+  }
   onShareAppMessage() {
     return {
       path: 'pages/index/index'
@@ -163,7 +169,6 @@ export default class Index extends Component {
         type: 'section'
       },
       complete: (r) => {
-
         that.handleDBSearchSuccess(r.result)
       }
     })
@@ -269,6 +274,9 @@ export default class Index extends Component {
             <View>
               {searchResult.length > 0 && this.renderSearchList()}
             </View>
+            {searchResult.length > 0 && <AtFab className='float' onClick={() => this.reset()}>
+              <Text>重置</Text>
+            </AtFab>}
             {isLoading && <View className='loading-container'>
               <AtActivityIndicator mode='center' color='black'  size={82}></AtActivityIndicator>
             </View>}

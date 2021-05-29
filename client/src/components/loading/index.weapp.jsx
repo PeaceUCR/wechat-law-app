@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro';
 import { View, Image } from '@tarojs/components';
 import './index.scss';
 
-
+// import { Loading } from '../../components/loading/index.weapp'
 const Loading = () => {
   return (<View className='loading-container'>
     <View className='loading-cat'>
@@ -22,5 +22,11 @@ const Loading = () => {
     <View className='center'>加载中...</View>
   </View>)
 }
+// const Loading = () => {
+//   return (<View className='loading-container'>
+//     <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
+//   </View>)
+// }
+
 
 export default Loading;
