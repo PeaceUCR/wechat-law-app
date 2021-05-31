@@ -4,6 +4,7 @@ import {AtIcon, AtDivider, AtBadge, AtNoticebar, AtTabs, AtTabsPane, AtCurtain }
 import throttle from 'lodash/throttle';
 import { GridItem } from '../../components/grid/index.weapp'
 import { LoginPopup } from '../../components/loginPopup/index.weapp'
+import { ImageRecoginzer } from '../../components/imageRecoginzer/index.weapp'
 import { UserFloatButton } from '../../components/userFloatButton/index.weapp'
 import lawIcon from '../../static/law.png';
 import logo from '../../static/logo.png';

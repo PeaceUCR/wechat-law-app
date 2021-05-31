@@ -4,13 +4,15 @@ import {AtSwitch,AtNoticebar,AtActivityIndicator} from "taro-ui";
 import MyCollection from '../../components/myCollection'
 import './index.scss'
 import {tmpId} from '../../util/util'
+import {ImageRecoginzer} from "../../components/imageRecoginzer/index.weapp";
 
 export default class User extends Component {
 
   state = {
     isReadMode: false,
     collection: [],
-    isLoading: false
+    isLoading: false,
+    showImageRecognize: false
   }
 
   config = {
@@ -114,8 +116,16 @@ export default class User extends Component {
     })
   }
 
+  open = () => {
+    this.setState({ showImageRecognize: true })
+  }
+
+  close = () => {
+    this.setState({ showImageRecognize: false })
+  }
+
   render () {
-    const {isLoading, isReadMode, collection} = this.state;
+    const {isLoading, isReadMode, collection, showImageRecognize} = this.state;
     return (
       <View className={`user-page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
@@ -124,10 +134,16 @@ export default class User extends Component {
         <View>
           <AtSwitch title='护眼模式' checked={isReadMode} onChange={this.handleChange} />
         </View>
+        <View>
+          <AtSwitch title='AI图片识别[体验版]' checked={showImageRecognize} onChange={this.open} />
+        </View>
         {/*<View>*/}
         {/*  <AtButton type='secondary' onClick={this.handleSubscribe}>点击订阅消息</AtButton>*/}
         {/*</View>*/}
         <MyCollection collection={collection} />
+        {
+          showImageRecognize && <ImageRecoginzer open={this.open} close={this.close} />
+        }
         {
           isLoading && <AtActivityIndicator mode='center' color='black' content='数据加载中...' size={62}></AtActivityIndicator>
         }

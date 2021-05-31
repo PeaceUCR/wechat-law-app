@@ -1,12 +1,14 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {Button, View, Text} from '@tarojs/components'
-import { AtSearchBar, AtActivityIndicator, AtFab, AtButton } from 'taro-ui'
+import { AtSearchBar, AtActivityIndicator, AtFab, AtNoticebar } from 'taro-ui'
 import {isEmpty} from "lodash"
 import { db } from '../../util/db'
 import { LitigationSearchItem } from '../../components/litigationSearchItem/index.weapp'
-import {convertNumberToChinese, getNumber} from '../../util/convertNumber'
+import {getNumber} from '../../util/convertNumber'
 import './index.scss'
 import {HierarchicalOptions} from "../../components/hierarchicalOptions/index.weapp";
+import {litigationLawCategoryLines} from "../../util/util";
+import {LawCategory} from "../../components/lawCategory/index.weapp";
 
 export default class Index extends Component {
 
@@ -17,7 +19,7 @@ export default class Index extends Component {
     isLoading: false,
     modalContent: '',
     isOpened: false,
-    isReadMode: false
+    isReadMode: true
   }
 
   config = {
@@ -53,15 +55,15 @@ export default class Index extends Component {
   componentWillUnmount () { }
 
   componentDidShow () {
-    const that = this;
-    that.setState({isLoading: true});
-    db.collection('configuration').where({}).get({
-      success: (res) => {
-        that.setState({
-          litigationLawOptions: res.data[0]['litigation-law'],
-          isLoading: false});
-      }
-    });
+    // const that = this;
+    // that.setState({isLoading: true});
+    // db.collection('configuration').where({}).get({
+    //   success: (res) => {
+    //     that.setState({
+    //       litigationLawOptions: res.data[0]['litigation-law'],
+    //       isLoading: false});
+    //   }
+    // });
   }
 
   componentDidHide () { }
@@ -253,10 +255,19 @@ export default class Index extends Component {
     });
   }
 
+  renderAllCatgories = () => {
+    return litigationLawCategoryLines
+      .map((catgoryLine, index)=> {
+        return (<LawCategory catgoryLine={catgoryLine} key={`all-law-catgoryLine-${index}`} type='litigation-law' />)
+      })
+  }
   render () {
     const {searchValue, searchResult, litigationLawOptions, isLoading, modalContent, isOpened, isReadMode} = this.state;
     return (
       <View className={`litigation-law-page ${isReadMode ? 'read-mode' : ''}`}>
+          <AtNoticebar marquee speed={60}>
+            根据2018年10月26日第十三届全国人民代表大会常务委员会第六次会议《关于修改〈中华人民共和国刑事诉讼法〉的决定》第三次修正
+          </AtNoticebar>
           <View>
             <AtSearchBar
               value={searchValue}
@@ -268,8 +279,7 @@ export default class Index extends Component {
           </View>
           <View>
             <View>
-              {searchResult.length === 0 &&
-              <HierarchicalOptions isReadMode={isReadMode} options={litigationLawOptions} onClick={this.onClickOptionItem} />}
+              {searchResult.length === 0 && this.renderAllCatgories()}
             </View>
             <View>
               {searchResult.length > 0 && this.renderSearchList()}

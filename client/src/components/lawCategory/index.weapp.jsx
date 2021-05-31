@@ -2,7 +2,7 @@ import Taro, {useState} from '@tarojs/taro'
 import {View} from "@tarojs/components";
 import {AtAccordion} from "taro-ui";
 import './index.scss'
-import {lawLabelMap, lawMap, civilLawIdMap, civilTagMap, policeRegulationIdMap, civilLawRegulationIdMap} from '../../util/util'
+import {lawLabelMap, lawMap, civilLawIdMap, civilTagMap, policeRegulationIdMap, civilLawRegulationIdMap, litigationLawIdMap} from '../../util/util'
 
 const LawCategory = (props) => {
   let {catgoryLine, type} = props;
@@ -56,6 +56,10 @@ const LawCategory = (props) => {
                 Taro.navigateTo({
                   url: `/pages/regulationDetail/index?id=${civilLawRegulationIdMap[law]}&type=${type}`,
                 })
+              }  else if (type === 'litigation-law') {
+                Taro.navigateTo({
+                  url: `/pages/regulationDetail/index?id=${litigationLawIdMap[law]}&type=${type}`,
+                })
               } else {
                 Taro.navigateTo({
                   url: `/pages/termDetail/index?id=${lawMap[law]}`,
@@ -65,7 +69,7 @@ const LawCategory = (props) => {
             }}
             >
               {type === 'civil'? `${law} ${civilTagMap[law]}` :
-                type === 'police' || type === 'civil-law-regulation' ? law : lawLabelMap[law]}
+                type === 'police' || type === 'civil-law-regulation' || type === 'litigation-law' ? law : lawLabelMap[law]}
             </View>)
           }
         )}

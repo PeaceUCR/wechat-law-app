@@ -96,9 +96,8 @@
   }
   .float {
     position: fixed;
-    background: green;
     bottom: 5%;
-    right: 5%;
+    right: 10%;
   }
   .term-complement {
     margin-top: 10px;
@@ -116,10 +115,10 @@
 
   .float-help {
     position: fixed;
-    top: 12%;
+    top: 2%;
     right: 60px;
     &.search-mode {
-      top: 18%;
+      top: 12%;
     }
   }
   .switch-line {
@@ -135,3 +134,4 @@
 .at-accordion__info__note {
   width: 80vw;
 }
+

@@ -1,6 +1,6 @@
 import Taro, {Component} from '@tarojs/taro'
 import {View, Text, Picker, Image} from '@tarojs/components'
-import {AtSearchBar, AtActivityIndicator, AtBadge, AtIcon, AtSwitch} from 'taro-ui'
+import {AtSearchBar, AtActivityIndicator, AtBadge, AtIcon, AtSwitch, AtFab} from 'taro-ui'
 import {isEmpty} from 'lodash';
 import { db } from '../../util/db'
 import { TermSearchItem } from '../../components/termSearchItem/index.weapp'
@@ -237,14 +237,15 @@ export default class Index extends Component {
               />
             </View>
           </View>}
-          <View className='switch-line' onClick={() => {
-            this.handleChange()
-          }}>
-            <AtSwitch title={`点我切换成${isSearchMode ? '目录模式' : '搜索模式'}`} checked={isSearchMode} />
-            <View className='arrow'>
-              <AtIcon value='arrow-right' size='40' color='#6190E8'></AtIcon>
-            </View>
-          </View>
+          {/*<View className='switch-line' onClick={() => {*/}
+          {/*  this.handleChange()*/}
+          {/*}}*/}
+          {/*>*/}
+          {/*  <AtSwitch title={`点我切换成${isSearchMode ? '目录模式' : '搜索模式'}`} checked={isSearchMode} />*/}
+          {/*  <View className='arrow'>*/}
+          {/*    <AtIcon value='arrow-right' size='40' color='#6190E8'></AtIcon>*/}
+          {/*  </View>*/}
+          {/*</View>*/}
           <View>
             {!isSearchMode && <View className='all-law-categories'>
               {this.renderAllCatgories()}
@@ -265,6 +266,13 @@ export default class Index extends Component {
             {
               isCategoryLoading && <AtActivityIndicator mode='center' color='black' content='目录加载中...' size={62}></AtActivityIndicator>
             }
+          </View>
+          <View className='float'>
+            <AtBadge value='点我切换'>
+              <AtFab onClick={this.handleChange}>
+                <Text>{isSearchMode ? '目录模式':'搜索模式'}</Text>
+              </AtFab>
+            </AtBadge>
           </View>
           <View className={`${isSearchMode? 'search-mode': ''} float-help`} onClick={() => {
             Taro.navigateTo({
