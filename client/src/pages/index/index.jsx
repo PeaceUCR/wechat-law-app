@@ -4,8 +4,8 @@ import {AtIcon, AtDivider, AtBadge, AtNoticebar, AtTabs, AtTabsPane, AtCurtain }
 import throttle from 'lodash/throttle';
 import { GridItem } from '../../components/grid/index.weapp'
 import { LoginPopup } from '../../components/loginPopup/index.weapp'
-import { ImageRecoginzer } from '../../components/imageRecoginzer/index.weapp'
 import { UserFloatButton } from '../../components/userFloatButton/index.weapp'
+import { ImageCropper } from '../../components/imageCropper/index.weapp'
 import lawIcon from '../../static/law.png';
 import logo from '../../static/logo.png';
 import {checkIfNewUser, getUserAvatar, getUserNickname} from '../../util/login';
@@ -357,6 +357,9 @@ export default class Index extends Component {
                 {showFooter && <Text className='footer-logo'>武汉满屏星科技有限公司</Text>}
               </View>
             </AtDivider>
+          </View>
+          <View>
+            <ImageCropper />
           </View>
           <AtCurtain isOpened={showPoster && !isPosterLoading && posterUrl} onClose={() => {
             this.setState({showPoster: false})

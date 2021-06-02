@@ -1,0 +1,11 @@
+.results{
+  color:white;
+  background-color: rgba(0, 0, 0, 0.5);
+  .result {
+    max-width: 460px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 20px;
+  }
+}
