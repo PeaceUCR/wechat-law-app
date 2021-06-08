@@ -5,6 +5,7 @@ import MyCollection from '../../components/myCollection'
 import './index.scss'
 import {tmpId} from '../../util/util'
 import {ImageRecoginzer} from "../../components/imageRecoginzer/index.weapp";
+import {getUserNickname} from "../../util/login";
 
 export default class User extends Component {
 
@@ -117,7 +118,31 @@ export default class User extends Component {
   }
 
   open = () => {
-    this.setState({ showImageRecognize: true })
+    Taro.cloud.callFunction({
+      name: 'countTodayUsage',
+      complete: r => {
+        const data = r.result.data;
+        Taro.showToast({
+          title: `每天3次机会,剩余${3 - data.length}`,
+          icon: 'none',
+          duration: 2000
+        })
+        if (data.length < 3) {
+          this.setState({ showImageRecognize: true })
+        }
+      }
+    })
+
+    // if (getUserNickname() === 'echo' || getUserNickname() === 'peace') {
+    //   this.setState({ showImageRecognize: true })
+    // } else {
+    //   Taro.showToast({
+    //     title: '开发中，敬请期待',
+    //     icon: 'none',
+    //     duration: 2000
+    //   })
+    // }
+
   }
 
   close = () => {

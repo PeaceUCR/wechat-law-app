@@ -9,3 +9,32 @@
     margin-bottom: 20px;
   }
 }
+.cover-container {
+  position: relative;
+
+  &.hidden{
+    display: none;
+  }
+  .full-image {
+    width: 552px;
+    height: 100%;
+    z-index: -1;
+  }
+  .focus-view {
+    position: absolute;
+    border: 2px solid lightgreen;
+    background: transparent;
+    box-sizing:content-box;
+    z-index: 2;
+  }
+
+  .background {
+    background: rgba(60, 60, 60, 0.4);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top:0;
+    left:0;
+    z-index: 1;
+  }
+}

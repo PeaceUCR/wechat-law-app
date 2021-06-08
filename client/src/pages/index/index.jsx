@@ -8,7 +8,7 @@ import { UserFloatButton } from '../../components/userFloatButton/index.weapp'
 import { ImageCropper } from '../../components/imageCropper/index.weapp'
 import lawIcon from '../../static/law.png';
 import logo from '../../static/logo.png';
-import {checkIfNewUser, getUserAvatar, getUserNickname} from '../../util/login';
+import {checkIfNewUser, getUserAvatar, isSuperAdmin} from '../../util/login';
 import './index.scss'
 import {db} from "../../util/db";
 import {tmpId, isTodayString, getTodayDateString} from '../../util/util'
@@ -97,6 +97,7 @@ export default class Index extends Component {
     posterUrlForLoading: '',
     posterUrl: '',
     isPosterLoading: true,
+    posterRedirect: '',
     swiperPosters: [
       'https://6465-dev-ial1c-1304492798.tcb.qcloud.la/swiper-0.jpg?sign=55ca212159e531874f4207a60a41e3cc&t=1620197528',
       'https://6465-dev-ial1c-1304492798.tcb.qcloud.la/swiper-2.jpg?sign=5dc06a1a7508de64e3433660ad746606&t=1620123890'
@@ -119,7 +120,7 @@ export default class Index extends Component {
     const that = this;
     db.collection('configuration').where({}).get({
       success: (res) => {
-        that.setState({posterUrlForLoading: res.data[0].posterUrl})
+        that.setState({posterUrlForLoading: res.data[0].posterUrl, posterRedirect: res.data[0].posterRedirect})
         if(res.data[0].forceLogin) {
           if(checkIfNewUser()) {
             Taro.cloud.callFunction({
@@ -273,7 +274,7 @@ export default class Index extends Component {
     })
   }
   render () {
-    const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl, swiperPosters} = this.state;
+    const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl, posterRedirect, swiperPosters} = this.state;
     return (
       <View className={`index-page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
@@ -310,7 +311,7 @@ export default class Index extends Component {
             </View>
           </SwiperItem>
         </Swiper>
-          {(getUserNickname() === 'echo' || getUserNickname() === 'peace') && <View className='float-analytics' onClick={() => {
+          {isSuperAdmin() && <View className='float-analytics' onClick={() => {
             Taro.navigateTo({
               url: '/pages/usage/index'
             })
@@ -358,9 +359,9 @@ export default class Index extends Component {
               </View>
             </AtDivider>
           </View>
-          <View>
-            <ImageCropper />
-          </View>
+          {/*<View>*/}
+          {/*  <ImageCropper />*/}
+          {/*</View>*/}
           <AtCurtain isOpened={showPoster && !isPosterLoading && posterUrl} onClose={() => {
             this.setState({showPoster: false})
             setStorageSync('poster-shown-at', getTodayDateString())
@@ -370,6 +371,13 @@ export default class Index extends Component {
               className='poster'
               src={posterUrlForLoading}
               mode='widthFix'
+              onClick={() => {
+                if(posterRedirect.trim()) {
+                  Taro.navigateTo({
+                    url: posterRedirect.trim(),
+                  })
+                }
+              }}
             />
           </AtCurtain>
           <Image

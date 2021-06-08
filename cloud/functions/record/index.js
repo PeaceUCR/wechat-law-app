@@ -11,6 +11,16 @@ exports.main = async (event, context) => {
   const openId = wxContext.OPENID;
   const db = cloud.database()
 
+  if (event.type === 'recognize') {
+    return await db.collection("recognize").add({
+      data: {
+        openId: wxContext.OPENID,//获取操作者_openid的方法
+        nickName: event.nickName,
+        time: new Date()
+      }
+    })
+  }
+
   return await db.collection('user').where({
     //下面这3行，为筛选条件
     openId

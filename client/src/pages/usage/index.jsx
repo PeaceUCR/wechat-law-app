@@ -1,6 +1,6 @@
 import Taro, { Component, getStorageSync} from '@tarojs/taro'
-import { View } from '@tarojs/components'
-import {AtNoticebar, AtListItem, AtList, AtActivityIndicator, AtLoadMore, AtSearchBar} from "taro-ui";
+import { View, Text } from '@tarojs/components'
+import {AtIcon, AtListItem, AtList, AtActivityIndicator, AtLoadMore, AtSearchBar} from "taro-ui";
 import {isEmpty} from 'lodash';
 import './index.scss'
 import {db} from "../../util/db";
@@ -12,7 +12,9 @@ export default class User extends Component {
     isReadMode: false,
     loadResult: 'more',
     searchValue: '',
-    list: []
+    list: [],
+    date: '',
+    todayUsers: 0
   }
 
   config = {
@@ -22,6 +24,7 @@ export default class User extends Component {
   onPullDownRefresh () {
     console.log('pull')
     this.loadUser(0, true)
+    this.loadTodayUsers()
   }
 
   onShareAppMessage() {
@@ -32,6 +35,7 @@ export default class User extends Component {
 
   componentWillMount () {
     this.loadUser()
+    this.loadTodayUsers()
     const setting = getStorageSync('setting');
     this.setState({isReadMode: setting && setting.isReadMode})
 
@@ -50,6 +54,25 @@ export default class User extends Component {
 
 
   componentDidHide () { }
+
+  loadTodayUsers = () => {
+    const that = this;
+    const start = new Date().setHours(0,0,0,0)
+    const end = new Date().setHours(23,59,59,0)
+    Taro.cloud.callFunction({
+      name: 'getTodayUsers',
+      data: {
+        start,
+        end
+      },
+      complete: r => {
+        that.setState({
+          date: new Date(start).toLocaleDateString('fr-CA'),
+          todayUsers: r.result.userNumber
+        })
+      }
+    })
+  }
 
   loadUser = (skip, reset = false) => {
     skip = skip ? skip : 0;
@@ -105,7 +128,7 @@ export default class User extends Component {
     });
   }
   render () {
-    const {isLoading, isReadMode, loadResult, list, searchValue} = this.state;
+    const {isLoading, isReadMode, loadResult, list, searchValue, todayUsers, date} = this.state;
     return (
       <View className={`user-page ${isReadMode ? 'read-mode' : ''}`}>
         <View className='search'>
@@ -118,6 +141,10 @@ export default class User extends Component {
             placeholder='搜昵称'
           />
         </View>
+        {todayUsers > 0 && <View className='float'>
+          <View className='line'><AtIcon value='calendar' size='18' color='#c6823b'></AtIcon>日期:<Text className='highlight'>{date}</Text></View>
+          <View className='line'><AtIcon value='user' size='18' color='#c6823b'></AtIcon>今天访问人数:<Text className='highlight'>{todayUsers}</Text></View>
+        </View>}
         <AtList>
           {this.renderUserList()}
           {list.length > 0 && <AtLoadMore

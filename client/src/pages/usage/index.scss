@@ -15,5 +15,31 @@
     background: transparent;
     z-index: 1000;
   }
+
+  .float {
+    position: fixed;
+    top: 200px;
+    left: 0px;
+    z-index: 999;
+    padding: 20px 20px 20px 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background: rgba(0,0,0,0.8);
+    .line {
+      display: flex;
+      align-items: center;
+      font-size: 36px;
+      color: #c6823b;
+      padding: 4px;
+      .highlight {
+        margin-left: 10px;
+        color: #6190E8;
+      }
+    }
+  }
+}
+.at-icon {
+  position: relative;
+  bottom: 4px
 }
 
