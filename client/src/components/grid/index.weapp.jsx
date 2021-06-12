@@ -8,6 +8,7 @@ import constructionIcon from '../../static/under-construction.png';
 const colors = {
   '刑法': '#F67B78',
   '民法典': '#92A5F8',
+  '行政': '#008000',
   '共有': '#BFA13C'
 }
 
@@ -40,8 +41,9 @@ const GridItem = (props) => {
     <AtBadge value={isNew?'NEW':(isHot?'Hot':'')} dot={isUpdated ? true : false}>
       <View className='grid-item' onClick={redirect} >
         <View className='float-item'>
-          {option.type !== '民法典' && <View className='tag criminal'>刑</View>}
-          {option.type !== '刑法' && <View className='tag'>民</View>}
+          {(option.type === '共有' || option.type === '刑法') && <View className='tag criminal'>刑</View>}
+          {(option.type === '共有' || option.type === '民法典') && <View className='tag'>民</View>}
+          {(option.type === '共有' || option.type === '行政') && <View className='tag admin'>行</View>}
         </View>
         {isUnderConstruction && <View className='icon-container'><Image src={constructionIcon} className='construction-icon' /></View>}
         <View className='title-container'>

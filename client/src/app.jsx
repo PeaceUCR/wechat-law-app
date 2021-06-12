@@ -15,6 +15,8 @@ class App extends Component {
     pages: [
       'pages/index/index',
       // 'pages/cake/index',
+      'pages/publicOrderAdminPenaltyLaw/index',
+      'pages/policeAdminRegulation/index',
       'pages/judgement/index',
       'pages/usage/index',
       'pages/examples/index',

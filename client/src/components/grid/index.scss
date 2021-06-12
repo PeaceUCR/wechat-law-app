@@ -12,9 +12,9 @@
   background: rgba(256,256,256,0.6);
   .float-item {
     position: absolute;
-    top: 16px;
-    right: 6px;
-    width: 100px;
+    top: 30px;
+    right: 2px;
+    width: 140px;
     border-radius: 5px;
     display: flex;
     justify-content: space-evenly;
@@ -28,6 +28,9 @@
       color: white;
       &.criminal{
         background: brown;
+      }
+      &.admin{
+        background: #008000;
       }
     }
   }

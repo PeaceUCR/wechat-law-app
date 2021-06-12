@@ -6,14 +6,19 @@ import { GridItem } from '../../components/grid/index.weapp'
 import { LoginPopup } from '../../components/loginPopup/index.weapp'
 import { UserFloatButton } from '../../components/userFloatButton/index.weapp'
 import { ImageCropper } from '../../components/imageCropper/index.weapp'
-import lawIcon from '../../static/law.png';
 import logo from '../../static/logo.png';
-import {checkIfNewUser, getUserAvatar, isSuperAdmin} from '../../util/login';
+import qrcode from '../../static/qrcode.png';
+import {checkIfNewUser, getUserAvatar, getUserNickname, isSuperAdmin} from '../../util/login';
 import './index.scss'
 import {db} from "../../util/db";
 import {tmpId, isTodayString, getTodayDateString} from '../../util/util'
 
-const titles = [{title:'全部'}, {title:'刑法相关'}, {title:'民法典相关'}]
+const titles = [
+  {title:'全部'},
+  {title:'刑法相关'},
+  {title:'民法典相关'},
+  // {title:'行政相关'}
+  ]
 export default class Index extends Component {
 
   state = {
@@ -70,6 +75,19 @@ export default class Index extends Component {
           type: '民法典'
         }
       ],
+      // '行政相关': [
+      //   {
+      //     title: '中华人民共和国治安管理处罚法',
+      //     url: '/pages/publicOrderAdminPenaltyLaw/index',
+      //     type: '行政'
+      //     // isHot: true
+      //   },
+      //   {
+      //     title: '公安机关办理行政案件程序规定',
+      //     url: '/pages/policeAdminRegulation/index',
+      //     type: '行政'
+      //   }
+      // ],
       '共有': [
         {
           title: '指导案例',
@@ -96,11 +114,12 @@ export default class Index extends Component {
     current: 0,
     posterUrlForLoading: '',
     posterUrl: '',
+    joinGroupUrl: '',
     isPosterLoading: true,
     posterRedirect: '',
     swiperPosters: [
       'https://6465-dev-ial1c-1304492798.tcb.qcloud.la/swiper-0.jpg?sign=55ca212159e531874f4207a60a41e3cc&t=1620197528',
-      'https://6465-dev-ial1c-1304492798.tcb.qcloud.la/swiper-2.jpg?sign=5dc06a1a7508de64e3433660ad746606&t=1620123890'
+      'https://6465-dev-ial1c-1304492798.tcb.qcloud.la/swiper-3.png?sign=4a6363640634764fc2786cc424761572&t=1623317703'
     ]
   }
 
@@ -120,7 +139,11 @@ export default class Index extends Component {
     const that = this;
     db.collection('configuration').where({}).get({
       success: (res) => {
-        that.setState({posterUrlForLoading: res.data[0].posterUrl, posterRedirect: res.data[0].posterRedirect})
+        that.setState({
+          posterUrlForLoading: res.data[0].posterUrl,
+          posterRedirect: res.data[0].posterRedirect,
+          joinGroupUrl: res.data[0].joinGroupUrl
+        })
         if(res.data[0].forceLogin) {
           if(checkIfNewUser()) {
             Taro.cloud.callFunction({
@@ -270,11 +293,11 @@ export default class Index extends Component {
 
   handleClickSecondSwiper = () => {
     Taro.navigateTo({
-      url: '/pages/consultant/index'
+      url: '/pages/examples/index'
     })
   }
   render () {
-    const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl, posterRedirect, swiperPosters} = this.state;
+    const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl, joinGroupUrl, posterRedirect, swiperPosters} = this.state;
     return (
       <View className={`index-page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
@@ -347,8 +370,22 @@ export default class Index extends Component {
               <AtTabsPane current={current} index={2} >
                 {this.renderGridItems()}
               </AtTabsPane>
+              <AtTabsPane current={current} index={3} >
+                {this.renderGridItems()}
+              </AtTabsPane>
             </AtTabs>
           </View>
+         {(!isSuperAdmin()) && getUserNickname() && <View className='qrcode-container' onClick={() => {
+           Taro.previewImage({
+             current: joinGroupUrl,
+             urls: [joinGroupUrl]
+           })
+         }}
+         >
+           <AtBadge value='加群'>
+             <Image className='qrcode' src={qrcode} mode='aspectFill' />
+           </AtBadge>
+         </View>}
           {isNewUser && <LoginPopup handleLoginSuccess={this.handleLoginSuccess} />}
           {!isNewUser && this.renderUserFloatButton()}
           <View className='footer-container'>
@@ -375,6 +412,11 @@ export default class Index extends Component {
                 if(posterRedirect.trim()) {
                   Taro.navigateTo({
                     url: posterRedirect.trim(),
+                  })
+                } else {
+                  Taro.previewImage({
+                    current: posterUrlForLoading,
+                    urls: [posterUrlForLoading]
                   })
                 }
               }}
