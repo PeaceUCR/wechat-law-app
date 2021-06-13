@@ -169,70 +169,82 @@ export default class Index extends Component {
     }
     if (selected === '搜全文') {
       if (!isNaN(parseInt(searchValue))) {
-        db.collection('terms').where({number: isNumber(searchValue) ? parseInt(searchValue) : getNumber(searchValue)})
-          .orderBy('number', 'asc')
-          .get({
-          success: (res) => {
-            if (isEmpty(res.data)) {
+
+        Taro.cloud.callFunction({
+          name: 'searchCriminalLaws',
+          data: {
+            type: '搜序号',
+            searchValue: isNumber(searchValue) ? parseInt(searchValue) : getNumber(searchValue)
+          },
+          complete: ({ result }) => {
+            if (isEmpty(result.data)) {
               Taro.showToast({
                 title: `未找到序号${searchValue}的法条`,
                 icon: 'none',
                 duration: 3000
               })
             }
-            that.setState({searchResult: res.data, isLoading: false, hasSearched: true});
+            that.setState({searchResult: result.data, isLoading: false, hasSearched: true});
           }
         })
+
         return ;
       }
-      db.collection('terms').where({text: db.RegExp({
-          regexp: '.*' + searchValue,
-          options: 'i',
-        })}).orderBy('number', 'asc').get({
-        success: (res) => {
-          if (isEmpty(res.data)) {
+      Taro.cloud.callFunction({
+        name: 'searchCriminalLaws',
+        data: {
+          type: '搜全文',
+          searchValue
+        },
+        complete: ({ result }) => {
+          if (isEmpty(result.data)) {
             Taro.showToast({
               title: `未找到含有${searchValue}的法条`,
               icon: 'none',
               duration: 3000
             })
           }
-          that.setState({searchResult: rankBySearchValue(res.data, 'text', searchValue), isLoading: false, hasSearched: true});
+          that.setState({searchResult: rankBySearchValue(result.data, 'text', searchValue), isLoading: false, hasSearched: true});
         }
-      });
+      })
     }
 
     if (selected === '搜罪名') {
-      db.collection('terms').where({crime: db.RegExp({
-          regexp: '.*' + searchValue,
-          options: 'i',
-        })}).orderBy('number', 'asc').get({
-        success: (res) => {
-          if (isEmpty(res.data)) {
+      Taro.cloud.callFunction({
+        name: 'searchCriminalLaws',
+        data: {
+          type: '搜罪名',
+          searchValue
+        },
+        complete: ({ result }) => {
+          if (isEmpty(result.data)) {
             Taro.showToast({
               title: `未找到含有${searchValue}的法条`,
               icon: 'none',
               duration: 3000
             })
           }
-          that.setState({searchResult: rank(res.data, 'crime'), isLoading: false, hasSearched: true});
+          that.setState({searchResult: rank(result.data, 'crime'), isLoading: false, hasSearched: true});
         }
-      });
+      })
     }
 
     if (selected === '搜序号') {
-      db.collection('terms').where({number: isNumber(searchValue) ? parseInt(searchValue) : getNumber(searchValue)})
-        .orderBy('number', 'asc')
-        .get({
-        success: (res) => {
-          if (isEmpty(res.data)) {
+      Taro.cloud.callFunction({
+        name: 'searchCriminalLaws',
+        data: {
+          type: '搜序号',
+          searchValue: isNumber(searchValue) ? parseInt(searchValue) : getNumber(searchValue)
+        },
+        complete: ({ result }) => {
+          if (isEmpty(result.data)) {
             Taro.showToast({
-              title: `未找到含有${searchValue}的法条`,
+              title: `未找到序号${searchValue}的法条`,
               icon: 'none',
               duration: 3000
             })
           }
-          that.setState({searchResult: res.data, isLoading: false, hasSearched: true});
+          that.setState({searchResult: result.data, isLoading: false, hasSearched: true});
         }
       })
     }

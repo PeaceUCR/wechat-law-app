@@ -3,17 +3,13 @@
   font-size: 36px;
   .category-option-container {
     margin-top: 15px;
-    background: #f6f6f6;
-    &.read-mode {
-      background: #F4ECD8;
-      .chapter-option{
-        background: #F4ECD8;
-      }
-    }
+    background: #6190E8;
+    padding: 8px 0px;
+
     &.category-option-1 {
       padding-left: 40px;
       .category-option {
-        color: #6190E8;
+        color: #f2f2f2;
         font-size: 40px;
         font-weight: bold;
         max-width: calc( 92vw - 40px );
@@ -22,7 +18,7 @@
     &.category-option-2 {
       padding-left: 80px;
       .category-option {
-        color: #6190E8;
+        color: #f2f2f2;
         font-size: 38px;
         max-width: calc( 92vw - 80px );
       }
@@ -33,7 +29,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      border-bottom: 1px solid #6190E8;
+      border-bottom: 1px solid #f2f2f2;
     }
 
   }

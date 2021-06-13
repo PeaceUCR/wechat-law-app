@@ -48,7 +48,6 @@ export default class RegulationDetail extends Component {
     if (type === 'police-admin-regulation') {
       db.collection('police-admin-regulation').where({_id: id}).get({
         success: (res) => {
-          console.log(res.data[0])
           const term = res.data[0];
           that.setState({term, type, keyword});
         }
@@ -57,7 +56,6 @@ export default class RegulationDetail extends Component {
     if (type === 'public-order-admin-penalty-law') {
       db.collection('public-order-admin-penalty-law').where({_id: id}).get({
         success: (res) => {
-          console.log(res.data[0])
           const term = res.data[0];
           that.setState({term, type, keyword});
         }

@@ -148,7 +148,6 @@ export default class Index extends Component {
         type: 'category'
       },
       complete: (r) => {
-        console.log(r)
         that.handleDBSearchSuccess(r.result)
       }
     })

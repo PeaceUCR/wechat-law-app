@@ -90,7 +90,6 @@ export default class Index extends Component {
   }
 
    handleDBSearchSuccess = (res) => {
-    console.log(res.data)
     if (isEmpty(res.data)) {
       Taro.showToast({
         title: `未找到相应的法条`,
@@ -148,7 +147,6 @@ export default class Index extends Component {
         type: 'category'
       },
       complete: (r) => {
-        console.log(r)
         that.handleDBSearchSuccess(r.result)
       }
     })
@@ -169,7 +167,7 @@ export default class Index extends Component {
                 this.onSearch(searchValue)
               }}
               onClear={this.onClear}
-              placeholder='搜索行政案件程序规定'
+              placeholder='搜索治安管理处罚法'
             />
           </View>
           <View>
