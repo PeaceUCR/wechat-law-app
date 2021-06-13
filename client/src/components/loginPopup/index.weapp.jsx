@@ -1,5 +1,6 @@
 import Taro, {setStorageSync, useState, useEffect} from '@tarojs/taro'
 import {Image, Text, View, Button} from "@tarojs/components";
+import {AtIcon} from "taro-ui";
 import {avatarUrl} from '../../util/util';
 import './index.scss'
 
@@ -7,7 +8,7 @@ const FAIL_AUTH_DENY = 'getUserInfo:fail auth deny';
 const title = '首次使用，点我登录';
 
 const LoginPopup = (props) => {
-
+  const {canClose, handleCloseLogin} = props
   const handleLogin = () => {
     // if (res.detail && res.detail.errMsg === FAIL_AUTH_DENY){
     //   return Taro.showToast({
@@ -66,9 +67,12 @@ const LoginPopup = (props) => {
       className='login-button'
       onClick={handleLogin}
     >
-      <Image src={avatarUrl} className='avatar'/>
+      <Image src={avatarUrl} className='avatar' />
       <Text className='text'>{text}<Text className='cursor'></Text></Text>
     </Button>
+    {canClose && <View className='close-icon'>
+      <AtIcon value='close-circle' size='30' color='#90EE90' onClick={handleCloseLogin}></AtIcon>
+    </View>}
   </View>)
 }
 

@@ -3,7 +3,7 @@ import {View, Text} from '@tarojs/components'
 import { AtSearchBar, AtActivityIndicator, AtNoticebar, AtFab } from 'taro-ui'
 import {isEmpty} from "lodash";
 import { db } from '../../util/db'
-import { LitigationSearchItem } from '../../components/litigationSearchItem/index.weapp'
+import { TermSearchItem } from '../../components/termSearchItem/index.weapp'
 import { CategoryList } from '../../components/categoryList/index.weapp'
 import {convertNumberToChinese, getNumber} from '../../util/convertNumber'
 import './index.scss'
@@ -69,18 +69,18 @@ export default class Index extends Component {
   renderSearchList = () => {
     const {searchValue, searchResult,isReadMode} = this.state
     searchResult.sort((a, b) => {
-      return getNumber(a.item) - getNumber(b.item)
+      return a.number - b.number
     })
     return (<View>
       {searchResult.map((
         (data) => {
           return (
-            <LitigationSearchItem
+            <TermSearchItem
+              type='police-admin-regulation'
               keyword={searchValue}
               isReadMode={isReadMode}
-              data={data}
+              term={data}
               key={`term-${data._id}`}
-              onSearchResultClick={this.onSearchResultClick}
             />)}))}
     </View>)
   }
@@ -89,10 +89,11 @@ export default class Index extends Component {
     this.setState({searchValue})
   }
 
-  handleDBSearchSuccess = (res) => {
+   handleDBSearchSuccess = (res) => {
+
     if (isEmpty(res.data)) {
       Taro.showToast({
-        title: `未找到相应的刑事诉讼法法条`,
+        title: `未找到相应的法条`,
         icon: 'none',
         duration: 3000
       })
@@ -130,55 +131,6 @@ export default class Index extends Component {
     })
   }
 
-  onSearchByChapter = (searchValue) => {
-    const that = this;
-    this.setState({isLoading: true});
-    if(!searchValue.trim()) {
-      Taro.showToast({
-        title: '搜索不能为空',
-        icon: 'none',
-        duration: 2000
-      })
-      return ;
-    }
-
-    Taro.cloud.callFunction({
-      name: 'getLitigationRegulation',
-      data: {
-        searchValue: searchValue,
-        type: 'chapter'
-      },
-      complete: (r) => {
-
-        that.handleDBSearchSuccess(r.result)
-      }
-    })
-  }
-
-  onSearchBySection = (searchValue) => {
-    const that = this;
-    this.setState({isLoading: true});
-    if(!searchValue.trim()) {
-      Taro.showToast({
-        title: '搜索不能为空',
-        icon: 'none',
-        duration: 2000
-      })
-      return ;
-    }
-    Taro.cloud.callFunction({
-      name: 'getLitigationRegulation',
-      data: {
-        searchValue: searchValue,
-        type: 'section'
-      },
-      complete: (r) => {
-
-        that.handleDBSearchSuccess(r.result)
-      }
-    })
-  }
-
   onClear = () => {
     this.setState({
       searchValue: '',
@@ -187,6 +139,7 @@ export default class Index extends Component {
   }
 
   onClickOptionItem = (searchValue) => {
+    this.setState({isLoading: true});
     const that = this;
     Taro.cloud.callFunction({
       name: 'getPoliceAdminRegulation',
@@ -198,13 +151,6 @@ export default class Index extends Component {
         console.log(r)
         that.handleDBSearchSuccess(r.result)
       }
-    })
-  }
-
-  onSearchResultClick = (data) => {
-    const {_id} = data
-    Taro.navigateTo({
-      url: `/pages/regulationDetail/index?id=${_id}&type=litigation-regulation`,
     })
   }
 

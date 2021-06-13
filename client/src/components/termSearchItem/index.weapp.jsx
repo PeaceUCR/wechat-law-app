@@ -20,6 +20,14 @@ const TermSearchItem = (props) => {
         Taro.navigateTo({
           url: `/pages/regulationDetail/index?id=${_id}&type=${type}&keyword=${keyword}`,
         })
+      } else if (type === 'police-admin-regulation') {
+        Taro.navigateTo({
+          url: `/pages/regulationDetail/index?id=${_id}&type=${type}&keyword=${keyword}`,
+        })
+      } else if (type === 'public-order-admin-penalty-law') {
+        Taro.navigateTo({
+          url: `/pages/regulationDetail/index?id=${_id}&type=${type}&keyword=${keyword}`,
+        })
       } else {
         Taro.navigateTo({
           url: `/pages/termDetail/index?id=${_id}`,
@@ -41,14 +49,16 @@ const TermSearchItem = (props) => {
 
   return (<View className={`search-item ${isReadMode ? 'read-mode' : ''} ${isDeleted ? 'deleted' : ''}`} onClick={redirect} >
     <View className={isCrime? 'crime tag':'tag'}>{tag}</View>
-    {type !== 'police' && text && <View>{
+    {type !== 'police'
+    && text && <View>{
       text.split('\n').filter(line => line.trim() && line.trim().length > 0).map((t, index) => {
         return <View key={`term-${index}`}>
           <RichText nodes={findAndHighlight(t, keyword)}></RichText>
         </View>
       })
     }</View>}
-    {type === 'police'&& text && (text.map((t, index) => {
+    {type === 'police'
+      && text && (text.map((t, index) => {
       return <View key={`police-${index}`}>
         <RichText nodes={findAndHighlight(t, keyword)}></RichText>
       </View>

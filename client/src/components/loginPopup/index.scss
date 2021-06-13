@@ -36,7 +36,7 @@
     .text {
       display: inline-block;
       min-height: 38px;
-      background: lightgreen;
+      background: #90ee90;
       padding: 8px 28px;
       border-radius: 10px;
       font-size: 28px;
@@ -55,4 +55,11 @@
       margin-right: 15px;
     }
   }
+}
+
+.close-icon {
+  position: fixed;
+  top: 36%;
+  right: 40px;
+  z-index: 99999;
 }

@@ -45,6 +45,25 @@ export default class RegulationDetail extends Component {
       })
     }
 
+    if (type === 'police-admin-regulation') {
+      db.collection('police-admin-regulation').where({_id: id}).get({
+        success: (res) => {
+          console.log(res.data[0])
+          const term = res.data[0];
+          that.setState({term, type, keyword});
+        }
+      })
+    }
+    if (type === 'public-order-admin-penalty-law') {
+      db.collection('public-order-admin-penalty-law').where({_id: id}).get({
+        success: (res) => {
+          console.log(res.data[0])
+          const term = res.data[0];
+          that.setState({term, type, keyword});
+        }
+      })
+    }
+
     if (type === 'civil-law-regulation') {
       db.collection('civil-law-regulation').where({_id: id}).get({
         success: (res) => {
@@ -152,7 +171,7 @@ export default class RegulationDetail extends Component {
       })
     } else {
       let title;
-      if (type === 'litigation-explanation' || type === 'police') {
+      if (type === 'litigation-explanation' || type === 'police' || type === 'police-admin-regulation' || type === 'public-order-admin-penalty-law') {
         title = number
       } else if (type === 'civil-law-regulation') {
         title = `${number} ${tag}`
@@ -193,6 +212,16 @@ export default class RegulationDetail extends Component {
     const {term, keyword} = this.state;
     const {text} = term
     return (text.map((t, index) => {
+      return <View className='regulation-line' key={`police-${index}`}>
+        <RichText nodes={this.findAndHighlight(t, keyword)}></RichText>
+      </View>
+    }))
+  }
+
+  renderAdminText = () => {
+    const {term, keyword} = this.state;
+    const {text} = term
+    return (text.split('\n').map((t, index) => {
       return <View className='regulation-line' key={`police-${index}`}>
         <RichText nodes={this.findAndHighlight(t, keyword)}></RichText>
       </View>
@@ -323,6 +352,7 @@ export default class RegulationDetail extends Component {
         <View className='main section'>
             <View>
               {(type === 'police' || type === 'civil-law-regulation') && this.renderTermText()}
+              {(type === 'police-admin-regulation' || type === 'public-order-admin-penalty-law') && this.renderAdminText()}
               {(type === 'litigation-law' || type === 'litigation-regulation' || type === 'litigation-explanation') && this.renderLitigation()}
             </View>
           </View>

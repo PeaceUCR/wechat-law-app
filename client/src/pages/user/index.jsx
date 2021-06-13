@@ -57,7 +57,7 @@ export default class User extends Component {
     Taro.cloud.callFunction({
       name: 'getCollections',
       complete: (r) => {
-        // console.log(r)
+        console.log(r)
         that.setState({collection: r.result.data, isLoading: false})
         // if (r && r.result && r.result.data && r.result.data.length > 0) {
         //   that.setState({isCollected: true})

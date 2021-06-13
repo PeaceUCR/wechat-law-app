@@ -1,6 +1,7 @@
 import Taro from '@tarojs/taro'
 import {AtAvatar, AtBadge} from "taro-ui";
 import {View} from "@tarojs/components";
+import {checkIfNewUser} from "../../util/login";
 import './index.scss'
 
 const UserFloatButton = (props) => {
@@ -8,14 +9,17 @@ const UserFloatButton = (props) => {
   const { avatarUrl } = props;
 
   const handleClick = () => {
+    if (checkIfNewUser()) {
+      Taro.showToast({
+        title: '未检测到登陆用户,无法查看我的页面',
+        icon: 'none',
+        duration: 3000
+      })
+      return ;
+    }
     Taro.navigateTo({
       url: '/pages/user/index'
     })
-    // Taro.showToast({
-    //   title: '敬请期待',
-    //   icon: 'none',
-    //   duration: 1000
-    // })
   }
   return (<View className='user-float-button' >
     <View

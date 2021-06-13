@@ -3,11 +3,11 @@ import {View, Text} from '@tarojs/components'
 import { AtSearchBar, AtActivityIndicator, AtNoticebar, AtFab } from 'taro-ui'
 import {isEmpty} from "lodash";
 import { db } from '../../util/db'
-import { LitigationSearchItem } from '../../components/litigationSearchItem/index.weapp'
-import { HierarchicalOptions } from '../../components/hierarchicalOptions/index.weapp'
+import { TermSearchItem } from '../../components/termSearchItem/index.weapp'
+import { CategoryList } from '../../components/categoryList/index.weapp'
 import {convertNumberToChinese, getNumber} from '../../util/convertNumber'
 import './index.scss'
-import {processLitigationOptions} from '../../util/util';
+import {policeOrderAdminPenaltyLawCategoryLines} from '../../util/util';
 
 export default class Index extends Component {
 
@@ -15,13 +15,11 @@ export default class Index extends Component {
     searchValue: '',
     searchResult: [],
     isLoading: false,
-    litigationRegulationChapters: [],
-    litigationRegulationSections: [],
     isReadMode: false
   }
 
   config = {
-    navigationBarTitleText: '(最高检)刑事诉讼规则搜索'
+    navigationBarTitleText: '中华人民共和国治安管理处罚法'
   }
 
   reset = () => {
@@ -71,18 +69,18 @@ export default class Index extends Component {
   renderSearchList = () => {
     const {searchValue, searchResult,isReadMode} = this.state
     searchResult.sort((a, b) => {
-      return getNumber(a.item) - getNumber(b.item)
+      return a.number - b.number
     })
     return (<View>
       {searchResult.map((
         (data) => {
           return (
-            <LitigationSearchItem
+            <TermSearchItem
+              type='public-order-admin-penalty-law'
               keyword={searchValue}
               isReadMode={isReadMode}
-              data={data}
+              term={data}
               key={`term-${data._id}`}
-              onSearchResultClick={this.onSearchResultClick}
             />)}))}
     </View>)
   }
@@ -91,10 +89,11 @@ export default class Index extends Component {
     this.setState({searchValue})
   }
 
-  handleDBSearchSuccess = (res) => {
+   handleDBSearchSuccess = (res) => {
+    console.log(res.data)
     if (isEmpty(res.data)) {
       Taro.showToast({
-        title: `未找到相应的刑事诉讼法法条`,
+        title: `未找到相应的法条`,
         icon: 'none',
         duration: 3000
       })
@@ -121,58 +120,9 @@ export default class Index extends Component {
       return ;
     }
     Taro.cloud.callFunction({
-      name: 'getLitigationRegulation',
+      name: 'getPublicOrderAdminPenaltyLaw',
       data: {
         searchValue: searchValue,
-      },
-      complete: (r) => {
-
-        that.handleDBSearchSuccess(r.result)
-      }
-    })
-  }
-
-  onSearchByChapter = (searchValue) => {
-    const that = this;
-    this.setState({isLoading: true});
-    if(!searchValue.trim()) {
-      Taro.showToast({
-        title: '搜索不能为空',
-        icon: 'none',
-        duration: 2000
-      })
-      return ;
-    }
-
-    Taro.cloud.callFunction({
-      name: 'getLitigationRegulation',
-      data: {
-        searchValue: searchValue,
-        type: 'chapter'
-      },
-      complete: (r) => {
-
-        that.handleDBSearchSuccess(r.result)
-      }
-    })
-  }
-
-  onSearchBySection = (searchValue) => {
-    const that = this;
-    this.setState({isLoading: true});
-    if(!searchValue.trim()) {
-      Taro.showToast({
-        title: '搜索不能为空',
-        icon: 'none',
-        duration: 2000
-      })
-      return ;
-    }
-    Taro.cloud.callFunction({
-      name: 'getLitigationRegulation',
-      data: {
-        searchValue: searchValue,
-        type: 'section'
       },
       complete: (r) => {
 
@@ -188,44 +138,28 @@ export default class Index extends Component {
     });
   }
 
-  onClickOptionItem = (category, searchValue) => {
-    if (category === "chapter") {
-      this.onSearchByChapter(searchValue);
-    } else {
-      this.onSearchBySection(searchValue);
-    }
-  }
-
-  renderOptions = () => {
-    const {litigationRegulationChapters, litigationRegulationSections} = this.state;
+  onClickOptionItem = (searchValue) => {
+    this.setState({isLoading: true});
     const that = this;
-    return (<View className='options'>
-      <View className='sub-options'>{litigationRegulationChapters && litigationRegulationChapters.length > 0 &&
-      litigationRegulationChapters.map((c, index) => {
-        return (<View className='crime-option option' key={`crime-option-${index}`} onClick={() => that.onClickOptionItem("chapter", c)}>
-          {c}
-        </View>)})}</View>
-      <View className='sub-options'>{litigationRegulationSections && litigationRegulationSections.length >0 &&
-      litigationRegulationSections.map((s, index) => {
-        return (<View className='term-option option' key={`term-option-${index}`} onClick={() => that.onClickOptionItem("section", s)}>
-          {s}
-        </View>)})}</View>
-    </View>)
-  }
-
-  onSearchResultClick = (data) => {
-    const {_id} = data
-    Taro.navigateTo({
-      url: `/pages/regulationDetail/index?id=${_id}&type=litigation-regulation`,
+    Taro.cloud.callFunction({
+      name: 'getPublicOrderAdminPenaltyLaw',
+      data: {
+        searchValue: searchValue,
+        type: 'category'
+      },
+      complete: (r) => {
+        console.log(r)
+        that.handleDBSearchSuccess(r.result)
+      }
     })
   }
 
   render () {
-    const {searchValue, searchResult, isLoading, litigationRegulationChapters, litigationRegulationSections, isReadMode} = this.state;
+    const {searchValue, searchResult, isLoading, isReadMode} = this.state;
     return (
       <View className={`litigation-regulation-page ${isReadMode ? 'read-mode' : ''}`}>
           <AtNoticebar marquee speed={60}>
-            最高检公告:《人民检察院刑事诉讼规则》已经2019年12月2日最高检第十三届检察委员会第二十八次会议通过，现予公布，自2019年12月30日起施行。
+            根据2012年10月26日第十一届全国人民代表大会常务委员会第二十九次会议《关于修改〈中华人民共和国治安管理处罚法〉的决定》修正
           </AtNoticebar>
           <View>
             <AtSearchBar
@@ -235,14 +169,14 @@ export default class Index extends Component {
                 this.onSearch(searchValue)
               }}
               onClear={this.onClear}
-              placeholder='搜索刑事诉讼规则'
+              placeholder='搜索行政案件程序规定'
             />
           </View>
           <View>
             <View>
               {/*{searchResult.length === 0 && this.renderOptions()}*/}
               {searchResult.length === 0 &&
-              <HierarchicalOptions isReadMode={isReadMode} options={processLitigationOptions(litigationRegulationChapters, litigationRegulationSections)} onClick={this.onClickOptionItem} />}
+              <CategoryList isReadMode={isReadMode} type='' options={policeOrderAdminPenaltyLawCategoryLines} onClick={this.onClickOptionItem} />}
             </View>
             <View>
               {searchResult.length > 0 && this.renderSearchList()}

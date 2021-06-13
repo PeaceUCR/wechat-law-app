@@ -17,7 +17,7 @@ const titles = [
   {title:'全部'},
   {title:'刑法相关'},
   {title:'民法典相关'},
-  // {title:'行政相关'}
+  {title:'行政相关'}
   ]
 export default class Index extends Component {
 
@@ -75,19 +75,19 @@ export default class Index extends Component {
           type: '民法典'
         }
       ],
-      // '行政相关': [
-      //   {
-      //     title: '中华人民共和国治安管理处罚法',
-      //     url: '/pages/publicOrderAdminPenaltyLaw/index',
-      //     type: '行政'
-      //     // isHot: true
-      //   },
-      //   {
-      //     title: '公安机关办理行政案件程序规定',
-      //     url: '/pages/policeAdminRegulation/index',
-      //     type: '行政'
-      //   }
-      // ],
+      '行政相关': [
+        {
+          title: '中华人民共和国治安管理处罚法',
+          url: '/pages/publicOrderAdminPenaltyLaw/index',
+          type: '行政'
+          // isHot: true
+        },
+        {
+          title: '公安机关办理行政案件程序规定',
+          url: '/pages/policeAdminRegulation/index',
+          type: '行政'
+        }
+      ],
       '共有': [
         {
           title: '指导案例',
@@ -120,7 +120,8 @@ export default class Index extends Component {
     swiperPosters: [
       'https://6465-dev-ial1c-1304492798.tcb.qcloud.la/swiper-0.jpg?sign=55ca212159e531874f4207a60a41e3cc&t=1620197528',
       'https://6465-dev-ial1c-1304492798.tcb.qcloud.la/swiper-3.png?sign=4a6363640634764fc2786cc424761572&t=1623317703'
-    ]
+    ],
+    canClose: false
   }
 
   config = {
@@ -142,7 +143,8 @@ export default class Index extends Component {
         that.setState({
           posterUrlForLoading: res.data[0].posterUrl,
           posterRedirect: res.data[0].posterRedirect,
-          joinGroupUrl: res.data[0].joinGroupUrl
+          joinGroupUrl: res.data[0].joinGroupUrl,
+          canClose: res.data[0].canClose
         })
         if(res.data[0].forceLogin) {
           if(checkIfNewUser()) {
@@ -238,6 +240,10 @@ export default class Index extends Component {
     Taro.hideLoading();
   }
 
+  handleCloseLogin = () => {
+    this.setState({isNewUser: false});
+  }
+
   handleShowFooter = throttle(() => {
     const that = this;
     that.setState({showFooter: true})
@@ -297,7 +303,7 @@ export default class Index extends Component {
     })
   }
   render () {
-    const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl, joinGroupUrl, posterRedirect, swiperPosters} = this.state;
+    const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl, joinGroupUrl, posterRedirect, swiperPosters, canClose} = this.state;
     return (
       <View className={`index-page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
@@ -386,7 +392,7 @@ export default class Index extends Component {
              <Image className='qrcode' src={qrcode} mode='aspectFill' />
            </AtBadge>
          </View>}
-          {isNewUser && <LoginPopup handleLoginSuccess={this.handleLoginSuccess} />}
+          {isNewUser && <LoginPopup handleLoginSuccess={this.handleLoginSuccess} handleCloseLogin={this.handleCloseLogin} canClose={canClose} />}
           {!isNewUser && this.renderUserFloatButton()}
           <View className='footer-container'>
             <AtDivider height='100'>

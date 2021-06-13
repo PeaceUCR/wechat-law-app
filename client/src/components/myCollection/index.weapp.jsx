@@ -31,6 +31,8 @@ const MyCollection = (props) => {
   const litigationRegulationawKeys = allKeys.filter(key => collectionObj[key].type === 'litigation-regulation')
   const civilLawRegulationKeys = allKeys.filter(key => collectionObj[key].type === 'civil-law-regulation')
   const policeKeys = allKeys.filter(key => collectionObj[key].type === 'police')
+  const policeAdminRegulationKeys = allKeys.filter(key => collectionObj[key].type === 'police-admin-regulation')
+  const publicOrderAdminPenaltyLawKeys = allKeys.filter(key => collectionObj[key].type === 'public-order-admin-penalty-law')
 
   return (<View className='my-collection' >
     <View>
@@ -211,6 +213,44 @@ const MyCollection = (props) => {
         <View className='divider'></View>
       </View>}
       {policeKeys.map(policeKey => (
+        <AtListItem
+          key={policeKey}
+          title={collectionObj[policeKey].title}
+          arrow='right'
+          onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/regulationDetail/index?type=${collectionObj[policeKey].type}&id=${policeKey}`,
+            })
+          }}
+        />
+      ))}
+    </View>
+    <View>
+      {policeAdminRegulationKeys.length > 0 && <View className='sub-title'>
+        <View className='divider'></View>
+        <View className='text'>公安机关办理行政案件程序规定</View>
+        <View className='divider'></View>
+      </View>}
+      {policeAdminRegulationKeys.map(policeKey => (
+        <AtListItem
+          key={policeKey}
+          title={collectionObj[policeKey].title}
+          arrow='right'
+          onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/regulationDetail/index?type=${collectionObj[policeKey].type}&id=${policeKey}`,
+            })
+          }}
+        />
+      ))}
+    </View>
+    <View>
+      {publicOrderAdminPenaltyLawKeys.length > 0 && <View className='sub-title'>
+        <View className='divider'></View>
+        <View className='text'>中华人民共和国治安管理处罚法</View>
+        <View className='divider'></View>
+      </View>}
+      {publicOrderAdminPenaltyLawKeys.map(policeKey => (
         <AtListItem
           key={policeKey}
           title={collectionObj[policeKey].title}
