@@ -52,16 +52,6 @@ export default class Index extends Component {
   componentWillUnmount () { }
 
   componentDidShow () {
-    const that = this;
-    that.setState({isLoading: true});
-    db.collection('configuration').where({}).get({
-      success: (res) => {
-        that.setState({
-          litigationRegulationChapters: res.data[0].litigationRegulationChapters,
-          litigationRegulationSections: res.data[0].litigationRegulationSections,
-          isLoading: false});
-      }
-    });
   }
 
   componentDidHide () { }

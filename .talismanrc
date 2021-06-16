@@ -1,15 +1,5 @@
 fileignoreconfig:
-- filename: client/src/pages/index/index.jsx
-  checksum: 49c91a1f80de4fd0f18d65c38964c6fa31a364ee06628916aa026bf0b8c453b0
-- filename: cloud/functions/getLitigationLaw/yarn.lock
-  checksum: ef3e62614db5560eae479f2ead421a6696b1d9630485eb3efa0f3d02a6e79190
-- filename: cloud/functions/getTodayUsers/yarn.lock
-  checksum: a54f9c4c209d464ec4cb8a8c7cc75f952d4c7a8a561ca04a281f268897173943
-- filename: cloud/functions/getPoliceAdminRegulation/yarn.lock
-  checksum: 7a6f8c71dcfcc394b4dc169d41c16b96727d17385f6e8aeabf91cd3e7947d4c7
-- filename: cloud/functions/countTodayUsage/yarn.lock
-  checksum: 6ca6634172b576a29be0e976c8070732a5af4df4d8672a4f3fd3b8016b6645c5
-- filename: cloud/functions/getLitigationRegulation/yarn.lock
-  checksum: 92bdc3ce53e6ab4cff9c84a38fa6b9807bf1678574a5299d109b904de9a4d9da
-- filename: cloud/functions/getCivilLaws/yarn.lock
-  checksum: 9f226b8e201c29fc4647ba6bded51ea9a034a96a2c85008f92a5559016f21c67
+- filename: cloud/functions/getSupervisionLaw/yarn.lock
+  checksum: b78f2f32cc62d88ab646ca50b5a8bf4b05ee9fdbd494e5f322d9b1410569179f
+- filename: cloud/functions/getSentencing/yarn.lock
+  checksum: ed0ffaf0686704abb3c2f9ab34e6c52628ab07be96c0fa2d63072d931ac6dbe8

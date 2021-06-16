@@ -33,6 +33,9 @@ const MyCollection = (props) => {
   const policeKeys = allKeys.filter(key => collectionObj[key].type === 'police')
   const policeAdminRegulationKeys = allKeys.filter(key => collectionObj[key].type === 'police-admin-regulation')
   const publicOrderAdminPenaltyLawKeys = allKeys.filter(key => collectionObj[key].type === 'public-order-admin-penalty-law')
+  const supervisionLawKeys = allKeys.filter(key => collectionObj[key].type === 'supervision-law')
+
+  const sourceKeys = allKeys.filter(key => collectionObj[key].type === 'source')
 
   return (<View className='my-collection' >
     <View>
@@ -258,6 +261,44 @@ const MyCollection = (props) => {
           onClick={() => {
             Taro.navigateTo({
               url: `/pages/regulationDetail/index?type=${collectionObj[policeKey].type}&id=${policeKey}`,
+            })
+          }}
+        />
+      ))}
+    </View>
+    <View>
+      {supervisionLawKeys.length > 0 && <View className='sub-title'>
+        <View className='divider'></View>
+        <View className='text'>中华人民共和国监察法</View>
+        <View className='divider'></View>
+      </View>}
+      {supervisionLawKeys.map(policeKey => (
+        <AtListItem
+          key={policeKey}
+          title={collectionObj[policeKey].title}
+          arrow='right'
+          onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/regulationDetail/index?type=${collectionObj[policeKey].type}&id=${policeKey}`,
+            })
+          }}
+        />
+      ))}
+    </View>
+    <View>
+      {sourceKeys.length > 0 && <View className='sub-title'>
+        <View className='divider'></View>
+        <View className='text'>量刑指导意见</View>
+        <View className='divider'></View>
+      </View>}
+      {sourceKeys.map(policeKey => (
+        <AtListItem
+          key={policeKey}
+          title={collectionObj[policeKey].title}
+          arrow='right'
+          onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/exampleDetail/index?type=${collectionObj[policeKey].type}&id=${policeKey}`,
             })
           }}
         />

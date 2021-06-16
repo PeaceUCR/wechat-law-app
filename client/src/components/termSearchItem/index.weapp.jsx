@@ -28,6 +28,10 @@ const TermSearchItem = (props) => {
         Taro.navigateTo({
           url: `/pages/regulationDetail/index?id=${_id}&type=${type}&keyword=${keyword}`,
         })
+      } else if (type === 'supervision-law') {
+        Taro.navigateTo({
+          url: `/pages/regulationDetail/index?id=${_id}&type=${type}&keyword=${keyword}`,
+        })
       } else {
         Taro.navigateTo({
           url: `/pages/termDetail/index?id=${_id}`,

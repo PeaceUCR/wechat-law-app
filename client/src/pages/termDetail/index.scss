@@ -17,6 +17,10 @@
     .example {
       font-size: 40px;
     }
+
+    .sentencings {
+      font-size: 40px;
+    }
   }
 
   .header {
@@ -42,6 +46,36 @@
     white-space: pre-wrap;
     font-size: 32px;
     margin-bottom: 20px;
+  }
+
+  .sentencings {
+    font-size: 32px;
+    .sentencing {
+      .line {
+        margin-bottom: 20px;
+        &.example {
+          margin-bottom: 0px;
+        }
+        &.crime-line {
+          display: flex;
+          flex-wrap: wrap;
+        }
+        .crime-line-item {
+          margin-top: 20px;
+          text-align: left;
+          margin-right: 40px;
+        }
+      }
+      .title {
+        color: #6190E8;
+      }
+      .crime {
+        font-weight: bold;
+      }
+      .date {
+        color: #c6823b;
+      }
+    }
   }
 
   .footer {
@@ -70,6 +104,7 @@
       }
     }
   }
+
   .favorite-container {
     margin: 0 20px 0 20px;
   }

@@ -7,7 +7,7 @@ import { TermSearchItem } from '../../components/termSearchItem/index.weapp'
 import { CategoryList } from '../../components/categoryList/index.weapp'
 import {convertNumberToChinese, getNumber} from '../../util/convertNumber'
 import './index.scss'
-import {policeOrderAdminPenaltyLawCategoryLines} from '../../util/util';
+import {supervisionCategoryLines} from '../../util/util';
 
 export default class Index extends Component {
 
@@ -19,7 +19,7 @@ export default class Index extends Component {
   }
 
   config = {
-    navigationBarTitleText: '中华人民共和国治安管理处罚法'
+    navigationBarTitleText: '中华人民共和国监察法'
   }
 
   reset = () => {
@@ -51,8 +51,7 @@ export default class Index extends Component {
 
   componentWillUnmount () { }
 
-  componentDidShow () {
-  }
+  componentDidShow () {}
 
   componentDidHide () { }
 
@@ -66,7 +65,7 @@ export default class Index extends Component {
         (data) => {
           return (
             <TermSearchItem
-              type='public-order-admin-penalty-law'
+              type='supervision-law'
               keyword={searchValue}
               isReadMode={isReadMode}
               term={data}
@@ -109,7 +108,7 @@ export default class Index extends Component {
       return ;
     }
     Taro.cloud.callFunction({
-      name: 'getPublicOrderAdminPenaltyLaw',
+      name: 'getSupervisionLaw',
       data: {
         searchValue: searchValue,
       },
@@ -131,7 +130,7 @@ export default class Index extends Component {
     this.setState({isLoading: true});
     const that = this;
     Taro.cloud.callFunction({
-      name: 'getPublicOrderAdminPenaltyLaw',
+      name: 'getSupervisionLaw',
       data: {
         searchValue: searchValue,
         type: 'category'
@@ -147,7 +146,7 @@ export default class Index extends Component {
     return (
       <View className={`litigation-regulation-page ${isReadMode ? 'read-mode' : ''}`}>
           <AtNoticebar marquee speed={60}>
-            根据2012年10月26日第十一届全国人民代表大会常务委员会第二十九次会议《关于修改〈中华人民共和国治安管理处罚法〉的决定》修正
+            2018年3月20日第十三届全国人民代表大会第一次会议通过
           </AtNoticebar>
           <View>
             <AtSearchBar
@@ -157,14 +156,14 @@ export default class Index extends Component {
                 this.onSearch(searchValue)
               }}
               onClear={this.onClear}
-              placeholder='搜索治安管理处罚法'
+              placeholder='搜索监察法'
             />
           </View>
           <View>
             <View>
               {/*{searchResult.length === 0 && this.renderOptions()}*/}
               {searchResult.length === 0 &&
-              <CategoryList isReadMode={isReadMode} type='' options={policeOrderAdminPenaltyLawCategoryLines} onClick={this.onClickOptionItem} />}
+              <CategoryList isReadMode={isReadMode} type='' options={supervisionCategoryLines} onClick={this.onClickOptionItem} />}
             </View>
             <View>
               {searchResult.length > 0 && this.renderSearchList()}

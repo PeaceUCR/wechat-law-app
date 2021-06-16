@@ -9,6 +9,7 @@ import {checkIfNewUser, redirectToIndexIfNewUser} from '../../util/login'
 import {lawIdLabelMap} from '../../util/util'
 import './index.scss'
 import YiBenTongSection from "../../components/yibentongSection/index.weapp";
+import TextSection from "../../components/textSection/index.weapp";
 
 const getTermNumber = (text) => {
   return text.substring(0, text.indexOf('条') + 1);
@@ -33,6 +34,8 @@ export default class TermDetail extends Component {
     isComplementLoading: true,
     isCollectedLoading: true,
     isYibentongDataLoading: true,
+    isSentencingLoading: true,
+    sentencings: [],
     isCollected: false,
     isReadMode: false,
     zoomIn: false,
@@ -55,7 +58,6 @@ export default class TermDetail extends Component {
     const that = this;
     db.collection('terms').where({_id: id}).get({
       success: (res) => {
-        console.log('res', res)
         const term = res.data[0];
         that.setState({term});
         db.collection('procuratorate-examples')
@@ -115,6 +117,20 @@ export default class TermDetail extends Component {
             that.setState({yibentongData: res.data, isYibentongDataLoading: false});
           }
         })
+
+        Taro.cloud.callFunction({
+          name: 'getSentencing',
+          data: {
+            criminalLawNumber: term.number
+          },
+          complete: r => {
+            that.setState( {
+              isSentencingLoading: false,
+              sentencings: r.result.data
+            })
+          }
+        })
+
       }
     })
 
@@ -125,7 +141,6 @@ export default class TermDetail extends Component {
         type: 'criminalLawTermDetail'
       },
       complete: (r) => {
-        console.log(r)
         if (r && r.result && r.result.data && r.result.data.length > 0) {
           that.setState({isCollected: true})
         }
@@ -243,7 +258,6 @@ export default class TermDetail extends Component {
   }
 
   handleCollect = throttle(() => {
-    console.log('collect')
     if (checkIfNewUser()) {
       redirectToIndexIfNewUser()
       return ;
@@ -398,10 +412,36 @@ export default class TermDetail extends Component {
       currentTab: value
     })
   }
+
+  renderSentencings = () => {
+    const {sentencings, zoomIn} = this.state
+    return <View className='sentencings'>
+      {sentencings.map((sentencing, index) => {
+        const {crimeName, text, sourceName, sourceId, effectiveDate} = sentencing
+        return (<View className='sentencing' key={`sentencing-key-${index}`}>
+          <View className='title line example'>量刑指导意见:</View>
+          <View className='line crime-line'>
+            <Text className='crime-line-item'>罪名:<Text className='crime'>{crimeName}</Text></Text>
+            <Text className='date crime-line-item'>
+            实施日期:{new Date(Date.parse(effectiveDate)).toLocaleDateString('fr-CA')}</Text>
+          </View>
+          <View className='line'>
+            <TextSection data={text} zoomIn={zoomIn} />
+          </View>
+          <View className='line link'>
+            <DataPopup data={{sourceName, sourceId, crimeName}} type='source'zoomIn={zoomIn} />
+          </View>
+          <AtDivider height='40' lineColor='#fff' />
+        </View>)
+      })}
+    </View>
+  }
+
   render () {
     const {isSent, comment, term, examples, explanations, courtExamples, complements, courtComplementExamples,
       isProcuratorateExampleLoading, isCourtExampleLoading, isExplanationLoading, isComplementLoading,
-      isYibentongDataLoading, isCollectedLoading, isCollected, isReadMode, zoomIn, currentTab} = this.state;
+      isYibentongDataLoading, isCollectedLoading, isCollected, isReadMode, zoomIn, currentTab,
+      isSentencingLoading, sentencings} = this.state;
     return (
       <View className={`term-detail-page ${isReadMode ? 'read-mode' : ''} ${zoomIn ? 'zoom-in' : ''}`}>
           <View className='main section'>
@@ -446,8 +486,12 @@ export default class TermDetail extends Component {
             </View>
           </View>
 
+          <View>
+            {sentencings && sentencings.length > 0 && this.renderSentencings()}
+          </View>
+
         {(isProcuratorateExampleLoading || isCourtExampleLoading || isExplanationLoading
-          || isComplementLoading || isYibentongDataLoading || isCollectedLoading) && <View className='loading-container'>
+          || isComplementLoading || isYibentongDataLoading || isCollectedLoading || isSentencingLoading) && <View className='loading-container'>
           <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
         </View>}
 

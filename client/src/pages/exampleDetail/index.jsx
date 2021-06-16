@@ -84,6 +84,12 @@ export default class ExampleDetail extends Component {
           that.setState({example: res.data[0], isLoading: false, type, id, keyword});
         }
       });
+    } else if (type ==='source') {
+      db.collection('sentencing-source').where({_id: id}).get({
+        success: (res) => {
+          that.setState({example: res.data[0], isLoading: false, type, id, keyword});
+        }
+      });
     }
 
     // let collection = getStorageSync('collection');
@@ -330,7 +336,7 @@ export default class ExampleDetail extends Component {
           最高人民法院关于部分指导性案例不再参照的通知(2021.1.1):为保证国家法律统一正确适用,根据《中华人民共和国民法典》等有关法律规定和审判实际,经最高人民法院审判委员会讨论决定,9号、20号指导性案例不再参照。但该指导性案例的裁判以及参照该指导性案例作出的裁判仍然有效。
         </AtNoticebar>
         }
-        {type === 'court' && this.renderCourtExample()}
+        {(type === 'court' || type === 'source') && this.renderCourtExample()}
         {(type === 'procuratorate' || type === 'explanation' || type === 'court-open') && this.renderProcuratorateExample()}
         {type === 'terms-complement' && this.renderTermComplement()}
         {(type === 'complement' || type ==='consultant' || type === 'civilLawExample' || type === 'civilLawExplaination') && this.renderComplement()}

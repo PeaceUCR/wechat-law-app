@@ -51,10 +51,15 @@ export default class Index extends Component {
           type: '刑法'
         },
         {
+          title: '监察法',
+          url: '/pages/supervisionLaw/index',
+          type: '刑法',
+          isNew: true
+        },
+        {
           title: '刑事审判参考',
           url: '/pages/consultant/index',
-          type: '刑法',
-          isUpdated: true
+          type: '刑法'
         }
       ],
       '民法典相关': [
@@ -79,20 +84,23 @@ export default class Index extends Component {
         {
           title: '中华人民共和国治安管理处罚法',
           url: '/pages/publicOrderAdminPenaltyLaw/index',
-          type: '行政'
+          type: '行政',
+          isNew: true
           // isHot: true
         },
         {
           title: '公安机关办理行政案件程序规定',
           url: '/pages/policeAdminRegulation/index',
-          type: '行政'
+          type: '行政',
+          isNew: true
         }
       ],
       '共有': [
         {
           title: '指导案例',
           url: '/pages/examples/index',
-          type: '共有'
+          type: '共有',
+          isUpdated: true
         },
         {
           title: '最高法公报案例',
