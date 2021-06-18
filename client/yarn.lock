@@ -9180,6 +9180,11 @@ tar@^6.0.2:
     mkdirp "^1.0.3"
     yallist "^4.0.0"
 
+taro-cropper@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/taro-cropper/-/taro-cropper-1.2.4.tgz#3146d32eb7d78bb5dcb2f0bffa9d4529c52888b2"
+  integrity sha512-Jdf6+AquRLCj6pqlafSl6+LQV5EAaDNVRmzyb7F71EKXNSeJojJtStWCGMRfi9WTCQ4esnSmZI7si7qqfn+04A==
+
 taro-ui@^2.3.4:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/taro-ui/-/taro-ui-2.3.4.tgz#a7a2cdd67b2b4a49d10c351d89def4d28b9bb192"

@@ -1,6 +1,7 @@
 import Taro, { useState, useEffect } from '@tarojs/taro'
 import {View} from "@tarojs/components";
 import {AtAvatar, AtActivityIndicator} from "taro-ui";
+import {getUserOpenId} from '../../util/login';
 import './index.scss'
 
 const DiscussionArea = (props) => {
@@ -19,7 +20,6 @@ const DiscussionArea = (props) => {
         type: ''
       },
       complete: (r) => {
-        console.log(r)
         if (r && r.errMsg !== 'cloud.callFunction:ok') {
           Taro.showToast({
             title: `获取讨论数据失败:${r.result.errMsg}`,
@@ -29,7 +29,12 @@ const DiscussionArea = (props) => {
           setIsLoading(false)
           return ;
         }
-        setComments(r.result)
+        console.log(r.result)
+        const currentOpenId = getUserOpenId()
+        const validComments = r.result.filter(item => {
+          return (item.hasChecked !== false) || (currentOpenId === item.openId)
+        })
+        setComments(validComments)
         if (isSent) {
           handleCommentsLoaded()
         }

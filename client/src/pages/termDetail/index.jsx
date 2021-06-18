@@ -10,6 +10,7 @@ import {lawIdLabelMap} from '../../util/util'
 import './index.scss'
 import YiBenTongSection from "../../components/yibentongSection/index.weapp";
 import TextSection from "../../components/textSection/index.weapp";
+import TextSectionLinked from "../../components/textSectionLinked/index.weapp";
 
 const getTermNumber = (text) => {
   return text.substring(0, text.indexOf('条') + 1);
@@ -54,9 +55,15 @@ export default class TermDetail extends Component {
   }
 
   componentWillMount () {
-    const { id } = this.$router.params;
+    const { id, chnNumber } = this.$router.params;
     const that = this;
-    db.collection('terms').where({_id: id}).get({
+    let searchParams;
+    if (chnNumber) {
+      searchParams = {chnNumber}
+    } else {
+      searchParams = {_id: id}
+    }
+    db.collection('terms').where(searchParams).get({
       success: (res) => {
         const term = res.data[0];
         that.setState({term});
@@ -314,12 +321,14 @@ export default class TermDetail extends Component {
   }, 3000, { trailing: false })
 
   renderTermText = () => {
-    const {term} = this.state;
-    term.text = term.text ? term.text : ''
-    const lines = term.text.split('\n').filter(l => l.trim())
-    return (lines.map((line, index) => {
-      return (<View className='term-line' key={`key-civil-${index}`}>{line}</View>)
-    }))
+    const {term, zoomIn} = this.state;
+    const {text, linkedCriminalTerms} = term
+    return (<TextSectionLinked data={text} keywords={linkedCriminalTerms} zoomIn={zoomIn} />)
+    // term.text = term.text ? term.text : ''
+    // const lines = term.text.split('\n').filter(l => l.trim())
+    // return (lines.map((line, index) => {
+    //   return (<View className='term-line' key={`key-civil-${index}`}>{line}</View>)
+    // }))
   }
 
   handleZoom = () => {
@@ -339,12 +348,6 @@ export default class TermDetail extends Component {
   }
 
   handleSend = () => {
-    Taro.showToast({
-      title: '评论功能由于未过滤违法/违禁信息,暂时停用',
-      icon: 'none',
-      duration: 3000
-    })
-    return ;
 
     if (checkIfNewUser()) {
       redirectToIndexIfNewUser()

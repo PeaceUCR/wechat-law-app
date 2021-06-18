@@ -21,6 +21,11 @@ export const getUserAvatar = () => {
   return user.avatarUrl;
 }
 
+export const getUserOpenId = () => {
+  const user = getStorageSync('user');
+  return user.openId;
+}
+
 export const getUserNickname = () => {
   const user = getStorageSync('user');
   return user.nickName;

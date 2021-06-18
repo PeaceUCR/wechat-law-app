@@ -283,13 +283,6 @@ export default class RegulationDetail extends Component {
   }
 
   handleSend = () => {
-    Taro.showToast({
-      title: '评论功能由于未过滤违法/违禁信息,暂时停用',
-      icon: 'none',
-      duration: 3000
-    })
-    return ;
-
     if (checkIfNewUser()) {
       redirectToIndexIfNewUser()
       return ;

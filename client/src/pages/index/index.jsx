@@ -126,8 +126,8 @@ export default class Index extends Component {
     isPosterLoading: true,
     posterRedirect: '',
     swiperPosters: [
-      'https://6465-dev-ial1c-1304492798.tcb.qcloud.la/swiper-0.jpg?sign=55ca212159e531874f4207a60a41e3cc&t=1620197528',
-      'https://6465-dev-ial1c-1304492798.tcb.qcloud.la/swiper-3.png?sign=4a6363640634764fc2786cc424761572&t=1623317703'
+      'https://res.cloudinary.com/mini-store-2020/image/upload/v1623945805/swiper-1_nc67r2.jpg',
+      'https://res.cloudinary.com/mini-store-2020/image/upload/v1623945815/swiper-3_uyvciu.png'
     ],
     canClose: false
   }
@@ -315,7 +315,7 @@ export default class Index extends Component {
     return (
       <View className={`index-page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
-          本小程序数据信息均来源于最高检，最高法，公安部，司法部等权威发布
+          本小程序数据信息均来源于最高检、最高法、公安部、司法部、人大等权威发布
         </AtNoticebar>
         {/*{getUserNickname() !== 'echo' && <View className='cake-container' onClick={() => {*/}
         {/*  Taro.navigateTo({*/}

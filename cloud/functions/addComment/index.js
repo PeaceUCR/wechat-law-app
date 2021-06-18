@@ -19,6 +19,7 @@ exports.main = async (event, context) => {
       topicId: event.topicId,
       content: event.content,
       replyToCommentId: event.replyToCommentId,
+      hasChecked: false,
       time: new Date()
     }
   })
