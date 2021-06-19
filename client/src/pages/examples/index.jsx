@@ -19,8 +19,8 @@ export default class Index extends Component {
     searchProcuratorateResult: [],
     isLoading: false,
     isExpandLabel: false,
-    selected: '搜关键字',
-    options: ['搜关键字', '搜案例名', '搜相关法条'],
+    selected: '搜全文',
+    options: ['搜全文', '搜关键字', '搜案例名', '搜相关法条'],
     isReadMode: false,
     procuratorateMap: {},
     procuratorateExampleTitleMap: {},
@@ -119,6 +119,28 @@ export default class Index extends Component {
       })
       return ;
     }
+
+    if (selected === '搜全文') {
+      Taro.cloud.callFunction({
+        name: 'searchExamples',
+        data: {
+          searchValue: searchValue
+        },
+        complete: ({result}) => {
+          const {searchCourtResult, searchProcuratorateResult} = result
+          if (isEmpty(searchCourtResult) || isEmpty(searchProcuratorateResult)) {
+            Taro.showToast({
+              title: `未找到含有${searchValue}的指导案例`,
+              icon: 'none',
+              duration: 3000
+            })
+          }
+          that.setState({searchCourtResult, searchProcuratorateResult, isLoading: false});
+        }
+      })
+    }
+
+
     if (selected === '搜案例名') {
       db.collection('court-examples').where({title: db.RegExp({
           regexp: '.*' + searchValue,

@@ -8,27 +8,14 @@ const LawCategory = (props) => {
   let {catgoryLine, type} = props;
   catgoryLine = catgoryLine ? catgoryLine : {}
   const [isHidden, setIsHidden] = useState(true);
-  // return (<View className={`all-law-catgory-${catgoryLine.type}`}><View
-  //   onClick={() => {
-  //     if (catgoryLine.laws && catgoryLine.laws.length > 0) {
-  //       setIsHidden(!isHidden)
-  //     }
-  //   }}
-  // >{catgoryLine.value} {catgoryLine.laws && <AtIcon value={isHidden ?'chevron-up': 'chevron-down'} size='18' color='#6190E8'></AtIcon>}</View>
-  //   {isHidden && <View>
-  //     {catgoryLine.laws.map((law, index) => {
-  //       return (<View key={`all-law-catgoryLine-option-${index}`} className='all-law-catgory-option' onClick={() => {
-  //         Taro.navigateTo({
-  //           url: `/pages/termDetail/index?id=${lawMap[law]}`,
-  //         })
-  //       }}
-  //       >
-  //         {lawLabelMap[law]}
-  //       </View>)
-  //       }
-  //       )}
-  //   </View>}
-  // </View>)
+  const getLabel = (law) => {
+    if (type === 'civil') {
+      return `${law} ${civilTagMap[law]}`
+    } else if (type === 'police' || type === 'civil-law-regulation' || type === 'litigation-law') {
+      return law
+    }
+    return lawLabelMap[law]
+  }
   return (
     <View className={`all-law-catgory-${catgoryLine.type}`}>
       {catgoryLine.laws && <AtAccordion
@@ -68,8 +55,7 @@ const LawCategory = (props) => {
 
             }}
             >
-              {type === 'civil'? `${law} ${civilTagMap[law]}` :
-                type === 'police' || type === 'civil-law-regulation' || type === 'litigation-law' ? law : lawLabelMap[law]}
+              {getLabel(law)}
             </View>)
           }
         )}

@@ -1,6 +1,6 @@
 import Taro, {Component} from '@tarojs/taro'
 import {View, Text, Picker, Image} from '@tarojs/components'
-import {AtSearchBar, AtActivityIndicator, AtBadge, AtIcon, AtSwitch, AtFab} from 'taro-ui'
+import {AtSearchBar, AtActivityIndicator, AtBadge, AtIcon, AtFab} from 'taro-ui'
 import {isEmpty} from 'lodash';
 import { db } from '../../util/db'
 import { TermSearchItem } from '../../components/termSearchItem/index.weapp'

@@ -1,9 +1,7 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {View, Text, Picker, Image} from '@tarojs/components'
-import {AtSearchBar, AtActivityIndicator, AtListItem, AtLoadMore, AtBadge, AtIcon} from 'taro-ui'
+import {AtSearchBar, AtActivityIndicator, AtListItem, AtBadge, AtIcon} from 'taro-ui'
 import {isEmpty} from 'lodash';
-import throttle from 'lodash/throttle';
-import { db } from '../../util/db'
 import clickIcon from '../../static/down.png';
 import './index.scss'
 
@@ -15,7 +13,6 @@ export default class Index extends Component {
     isLoading: false,
     selected: '全文搜索',
     options: ['全文搜索'],
-    status: 'more',
     isReadMode: false
   }
 
@@ -28,6 +25,7 @@ export default class Index extends Component {
       path: 'pages/index/index'
     };
   }
+
   componentWillMount () {
     const setting = getStorageSync('setting');
     this.setState({isReadMode: setting && setting.isReadMode})
@@ -74,11 +72,10 @@ export default class Index extends Component {
     this.setState({searchValue})
   }
 
-  onSearch = (skip) => {
-    skip = skip ? skip : 0;
+  onSearch = () => {
     const that = this;
     this.setState({isLoading: true});
-    const { searchValue, searchResult, selected } = this.state;
+    const { searchValue, selected } = this.state;
     if(!searchValue.trim()) {
       Taro.showToast({
         title: '搜索不能为空',
@@ -87,46 +84,28 @@ export default class Index extends Component {
       })
       return ;
     }
-    if (selected === '全文搜索') {
-      db.collection('court-open').orderBy('date', 'desc').skip(skip).where({text: db.RegExp({
-          regexp: '.*' + searchValue,
-          options: 'i',
-        })}).get({
-        success: (res) => {
-          if (isEmpty(res.data)) {
-            if (skip === 0) {
-              Taro.showToast({
-                title: `未找到含有${searchValue}的最高法公报`,
-                icon: 'none',
-                duration: 3000
-              })
-              that.setState({isLoading: false})
-              return;
-            } else {
-              Taro.showToast({
-                title: `没有更多啦`,
-                icon: 'none',
-                duration: 3000
-              })
-              that.setState({status: 'noMore', isLoading: false})
-            }
-          } else {
-            if (skip === 0) {
-              that.setState({searchResult: [...res.data], isLoading: false});
-            } else {
-              that.setState({searchResult: [...searchResult, ...res.data], isLoading: false});
-            }
-          }
 
+    if (selected === '全文搜索') {
+      Taro.cloud.callFunction({
+        name: 'searchCourtOpen',
+        data: {
+          searchValue: searchValue
+        },
+        complete: ({result}) => {
+          console.log(result)
+          const {searchResult} = result
+          if (isEmpty(searchResult)) {
+            Taro.showToast({
+              title: `未找到含有${searchValue}的指导案例`,
+              icon: 'none',
+              duration: 3000
+            })
+          }
+          that.setState({searchResult, isLoading: false});
         }
-      });
+      })
     }
 
-  }
-
-  loadMore = () => {
-    const {searchResult} = this.state
-    this.onSearch(searchResult.length)
   }
 
   onClear = () => {
@@ -140,13 +119,12 @@ export default class Index extends Component {
     const {options} = this.state;
     this.setState({
       selected: options[e.detail.value],
-      status: 'more',
       searchResult: []
     })
   }
 
   render () {
-    const {searchValue, searchResult, isLoading, selected, options, status, isReadMode} = this.state;
+    const {searchValue, searchResult, isLoading, selected, options, isReadMode} = this.state;
     return (
       <View className={`example-page ${isReadMode ? 'read-mode' : ''}`}>
           <View className='header'>
@@ -162,7 +140,7 @@ export default class Index extends Component {
               <AtSearchBar
                 value={searchValue}
                 onChange={this.onChange}
-                onActionClick={() => this.onSearch(0)}
+                onActionClick={() => this.onSearch()}
                 onClear={this.onClear}
                 placeholder={selected === '全文搜索' ? '案由，关键词' : ''}
               />
@@ -172,12 +150,6 @@ export default class Index extends Component {
             <View>
               {searchResult.length > 0 && this.renderSearchList()}
             </View>
-            {searchResult && searchResult.length>0 && (<AtLoadMore
-              onClick={
-                throttle(this.loadMore, 2000, { trailing: false })
-              }
-              status={status}
-            />)}
             {isLoading && <View className='loading-container'>
               <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
             </View>}

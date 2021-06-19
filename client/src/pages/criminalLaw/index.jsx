@@ -7,7 +7,7 @@ import { rank, rankBySearchValue } from '../../util/rank'
 import { TermSearchItem } from '../../components/termSearchItem/index.weapp'
 import { LawCategory } from '../../components/lawCategory/index.weapp'
 import { getNumber, isNumber} from '../../util/convertNumber'
-import {lawMap, keys, categoryLines, criminalTermsComplement, singleCriminalLaw } from '../../util/util'
+import {lawMap, keys} from '../../util/util'
 import clickIcon from '../../static/down.png';
 import './index.scss'
 
@@ -21,9 +21,12 @@ export default class Index extends Component {
     selected: "搜全文",
     options: ["搜全文", "搜罪名", "搜序号"],
     crimes: [],
-    terms: [],
+    criminalLawTerms: [],
     showAllCategories: false,
-    isReadMode: false
+    isReadMode: false,
+    categoryLines: [],
+    criminalTermsComplement: [],
+    singleCriminalLaw: [],
   }
 
   config = {
@@ -43,9 +46,13 @@ export default class Index extends Component {
     that.setState({isLoading: true});
     db.collection('configuration').where({}).get({
       success: (res) => {
+        const {crimes, criminalLawTerms, categoryLines, criminalTermsComplement, singleCriminalLaw} = res.data[0]
         that.setState({
-          crimes: res.data[0].crimes,
-          terms: res.data[0].criminalLawTerms,
+          crimes,
+          criminalLawTerms,
+          categoryLines,
+          criminalTermsComplement,
+          singleCriminalLaw,
           isLoading: false});
       }
     });
@@ -79,6 +86,7 @@ export default class Index extends Component {
   }
 
   renderAllCatgories = () => {
+    const {categoryLines} = this.state
     return categoryLines
       .map((catgoryLine, index)=> {
         return (<LawCategory catgoryLine={catgoryLine} key={`all-law-catgoryLine-${index}`} />)
@@ -86,6 +94,7 @@ export default class Index extends Component {
   }
 
   renderComplement = () => {
+    const {criminalTermsComplement} = this.state
     return criminalTermsComplement.map(term => (
       <View className='term-complement' key={`complement-${term._id}`}
         onClick={() => {
@@ -99,6 +108,7 @@ export default class Index extends Component {
     </View>) )
   }
   renderSingleCriminalLaw = () => {
+    const {singleCriminalLaw} = this.state
     return singleCriminalLaw.map(term => (
       <View className='term-complement' key={`complement-${term._id}`}
         onClick={() => {
@@ -126,7 +136,7 @@ export default class Index extends Component {
   }
 
   renderHintOptions = () => {
-    const {crimes, terms} = this.state;
+    const {crimes, criminalLawTerms} = this.state;
     const that = this;
     return (<View className='options'>
       <View className='option-title'>常用罪名关键字</View>
@@ -135,7 +145,7 @@ export default class Index extends Component {
           {crime}
       </View>)})}</View>
       <View className='option-title'>常用法条关键字</View>
-      <View className='sub-options'>{terms && terms.length >0 && terms.map((term, index) => {
+      <View className='sub-options'>{criminalLawTerms && criminalLawTerms.length >0 && criminalLawTerms.map((term, index) => {
         return (<View className='term-option option' key={`term-option-${index}`} onClick={() => that.onClickOptionItem("搜序号", term)}>
           {term}
         </View>)})}</View>
