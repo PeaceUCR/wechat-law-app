@@ -1,3 +1,5 @@
 fileignoreconfig:
-- filename: client/yarn.lock
-  checksum: 4c75599bfd164d94ac68db0e64728ab1b2c0668ac7f3167345a33dd618c73d0d
+- filename: cloud/functions/searchExamples/yarn.lock
+  checksum: ae04f139e23e97b8e8c962e3cf96b47f521d9140ba95e17b2056a0a8b02daaa2
+- filename: cloud/functions/searchCourtOpen/yarn.lock
+  checksum: 46224395a47bb7c2192758289eee19df94bb196e2d24ee42662e092591f4d6e5

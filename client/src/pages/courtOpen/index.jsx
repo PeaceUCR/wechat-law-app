@@ -92,7 +92,6 @@ export default class Index extends Component {
           searchValue: searchValue
         },
         complete: ({result}) => {
-          console.log(result)
           const {searchResult} = result
           if (isEmpty(searchResult)) {
             Taro.showToast({

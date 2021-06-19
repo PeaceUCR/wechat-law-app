@@ -9,11 +9,26 @@ exports.main = async (event, context) => {
   console.log(event)
   const wxContext = cloud.getWXContext();
   const db = cloud.database()
+
+  const type = event.type
+  const searchValue = event.searchValue
+
   let result
-  if (event.type === 'number') {
+
+  if (type === 'all') {
+    const regexpString = `${searchValue.split('').join('.*')}`
+    result = await db.collection('consult').limit(1000).where({
+      content: db.RegExp({
+        regexp: regexpString,
+        options: 'i',
+      })
+    }).orderBy('number', 'desc').get();
+
+  } else if (type === 'number') {
     result = await db.collection('consult').limit(1000).where({
       number: parseInt(event.number)
     }).orderBy('number', 'desc').get();
+
   } else {
     result = await db.collection('consult').limit(1000).where({name: db.RegExp({
         regexp: '.*' + event.name,

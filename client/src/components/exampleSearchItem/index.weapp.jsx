@@ -4,7 +4,7 @@ import throttle from 'lodash/throttle';
 import './index.scss'
 
 const ExampleSearchItem = (props) => {
-  let {example, type, disableRedirect, isReadMode} = props;
+  let {example, type, disableRedirect, isReadMode,searchValue} = props;
   example = example ? example : {};
   const {title, terms, keyword, name, number, _id} = example;
   const redirect = throttle(
@@ -13,7 +13,7 @@ const ExampleSearchItem = (props) => {
         return ;
       }
       Taro.navigateTo({
-        url: `/pages/exampleDetail/index?type=${type}&id=${_id}`,
+        url: `/pages/exampleDetail/index?type=${type}&id=${_id}&keyword=${searchValue}`,
       })
     },
     2000,

@@ -92,13 +92,13 @@ export default class Index extends Component {
   componentDidHide () { }
 
   renderSearchList = () => {
-    const {searchCourtResult, searchProcuratorateResult, isReadMode} = this.state
+    const {searchValue, searchCourtResult, searchProcuratorateResult, isReadMode} = this.state
     return (<View>
       <View>
-        {searchCourtResult.map(((example) => {return (<ExampleSearchItem isReadMode={isReadMode} example={example} type='court' key={`example-${example._id}`} />)}))}
+        {searchCourtResult.map(((example) => {return (<ExampleSearchItem isReadMode={isReadMode} example={example} type='court' searchValue={searchValue} key={`example-${example._id}`} />)}))}
       </View>
       <View>
-        {searchProcuratorateResult.map(((example) => {return (<ExampleSearchItem isReadMode={isReadMode} example={example} type='procuratorate' key={`example-${example._id}`} />)}))}
+        {searchProcuratorateResult.map(((example) => {return (<ExampleSearchItem isReadMode={isReadMode} example={example} type='procuratorate' searchValue={searchValue} key={`example-${example._id}`} />)}))}
       </View>
     </View>)
   }

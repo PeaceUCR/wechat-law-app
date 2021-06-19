@@ -1,9 +1,7 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {View, Text, Picker, Image} from '@tarojs/components'
-import {AtSearchBar, AtActivityIndicator, AtListItem, AtLoadMore, AtBadge, AtIcon, AtNoticebar} from 'taro-ui'
+import {AtSearchBar, AtActivityIndicator, AtListItem, AtBadge, AtIcon, AtNoticebar} from 'taro-ui'
 import {isEmpty} from 'lodash';
-import throttle from 'lodash/throttle';
-import { db } from '../../util/db'
 import clickIcon from '../../static/down.png';
 import './index.scss'
 
@@ -13,8 +11,8 @@ export default class Index extends Component {
     searchValue: '',
     searchResult: [],
     isLoading: false,
-    selected: '搜案例名',
-    options: ['搜案例名', '搜案例号'],
+    selected: '搜全文',
+    options: ['搜全文', '搜案例名', '搜案例号'],
     isReadMode: false
   }
 
@@ -49,7 +47,7 @@ export default class Index extends Component {
   componentDidHide () { }
 
   renderSearchList = () => {
-    const {searchResult} = this.state
+    const {searchResult, searchValue} = this.state
     return (<View>
       <View>
         {searchResult.map(((example) => {return (
@@ -59,7 +57,7 @@ export default class Index extends Component {
             arrow='right'
             onClick={() => {
               Taro.navigateTo({
-                url: `/pages/exampleDetail/index?type=consultant&id=${example._id}`,
+                url: `/pages/exampleDetail/index?type=consultant&id=${example._id}&keyword=${searchValue}`,
               })
             }}
           />
@@ -84,6 +82,51 @@ export default class Index extends Component {
       })
       return ;
     }
+
+    if (selected === '搜全文') {
+
+      if (!isNaN(parseInt(searchValue))) {
+
+        Taro.cloud.callFunction({
+          name: 'getConsults',
+          data: {
+            type: 'number',
+            number: searchValue
+          },
+          complete: r => {
+            if (isEmpty(r.result.result.data)) {
+              Taro.showToast({
+                title: `未找到含有${searchValue}的案例`,
+                icon: 'none',
+                duration: 3000
+              })
+            }
+            that.setState({searchResult: [...r.result.result.data], isLoading: false});
+          }
+        })
+
+        return ;
+      }
+
+      Taro.cloud.callFunction({
+        name: 'getConsults',
+        data: {
+          type: 'all',
+          searchValue: searchValue
+        },
+        complete: r => {
+          if (isEmpty(r.result.result.data)) {
+            Taro.showToast({
+              title: `未找到含有${searchValue}的案例`,
+              icon: 'none',
+              duration: 3000
+            })
+          }
+          that.setState({searchResult: [...r.result.result.data], isLoading: false});
+        }
+      })
+    }
+
     if (selected === '搜案例名') {
       Taro.cloud.callFunction({
         name: 'getConsults',
