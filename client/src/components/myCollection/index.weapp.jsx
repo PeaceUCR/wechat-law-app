@@ -34,6 +34,7 @@ const MyCollection = (props) => {
   const policeAdminRegulationKeys = allKeys.filter(key => collectionObj[key].type === 'police-admin-regulation')
   const publicOrderAdminPenaltyLawKeys = allKeys.filter(key => collectionObj[key].type === 'public-order-admin-penalty-law')
   const supervisionLawKeys = allKeys.filter(key => collectionObj[key].type === 'supervision-law')
+  const adminPunishLawKeys = allKeys.filter(key => collectionObj[key].type === 'admin-punish-law')
 
   const sourceKeys = allKeys.filter(key => collectionObj[key].type === 'source')
 
@@ -254,6 +255,25 @@ const MyCollection = (props) => {
         <View className='divider'></View>
       </View>}
       {publicOrderAdminPenaltyLawKeys.map(policeKey => (
+        <AtListItem
+          key={policeKey}
+          title={collectionObj[policeKey].title}
+          arrow='right'
+          onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/regulationDetail/index?type=${collectionObj[policeKey].type}&id=${policeKey}`,
+            })
+          }}
+        />
+      ))}
+    </View>
+    <View>
+      {adminPunishLawKeys.length > 0 && <View className='sub-title'>
+        <View className='divider'></View>
+        <View className='text'>中华人民共和国行政处罚法</View>
+        <View className='divider'></View>
+      </View>}
+      {adminPunishLawKeys.map(policeKey => (
         <AtListItem
           key={policeKey}
           title={collectionObj[policeKey].title}

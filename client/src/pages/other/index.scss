@@ -50,6 +50,8 @@
   }
 
   .text-container {
+    font-size: 32px;
+    color: #c6823b;
     padding: 0 20px;
   }
 
@@ -63,3 +65,10 @@
   width: 100%;
 }
 
+.poster-container {
+  display: flex;
+  justify-content: center;
+  .poster {
+    width: 622px;
+  }
+}

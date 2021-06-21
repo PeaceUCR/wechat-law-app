@@ -1,6 +1,6 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import { View, Text, Input, Button } from '@tarojs/components'
-import {AtActivityIndicator, AtIcon, AtFab, AtButton, AtBadge, AtDivider, AtTabs, AtTabsPane} from "taro-ui";
+import {AtActivityIndicator, AtIcon, AtFab, AtButton, AtBadge, AtDivider, AtAccordion, AtTabs, AtTabsPane} from "taro-ui";
 import throttle from "lodash/throttle";
 import DataPopup from '../../components/dataPopup/index.weapp'
 import {DiscussionArea} from '../../components/discussionArea/index.weapp'
@@ -36,7 +36,10 @@ export default class TermDetail extends Component {
     isCollectedLoading: true,
     isYibentongDataLoading: true,
     isSentencingLoading: true,
+    isTermExplanationLoading: true,
+    showTermExplanation: false,
     sentencings: [],
+    termExplanations: [],
     isCollected: false,
     isReadMode: false,
     zoomIn: false,
@@ -118,12 +121,18 @@ export default class TermDetail extends Component {
           }
         })
 
-        db.collection('yi-ben-tong').where({number: term.number}).get({
+        db.collection('term-explanation').where({chnNumber: term.chnNumber}).get({
           success: (res) => {
-            // console.log(res.data)
-            that.setState({yibentongData: res.data, isYibentongDataLoading: false});
+            that.setState({termExplanations: res.data, isTermExplanationLoading: false});
           }
-        })
+        });
+
+        // db.collection('yi-ben-tong').where({number: term.number}).get({
+        //   success: (res) => {
+        //     // console.log(res.data)
+        //     that.setState({yibentongData: res.data, isYibentongDataLoading: false});
+        //   }
+        // })
 
         Taro.cloud.callFunction({
           name: 'getSentencing',
@@ -440,11 +449,33 @@ export default class TermDetail extends Component {
     </View>
   }
 
+  renderTermExplanation = () => {
+    const {termExplanations, zoomIn} = this.state
+    return <View className='sentencings'>
+      {termExplanations.map((sentencing, index) => {
+        const {content} = sentencing
+        return (<View className='sentencing' key={`sentencing-key-${index}`}>
+          <View className='line'>
+            <TextSection data={content.join('\n')} zoomIn={zoomIn} />
+          </View>
+          <AtDivider height='40' lineColor='#fff' />
+        </View>)
+      })}
+    </View>
+  }
+
+  openTermExplain = () => {
+    const {showTermExplanation} = this.state
+    this.setState({
+      showTermExplanation: !showTermExplanation
+    })
+  }
+
   render () {
     const {isSent, comment, term, examples, explanations, courtExamples, complements, courtComplementExamples,
       isProcuratorateExampleLoading, isCourtExampleLoading, isExplanationLoading, isComplementLoading,
-      isYibentongDataLoading, isCollectedLoading, isCollected, isReadMode, zoomIn, currentTab,
-      isSentencingLoading, sentencings} = this.state;
+      isCollectedLoading, isCollected, isReadMode, zoomIn, currentTab,
+      isSentencingLoading, sentencings, isTermExplanationLoading, showTermExplanation} = this.state;
     return (
       <View className={`term-detail-page ${isReadMode ? 'read-mode' : ''} ${zoomIn ? 'zoom-in' : ''}`}>
           <View className='main section'>
@@ -467,6 +498,18 @@ export default class TermDetail extends Component {
           {/*<View className='section'>*/}
           {/*  {this.renderYiBenTong()}*/}
           {/*</View>*/}
+
+          <AtAccordion
+            open={showTermExplanation}
+            onClick={this.openTermExplain}
+            title='刑法释义'
+            icon={{ value: 'alert-circle', color: '#c6823b', size: '16' }}
+            isAnimation={false}
+          >
+            <View>
+              {this.renderTermExplanation()}
+            </View>
+          </AtAccordion>
           <View className='examples section'>
             <Text className='section-title'>相关法定解释、规定和指导意见：{complements.length ===0 && explanations.length ===0 ? '暂无' : ''}</Text>
             <View>
@@ -494,7 +537,7 @@ export default class TermDetail extends Component {
           </View>
 
         {(isProcuratorateExampleLoading || isCourtExampleLoading || isExplanationLoading
-          || isComplementLoading || isYibentongDataLoading || isCollectedLoading || isSentencingLoading) && <View className='loading-container'>
+          || isComplementLoading || isCollectedLoading || isSentencingLoading || isTermExplanationLoading) && <View className='loading-container'>
           <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
         </View>}
 

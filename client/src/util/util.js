@@ -17,7 +17,7 @@ export function removeStringAllSpaces(target){
 }
 
 export function removeFirstLineBreak(str) {
-  return str.split('\n').filter(s => s.trim().length > 0).join('\n');
+  return str.split('n').filter(s => s.trim().length > 0).join('n');
 }
 
 export function processLitigationOptions(litigationRegulationChapters= [], litigationRegulationSections = []) {
@@ -110,3 +110,5 @@ export const policeAdminRegulationCategoryLines = [{"level":1,"value":"第一章
 export const policeOrderAdminPenaltyLawCategoryLines = [{"level":1,"value":"第一章 总则"},{"level":1,"value":"第二章 处罚的种类和适用"},{"level":1,"value":"第三章 违反治安管理的行为和处罚"},{"level":2,"value":"第一节 扰乱公共秩序的行为和处罚"},{"level":2,"value":"第二节 妨害公共安全的行为和处罚"},{"level":2,"value":"第三节 侵犯人身权利、财产权利的行为和处罚"},{"level":2,"value":"第四节 妨害社会管理的行为和处罚"},{"level":1,"value":"第四章 处罚程序"},{"level":2,"value":"第一节 调查"},{"level":2,"value":"第二节 决定"},{"level":2,"value":"第三节 执行"},{"level":1,"value":"第五章 执法监督"},{"level":1,"value":"第六章 附则"}]
 
 export const supervisionCategoryLines = [{"level":1,"value":"第一章 总则"},{"level":1,"value":"第二章 监察机关及其职责"},{"level":1,"value":"第三章 监察范围和管辖"},{"level":1,"value":"第四章 监察权限"},{"level":1,"value":"第五章 监察程序"},{"level":1,"value":"第六章 反腐败国际合作"},{"level":1,"value":"第七章 对监察机关和监察人员的监督"},{"level":1,"value":"第八章 法律责任"},{"level":1,"value":"第九章 附则"}]
+
+export const adminPunishLawCategoryLines = [{"level":1,"value":"第一章 总则"},{"level":1,"value":"第二章 行政处罚的种类和设定"},{"level":1,"value":"第三章 行政处罚的实施机关"},{"level":1,"value":"第四章 行政处罚的管辖和适用"},{"level":1,"value":"第五章 行政处罚的决定"},{"level":2,"value":"第一节 一般规定"},{"level":2,"value":"第二节 简易程序"},{"level":2,"value":"第三节 普通程序"},{"level":2,"value":"第四节 听证程序"},{"level":1,"value":"第六章 行政处罚的执行"},{"level":1,"value":"第七章 法律责任"},{"level":1,"value":"第八章 附则"}]

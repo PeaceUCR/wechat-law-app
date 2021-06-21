@@ -82,6 +82,13 @@ export default class Index extends Component {
       ],
       '行政相关': [
         {
+          title: '中华人民共和国行政处罚法',
+          url: '/pages/adminPunishLaw/index',
+          type: '行政',
+          isNew: true
+          // isHot: true
+        },
+        {
           title: '中华人民共和国治安管理处罚法',
           url: '/pages/publicOrderAdminPenaltyLaw/index',
           type: '行政',

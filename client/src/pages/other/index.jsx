@@ -1,9 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
-import {View, Image, Video} from '@tarojs/components'
+import {View, Image, Video, Text} from '@tarojs/components'
 import {AtDivider} from "taro-ui";
 import './index.scss'
-import TextSection from "../../components/textSection/index.weapp";
 import {checkIfNewUser} from '../../util/login'
+import {db} from "../../util/db";
 
 
 export default class Other extends Component {
@@ -14,10 +14,11 @@ export default class Other extends Component {
     examplesVideoUrl: 'https://res.cloudinary.com/mini-store-2020/video/upload/v1621582314/example_xdcoe1.mov',
     consultantVideoUrl: 'https://res.cloudinary.com/mini-store-2020/video/upload/v1609563561/consultant_cmj1pg.mov',
     courtOpenVideoUrl: 'https://res.cloudinary.com/mini-store-2020/video/upload/v1609564138/court-open_iesnlt.mov',
-    text: '搜法专业版（2021-1-2）\n新发布功能：\n- 民法典\n- 刑事审判参考\n- 最高法公报案例\n本APP中的法律条文，案例和材料均来自于公开的政府发布信息和网站',
+    text: '',
     gifUrl: 'https://res.cloudinary.com/mini-store-2020/image/upload/v1607675316/type_kziho3.gif',
     id: '',
-    hideVideo: false
+    hideVideo: false,
+    joinGroupUrl: ''
   }
 
   config = {
@@ -34,16 +35,17 @@ export default class Other extends Component {
   }
 
   componentDidMount () {
-    // const that = this;
-    // that.setState({isLoading: true});
-    // db.collection('configuration').where({}).get({
-    //   success: (res) => {
-    //
-    //     that.setState({
-    //       text: res.data[0].comment,
-    //       videoUrl: res.data[0].videoUrl});
-    //   }
-    // });
+    const that = this;
+    that.setState({isLoading: true});
+    db.collection('configuration').where({}).get({
+      success: (res) => {
+
+        that.setState({
+          text: res.data[0].comment,
+          joinGroupUrl: res.data[0].joinGroupUrl
+        });
+      }
+    });
     if (checkIfNewUser()) {
       this.setState({hideVideo: true});
     }
@@ -65,13 +67,26 @@ export default class Other extends Component {
   componentDidHide () { }
 
   render () {
-    const {hideVideo, id, text, gifUrl, criminalVideoUrl, civilLawVideoUrl, examplesVideoUrl, consultantVideoUrl,courtOpenVideoUrl} = this.state;
+    const {hideVideo, id, text, gifUrl, joinGroupUrl, criminalVideoUrl, civilLawVideoUrl, examplesVideoUrl, consultantVideoUrl,courtOpenVideoUrl} = this.state;
     return (
       <View className='other-page'>
         <View>
           <AtDivider content='关于' />
           <View className='text-container'>
-            <TextSection data={text} />
+            <Text>{text}</Text>
+          </View>
+          <View className='poster-container'>
+            <Image
+              className='poster'
+              src={joinGroupUrl}
+              mode='widthFix'
+              onClick={() => {
+                Taro.previewImage({
+                  current: joinGroupUrl,
+                  urls: [joinGroupUrl]
+                })
+              }}
+            />
           </View>
         </View>
         {(!hideVideo) && <View>
