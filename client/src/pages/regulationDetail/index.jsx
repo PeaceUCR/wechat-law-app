@@ -89,6 +89,23 @@ export default class RegulationDetail extends Component {
       })
     }
 
+    if (type === 'labor-law') {
+      db.collection('labor-law').where({_id: id}).get({
+        success: (res) => {
+          const term = res.data[0];
+          that.setState({term, type, keyword});
+        }
+      })
+    }
+    if (type === 'labor-contract-law') {
+      db.collection('labor-contract-law').where({_id: id}).get({
+        success: (res) => {
+          const term = res.data[0];
+          that.setState({term, type, keyword});
+        }
+      })
+    }
+
     if (type === 'litigation-law') {
       db.collection('litigation-law').where({_id: id}).get({
         success: (res) => {
@@ -187,7 +204,7 @@ export default class RegulationDetail extends Component {
       })
     } else {
       let title;
-      if (type === 'litigation-explanation' || type === 'police' || type === 'police-admin-regulation' || type === 'public-order-admin-penalty-law' || type === 'supervision-law' || type === 'admin-punish-law') {
+      if (type === 'litigation-explanation' || type === 'police' || type === 'police-admin-regulation' || type === 'public-order-admin-penalty-law' || type === 'supervision-law' || type === 'admin-punish-law' || type === 'labor-law' || type === 'labor-contract-law') {
         title = number
       } else if (type === 'civil-law-regulation') {
         title = `${number} ${tag}`
@@ -361,7 +378,7 @@ export default class RegulationDetail extends Component {
         <View className='main section'>
             <View>
               {(type === 'police' || type === 'civil-law-regulation') && this.renderTermText()}
-              {(type === 'police-admin-regulation' || type === 'public-order-admin-penalty-law' || type === 'supervision-law' || type === 'admin-punish-law') && this.renderAdminText()}
+              {(type === 'police-admin-regulation' || type === 'public-order-admin-penalty-law' || type === 'supervision-law' || type === 'admin-punish-law' || type === 'labor-law' || type === 'labor-contract-law') && this.renderAdminText()}
               {(type === 'litigation-law' || type === 'litigation-regulation' || type === 'litigation-explanation') && this.renderLitigation()}
             </View>
           </View>

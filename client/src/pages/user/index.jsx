@@ -5,7 +5,6 @@ import MyCollection from '../../components/myCollection'
 import './index.scss'
 import {tmpId} from '../../util/util'
 import {ImageRecoginzer} from "../../components/imageRecoginzer/index.weapp";
-import {getUserNickname} from "../../util/login";
 
 export default class User extends Component {
 

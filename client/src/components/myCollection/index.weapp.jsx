@@ -35,6 +35,8 @@ const MyCollection = (props) => {
   const publicOrderAdminPenaltyLawKeys = allKeys.filter(key => collectionObj[key].type === 'public-order-admin-penalty-law')
   const supervisionLawKeys = allKeys.filter(key => collectionObj[key].type === 'supervision-law')
   const adminPunishLawKeys = allKeys.filter(key => collectionObj[key].type === 'admin-punish-law')
+  const laborLawKeys = allKeys.filter(key => collectionObj[key].type === 'labor-law')
+  const laborContractLawKeys = allKeys.filter(key => collectionObj[key].type === 'labor-contract-law')
 
   const sourceKeys = allKeys.filter(key => collectionObj[key].type === 'source')
 
@@ -293,6 +295,44 @@ const MyCollection = (props) => {
         <View className='divider'></View>
       </View>}
       {supervisionLawKeys.map(policeKey => (
+        <AtListItem
+          key={policeKey}
+          title={collectionObj[policeKey].title}
+          arrow='right'
+          onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/regulationDetail/index?type=${collectionObj[policeKey].type}&id=${policeKey}`,
+            })
+          }}
+        />
+      ))}
+    </View>
+    <View>
+      {laborLawKeys.length > 0 && <View className='sub-title'>
+        <View className='divider'></View>
+        <View className='text'>中华人民共和国劳动法</View>
+        <View className='divider'></View>
+      </View>}
+      {laborLawKeys.map(policeKey => (
+        <AtListItem
+          key={policeKey}
+          title={collectionObj[policeKey].title}
+          arrow='right'
+          onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/regulationDetail/index?type=${collectionObj[policeKey].type}&id=${policeKey}`,
+            })
+          }}
+        />
+      ))}
+    </View>
+    <View>
+      {laborContractLawKeys.length > 0 && <View className='sub-title'>
+        <View className='divider'></View>
+        <View className='text'>中华人民共和国劳动合同法</View>
+        <View className='divider'></View>
+      </View>}
+      {laborContractLawKeys.map(policeKey => (
         <AtListItem
           key={policeKey}
           title={collectionObj[policeKey].title}

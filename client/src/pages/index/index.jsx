@@ -78,6 +78,20 @@ export default class Index extends Component {
           title: '民法典相关司法解释',
           url: '/pages/civilLawExplaination/index',
           type: '民法典'
+        },
+        {
+          title: '劳动法',
+          url: '/pages/laborLaw/index',
+          type: '民法典',
+          isNew: true
+          // isHot: true
+        },
+        {
+          title: '劳动合同法',
+          url: '/pages/laborContractLaw/index',
+          type: '民法典',
+          isNew: true
+          // isHot: true
         }
       ],
       '行政相关': [
