@@ -1,5 +1,5 @@
 fileignoreconfig:
-- filename: cloud/functions/getLaborLaws/yarn.lock
-  checksum: 3bc1bec6aedfa58eaa0360124f77ce2320c8a7d2a0f8d9d7092800253140e248
-- filename: cloud/functions/getLaborContractLaw/yarn.lock
-  checksum: 7afa548a9078bf437ff76a58a2a0c4949f26fc1590c75fa2cc7710018ed4ed1e
+- filename: cloud/functions/getRoadSafeLaw/yarn.lock
+  checksum: 7112336fa45bfb1bc5812aac301cb00e15bd727ee9aadc1e03d41fc329215845
+- filename: cloud/functions/getRoadSafeRegulation/yarn.lock
+  checksum: e5c501c5a9ac04398755c953deed7331996fa3fe82b4a354c0e2b7b850d1c51c

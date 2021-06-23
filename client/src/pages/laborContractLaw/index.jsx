@@ -4,7 +4,7 @@ import { AtSearchBar, AtActivityIndicator, AtNoticebar, AtFab } from 'taro-ui'
 import {isEmpty} from "lodash";
 import { TermSearchItem } from '../../components/termSearchItem/index.weapp'
 import { CategoryList } from '../../components/categoryList/index.weapp'
-import './index.scss'
+import '../litigationRegulation/index.scss'
 import {laborContractLawCategoryLines} from '../../util/util';
 
 export default class Index extends Component {

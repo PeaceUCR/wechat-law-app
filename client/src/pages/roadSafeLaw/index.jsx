@@ -4,7 +4,7 @@ import { AtSearchBar, AtActivityIndicator, AtNoticebar, AtFab } from 'taro-ui'
 import {isEmpty} from "lodash";
 import { TermSearchItem } from '../../components/termSearchItem/index.weapp'
 import { CategoryList } from '../../components/categoryList/index.weapp'
-import './index.scss'
+import '../litigationRegulation/index.scss'
 import {roadSafeLawCategoryLines} from '../../util/util';
 
 export default class Index extends Component {
@@ -145,7 +145,7 @@ export default class Index extends Component {
     return (
       <View className={`litigation-regulation-page ${isReadMode ? 'read-mode' : ''}`}>
           <AtNoticebar marquee speed={60}>
-            根据2011年4月22日第十一届全国人民代表大会常务委员会第二十次会议《关于修改〈中华人民共和国道路交通安全法〉的决定》第二次修正
+            2021年4月29日，中华人民共和国第十三届全国人民代表大会常务委员会第二十八次会议通过《全国人民代表大会常务委员会关于修改〈中华人民共和国道路交通安全法〉等八部法律的决定》通过，自公布之日起施行。
           </AtNoticebar>
           <View>
             <AtSearchBar

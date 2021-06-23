@@ -2,11 +2,9 @@ import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {View, Text} from '@tarojs/components'
 import { AtSearchBar, AtActivityIndicator, AtNoticebar, AtFab } from 'taro-ui'
 import {isEmpty} from "lodash";
-import { db } from '../../util/db'
 import { TermSearchItem } from '../../components/termSearchItem/index.weapp'
 import { CategoryList } from '../../components/categoryList/index.weapp'
-import {convertNumberToChinese, getNumber} from '../../util/convertNumber'
-import './index.scss'
+import '../litigationRegulation/index.scss'
 import {supervisionCategoryLines} from '../../util/util';
 
 export default class Index extends Component {

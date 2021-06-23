@@ -2,9 +2,7 @@ import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {View, Text, Picker, Image, RichText} from '@tarojs/components'
 import {AtSearchBar, AtActivityIndicator, AtListItem, AtLoadMore, AtBadge, AtIcon, AtList, AtInput, AtTag} from 'taro-ui'
 import {isEmpty} from 'lodash';
-import throttle from 'lodash/throttle';
 import { db } from '../../util/db'
-import {civilExplaination, civilExplainationTitles, civilExplainationIndex} from "../../util/util";
 import './index.scss'
 
 export default class Index extends Component {
@@ -16,7 +14,10 @@ export default class Index extends Component {
     selected: '全文搜索',
     options: ['全文搜索'],
     status: 'more',
-    isReadMode: false
+    isReadMode: false,
+    civilExplaination: {},
+    civilExplainationTitles: [],
+    civilExplainationIndex: {}
   }
 
   config = {
@@ -38,6 +39,19 @@ export default class Index extends Component {
         backgroundColor: '#F4ECD8'
       })
     }
+
+    const that = this;
+    db.collection('configuration').where({}).get({
+      success: (res) => {
+        const { civilExplaination, civilExplainationTitles, civilExplainationIndex } = res.data[0]
+
+        that.setState({
+          civilExplaination,
+          civilExplainationTitles,
+          civilExplainationIndex
+        });
+      }
+    });
   }
 
   componentDidMount () { }
@@ -136,14 +150,6 @@ export default class Index extends Component {
     });
   }
 
-  onSelect = (e) => {
-    const {options} = this.state;
-    this.setState({
-      selected: options[e.detail.value],
-      status: 'more',
-      searchResult: []
-    })
-  }
 
   // renderExplanations = () => {
   //   const titles = Object.keys(civilExplaination)
@@ -168,7 +174,7 @@ export default class Index extends Component {
     }
   }
   renderExplanations = () => {
-    const {searchValue} = this.state
+    const {searchValue, civilExplainationTitles, civilExplaination, civilExplainationIndex} = this.state
 
     return civilExplainationTitles.filter(title => !searchValue || title.indexOf(searchValue) !== -1).map((title, index) => {
       return <View className={`civil-explanation-item ${civilExplaination[title] ? '' : 'tag'}`} key={`civil-explanation-${index}`} onClick={
@@ -192,7 +198,7 @@ export default class Index extends Component {
   }
 
   render () {
-    const {searchValue, searchResult, isLoading, isReadMode} = this.state;
+    const {searchValue, searchResult, isLoading, isReadMode, civilExplainationTitles} = this.state;
     return (
       <View className={`example-page ${isReadMode ? 'read-mode' : ''}`}>
           <View>
@@ -207,7 +213,7 @@ export default class Index extends Component {
               {searchResult.length > 0 && this.renderSearchList()}
             </View>
             <AtList>
-              {this.renderExplanations()}
+              {civilExplainationTitles.length > 0 && this.renderExplanations()}
             </AtList>
             {isLoading && <View className='loading-container'>
               <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>

@@ -2,11 +2,10 @@ import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {View, Text} from '@tarojs/components'
 import { AtSearchBar, AtActivityIndicator, AtNoticebar, AtFab } from 'taro-ui'
 import {isEmpty} from "lodash";
-import { db } from '../../util/db'
 import { LitigationSearchItem } from '../../components/litigationSearchItem/index.weapp'
 import { HierarchicalOptions } from '../../components/hierarchicalOptions/index.weapp'
 import {convertNumberToChinese} from '../../util/convertNumber'
-import './index.scss'
+import '../litigationRegulation/index.scss'
 import {processLitigationOptions} from '../../util/util';
 
 export default class Index extends Component {
@@ -263,7 +262,7 @@ export default class Index extends Component {
   render () {
     const {searchValue, searchResult, isLoading, litigationExplanationChapters, litigationExplanationSections, isReadMode} = this.state;
     return (
-      <View className={`litigation-explanation-page ${isReadMode ? 'read-mode' : ''}`}>
+      <View className={`litigation-regulation-page ${isReadMode ? 'read-mode' : ''}`}>
           <AtNoticebar marquee speed={60}>
             最高法公告:《最高法关于适用〈中华人民共和国刑事诉讼法〉的解释》已于2020年12月7日由最高法审判委员会第1820次会议通过，现予公布，自2021年3月1日起施行。
           </AtNoticebar>

@@ -244,6 +244,38 @@ export default class TermDetail extends Component {
     </View>)
   }
 
+  renderExplanationAndComplement = () => {
+    const {explanations, complements, term, zoomIn} = this.state;
+    const num = getTermNumber(term.text).replace('第', '').replace('条', '');
+
+    const all = [...explanations.map(e => {
+      e.type = 'explanation'
+      return e
+    }), ...complements.map(e => {
+      e.type = 'complement'
+      return e
+    })]
+    // console.log(all)
+    all.sort((a, b) => {
+      if (a.effectiveDate && b.effectiveDate) {
+        return  b.effectiveDate - a.effectiveDate
+      }
+
+      if (a.effectiveDate) {
+        return -1
+      }
+
+      return 1
+
+    })
+    return (<View>
+      {
+        all.map(e => (<View className='example' key={`explanation-${e._id}`}>
+        <DataPopup data={e} type={`${e.type}`} num={num} zoomIn={zoomIn} />
+      </View>))}
+    </View>)
+  }
+
   renderCourtComplementExamples = () => {
     const { courtComplementExamples, term, zoomIn } = this.state;
     const num = getTermNumber(term.text).replace('第', '').replace('条', '');
@@ -513,8 +545,7 @@ export default class TermDetail extends Component {
           <View className='examples section'>
             <Text className='section-title'>相关法定解释、规定和指导意见：{complements.length ===0 && explanations.length ===0 ? '暂无' : ''}</Text>
             <View>
-              {explanations.length > 0 && this.renderExplanation()}
-              {complements.length > 0 && this.renderComplement()}
+              {(explanations.length > 0 || complements.length > 0) && this.renderExplanationAndComplement()}
             </View>
           </View>
           <View className='examples section'>
