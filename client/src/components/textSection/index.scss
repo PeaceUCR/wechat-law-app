@@ -1,4 +1,8 @@
 .text-section {
+  &.title {
+    font-weight: bold !important;
+    text-align: center;
+  }
   &.zoom-in {
     .content {
       font-size: 40px;

@@ -11,7 +11,7 @@ const DataPopup = (props) => {
   let displayName = ''
 
   if (type === 'court' || type === 'complement') {
-    displayName = title
+    displayName = title.split('\n').join()
   } else if (type === 'procuratorate') {
     if (number) {
       displayName = `检例第(${number})号:${name}`

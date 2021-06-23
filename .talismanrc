@@ -1,3 +1,5 @@
 fileignoreconfig:
-- filename: cloud/functions/getAdminPunishLaw/yarn.lock
-  checksum: 600de7d9f9d8802284b54f45e2057de692ebaddccd0832c01971145588f641bd
+- filename: cloud/functions/getLaborLaws/yarn.lock
+  checksum: 3bc1bec6aedfa58eaa0360124f77ce2320c8a7d2a0f8d9d7092800253140e248
+- filename: cloud/functions/getLaborContractLaw/yarn.lock
+  checksum: 7afa548a9078bf437ff76a58a2a0c4949f26fc1590c75fa2cc7710018ed4ed1e

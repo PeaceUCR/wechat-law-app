@@ -62,15 +62,6 @@ export default class RegulationDetail extends Component {
       })
     }
 
-    if (type === 'public-order-admin-penalty-law') {
-      db.collection('public-order-admin-penalty-law').where({_id: id}).get({
-        success: (res) => {
-          const term = res.data[0];
-          that.setState({term, type, keyword});
-        }
-      })
-    }
-
     if (type === 'supervision-law') {
       db.collection('supervision-law').where({_id: id}).get({
         success: (res) => {
@@ -99,6 +90,24 @@ export default class RegulationDetail extends Component {
     }
     if (type === 'labor-contract-law') {
       db.collection('labor-contract-law').where({_id: id}).get({
+        success: (res) => {
+          const term = res.data[0];
+          that.setState({term, type, keyword});
+        }
+      })
+    }
+
+    if (type === 'road-safe-law') {
+      db.collection('road-safe-law').where({_id: id}).get({
+        success: (res) => {
+          const term = res.data[0];
+          that.setState({term, type, keyword});
+        }
+      })
+    }
+
+    if (type === 'road-safe-regulation') {
+      db.collection('road-safe-regulation').where({_id: id}).get({
         success: (res) => {
           const term = res.data[0];
           that.setState({term, type, keyword});
@@ -204,7 +213,7 @@ export default class RegulationDetail extends Component {
       })
     } else {
       let title;
-      if (type === 'litigation-explanation' || type === 'police' || type === 'police-admin-regulation' || type === 'public-order-admin-penalty-law' || type === 'supervision-law' || type === 'admin-punish-law' || type === 'labor-law' || type === 'labor-contract-law') {
+      if (type === 'litigation-explanation' || type === 'police' || type === 'police-admin-regulation' || type === 'public-order-admin-penalty-law' || type === 'supervision-law' || type === 'admin-punish-law' || type === 'labor-law' || type === 'labor-contract-law' || type === 'road-safe-law' || type === 'road-safe-regulation') {
         title = number
       } else if (type === 'civil-law-regulation') {
         title = `${number} ${tag}`
@@ -378,7 +387,7 @@ export default class RegulationDetail extends Component {
         <View className='main section'>
             <View>
               {(type === 'police' || type === 'civil-law-regulation') && this.renderTermText()}
-              {(type === 'police-admin-regulation' || type === 'public-order-admin-penalty-law' || type === 'supervision-law' || type === 'admin-punish-law' || type === 'labor-law' || type === 'labor-contract-law') && this.renderAdminText()}
+              {(type === 'police-admin-regulation' || type === 'public-order-admin-penalty-law' || type === 'supervision-law' || type === 'admin-punish-law' || type === 'labor-law' || type === 'labor-contract-law' || type === 'road-safe-law' || type === 'road-safe-regulation') && this.renderAdminText()}
               {(type === 'litigation-law' || type === 'litigation-regulation' || type === 'litigation-explanation') && this.renderLitigation()}
             </View>
           </View>

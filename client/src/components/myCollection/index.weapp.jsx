@@ -3,9 +3,7 @@ import { AtListItem} from "taro-ui";
 import {View} from "@tarojs/components";
 import {
   lawIdLabelMap,
-  courtExampleTitleMap,
   courtExampleTitleComplementMap,
-  procuratorateExampleTitleMap,
   procuratorateExampleTitleComplementMap,
   civilTagMap,
   civilLawIdNumberMap
@@ -22,8 +20,8 @@ const MyCollection = (props) => {
   const civilKeys = Object.keys(collectionObj).filter(key => civilLawIdNumberMap[key])
 
   const termKeys = allKeys.filter(key => lawIdLabelMap[key])
-  const courtExampleKeys = allKeys.filter(key => courtExampleTitleMap[key] || courtExampleTitleComplementMap[key])
-  const procuratorateExampleKeys = allKeys.filter(key => procuratorateExampleTitleMap[key] || procuratorateExampleTitleComplementMap[key])
+  const courtExampleKeys = allKeys.filter(key => collectionObj[key].type === 'court' || courtExampleTitleComplementMap[key])
+  const procuratorateExampleKeys = allKeys.filter(key => collectionObj[key].type === 'procuratorate'|| procuratorateExampleTitleComplementMap[key])
   const otherKeys = allKeys.filter(key => otherTypes.indexOf(collectionObj[key].type) !== -1)
 
   const litigationLawKeys = allKeys.filter(key => collectionObj[key].type === 'litigation-law')
@@ -37,6 +35,8 @@ const MyCollection = (props) => {
   const adminPunishLawKeys = allKeys.filter(key => collectionObj[key].type === 'admin-punish-law')
   const laborLawKeys = allKeys.filter(key => collectionObj[key].type === 'labor-law')
   const laborContractLawKeys = allKeys.filter(key => collectionObj[key].type === 'labor-contract-law')
+  const roadSafeLawKeys = allKeys.filter(key => collectionObj[key].type === 'road-safe-law')
+  const roadSafeRegulationKeys = allKeys.filter(key => collectionObj[key].type === 'road-safe-regulation')
 
   const sourceKeys = allKeys.filter(key => collectionObj[key].type === 'source')
 
@@ -333,6 +333,44 @@ const MyCollection = (props) => {
         <View className='divider'></View>
       </View>}
       {laborContractLawKeys.map(policeKey => (
+        <AtListItem
+          key={policeKey}
+          title={collectionObj[policeKey].title}
+          arrow='right'
+          onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/regulationDetail/index?type=${collectionObj[policeKey].type}&id=${policeKey}`,
+            })
+          }}
+        />
+      ))}
+    </View>
+    <View>
+      {roadSafeLawKeys.length > 0 && <View className='sub-title'>
+        <View className='divider'></View>
+        <View className='text'>中华人民共和国道路交通安全法</View>
+        <View className='divider'></View>
+      </View>}
+      {roadSafeLawKeys.map(policeKey => (
+        <AtListItem
+          key={policeKey}
+          title={collectionObj[policeKey].title}
+          arrow='right'
+          onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/regulationDetail/index?type=${collectionObj[policeKey].type}&id=${policeKey}`,
+            })
+          }}
+        />
+      ))}
+    </View>
+    <View>
+      {roadSafeRegulationKeys.length > 0 && <View className='sub-title'>
+        <View className='divider'></View>
+        <View className='text'>道路交通安全法实施条例</View>
+        <View className='divider'></View>
+      </View>}
+      {roadSafeRegulationKeys.map(policeKey => (
         <AtListItem
           key={policeKey}
           title={collectionObj[policeKey].title}

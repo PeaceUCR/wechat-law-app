@@ -110,6 +110,18 @@ export default class Index extends Component {
           // isHot: true
         },
         {
+          title: '道路交通安全法',
+          url: '/pages/roadSafeLaw/index',
+          type: '行政',
+          isNew: true
+        },
+        {
+          title: '道路交通安全法实施条例',
+          url: '/pages/roadSafeRegulation/index',
+          type: '行政',
+          isNew: true
+        },
+        {
           title: '公安机关办理行政案件程序规定',
           url: '/pages/policeAdminRegulation/index',
           type: '行政',

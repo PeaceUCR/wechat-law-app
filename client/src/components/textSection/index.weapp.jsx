@@ -23,11 +23,11 @@ const findAndHighlight = (str, index, key) => {
 }
 
 const TextSection = (props) => {
-  let {data, keyword, zoomIn} = props;
+  let {data, keyword, zoomIn, isTitle} = props;
   data = data ? data: '';
   keyword = keyword ? keyword: undefined
 
-  return (<View  className={`text-section ${zoomIn ? 'zoom-in' : ''}`}>
+  return (<View  className={`text-section ${zoomIn ? 'zoom-in' : ''} ${isTitle ? 'title': ''}`}>
     <View className='content'>{data.split('\n').filter(line => line.trim() && line.trim().length > 0).map(line => refine(line)).map((line, index) => {
       return (<View className='line' key={`text-example-detail-${index}`} >
         <RichText nodes={findAndHighlight(line, index, keyword)} className={isStartWith(line, highlights) ? 'highlight': ''} ></RichText>

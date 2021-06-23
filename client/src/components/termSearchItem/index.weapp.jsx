@@ -3,6 +3,19 @@ import {View,RichText} from "@tarojs/components";
 import throttle from 'lodash/throttle';
 import './index.scss'
 
+const regulationDetailSet = new Set(
+  [
+    'police',
+    'police-admin-regulation',
+    'public-order-admin-penalty-law',
+    'supervision-law',
+    'admin-punish-law',
+    'labor-law',
+    'labor-contract-law',
+    'road-safe-law',
+    'road-safe-regulation'
+  ])
+
 const TermSearchItem = (props) => {
   let {term, disableRedirect, type, isReadMode, keyword} = props;
   term = term ? term : {};
@@ -16,31 +29,7 @@ const TermSearchItem = (props) => {
         Taro.navigateTo({
           url: `/pages/civilLawDetail/index?id=${_id}`,
         })
-      } else if (type === 'police') {
-        Taro.navigateTo({
-          url: `/pages/regulationDetail/index?id=${_id}&type=${type}&keyword=${keyword}`,
-        })
-      } else if (type === 'police-admin-regulation') {
-        Taro.navigateTo({
-          url: `/pages/regulationDetail/index?id=${_id}&type=${type}&keyword=${keyword}`,
-        })
-      } else if (type === 'public-order-admin-penalty-law') {
-        Taro.navigateTo({
-          url: `/pages/regulationDetail/index?id=${_id}&type=${type}&keyword=${keyword}`,
-        })
-      } else if (type === 'supervision-law') {
-        Taro.navigateTo({
-          url: `/pages/regulationDetail/index?id=${_id}&type=${type}&keyword=${keyword}`,
-        })
-      } else if (type === 'admin-punish-law') {
-        Taro.navigateTo({
-          url: `/pages/regulationDetail/index?id=${_id}&type=${type}&keyword=${keyword}`,
-        })
-      } else if (type === 'labor-law') {
-        Taro.navigateTo({
-          url: `/pages/regulationDetail/index?id=${_id}&type=${type}&keyword=${keyword}`,
-        })
-      } else if (type === 'labor-contract-law') {
+      } else if (regulationDetailSet.has(type)) {
         Taro.navigateTo({
           url: `/pages/regulationDetail/index?id=${_id}&type=${type}&keyword=${keyword}`,
         })
