@@ -13,13 +13,18 @@ const regulationDetailSet = new Set(
     'labor-law',
     'labor-contract-law',
     'road-safe-law',
-    'road-safe-regulation'
+    'road-safe-regulation',
+    'civil-law-regulation'
   ])
 
 const TermSearchItem = (props) => {
   let {term, disableRedirect, type, isReadMode, keyword} = props;
   term = term ? term : {};
-  const {text, crime, tag, _id, isDeleted} = term;
+  let {text, crime, tag, _id, isDeleted} = term;
+  if (type === 'civil-law-regulation') {
+    text = text.join('\n')
+  }
+
   const isCrime = crime && tag === crime;
   const redirect = throttle(
     () => {

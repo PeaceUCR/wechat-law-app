@@ -10,7 +10,7 @@ export default class Index extends Component {
   state = {
     searchValue: '',
     searchResult: [],
-    isLoading: false,
+    isLoading: true,
     selected: '全文搜索',
     options: ['全文搜索'],
     status: 'more',
@@ -48,7 +48,8 @@ export default class Index extends Component {
         that.setState({
           civilExplaination,
           civilExplainationTitles,
-          civilExplainationIndex
+          civilExplainationIndex,
+          isLoading: false,
         });
       }
     });

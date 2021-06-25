@@ -6,12 +6,15 @@ import './index.scss'
 const DataPopup = (props) => {
   let {data ,type, num, zoomIn} = props;
   data = data ? data: {};
-  const {name, number, title,  _id, sourceName, sourceId, crimeName} = data;
+  const {name, number, title,  _id, sourceName, sourceId, crimeName, effectiveDate, special} = data;
 
   let displayName = ''
 
   if (type === 'court' || type === 'complement') {
-    displayName = title.split('\n').join()
+    displayName = title
+    if (special) {
+      displayName = title.replace(/\n/g,'')
+    }
   } else if (type === 'procuratorate') {
     if (number) {
       displayName = `检例第(${number})号:${name}`
@@ -25,8 +28,8 @@ const DataPopup = (props) => {
     displayName = name
   }
 
-  return (<View>
-    <View className={`line-center  ${zoomIn ? 'zoom-in' : ''}`} onClick={() => {
+  return (<View className={`${zoomIn ? 'zoom-in' : ''}`}>
+    <View className='line-center' onClick={() => {
       if (type === 'source') {
         Taro.navigateTo({
           url: `/pages/exampleDetail/index?type=${type}&id=${sourceId}&keyword=${crimeName}`,
@@ -39,8 +42,9 @@ const DataPopup = (props) => {
     }}
     >
       <Text className='title'>{displayName}</Text>
-      <AtIcon value='external-link' size='16' color='#6190E8'></AtIcon>
+      <AtIcon value='external-link' size='14' color='#4d4dff'></AtIcon>
     </View>
+    {effectiveDate && <View className='time'>{new Date(Date.parse(effectiveDate)).toLocaleDateString('fr-CA')}</View>}
   </View>)
 }
 

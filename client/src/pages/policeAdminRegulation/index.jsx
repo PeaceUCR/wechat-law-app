@@ -5,6 +5,7 @@ import { TermSearchItem } from '../../components/termSearchItem/index.weapp'
 import { CategoryList } from '../../components/categoryList/index.weapp'
 import '../litigationRegulation/index.scss'
 import {policeAdminRegulationCategoryLines} from '../../util/util';
+import {isEmpty} from "lodash";
 
 export default class Index extends Component {
 
@@ -77,7 +78,7 @@ export default class Index extends Component {
   }
 
    handleDBSearchSuccess = (res) => {
-
+    console.log(res)
     if (isEmpty(res.data)) {
       Taro.showToast({
         title: `未找到相应的法条`,
@@ -107,7 +108,7 @@ export default class Index extends Component {
       return ;
     }
     Taro.cloud.callFunction({
-      name: 'getLitigationRegulation',
+      name: 'getPoliceAdminRegulation',
       data: {
         searchValue: searchValue,
       },

@@ -35,6 +35,7 @@
 
     .section-title {
       color: #6190E8;
+      margin-bottom: 10px;
     }
   }
 
@@ -46,6 +47,7 @@
     white-space: pre-wrap;
     font-size: 32px;
     margin-bottom: 20px;
+    margin-top: 10px;
   }
 
   .sentencings {
@@ -172,4 +174,9 @@
 .at-icon-alert-circle {
   position: relative;
   top: -2px;
+}
+
+.at-icon-external-link {
+  position: relative;
+  top: -3px;
 }

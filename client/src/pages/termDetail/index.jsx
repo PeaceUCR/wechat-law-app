@@ -71,7 +71,7 @@ export default class TermDetail extends Component {
         const term = res.data[0];
         that.setState({term});
         db.collection('procuratorate-examples')
-          .orderBy('number', 'asc')
+          .orderBy('number', 'desc')
           .where({terms: db.RegExp({
             regexp: '.*' + getTermNumber(term.text),
             options: 'i',
@@ -81,7 +81,9 @@ export default class TermDetail extends Component {
           }
         });
 
-        db.collection('court-examples').where({criminalLaw: db.RegExp({
+        db.collection('court-examples')
+          .orderBy('number', 'desc')
+          .where({criminalLaw: db.RegExp({
             regexp: '.*' + getTermNumber(term.text),
             options: 'i',
           })}).get({
@@ -220,26 +222,6 @@ export default class TermDetail extends Component {
     return (<View>
       {courtExamples.map(example => (<View className='example' key={`court-example-${example._id}`}>
         <DataPopup data={example} type='court' num={num} zoomIn={zoomIn} />
-      </View>))}
-    </View>)
-  }
-
-  renderExplanation = () => {
-    const {explanations, term, zoomIn} = this.state;
-    const num = getTermNumber(term.text).replace('第', '').replace('条', '');
-    return (<View>
-      {explanations.map(explanation => (<View className='example' key={`explanation-${explanation._id}`}>
-        <DataPopup data={explanation} type='explanation' num={num} zoomIn={zoomIn} />
-      </View>))}
-    </View>)
-  }
-
-  renderComplement = () => {
-    const { complements, term, zoomIn } = this.state;
-    const num = getTermNumber(term.text).replace('第', '').replace('条', '');
-    return (<View>
-      {complements.map(complement => (<View className='example' key={`complement-${complement._id}`}>
-        <DataPopup data={complement} type='complement' num={num} zoomIn={zoomIn} />
       </View>))}
     </View>)
   }

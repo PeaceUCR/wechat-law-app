@@ -62,6 +62,15 @@ export default class RegulationDetail extends Component {
       })
     }
 
+    if (type === 'civil-law-regulation') {
+      db.collection('civil-law-regulation').where({_id: id}).get({
+        success: (res) => {
+          const term = res.data[0];
+          that.setState({term, type, keyword});
+        }
+      })
+    }
+
     if (type === 'supervision-law') {
       db.collection('supervision-law').where({_id: id}).get({
         success: (res) => {
