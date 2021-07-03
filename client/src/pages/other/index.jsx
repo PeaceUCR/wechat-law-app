@@ -14,7 +14,7 @@ export default class Other extends Component {
     examplesVideoUrl: 'https://res.cloudinary.com/mini-store-2020/video/upload/v1621582314/example_xdcoe1.mov',
     consultantVideoUrl: 'https://res.cloudinary.com/mini-store-2020/video/upload/v1609563561/consultant_cmj1pg.mov',
     courtOpenVideoUrl: 'https://res.cloudinary.com/mini-store-2020/video/upload/v1609564138/court-open_iesnlt.mov',
-    text: '',
+    text: '本小程序数据信息均来源于最高检、最高法、公安部、司法部、人大等权威发布。\n先加微信联系人"pinghe_2016",他会拉你进群获取更多帮助和最新更新😊',
     gifUrl: 'https://res.cloudinary.com/mini-store-2020/image/upload/v1607675316/type_kziho3.gif',
     id: '',
     hideVideo: false,

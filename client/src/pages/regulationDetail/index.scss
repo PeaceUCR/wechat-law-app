@@ -17,6 +17,10 @@
     .example {
       font-size: 40px;
     }
+
+    .sentencings {
+      font-size: 40px;
+    }
   }
 
   .header {
@@ -163,4 +167,45 @@
       display: none;
     }
   }
+}
+
+.sentencings {
+  font-size: 32px;
+  .line-title {
+    display: flex;
+    align-items: center;
+    margin: 10px 0 20px 0;
+    font-weight: bold;
+  }
+  .sentencing {
+    .line {
+      margin-bottom: 20px;
+      &.example {
+        margin-bottom: 0px;
+      }
+      &.crime-line {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .crime-line-item {
+        margin-top: 20px;
+        text-align: left;
+        margin-right: 40px;
+      }
+    }
+    .title {
+      color: #6190E8;
+    }
+    .crime {
+      font-weight: bold;
+    }
+    .date {
+      color: #c6823b;
+    }
+  }
+}
+
+.at-icon-alert-circle {
+  position: relative;
+  top: -4px;
 }

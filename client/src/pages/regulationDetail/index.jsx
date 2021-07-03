@@ -1,11 +1,12 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import { View, Text, RichText, Input, Button } from '@tarojs/components'
-import {AtFab,AtIcon,AtBadge,AtButton,AtActivityIndicator} from "taro-ui";
+import {AtFab,AtIcon,AtBadge,AtButton,AtActivityIndicator, AtDivider} from "taro-ui";
 import { db } from '../../util/db'
 import {checkIfNewUser, redirectToIndexIfNewUser} from '../../util/login'
 import './index.scss'
 import throttle from "lodash/throttle";
 import {DiscussionArea} from "../../components/discussionArea/index.weapp";
+import TextSection from "../../components/textSection/index.weapp";
 
 
 export default class RegulationDetail extends Component {
@@ -19,7 +20,8 @@ export default class RegulationDetail extends Component {
     isLoading: false,
     isCollected: false,
     isReadMode: false,
-    zoomIn: false
+    zoomIn: false,
+    litigationLawDefinition: null
   }
 
   config = {
@@ -125,12 +127,19 @@ export default class RegulationDetail extends Component {
     }
 
     if (type === 'litigation-law') {
+      that.setState({isLoading: true})
       db.collection('litigation-law').where({_id: id}).get({
         success: (res) => {
           const term = res.data[0];
           that.setState({term, type, keyword});
+          db.collection('litigation-law-definition').where({number: term.number}).get({
+            success: (r) => {
+              that.setState({litigationLawDefinition: r.data[0], isLoading: false});
+            }
+          });
         }
       })
+
     }
 
     if (type === 'litigation-regulation') {
@@ -181,6 +190,23 @@ export default class RegulationDetail extends Component {
         backgroundColor: '#F4ECD8'
       })
     }
+  }
+
+  renderLitigationLawDefinition = () => {
+    const {litigationLawDefinition, zoomIn} = this.state
+    return <View className='sentencings'>
+      <AtDivider height='40' lineColor='#fff' />
+      <View className='line-title'>
+        <AtIcon value='alert-circle' size={zoomIn ? 24 : 18} color='#c6823b'></AtIcon>
+        <Text>人大刑事诉讼法释义</Text>
+      </View>
+      <View className='sentencing'>
+      <View className='line'>
+        <TextSection data={litigationLawDefinition.text} zoomIn={zoomIn} />
+      </View>
+      <AtDivider height='40' lineColor='#fff' />
+    </View>
+    </View>
   }
 
   componentDidMount () {
@@ -389,7 +415,7 @@ export default class RegulationDetail extends Component {
   }
 
   render () {
-    const {isSent, comment, term, type, isCollected, isReadMode, zoomIn, isLoading} = this.state;
+    const {isSent, comment, term, type, isCollected, isReadMode, zoomIn, isLoading, litigationLawDefinition} = this.state;
     return (
       <View className={`term-detail-page ${isReadMode ? 'read-mode' : ''} ${zoomIn ? 'zoom-in' : ''}`}>
         {(type === 'civil-law-regulation' || type === 'litigation-law') && term.tag && <View className='tag-line'><Text className='pre-tag'>法条要旨:</Text><Text className='tag'>{term.tag}</Text></View>}
@@ -401,6 +427,9 @@ export default class RegulationDetail extends Component {
             </View>
           </View>
 
+        {litigationLawDefinition && <View>
+          {this.renderLitigationLawDefinition()}
+        </View>}
         <View className='footer'>
           <View className='text'>
             <Input

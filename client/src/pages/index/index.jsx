@@ -33,7 +33,8 @@ export default class Index extends Component {
         {
           title: '刑事诉讼法',
           url: '/pages/litigationLaw/index',
-          type: '刑法'
+          type: '刑法',
+          isUpdated: true
         },
         {
           title: '(最高法)适用刑事诉讼法的解释',
@@ -159,8 +160,8 @@ export default class Index extends Component {
     isPosterLoading: true,
     posterRedirect: '',
     swiperPosters: [
-      'https://res.cloudinary.com/mini-store-2020/image/upload/v1623945805/swiper-1_nc67r2.jpg',
-      'https://res.cloudinary.com/mini-store-2020/image/upload/v1623945815/swiper-3_uyvciu.png'
+      'https://mmbiz.qpic.cn/mmbiz_jpg/6fKEyhdZU93zibwIDAjqC1D6vUA9MoQMhuRBKvt2YTvnv6WibIp33kib9P2d0NhKLGzVMKallINfdfn6la92avSyg/0?wx_fmt=jpeg',
+      'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU93zibwIDAjqC1D6vUA9MoQMh7RfDn2viazdoymmbYkFWjziaMhGvxWHicFtQI7ib4XvgGvZ6xZygvvCIUg/0?wx_fmt=png'
     ],
     canClose: false
   }
