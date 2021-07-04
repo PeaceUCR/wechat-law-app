@@ -4,6 +4,7 @@ import {AtSearchBar, AtActivityIndicator, AtListItem, AtBadge, AtIcon} from 'tar
 import {isEmpty} from 'lodash';
 import clickIcon from '../../static/down.png';
 import './index.scss'
+import {targetImageSource} from "../../util/util";
 
 export default class Index extends Component {
 
@@ -52,17 +53,24 @@ export default class Index extends Component {
     return (<View>
       <View>
         {searchResult.map(((example) => {return (
-          <AtListItem
-            key={`example-${example._id}`}
-            title={`${example.title}`}
-            note={example.date}
-            arrow='right'
-            onClick={() => {
-              Taro.navigateTo({
-                url: `/pages/exampleDetail/index?type=court-open&id=${example._id}&keyword=${searchValue}`,
-              })
-            }}
-          />
+          <View className='result-item' key={`example-${example._id}`}>
+            <Image
+              src={targetImageSource}
+              className={example.exactMatch ? 'exact-match': 'exact-match-hide'}
+              mode='widthFix'
+            />
+            <AtListItem
+              title={`${example.title}`}
+              note={example.date}
+              arrow='right'
+              onClick={() => {
+                Taro.navigateTo({
+                  url: `/pages/exampleDetail/index?type=court-open&id=${example._id}&keyword=${searchValue}`,
+                })
+              }}
+            />
+          </View>
+
           )}))}
       </View>
     </View>)

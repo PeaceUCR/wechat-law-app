@@ -1,5 +1,7 @@
 export const tmpId = 'cZWxYVaMH0JFtk2NIxjsEBLZcpazvU5vkYJcQlKsnBo'
 
+export const targetImageSource = 'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU92ZiaezOzgIyVO8wAQ7ZgFt3eo5pqEsoyExgibDIohRWa3dY3Lwiaxia5icUlr4CfWqjr9hGrmQpWiaNibmw/0?wx_fmt=png'
+
 export function getTodayDateString() {
   return new Date().toLocaleDateString()
 }

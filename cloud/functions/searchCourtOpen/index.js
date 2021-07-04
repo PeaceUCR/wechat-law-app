@@ -14,15 +14,35 @@ exports.main = async (event, context) => {
   const type = event.type
   const searchValue = event.searchValue
 
-  const regexpString = `${searchValue.split('').join('.*')}`
+  const regexpString1 = `${searchValue.split('').join('.*')}`
+  const regexpString2 = `.*${searchValue}`
 
-  const courtOpenExamples = await db.collection('court-open').where({
+  result1 = await db.collection('court-open').where({
     text: db.RegExp({
-      regexp: regexpString,
+      regexp: regexpString1,
       options: 'i',
-    })}).limit(1000).orderBy('date', 'desc').get()
+    })}).limit(1000).orderBy('date', 'desc').get();
 
-  const searchResult = courtOpenExamples.data.map(e => {
+  // exact match
+  result2 = await db.collection('court-open').where({
+    text: db.RegExp({
+      regexp: regexpString2,
+      options: 'i',
+    })}).limit(1000).orderBy('date', 'desc').get();
+
+  const exist = new Set(result2.data.map(item => item._id))
+  const complement = result1.data.filter(item => !exist.has(item._id))
+
+  result2Flag = result2.data.map(item => {
+    item.exactMatch = true
+    return item;
+  })
+  complementFlag = complement.map(item => {
+    item.exactMatch = false
+    return item
+  })
+
+  const searchResult = [...result2Flag, ...complementFlag].map(e => {
     delete e.text
     return e
   })

@@ -1,5 +1,3 @@
 fileignoreconfig:
-- filename: cloud/functions/getRoadSafeLaw/yarn.lock
-  checksum: 7112336fa45bfb1bc5812aac301cb00e15bd727ee9aadc1e03d41fc329215845
-- filename: cloud/functions/getRoadSafeRegulation/yarn.lock
-  checksum: e5c501c5a9ac04398755c953deed7331996fa3fe82b4a354c0e2b7b850d1c51c
+- filename: client/src/util/util.js
+  checksum: 27f8aefa194aecd8a319db4af36d7770e02209d1edefeeceebf4cecc9f7a19a4

@@ -1,8 +1,10 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {View, Text, Picker, Image} from '@tarojs/components'
-import {AtSearchBar, AtActivityIndicator, AtListItem, AtBadge, AtIcon, AtNoticebar} from 'taro-ui'
+import {AtSearchBar, AtListItem, AtBadge, AtIcon, AtNoticebar} from 'taro-ui'
 import {isEmpty} from 'lodash';
 import clickIcon from '../../static/down.png';
+import { Loading } from '../../components/loading/index.weapp'
+import { targetImageSource } from '../../util/util'
 import './index.scss'
 
 export default class Index extends Component {
@@ -51,16 +53,22 @@ export default class Index extends Component {
     return (<View>
       <View>
         {searchResult.map(((example) => {return (
-          <AtListItem
-            key={`example-${example._id}`}
-            title={`[第${example.number}号]${example.name}`}
-            arrow='right'
-            onClick={() => {
-              Taro.navigateTo({
-                url: `/pages/exampleDetail/index?type=consultant&id=${example._id}&keyword=${searchValue}`,
-              })
-            }}
-          />
+          <View className='result-item' key={`example-${example._id}`}>
+            <Image
+              src={targetImageSource}
+              className={example.exactMatch ? 'exact-match': 'exact-match-hide'}
+              mode='widthFix'
+            />
+            <AtListItem
+              title={`[第${example.number}号]${example.name}`}
+              arrow='right'
+              onClick={() => {
+                Taro.navigateTo({
+                  url: `/pages/exampleDetail/index?type=consultant&id=${example._id}&keyword=${searchValue}`,
+                })
+              }}
+            />
+          </View>
           )}))}
       </View>
     </View>)
@@ -116,6 +124,7 @@ export default class Index extends Component {
         },
         complete: r => {
           if (isEmpty(r.result.result.data)) {
+            console.log(r.result.result.data)
             Taro.showToast({
               title: `未找到含有${searchValue}的案例`,
               icon: 'none',
@@ -213,9 +222,7 @@ export default class Index extends Component {
             <View>
               {searchResult.length > 0 && this.renderSearchList()}
             </View>
-            {isLoading && <View className='loading-container'>
-              <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
-            </View>}
+            {isLoading && <Loading />}
             <View className='float-help' onClick={() => {
               Taro.navigateTo({
                 url: '/pages/other/index?id=consultant'
@@ -227,6 +234,12 @@ export default class Index extends Component {
               </AtBadge>
             </View>
           </View>
+
+          <Image
+            src={targetImageSource}
+            className='exact-match-hide'
+            mode='widthFix'
+          />
       </View>
     )
   }
