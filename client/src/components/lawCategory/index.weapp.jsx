@@ -2,7 +2,8 @@ import Taro, {useState} from '@tarojs/taro'
 import {View} from "@tarojs/components";
 import {AtAccordion} from "taro-ui";
 import './index.scss'
-import {lawLabelMap, lawMap, civilLawIdMap, civilTagMap, policeRegulationIdMap, civilLawRegulationIdMap, litigationLawIdMap} from '../../util/util'
+import {getGlobalData} from '../../util/global'
+import {lawLabelMap, lawMap, civilTagMap, policeRegulationIdMap, civilLawRegulationIdMap, litigationLawIdMap} from '../../util/util'
 
 const LawCategory = (props) => {
   let {catgoryLine, type} = props;
@@ -33,7 +34,7 @@ const LawCategory = (props) => {
             return (<View key={`all-law-catgoryLine-option-${index}`} className='all-law-catgory-option' onClick={() => {
               if (type === 'civil') {
                 Taro.navigateTo({
-                  url: `/pages/civilLawDetail/index?id=${civilLawIdMap[law]}`,
+                  url: `/pages/civilLawDetail/index?id=${getGlobalData('civilLawIdMap')[law]}`,
                 })
               } else if (type === 'police') {
                 Taro.navigateTo({

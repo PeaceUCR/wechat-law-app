@@ -6,7 +6,7 @@ import { db } from '../../util/db'
 import { TermSearchItem } from '../../components/termSearchItem/index.weapp'
 import { LawCategory } from '../../components/lawCategory/index.weapp'
 import {convertNumberToChinese} from '../../util/convertNumber'
-import {civilLawCategoryLines} from '../../util/util'
+import {setGlobalData, getGlobalData} from '../../util/global'
 import clickIcon from '../../static/down.png';
 import './index.scss'
 
@@ -19,9 +19,7 @@ export default class Index extends Component {
     isLoading: false,
     selected: "搜全文",
     options: ["搜全文", "搜序号", "搜条旨"],
-    showAllCategories: true,
     isReadMode: true,
-    civilLawLines: [],
     isCategoryLoading: true,
     isSearchMode: false
   }
@@ -36,6 +34,19 @@ export default class Index extends Component {
     };
   }
   componentWillMount () {
+    const that = this;
+    Taro.cloud.callFunction({
+      name: 'getCivilLawsCategory',
+      complete: ({result}) => {
+        const {civilLawIdMap, civilLawCategoryLines} = result
+        setGlobalData('civilLawIdMap', civilLawIdMap)
+        setGlobalData('civilLawCategoryLines', civilLawCategoryLines)
+        that.setState({
+          isCategoryLoading: false
+        })
+      }
+    })
+
     // const setting = getStorageSync('setting');
     const setting = {isReadMode: true};
     this.setState({isReadMode: setting && setting.isReadMode})
@@ -49,11 +60,6 @@ export default class Index extends Component {
   }
 
   componentDidMount () {
-    const that = this;
-    that.setState({
-      civilLawLines: civilLawCategoryLines,
-      isCategoryLoading: false
-    })
   }
 
   componentWillUnmount () { }
@@ -64,8 +70,7 @@ export default class Index extends Component {
   componentDidHide () { }
 
   renderAllCatgories = () => {
-    const {civilLawLines} = this.state
-    return civilLawLines
+    return getGlobalData('civilLawCategoryLines')
       .map((catgoryLine, index)=> {
         return (<LawCategory catgoryLine={catgoryLine} key={`all-law-catgoryLine-${index}`} type='civil' />)
       })
@@ -204,7 +209,7 @@ export default class Index extends Component {
   }
   render () {
     const {searchValue, searchResult, isLoading, selected,
-      options, showAllCategories, isReadMode, isCategoryLoading,
+      options, isReadMode, isCategoryLoading,
       isSearchMode} = this.state;
     let placeholder;
     if (selected === "搜全文") {
@@ -247,7 +252,7 @@ export default class Index extends Component {
           {/*  </View>*/}
           {/*</View>*/}
           <View>
-            {!isSearchMode && <View className='all-law-categories'>
+            {!isSearchMode && !isCategoryLoading && <View className='all-law-categories'>
               {this.renderAllCatgories()}
             </View>}
             {/*{searchResult.length === 0 && <View className='all-title' onClick={() => this.setState({showAllLaws: !showAllLaws})}>全部法条<AtIcon value={showAllLaws ?'chevron-up': 'chevron-down'} size='18' color='#6190E8'></AtIcon></View>}*/}
