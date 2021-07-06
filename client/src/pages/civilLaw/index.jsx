@@ -1,8 +1,7 @@
 import Taro, {Component} from '@tarojs/taro'
 import {View, Text, Picker, Image} from '@tarojs/components'
-import {AtSearchBar, AtActivityIndicator, AtBadge, AtIcon, AtFab} from 'taro-ui'
+import {AtSearchBar, AtActivityIndicator, AtBadge, AtFab} from 'taro-ui'
 import {isEmpty} from 'lodash';
-import { db } from '../../util/db'
 import { TermSearchItem } from '../../components/termSearchItem/index.weapp'
 import { LawCategory } from '../../components/lawCategory/index.weapp'
 import {convertNumberToChinese} from '../../util/convertNumber'
@@ -277,16 +276,6 @@ export default class Index extends Component {
               <AtFab onClick={this.handleChange}>
                 <Text>{isSearchMode ? '目录模式':'搜索模式'}</Text>
               </AtFab>
-            </AtBadge>
-          </View>
-          <View className={`${isSearchMode? 'search-mode': ''} float-help`} onClick={() => {
-            Taro.navigateTo({
-              url: '/pages/other/index?id=civilLaw'
-            })
-          }}
-          >
-            <AtBadge value='帮助'>
-              <AtIcon value='help' size='30' color='#000'></AtIcon>
             </AtBadge>
           </View>
       </View>

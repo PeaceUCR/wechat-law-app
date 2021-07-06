@@ -333,7 +333,7 @@ export default class Index extends Component {
 
   handleClickMainSwiper = () => {
     Taro.showToast({
-      title: '搜法～搜你想要的法律知识~',
+      title: '搜法～搜你想要的法律知识',
       icon: 'none',
       duration: 2000
     })

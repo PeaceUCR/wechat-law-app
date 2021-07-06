@@ -327,16 +327,6 @@ export default class Index extends Component {
           {searchResult.length === 0 && <AtFab className='float' onClick={() => this.setState({showAllCategories: !showAllCategories})}>
             <Text>{`${showAllCategories ? '返回' : '目录'}`}</Text>
           </AtFab>}
-          <View className='float-help' onClick={() => {
-            Taro.navigateTo({
-              url: '/pages/other/index?id=criminalLaw'
-            })
-          }}
-          >
-            <AtBadge value='帮助'>
-              <AtIcon value='help' size='30' color='#000'></AtIcon>
-            </AtBadge>
-          </View>
       </View>
     )
   }

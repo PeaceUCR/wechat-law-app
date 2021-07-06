@@ -131,7 +131,6 @@ export default class Index extends Component {
       scrollTop: 0,
       duration: 0
     })
-    console.log(res.data)
     this.setState({searchResult: res.data, isLoading: false});
   }
 
@@ -153,7 +152,6 @@ export default class Index extends Component {
         type: 'content'
       },
       complete: (r) => {
-        console.log(r)
         that.handleDBSearchSuccess(r.result)
       }
     })
@@ -184,7 +182,6 @@ export default class Index extends Component {
         type: 'chapter'
       },
       complete: (r) => {
-        console.log(r)
         that.handleDBSearchSuccess(r.result)
       }
     })
@@ -214,7 +211,6 @@ export default class Index extends Component {
         type: 'section'
       },
       complete: (r) => {
-        console.log(r)
         that.handleDBSearchSuccess(r.result)
       }
     })

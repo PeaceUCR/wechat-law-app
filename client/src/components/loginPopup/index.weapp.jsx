@@ -19,7 +19,7 @@ const LoginPopup = (props) => {
     // }
 
     wx.getUserProfile({
-      desc: '用于显示用户头像', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+      desc: '用于登录', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
       fail: () => {
         Taro.showToast({
           title: '授权失败',
@@ -29,7 +29,9 @@ const LoginPopup = (props) => {
       },
       success: (res) => {
         console.log(res.userInfo)
-        Taro.showLoading();
+        Taro.showLoading({
+          title: '登录中',
+        });
         Taro.cloud.callFunction({
           name: 'login',
           data: {
@@ -40,9 +42,9 @@ const LoginPopup = (props) => {
             setStorageSync('user', r.result.data[0]);
             props.handleLoginSuccess();
             Taro.showToast({
-              title: `欢迎${r.result.data[0].nickName}`,
+              title: `欢迎${r.result.data[0].nickName},首次使用点击屏幕右上角的帮助查看使用指南`,
               icon: 'none',
-              duration: 2000
+              duration: 8000
             });
           }
         })

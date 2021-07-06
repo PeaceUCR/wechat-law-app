@@ -223,16 +223,6 @@ export default class Index extends Component {
               {searchResult.length > 0 && this.renderSearchList()}
             </View>
             {isLoading && <Loading />}
-            <View className='float-help' onClick={() => {
-              Taro.navigateTo({
-                url: '/pages/other/index?id=consultant'
-              })
-            }}
-            >
-              <AtBadge value='帮助'>
-                <AtIcon value='help' size='30' color='#000'></AtIcon>
-              </AtBadge>
-            </View>
           </View>
 
           <Image

@@ -160,16 +160,6 @@ export default class Index extends Component {
             {isLoading && <View className='loading-container'>
               <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
             </View>}
-            <View className='float-help' onClick={() => {
-              Taro.navigateTo({
-                url: '/pages/other/index?id=courtOpen'
-              })
-            }}
-            >
-              <AtBadge value='帮助'>
-                <AtIcon value='help' size='30' color='#000'></AtIcon>
-              </AtBadge>
-            </View>
           </View>
       </View>
     )
