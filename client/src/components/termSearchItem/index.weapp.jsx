@@ -14,7 +14,9 @@ const regulationDetailSet = new Set(
     'labor-contract-law',
     'road-safe-law',
     'road-safe-regulation',
-    'civil-law-regulation'
+    'civil-law-regulation',
+    'anti-terrorism-law',
+    'anti-drug-law'
   ])
 
 const TermSearchItem = (props) => {

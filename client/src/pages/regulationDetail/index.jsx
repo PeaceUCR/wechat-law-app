@@ -159,6 +159,23 @@ export default class RegulationDetail extends Component {
         }
       })
     }
+    if (type === 'anti-terrorism-law') {
+      db.collection('anti-terrorism-law').where({_id: id}).get({
+        success: (res) => {
+          const term = res.data[0];
+          that.setState({term, type, keyword});
+        }
+      })
+    }
+
+    if (type === 'anti-drug-law') {
+      db.collection('anti-drug-law').where({_id: id}).get({
+        success: (res) => {
+          const term = res.data[0];
+          that.setState({term, type, keyword});
+        }
+      })
+    }
 
     Taro.cloud.callFunction({
       name: 'isCollected',
@@ -248,7 +265,7 @@ export default class RegulationDetail extends Component {
       })
     } else {
       let title;
-      if (type === 'litigation-explanation' || type === 'police' || type === 'police-admin-regulation' || type === 'public-order-admin-penalty-law' || type === 'supervision-law' || type === 'admin-punish-law' || type === 'labor-law' || type === 'labor-contract-law' || type === 'road-safe-law' || type === 'road-safe-regulation') {
+      if (type === 'litigation-explanation' || type === 'police' || type === 'police-admin-regulation' || type === 'public-order-admin-penalty-law' || type === 'supervision-law' || type === 'admin-punish-law' || type === 'labor-law' || type === 'labor-contract-law' || type === 'road-safe-law' || type === 'road-safe-regulation' || type === 'anti-terrorism-law' || type === 'anti-drug-law') {
         title = number
       } else if (type === 'civil-law-regulation') {
         title = `${number} ${tag}`
@@ -422,7 +439,7 @@ export default class RegulationDetail extends Component {
         <View className='main section'>
             <View>
               {(type === 'police' || type === 'civil-law-regulation') && this.renderTermText()}
-              {(type === 'police-admin-regulation' || type === 'public-order-admin-penalty-law' || type === 'supervision-law' || type === 'admin-punish-law' || type === 'labor-law' || type === 'labor-contract-law' || type === 'road-safe-law' || type === 'road-safe-regulation') && this.renderAdminText()}
+              {(type === 'police-admin-regulation' || type === 'public-order-admin-penalty-law' || type === 'supervision-law' || type === 'admin-punish-law' || type === 'labor-law' || type === 'labor-contract-law' || type === 'road-safe-law' || type === 'road-safe-regulation' || type === 'anti-terrorism-law' || type === 'anti-drug-law') && this.renderAdminText()}
               {(type === 'litigation-law' || type === 'litigation-regulation' || type === 'litigation-explanation') && this.renderLitigation()}
             </View>
           </View>

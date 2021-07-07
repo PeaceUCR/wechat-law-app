@@ -1,7 +1,5 @@
 fileignoreconfig:
-- filename: cloud/functions/getCivilLawsCategory/index.js
-  checksum: 7635fb974e1f9601d4fe430c1a906800db4560f58bc6663f07331c8a562f8c43
-- filename: client/src/util/util.js
-  checksum: dc5a516f53863052693753f56991a4c307dc9e56506527a633d178b650f448b6
-- filename: cloud/functions/getCivilLawsCategory/yarn.lock
-  checksum: f2f502b2df16de6be9c78d6f3da4635144cef989a2ed2f1f475878a6b809553a
+- filename: cloud/functions/getAntiTerrorismLaw/yarn.lock
+  checksum: a0b3c02a2d3804c3a3c16b6c74c15b42deb7f04d41d8161323d6ce42b74c8ef7
+- filename: cloud/functions/getAntiDrugLaw/yarn.lock
+  checksum: 2c33722e5b981a36b01ac38c786aed0f45de3cb4c28bd9ea83b9ad6ec0f535a9

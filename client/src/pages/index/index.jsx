@@ -58,6 +58,18 @@ export default class Index extends Component {
           isNew: true
         },
         {
+          title: '反恐怖主义法',
+          url: '/pages/antiTerrorismLaw/index',
+          type: '刑法',
+          isNew: true
+        },
+        {
+          title: '禁毒法',
+          url: '/pages/antiDrugLaw/index',
+          type: '刑法',
+          isNew: true
+        },
+        {
           title: '刑事审判参考',
           url: '/pages/consultant/index',
           type: '刑法'
