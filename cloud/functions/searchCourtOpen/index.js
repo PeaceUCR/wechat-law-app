@@ -43,6 +43,7 @@ exports.main = async (event, context) => {
   })
 
   const searchResult = [...result2Flag, ...complementFlag].map(e => {
+    delete e.content
     delete e.text
     return e
   })

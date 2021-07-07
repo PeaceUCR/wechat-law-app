@@ -61,7 +61,10 @@ exports.main = async (event, context) => {
         options: 'i',
       })}).orderBy('number', 'desc').get();
   }
-  result.data.forEach(r => delete r.content)
+  result.data.forEach(r => {
+    delete r.content
+    delete r.text
+  })
   return {
     result
   }

@@ -24,6 +24,7 @@ exports.main = async (event, context) => {
 
   const searchProcuratorateResult = procuratorateExamples.data.filter(e => e.number).map(e => {
     delete e.text
+    delete e.content
     return e
   })
 
@@ -35,6 +36,7 @@ exports.main = async (event, context) => {
 
   const searchCourtResult = courtExamples.data.filter(e => e.number).map(e => {
     delete e.content
+    delete e.text
     return e
   })
   return {

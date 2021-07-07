@@ -99,7 +99,8 @@ export default class Index extends Component {
         data: {
           searchValue: searchValue
         },
-        complete: ({result}) => {
+        complete: (r) => {
+          const {result} = r
           const {searchResult} = result
           if (isEmpty(searchResult)) {
             Taro.showToast({

@@ -33,6 +33,7 @@ export default class ExampleDetail extends Component {
     if(type === 'court') {
       db.collection('court-examples').where({_id: id}).get({
         success: (res) => {
+          console.log(res.data[0])
           that.setState({example: res.data[0], isLoading: false, type, id, keyword});
         }
       });
@@ -145,39 +146,15 @@ export default class ExampleDetail extends Component {
 
   componentDidHide () { }
 
-  renderCourtExample = () => {
+  renderExample = () => {
     const {example, keyword, zoomIn} = this.state;
-    const {content} = example;
+    const {text, title} = example;
     return (<View>
-      <TextSection data={content.join('\n')} keyword={keyword} zoomIn={zoomIn} />
-    </View>)
-  }
-
-  renderProcuratorateExample = () => {
-    const {example, keyword, zoomIn} = this.state;
-    const {text} = example;
-    return (<View>
+      <View className='term-complement-title'>{title}</View>
       <TextSection data={text} keyword={keyword} zoomIn={zoomIn} />
     </View>)
   }
 
-  renderTermComplement = () => {
-    const {example, keyword, zoomIn} = this.state;
-    const {content, title} = example;
-    return (<View>
-      <View className='term-complement-title'>{title}</View>
-      <TextSection data={content} keyword={keyword} zoomIn={zoomIn} />
-    </View>)
-  }
-
-  renderComplement = () => {
-    const {example, keyword, zoomIn} = this.state;
-    const {content, title} = example;
-    return (<View>
-      <View className='term-complement-title'>{title}</View>
-      <TextSection data={content} keyword={keyword} zoomIn={zoomIn} />
-    </View>)
-  }
 
   renderSpecial = () => {
     const {example, keyword, zoomIn} = this.state;
@@ -343,10 +320,7 @@ export default class ExampleDetail extends Component {
         }
         {special && this.renderSpecial()}
         {!special && <View>
-          {(type === 'court' || type === 'source') && this.renderCourtExample()}
-          {(type === 'procuratorate' || type === 'explanation' || type === 'court-open') && this.renderProcuratorateExample()}
-          {type === 'terms-complement' && this.renderTermComplement()}
-          {(type === 'complement' || type ==='consultant' || type === 'civilLawExample' || type === 'civilLawExplaination') && this.renderComplement()}
+          {this.renderExample()}
         </View>}
         <View className='footer'>
           <View className='text'>

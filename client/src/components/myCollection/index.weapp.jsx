@@ -11,6 +11,21 @@ import {
 import './index.scss'
 
 const otherTypes = ['explanation', 'terms-complement','complement','consultant','court-open','civilLawExplaination','civilLawExample']
+
+const newLaws = {
+  'police': '公安机关办理刑事案件程序规定',
+  'police-admin-regulation': '公安机关办理行政案件程序规定',
+  'public-order-admin-penalty-law': '治安管理处罚法',
+  'supervision-law': '监察法',
+  'admin-punish-law': '行政处罚法',
+  'labor-law': '劳动法',
+  'labor-contract-law': '劳动合同法',
+  'road-safe-law': '道路交通安全法',
+  'road-safe-regulation': '道路交通安全法实施条例',
+  'anti-terrorism-law': '反恐怖主义法',
+  'anti-drug-law': '禁毒法',
+}
+
 const MyCollection = (props) => {
   let {collection} = props;
   collection = collection ? collection : []
@@ -28,17 +43,6 @@ const MyCollection = (props) => {
   const litigationExplanationKeys = allKeys.filter(key => collectionObj[key].type === 'litigation-explanation')
   const litigationRegulationawKeys = allKeys.filter(key => collectionObj[key].type === 'litigation-regulation')
   const civilLawRegulationKeys = allKeys.filter(key => collectionObj[key].type === 'civil-law-regulation')
-  const policeKeys = allKeys.filter(key => collectionObj[key].type === 'police')
-  const policeAdminRegulationKeys = allKeys.filter(key => collectionObj[key].type === 'police-admin-regulation')
-  const publicOrderAdminPenaltyLawKeys = allKeys.filter(key => collectionObj[key].type === 'public-order-admin-penalty-law')
-  const supervisionLawKeys = allKeys.filter(key => collectionObj[key].type === 'supervision-law')
-  const adminPunishLawKeys = allKeys.filter(key => collectionObj[key].type === 'admin-punish-law')
-  const laborLawKeys = allKeys.filter(key => collectionObj[key].type === 'labor-law')
-  const laborContractLawKeys = allKeys.filter(key => collectionObj[key].type === 'labor-contract-law')
-  const roadSafeLawKeys = allKeys.filter(key => collectionObj[key].type === 'road-safe-law')
-  const roadSafeRegulationKeys = allKeys.filter(key => collectionObj[key].type === 'road-safe-regulation')
-  const antiTerrorismLawKeys = allKeys.filter(key => collectionObj[key].type === 'anti-terrorism-law')
-  const antiDrugLawKeys = allKeys.filter(key => collectionObj[key].type === 'anti-drug-law')
 
   const sourceKeys = allKeys.filter(key => collectionObj[key].type === 'source')
 
@@ -214,215 +218,36 @@ const MyCollection = (props) => {
         />
       ))}
     </View>
+
     <View>
-      {policeKeys.length > 0 && <View className='sub-title'>
-        <View className='divider'></View>
-        <View className='text'>公安机关办理刑事案件程序规定</View>
-        <View className='divider'></View>
-      </View>}
-      {policeKeys.map(policeKey => (
-        <AtListItem
-          key={policeKey}
-          title={collectionObj[policeKey].title}
-          arrow='right'
-          onClick={() => {
-            Taro.navigateTo({
-              url: `/pages/regulationDetail/index?type=${collectionObj[policeKey].type}&id=${policeKey}`,
-            })
-          }}
-        />
-      ))}
+      {Object.keys(newLaws).map(law => {
+        const targetKeys = allKeys.filter(key => collectionObj[key].type === law)
+        return (<View key={law}>
+          <View>
+            {targetKeys.length > 0 && <View className='sub-title'>
+              <View className='divider'></View>
+              <View className='text'>{newLaws[law]}</View>
+              <View className='divider'></View>
+            </View>}
+            {targetKeys.map(targetKey => (
+              <AtListItem
+                key={targetKey}
+                title={collectionObj[targetKey].title}
+                arrow='right'
+                onClick={() => {
+                  Taro.navigateTo({
+                    url: `/pages/regulationDetail/index?type=${collectionObj[targetKey].type}&id=${targetKey}`,
+                  })
+                }}
+              />
+            ))}
+          </View>
+
+
+        </View>)
+      })}
     </View>
-    <View>
-      {policeAdminRegulationKeys.length > 0 && <View className='sub-title'>
-        <View className='divider'></View>
-        <View className='text'>公安机关办理行政案件程序规定</View>
-        <View className='divider'></View>
-      </View>}
-      {policeAdminRegulationKeys.map(policeKey => (
-        <AtListItem
-          key={policeKey}
-          title={collectionObj[policeKey].title}
-          arrow='right'
-          onClick={() => {
-            Taro.navigateTo({
-              url: `/pages/regulationDetail/index?type=${collectionObj[policeKey].type}&id=${policeKey}`,
-            })
-          }}
-        />
-      ))}
-    </View>
-    <View>
-      {publicOrderAdminPenaltyLawKeys.length > 0 && <View className='sub-title'>
-        <View className='divider'></View>
-        <View className='text'>中华人民共和国治安管理处罚法</View>
-        <View className='divider'></View>
-      </View>}
-      {publicOrderAdminPenaltyLawKeys.map(policeKey => (
-        <AtListItem
-          key={policeKey}
-          title={collectionObj[policeKey].title}
-          arrow='right'
-          onClick={() => {
-            Taro.navigateTo({
-              url: `/pages/regulationDetail/index?type=${collectionObj[policeKey].type}&id=${policeKey}`,
-            })
-          }}
-        />
-      ))}
-    </View>
-    <View>
-      {adminPunishLawKeys.length > 0 && <View className='sub-title'>
-        <View className='divider'></View>
-        <View className='text'>中华人民共和国行政处罚法</View>
-        <View className='divider'></View>
-      </View>}
-      {adminPunishLawKeys.map(policeKey => (
-        <AtListItem
-          key={policeKey}
-          title={collectionObj[policeKey].title}
-          arrow='right'
-          onClick={() => {
-            Taro.navigateTo({
-              url: `/pages/regulationDetail/index?type=${collectionObj[policeKey].type}&id=${policeKey}`,
-            })
-          }}
-        />
-      ))}
-    </View>
-    <View>
-      {supervisionLawKeys.length > 0 && <View className='sub-title'>
-        <View className='divider'></View>
-        <View className='text'>中华人民共和国监察法</View>
-        <View className='divider'></View>
-      </View>}
-      {supervisionLawKeys.map(policeKey => (
-        <AtListItem
-          key={policeKey}
-          title={collectionObj[policeKey].title}
-          arrow='right'
-          onClick={() => {
-            Taro.navigateTo({
-              url: `/pages/regulationDetail/index?type=${collectionObj[policeKey].type}&id=${policeKey}`,
-            })
-          }}
-        />
-      ))}
-    </View>
-    <View>
-      {laborLawKeys.length > 0 && <View className='sub-title'>
-        <View className='divider'></View>
-        <View className='text'>中华人民共和国劳动法</View>
-        <View className='divider'></View>
-      </View>}
-      {laborLawKeys.map(policeKey => (
-        <AtListItem
-          key={policeKey}
-          title={collectionObj[policeKey].title}
-          arrow='right'
-          onClick={() => {
-            Taro.navigateTo({
-              url: `/pages/regulationDetail/index?type=${collectionObj[policeKey].type}&id=${policeKey}`,
-            })
-          }}
-        />
-      ))}
-    </View>
-    <View>
-      {laborContractLawKeys.length > 0 && <View className='sub-title'>
-        <View className='divider'></View>
-        <View className='text'>中华人民共和国劳动合同法</View>
-        <View className='divider'></View>
-      </View>}
-      {laborContractLawKeys.map(policeKey => (
-        <AtListItem
-          key={policeKey}
-          title={collectionObj[policeKey].title}
-          arrow='right'
-          onClick={() => {
-            Taro.navigateTo({
-              url: `/pages/regulationDetail/index?type=${collectionObj[policeKey].type}&id=${policeKey}`,
-            })
-          }}
-        />
-      ))}
-    </View>
-    <View>
-      {roadSafeLawKeys.length > 0 && <View className='sub-title'>
-        <View className='divider'></View>
-        <View className='text'>中华人民共和国道路交通安全法</View>
-        <View className='divider'></View>
-      </View>}
-      {roadSafeLawKeys.map(policeKey => (
-        <AtListItem
-          key={policeKey}
-          title={collectionObj[policeKey].title}
-          arrow='right'
-          onClick={() => {
-            Taro.navigateTo({
-              url: `/pages/regulationDetail/index?type=${collectionObj[policeKey].type}&id=${policeKey}`,
-            })
-          }}
-        />
-      ))}
-    </View>
-    <View>
-      {roadSafeRegulationKeys.length > 0 && <View className='sub-title'>
-        <View className='divider'></View>
-        <View className='text'>道路交通安全法实施条例</View>
-        <View className='divider'></View>
-      </View>}
-      {roadSafeRegulationKeys.map(policeKey => (
-        <AtListItem
-          key={policeKey}
-          title={collectionObj[policeKey].title}
-          arrow='right'
-          onClick={() => {
-            Taro.navigateTo({
-              url: `/pages/regulationDetail/index?type=${collectionObj[policeKey].type}&id=${policeKey}`,
-            })
-          }}
-        />
-      ))}
-    </View>
-    <View>
-      {antiTerrorismLawKeys.length > 0 && <View className='sub-title'>
-        <View className='divider'></View>
-        <View className='text'>反恐怖主义法</View>
-        <View className='divider'></View>
-      </View>}
-      {antiTerrorismLawKeys.map(policeKey => (
-        <AtListItem
-          key={policeKey}
-          title={collectionObj[policeKey].title}
-          arrow='right'
-          onClick={() => {
-            Taro.navigateTo({
-              url: `/pages/regulationDetail/index?type=${collectionObj[policeKey].type}&id=${policeKey}`,
-            })
-          }}
-        />
-      ))}
-    </View>
-    <View>
-      {antiDrugLawKeys.length > 0 && <View className='sub-title'>
-        <View className='divider'></View>
-        <View className='text'>禁毒法</View>
-        <View className='divider'></View>
-      </View>}
-      {antiDrugLawKeys.map(policeKey => (
-        <AtListItem
-          key={policeKey}
-          title={collectionObj[policeKey].title}
-          arrow='right'
-          onClick={() => {
-            Taro.navigateTo({
-              url: `/pages/regulationDetail/index?type=${collectionObj[policeKey].type}&id=${policeKey}`,
-            })
-          }}
-        />
-      ))}
-    </View>
+
     <View>
       {sourceKeys.length > 0 && <View className='sub-title'>
         <View className='divider'></View>
