@@ -5,7 +5,7 @@ import {AtModal, AtModalHeader, AtModalContent, AtModalAction,AtImagePicker} fro
 import './index.scss'
 import {getUserNickname} from "../../util/login";
 
-const token = '24.c87ea0d91b322a76c1ade23a4eea3001.2592000.1625305895.282335-24304397'
+const token = '24.598f98ad2cb90b52fcefacd9988da715.2592000.1628329008.282335-24304397'
 
 const ImageRecoginzer = (props) => {
   const {close} = props

@@ -8,6 +8,15 @@ import {checkIfNewUser, redirectToIndexIfNewUser} from "../../util/login";
 import throttle from "lodash/throttle";
 import {DiscussionArea} from "../../components/discussionArea/index.weapp";
 
+const typeCollectionMap = {
+  'court': 'court-examples',
+  'procuratorate': 'procuratorate-examples',
+  'consultant': 'consult',
+  'civilLawExample': 'civil-law-link-example-detail',
+  'civilLawExplaination': 'civil-law-explaination',
+  'source': 'sentencing-source'
+}
+
 export default class ExampleDetail extends Component {
 
   state = {
@@ -30,63 +39,15 @@ export default class ExampleDetail extends Component {
   componentWillMount () {
     const that = this;
     const { id, type, keyword } = this.$router.params;
-    if(type === 'court') {
-      db.collection('court-examples').where({_id: id}).get({
-        success: (res) => {
-          console.log(res.data[0])
-          that.setState({example: res.data[0], isLoading: false, type, id, keyword});
-        }
-      });
-    } else if (type ==='procuratorate') {
-      db.collection('procuratorate-examples').where({_id: id}).get({
+
+    if (typeCollectionMap[type]) {
+      db.collection(typeCollectionMap[type]).where({_id: id}).get({
         success: (res) => {
           that.setState({example: res.data[0], isLoading: false, type, id, keyword});
         }
       });
-    } else if (type ==='explanation') {
-      db.collection('explanation').where({_id: id}).get({
-        success: (res) => {
-          that.setState({example: res.data[0], isLoading: false, type, id, keyword});
-        }
-      });
-    } else if (type ==='terms-complement') {
-      db.collection('terms-complement').where({_id: id}).get({
-        success: (res) => {
-          that.setState({example: res.data[0], isLoading: false, type, id, keyword});
-        }
-      });
-    } else if (type ==='complement') {
-      db.collection('complement').where({_id: id}).get({
-        success: (res) => {
-          that.setState({example: res.data[0], isLoading: false, type, id, keyword});
-        }
-      });
-    } else if (type ==='consultant') {
-      db.collection('consult').where({_id: id}).get({
-        success: (res) => {
-          that.setState({example: res.data[0], isLoading: false, type, id, keyword});
-        }
-      });
-    } else if (type ==='court-open') {
-      db.collection('court-open').where({_id: id}).get({
-        success: (res) => {
-          that.setState({example: res.data[0], isLoading: false, type, id, keyword});
-        }
-      });
-    } else if (type ==='civilLawExample') {
-      db.collection('civil-law-link-example-detail').where({_id: id}).get({
-        success: (res) => {
-          that.setState({example: res.data[0], isLoading: false, type, id, keyword});
-        }
-      });
-    } else if (type ==='civilLawExplaination') {
-      db.collection('civil-law-explaination').where({_id: id}).get({
-        success: (res) => {
-          that.setState({example: res.data[0], isLoading: false, type, id, keyword});
-        }
-      });
-    } else if (type ==='source') {
-      db.collection('sentencing-source').where({_id: id}).get({
+    } else {
+      db.collection(type).where({_id: id}).get({
         success: (res) => {
           that.setState({example: res.data[0], isLoading: false, type, id, keyword});
         }
@@ -149,12 +110,14 @@ export default class ExampleDetail extends Component {
   renderExample = () => {
     const {example, keyword, zoomIn} = this.state;
     const {text, title} = example;
+    if (title) {
+      Taro.setNavigationBarTitle({title: title})
+    }
     return (<View>
       <View className='term-complement-title'>{title}</View>
       <TextSection data={text} keyword={keyword} zoomIn={zoomIn} />
     </View>)
   }
-
 
   renderSpecial = () => {
     const {example, keyword, zoomIn} = this.state;
