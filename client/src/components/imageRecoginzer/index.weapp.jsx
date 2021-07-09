@@ -5,10 +5,8 @@ import {AtModal, AtModalHeader, AtModalContent, AtModalAction,AtImagePicker} fro
 import './index.scss'
 import {getUserNickname} from "../../util/login";
 
-const token = '24.598f98ad2cb90b52fcefacd9988da715.2592000.1628329008.282335-24304397'
-
 const ImageRecoginzer = (props) => {
-  const {close} = props
+  const {close, token} = props
   const [images, setImages] = useState([]);
   const [results, setResults] = useState([]);
   const [broders, setBroders] = useState([]);

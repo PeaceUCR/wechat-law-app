@@ -1,3 +1,3 @@
 fileignoreconfig:
-- filename: client/src/components/imageRecoginzer/index.weapp.jsx
-  checksum: 70fb84ae9615dead36055601b84301d8c25cdb9dfe8e18c303a4fd70de6f4b87
+- filename: cloud/functions/countTodayUsage/index.js
+  checksum: 521220f8ea1cb9058d2bc223e93101cea9292f9e0e5e5f7976737d66da02abf1

@@ -12,7 +12,8 @@ export default class User extends Component {
     isReadMode: false,
     collection: [],
     isLoading: false,
-    showImageRecognize: false
+    showImageRecognize: false,
+    token: ''
   }
 
   config = {
@@ -120,14 +121,14 @@ export default class User extends Component {
     Taro.cloud.callFunction({
       name: 'countTodayUsage',
       complete: r => {
-        const data = r.result.data;
+        const {token, data} = r.result;
         Taro.showToast({
           title: `每天3次机会,剩余${3 - data.length}`,
           icon: 'none',
           duration: 2000
         })
         if (data.length < 3) {
-          this.setState({ showImageRecognize: true })
+          this.setState({ showImageRecognize: true, token })
         }
       }
     })
@@ -149,7 +150,7 @@ export default class User extends Component {
   }
 
   render () {
-    const {isLoading, isReadMode, collection, showImageRecognize} = this.state;
+    const {isLoading, isReadMode, collection, showImageRecognize, token} = this.state;
     return (
       <View className={`user-page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
@@ -166,7 +167,7 @@ export default class User extends Component {
         {/*</View>*/}
         <MyCollection collection={collection} />
         {
-          showImageRecognize && <ImageRecoginzer open={this.open} close={this.close} />
+          showImageRecognize && <ImageRecoginzer token={token} open={this.open} close={this.close} />
         }
         {
           isLoading && <AtActivityIndicator mode='center' color='black' content='数据加载中...' size={62}></AtActivityIndicator>

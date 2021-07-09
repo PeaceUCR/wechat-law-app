@@ -13,12 +13,15 @@ exports.main = async (event, context) => {
   const db = cloud.database()
   const _ = db.command
 
-  return await db.collection("recognize").where({
+  const token = '24.598f98ad2cb90b52fcefacd9988da715.2592000.1628329008.282335-24304397'
+
+  const r = await db.collection("recognize").where({
     openId,
     time: _.and(_.gte(new Date(today+" 00:00:00")),_.lte(new Date(today+" 23:59:59")))
   }).get()
-  //
-  // return {
-  //   openid: wxContext.OPENID
-  // }
+
+  return {
+    token,
+    data: r.data
+  }
 }
