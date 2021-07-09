@@ -1,7 +1,9 @@
 import Taro from '@tarojs/taro'
 import {View,RichText} from "@tarojs/components";
+import {getText} from "../../util/util";
 import throttle from 'lodash/throttle';
 import './index.scss'
+import {convertNumberToChinese, isNumber} from "../../util/convertNumber";
 
 const regulationDetailSet = new Set(
   [
@@ -22,7 +24,7 @@ const regulationDetailSet = new Set(
 const TermSearchItem = (props) => {
   let {term, disableRedirect, type, isReadMode, keyword} = props;
   term = term ? term : {};
-  let {text, crime, tag, _id, isDeleted} = term;
+  let {text, crime, tag, _id, isDeleted, number} = term;
   if (type === 'civil-law-regulation') {
     text = text.join('\n')
   }
@@ -50,9 +52,16 @@ const TermSearchItem = (props) => {
     2000,
     { trailing: false }
   );
-  const findAndHighlight = (str, key) => {
-    var regExp =new RegExp(key,"g");
+  const findAndHighlightForRegulation = (str, key, n, index) => {
+
+    if (index === 0) {
+      let numberKey = isNumber(n) ? convertNumberToChinese(n) : n;
+      const numberRegExp =new RegExp(numberKey);
+      str = str.replace(numberRegExp, `<span class='highlight-number'>${numberKey}</span>`)
+    }
+
     if (key) {
+      const regExp =new RegExp(key,"g");
       return '<div>' + key ? str.replace(regExp, `<span class='highlight-keyword'>${key}</span>`) : str + '</div>'
     } else {
       return '<div>' + str + '</div>'
@@ -61,20 +70,13 @@ const TermSearchItem = (props) => {
 
   return (<View className={`search-item ${isReadMode ? 'read-mode' : ''} ${isDeleted ? 'deleted' : ''}`} onClick={redirect} >
     <View className={isCrime? 'crime tag':'tag'}>{tag}</View>
-    {type !== 'police'
-    && text && <View>{
-      text.split('\n').filter(line => line.trim() && line.trim().length > 0).map((t, index) => {
+    {text && <View>{
+      getText(text).split('\n').filter(line => line.trim() && line.trim().length > 0).map((t, index) => {
         return <View key={`term-${index}`}>
-          <RichText nodes={findAndHighlight(t, keyword)}></RichText>
+          <RichText nodes={findAndHighlightForRegulation(t, keyword, number, index)}></RichText>
         </View>
       })
     }</View>}
-    {type === 'police'
-      && text && (text.map((t, index) => {
-      return <View key={`police-${index}`}>
-        <RichText nodes={findAndHighlight(t, keyword)}></RichText>
-      </View>
-    }))}
   </View>)
 }
 

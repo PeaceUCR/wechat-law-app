@@ -7,7 +7,13 @@ import './index.scss'
 import throttle from "lodash/throttle";
 import {DiscussionArea} from "../../components/discussionArea/index.weapp";
 import TextSection from "../../components/textSection/index.weapp";
+import {convertNumberToChinese, isNumber} from "../../util/convertNumber";
+import {getText} from "../../util/util";
 
+const typeCollectionMap = {
+  'police': 'police-regulation',
+
+}
 
 export default class RegulationDetail extends Component {
 
@@ -16,10 +22,9 @@ export default class RegulationDetail extends Component {
     isSent: false,
     term: {},
     type: '',
-    keyword: '',
     isLoading: false,
     isCollected: false,
-    isReadMode: false,
+    isReadMode: true,
     zoomIn: false,
     litigationLawDefinition: null
   }
@@ -29,109 +34,22 @@ export default class RegulationDetail extends Component {
   }
 
   onShareAppMessage() {
-    const {term,type,keyword} = this.state
+    const {term,type} = this.state
     return {
-      path: `pages/regulationDetail/index?id=${term._id}&type=${type}&keyword=${keyword}`
+      path: `pages/regulationDetail/index?id=${term._id}&type=${type}`
     };
   }
 
   componentWillMount () {
-    const { id, type, keyword } = this.$router.params;
+    const { id, type} = this.$router.params;
     const that = this;
-    if (type === 'police') {
-      db.collection('police-regulation').where({_id: id}).get({
-        success: (res) => {
-          const term = res.data[0];
-          that.setState({term, type, keyword});
-        }
-      })
-    }
-
-    if (type === 'police-admin-regulation') {
-      db.collection('police-admin-regulation').where({_id: id}).get({
-        success: (res) => {
-          const term = res.data[0];
-          that.setState({term, type, keyword});
-        }
-      })
-    }
-    if (type === 'public-order-admin-penalty-law') {
-      db.collection('public-order-admin-penalty-law').where({_id: id}).get({
-        success: (res) => {
-          const term = res.data[0];
-          that.setState({term, type, keyword});
-        }
-      })
-    }
-
-    if (type === 'civil-law-regulation') {
-      db.collection('civil-law-regulation').where({_id: id}).get({
-        success: (res) => {
-          const term = res.data[0];
-          that.setState({term, type, keyword});
-        }
-      })
-    }
-
-    if (type === 'supervision-law') {
-      db.collection('supervision-law').where({_id: id}).get({
-        success: (res) => {
-          const term = res.data[0];
-          that.setState({term, type, keyword});
-        }
-      })
-    }
-
-    if (type === 'admin-punish-law') {
-      db.collection('admin-punish-law').where({_id: id}).get({
-        success: (res) => {
-          const term = res.data[0];
-          that.setState({term, type, keyword});
-        }
-      })
-    }
-
-    if (type === 'labor-law') {
-      db.collection('labor-law').where({_id: id}).get({
-        success: (res) => {
-          const term = res.data[0];
-          that.setState({term, type, keyword});
-        }
-      })
-    }
-    if (type === 'labor-contract-law') {
-      db.collection('labor-contract-law').where({_id: id}).get({
-        success: (res) => {
-          const term = res.data[0];
-          that.setState({term, type, keyword});
-        }
-      })
-    }
-
-    if (type === 'road-safe-law') {
-      db.collection('road-safe-law').where({_id: id}).get({
-        success: (res) => {
-          const term = res.data[0];
-          that.setState({term, type, keyword});
-        }
-      })
-    }
-
-    if (type === 'road-safe-regulation') {
-      db.collection('road-safe-regulation').where({_id: id}).get({
-        success: (res) => {
-          const term = res.data[0];
-          that.setState({term, type, keyword});
-        }
-      })
-    }
 
     if (type === 'litigation-law') {
       that.setState({isLoading: true})
       db.collection('litigation-law').where({_id: id}).get({
         success: (res) => {
           const term = res.data[0];
-          that.setState({term, type, keyword});
+          that.setState({term, type});
           db.collection('litigation-law-definition').where({number: term.number}).get({
             success: (r) => {
               that.setState({litigationLawDefinition: r.data[0], isLoading: false});
@@ -139,40 +57,18 @@ export default class RegulationDetail extends Component {
           });
         }
       })
-
-    }
-
-    if (type === 'litigation-regulation') {
-      db.collection('litigation-regulation').where({_id: id}).get({
+    } else if (typeCollectionMap[type]) {
+      db.collection(typeCollectionMap[type]).where({_id: id}).get({
         success: (res) => {
           const term = res.data[0];
-          that.setState({term, type, keyword});
+          that.setState({term, type});
         }
       })
-    }
-
-    if (type === 'litigation-explanation') {
-      db.collection('litigation-explanation').where({_id: id}).get({
+    } else {
+      db.collection(type).where({_id: id}).get({
         success: (res) => {
           const term = res.data[0];
-          that.setState({term, type, keyword});
-        }
-      })
-    }
-    if (type === 'anti-terrorism-law') {
-      db.collection('anti-terrorism-law').where({_id: id}).get({
-        success: (res) => {
-          const term = res.data[0];
-          that.setState({term, type, keyword});
-        }
-      })
-    }
-
-    if (type === 'anti-drug-law') {
-      db.collection('anti-drug-law').where({_id: id}).get({
-        success: (res) => {
-          const term = res.data[0];
-          that.setState({term, type, keyword});
+          that.setState({term, type});
         }
       })
     }
@@ -302,29 +198,21 @@ export default class RegulationDetail extends Component {
     }
   }, 3000, { trailing: false })
 
-  renderTermText = () => {
-    const {term, keyword} = this.state;
-    const {text} = term
-    return (text.map((t, index) => {
+  renderAdminText = () => {
+    const {term} = this.state;
+    let {text, number} = term
+    number = isNumber(number) ? convertNumberToChinese(number) : number;
+    return (getText(text).split('\n').filter(t => t.trim()).map((t, index) => {
       return <View className='regulation-line' key={`police-${index}`}>
-        <RichText nodes={this.findAndHighlight(t, keyword)}></RichText>
+        <RichText nodes={this.findAndHighlightForRegulation(t, number, index)}></RichText>
       </View>
     }))
   }
 
-  renderAdminText = () => {
-    const {term, keyword} = this.state;
-    const {text} = term
-    return (text.split('\n').map((t, index) => {
-      return <View className='regulation-line' key={`police-${index}`}>
-        <RichText nodes={this.findAndHighlight(t, keyword)}></RichText>
-      </View>
-    }))
-  }
 
   renderLitigation = () => {
-    const {term, keyword} = this.state;
-    const {part, chapter, section, content} = term;
+    const {term} = this.state;
+    const {part, chapter, section, text, number} = term;
     return (
       <View>
         <View className='header'>
@@ -333,9 +221,9 @@ export default class RegulationDetail extends Component {
           <View>{section}</View>
         </View>
         <View className='section'>
-          {content.map((t, index) => {
+          {text.split('\n').filter(t => t.trim()).map((t, index) => {
             return <View className='regulation-line' key={`litigation-${index}`}>
-            <RichText nodes={this.findAndHighlight(t, keyword)}></RichText>
+            <RichText nodes={this.findAndHighlightForRegulation(t, convertNumberToChinese(number), index)}></RichText>
             </View>
           })}
         </View>
@@ -349,10 +237,10 @@ export default class RegulationDetail extends Component {
     this.setState({zoomIn: !zoomIn})
   }
 
-  findAndHighlight = (str, key) => {
-    let regExp =new RegExp(key,"g");
-    if (key) {
-      return '<div>' + key ? str.replace(regExp, `<span class='highlight-keyword'>${key}</span>`) : str + '</div>'
+  findAndHighlightForRegulation = (str, key, index) => {
+    let regExp = new RegExp(key);
+    if (key && index === 0) {
+      return '<div>' + key ? str.replace(regExp, `<span class='highlight-number'>${key}</span>`) : str + '</div>'
     } else {
       return '<div>' + str + '</div>'
     }
@@ -438,8 +326,7 @@ export default class RegulationDetail extends Component {
         {(type === 'civil-law-regulation' || type === 'litigation-law') && term.tag && <View className='tag-line'><Text className='pre-tag'>法条要旨:</Text><Text className='tag'>{term.tag}</Text></View>}
         <View className='main section'>
             <View>
-              {(type === 'police' || type === 'civil-law-regulation') && this.renderTermText()}
-              {(type === 'police-admin-regulation' || type === 'public-order-admin-penalty-law' || type === 'supervision-law' || type === 'admin-punish-law' || type === 'labor-law' || type === 'labor-contract-law' || type === 'road-safe-law' || type === 'road-safe-regulation' || type === 'anti-terrorism-law' || type === 'anti-drug-law') && this.renderAdminText()}
+              {(type === 'police' || type === 'civil-law-regulation' || type === 'police-admin-regulation' || type === 'public-order-admin-penalty-law' || type === 'supervision-law' || type === 'admin-punish-law' || type === 'labor-law' || type === 'labor-contract-law' || type === 'road-safe-law' || type === 'road-safe-regulation' || type === 'anti-terrorism-law' || type === 'anti-drug-law') && this.renderAdminText()}
               {(type === 'litigation-law' || type === 'litigation-regulation' || type === 'litigation-explanation') && this.renderLitigation()}
             </View>
           </View>
