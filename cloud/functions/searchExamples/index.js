@@ -29,7 +29,7 @@ exports.main = async (event, context) => {
   })
 
   const courtExamples = await db.collection('court-examples').where({
-    content: db.RegExp({
+    text: db.RegExp({
       regexp: regexpString,
       options: 'i',
     })}).limit(1000).orderBy('number', 'asc').get()

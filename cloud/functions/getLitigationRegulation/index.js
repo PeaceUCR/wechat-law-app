@@ -34,7 +34,7 @@ exports.main = async (event, context) => {
     }
     return await db.collection('litigation-regulation')
         .where({
-            content: db.RegExp({
+            text: db.RegExp({
                 regexp: '.*' + searchValue,
                 options: 'i',
             })

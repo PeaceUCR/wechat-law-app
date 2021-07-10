@@ -23,7 +23,7 @@ exports.main = async (event, context) => {
       })}).orderBy('number', 'asc').limit(1000).get()
   }
   return await db.collection('litigation-explanation')
-      .where({content: db.RegExp({
+      .where({text: db.RegExp({
           regexp: '.*' + searchValue,
           options: 'i',
         })}).orderBy('number', 'asc').limit(1000).get()

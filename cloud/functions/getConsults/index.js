@@ -19,7 +19,7 @@ exports.main = async (event, context) => {
     const regexpString1 = `${searchValue.split('').join('.*')}`
     const regexpString2 = `.*${searchValue}`
     result1 = await db.collection('consult').limit(1000).where({
-      content: db.RegExp({
+      text: db.RegExp({
         regexp: regexpString1,
         options: 'i',
       })
@@ -27,7 +27,7 @@ exports.main = async (event, context) => {
 
     // exact match
     result2 = await db.collection('consult').limit(1000).where({
-      content: db.RegExp({
+      text: db.RegExp({
         regexp: regexpString2,
         options: 'i',
       })
@@ -56,7 +56,7 @@ exports.main = async (event, context) => {
     }).orderBy('number', 'desc').get();
 
   } else {
-    result = await db.collection('consult').limit(1000).where({name: db.RegExp({
+    result = await db.collection('consult').limit(1000).where({title: db.RegExp({
         regexp: '.*' + event.name,
         options: 'i',
       })}).orderBy('number', 'desc').get();
