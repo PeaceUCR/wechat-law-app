@@ -1,10 +1,12 @@
 import Taro, { Component, setStorageSync, getStorageSync} from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View,Swiper,SwiperItem } from '@tarojs/components'
 import {AtSwitch,AtNoticebar,AtActivityIndicator} from "taro-ui";
 import MyCollection from '../../components/myCollection'
 import './index.scss'
 import {tmpId} from '../../util/util'
 import {ImageRecoginzer} from "../../components/imageRecoginzer/index.weapp";
+import {db} from "../../util/db";
+
 
 export default class User extends Component {
 
@@ -13,7 +15,8 @@ export default class User extends Component {
     collection: [],
     isLoading: false,
     showImageRecognize: false,
-    token: ''
+    token: '',
+    enableAds: false
   }
 
   config = {
@@ -27,6 +30,15 @@ export default class User extends Component {
   }
 
   componentWillMount () {
+    const that = this;
+    db.collection('configuration').where({}).get({
+      success: (res) => {
+        that.setState({
+          enableAds: res.data[0].enableAds
+        })
+      }
+    });
+
     const setting = getStorageSync('setting');
     this.setState({isReadMode: setting && setting.isReadMode})
 
@@ -150,12 +162,17 @@ export default class User extends Component {
   }
 
   render () {
-    const {isLoading, isReadMode, collection, showImageRecognize, token} = this.state;
+    const {isLoading, isReadMode, collection, showImageRecognize, token, enableAds} = this.state;
     return (
       <View className={`user-page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
           收藏功能已升级，数据已存放于云端，再也不怕丢失啦！
         </AtNoticebar>
+        {enableAds && <Swiper className='video-container'>
+          <SwiperItem >
+            <ad unit-id='adunit-6a2aa2a251227bf0' ad-type='video' ad-theme='white'></ad>
+          </SwiperItem>
+        </Swiper>}
         <View>
           <AtSwitch title='护眼模式' checked={isReadMode} onChange={this.handleChange} />
         </View>

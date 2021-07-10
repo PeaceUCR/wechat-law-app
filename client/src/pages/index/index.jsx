@@ -109,14 +109,14 @@ export default class Index extends Component {
       ],
       '行政相关': [
         {
-          title: '中华人民共和国行政处罚法',
+          title: '行政处罚法',
           url: '/pages/adminPunishLaw/index',
           type: '行政',
           isNew: true
           // isHot: true
         },
         {
-          title: '中华人民共和国治安管理处罚法',
+          title: '治安管理处罚法',
           url: '/pages/publicOrderAdminPenaltyLaw/index',
           type: '行政',
           isNew: true
@@ -175,7 +175,8 @@ export default class Index extends Component {
       'https://mmbiz.qpic.cn/mmbiz_jpg/6fKEyhdZU93zibwIDAjqC1D6vUA9MoQMhuRBKvt2YTvnv6WibIp33kib9P2d0NhKLGzVMKallINfdfn6la92avSyg/0?wx_fmt=jpeg',
       'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU93zibwIDAjqC1D6vUA9MoQMh7RfDn2viazdoymmbYkFWjziaMhGvxWHicFtQI7ib4XvgGvZ6xZygvvCIUg/0?wx_fmt=png'
     ],
-    canClose: false
+    canClose: false,
+    enableAds: false
   }
 
   config = {
@@ -188,9 +189,6 @@ export default class Index extends Component {
     };
   }
   componentWillMount () {
-  }
-
-  componentDidMount () {
     const that = this;
     db.collection('configuration').where({}).get({
       success: (res) => {
@@ -198,7 +196,8 @@ export default class Index extends Component {
           posterUrlForLoading: res.data[0].posterUrl,
           posterRedirect: res.data[0].posterRedirect,
           joinGroupUrl: res.data[0].joinGroupUrl,
-          canClose: res.data[0].canClose
+          canClose: res.data[0].canClose,
+          enableAds: res.data[0].enableAds
         })
         if(res.data[0].forceLogin) {
           if(checkIfNewUser()) {
@@ -233,7 +232,9 @@ export default class Index extends Component {
         }
       }
     });
+  }
 
+  componentDidMount () {
   }
 
   componentWillUnmount () { }
@@ -357,7 +358,7 @@ export default class Index extends Component {
     })
   }
   render () {
-    const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl, joinGroupUrl, posterRedirect, swiperPosters, canClose} = this.state;
+    const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl, joinGroupUrl, posterRedirect, swiperPosters, canClose, enableAds} = this.state;
     return (
       <View className={`index-page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
@@ -376,11 +377,12 @@ export default class Index extends Component {
         {/*  <View className='icon-container'>*/}
         {/*    <Image src={lawIcon} className='icon-title' />*/}
         {/*  </View>*/}
-        <Swiper
+        {!enableAds && <Swiper
           className='main-swiper'
           indicatorColor='#999'
           indicatorActiveColor='#333'
           circular
+          indicatorDots
           autoplay
         >
           <SwiperItem>
@@ -393,7 +395,12 @@ export default class Index extends Component {
               <Image className='image' src={swiperPosters[1]} mode='aspectFill' />
             </View>
           </SwiperItem>
-        </Swiper>
+        </Swiper>}
+        {enableAds && <Swiper className='video-container'>
+          <SwiperItem >
+            <ad unit-id='adunit-806ae2093227c183' ad-type='video' ad-theme='white'></ad>
+          </SwiperItem>
+        </Swiper>}
           {isSuperAdmin() && <View className='float-analytics' onClick={() => {
             Taro.navigateTo({
               url: '/pages/usage/index'
