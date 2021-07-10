@@ -25,19 +25,18 @@ export default class TermDetail extends Component {
     term: {},
     examples: [],
     courtExamples: [],
-    explanations: [],
     complements: [],
     yibentongData:[],
     courtComplementExamples: [],
     isProcuratorateExampleLoading: true,
     isCourtExampleLoading: true,
-    isExplanationLoading: true,
     isComplementLoading: true,
     isCollectedLoading: true,
     isYibentongDataLoading: true,
     isSentencingLoading: true,
     isTermExplanationLoading: true,
     showTermExplanation: false,
+    showSentencing: false,
     sentencings: [],
     termExplanations: [],
     isCollected: false,
@@ -89,15 +88,6 @@ export default class TermDetail extends Component {
           })}).get({
           success: (res) => {
             that.setState({courtExamples: res.data, isCourtExampleLoading: false});
-          }
-        });
-
-        db.collection('explanation').where({criminalLaw: db.RegExp({
-            regexp: '.*' + getTermNumber(term.text),
-            options: 'i',
-          })}).get({
-          success: (res) => {
-            that.setState({explanations: res.data, isExplanationLoading: false});
           }
         });
 
@@ -227,13 +217,10 @@ export default class TermDetail extends Component {
   }
 
   renderExplanationAndComplement = () => {
-    const {explanations, complements, term, zoomIn} = this.state;
+    const {complements, term, zoomIn} = this.state;
     const num = getTermNumber(term.text).replace('第', '').replace('条', '');
 
-    const all = [...explanations.map(e => {
-      e.type = 'explanation'
-      return e
-    }), ...complements.map(e => {
+    const all = [...complements.map(e => {
       e.type = 'complement'
       return e
     })]
@@ -268,24 +255,24 @@ export default class TermDetail extends Component {
     </View>)
   }
 
-  renderYiBenTong = () => {
-    const {yibentongData, term, zoomIn} = this.state;
-    const num = getTermNumber(term.text).replace('第', '').replace('条', '')
-    return yibentongData.map((item, i) => {
-      return (<View key={`yibentong-item-${i}`}>
-        {item.contents.map((c, j) => {
-          return (<YiBenTongSection
-            key={`yibentong-item-${j}`}
-            data={c.content}
-            title={c.category}
-            zoomIn={zoomIn}
-            keyword={num}
-          >
-          </YiBenTongSection>)
-        })}
-      </View>)
-    })
-  }
+  // renderYiBenTong = () => {
+  //   const {yibentongData, term, zoomIn} = this.state;
+  //   const num = getTermNumber(term.text).replace('第', '').replace('条', '')
+  //   return yibentongData.map((item, i) => {
+  //     return (<View key={`yibentong-item-${i}`}>
+  //       {item.contents.map((c, j) => {
+  //         return (<YiBenTongSection
+  //           key={`yibentong-item-${j}`}
+  //           data={c.content}
+  //           title={c.category}
+  //           zoomIn={zoomIn}
+  //           keyword={num}
+  //         >
+  //         </YiBenTongSection>)
+  //       })}
+  //     </View>)
+  //   })
+  // }
 
   handleCollect = throttle(() => {
     if (checkIfNewUser()) {
@@ -467,10 +454,10 @@ export default class TermDetail extends Component {
     const {termExplanations, zoomIn} = this.state
     return <View className='sentencings'>
       {termExplanations.map((sentencing, index) => {
-        const {content} = sentencing
+        const {text} = sentencing
         return (<View className='sentencing' key={`sentencing-key-${index}`}>
           <View className='line'>
-            <TextSection data={content.join('\n')} zoomIn={zoomIn} />
+            <TextSection data={text} zoomIn={zoomIn} />
           </View>
           <AtDivider height='40' lineColor='#fff' />
         </View>)
@@ -485,11 +472,18 @@ export default class TermDetail extends Component {
     })
   }
 
+  openSentencing = () => {
+    const {showSentencing} = this.state
+    this.setState({
+      showSentencing: !showSentencing
+    })
+  }
+
   render () {
-    const {isSent, comment, term, examples, explanations, courtExamples, complements, courtComplementExamples,
-      isProcuratorateExampleLoading, isCourtExampleLoading, isExplanationLoading, isComplementLoading,
+    const {isSent, comment, term, examples, courtExamples, complements, courtComplementExamples,
+      isProcuratorateExampleLoading, isCourtExampleLoading, isComplementLoading,
       isCollectedLoading, isCollected, isReadMode, zoomIn, currentTab,
-      isSentencingLoading, sentencings, isTermExplanationLoading, showTermExplanation} = this.state;
+      isSentencingLoading, sentencings, isTermExplanationLoading, showTermExplanation, showSentencing} = this.state;
     return (
       <View className={`term-detail-page ${isReadMode ? 'read-mode' : ''} ${zoomIn ? 'zoom-in' : ''}`}>
           <View className='main section'>
@@ -524,10 +518,23 @@ export default class TermDetail extends Component {
               {this.renderTermExplanation()}
             </View>
           </AtAccordion>
-          <View className='examples section'>
-            <Text className='section-title'>相关法定解释、规定和指导意见：{complements.length ===0 && explanations.length ===0 ? '暂无' : ''}</Text>
+
+          <AtAccordion
+            open={showSentencing}
+            onClick={this.openSentencing()}
+            title='量刑指导意见'
+            icon={{ value: 'alert-circle', color: '#c6823b', size: '16' }}
+            isAnimation={false}
+          >
             <View>
-              {(explanations.length > 0 || complements.length > 0) && this.renderExplanationAndComplement()}
+              {this.renderSentencings()}
+            </View>
+          </AtAccordion>
+
+          <View className='examples section'>
+            <Text className='section-title'>相关法定解释、规定和指导意见：{complements.length ===0 ? '暂无' : ''}</Text>
+            <View>
+              {complements.length > 0 && this.renderExplanationAndComplement()}
             </View>
           </View>
           <View className='examples section'>
@@ -545,11 +552,7 @@ export default class TermDetail extends Component {
             </View>
           </View>
 
-          <View>
-            {sentencings && sentencings.length > 0 && this.renderSentencings()}
-          </View>
-
-        {(isProcuratorateExampleLoading || isCourtExampleLoading || isExplanationLoading
+        {(isProcuratorateExampleLoading || isCourtExampleLoading
           || isComplementLoading || isCollectedLoading || isSentencingLoading || isTermExplanationLoading) && <View className='loading-container'>
           <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
         </View>}
