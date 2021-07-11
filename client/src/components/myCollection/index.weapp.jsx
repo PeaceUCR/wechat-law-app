@@ -10,7 +10,14 @@ import {
 } from '../../util/util';
 import './index.scss'
 
-const otherTypes = ['explanation', 'terms-complement','complement','consultant','court-open','civilLawExplaination','civilLawExample']
+const otherTypes = [
+  'explanation',
+  'terms-complement',
+  'complement',
+  'consultant',
+  'court-open',
+  'civilLawExplaination',
+  'civilLawExample']
 
 const newLaws = {
   'police': '公安机关办理刑事案件程序规定',
@@ -24,6 +31,8 @@ const newLaws = {
   'road-safe-regulation': '道路交通安全法实施条例',
   'anti-terrorism-law': '反恐怖主义法',
   'anti-drug-law': '禁毒法',
+  'admin-litigation-law': '行政诉讼法',
+  'admin-litigation-explaination': '最高法关于适用"行政诉讼法"的解释'
 }
 
 const MyCollection = (props) => {

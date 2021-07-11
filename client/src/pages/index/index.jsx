@@ -109,6 +109,18 @@ export default class Index extends Component {
       ],
       '行政相关': [
         {
+          title: '行政诉讼法',
+          url: '/pages/adminLitigationLaw/index',
+          type: '行政',
+          isNew: true
+        },
+        {
+          title: '最高法关于适用"行政诉讼法"的解释',
+          url: '/pages/adminLitigationExplaination/index',
+          type: '行政',
+          isNew: true
+        },
+        {
           title: '行政处罚法',
           url: '/pages/adminPunishLaw/index',
           type: '行政',
