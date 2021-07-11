@@ -5,8 +5,15 @@
 .line-center {
   display: flex;
   align-items: center;
-  font-size: 28px;
+  font-size: 30px;
+  &.example {
+    .title {
+      padding-left: 48px;
+      max-width: 90%;
+    }
+  }
   .title {
+    box-sizing: border-box;
     max-width: 96%;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -15,6 +22,7 @@
   }
 }
 .time {
-  font-size: 24px;
+  font-size: 26px;
   color: #4d4dff;
 }
+

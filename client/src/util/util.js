@@ -2,6 +2,15 @@ export const tmpId = 'cZWxYVaMH0JFtk2NIxjsEBLZcpazvU5vkYJcQlKsnBo'
 
 export const targetImageSource = 'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU92ZiaezOzgIyVO8wAQ7ZgFt3eo5pqEsoyExgibDIohRWa3dY3Lwiaxia5icUlr4CfWqjr9hGrmQpWiaNibmw/0?wx_fmt=png'
 
+export const definitionIcon =
+  'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU90pXxTgogwXbhe9LOehMEEor2oj73ibZU4SnCvqzbTzc8SHt8Oam3iaTP2w0q1fo5icTOMca21VFlWWQ/0?wx_fmt=png'
+export const exampleIcon =
+  'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU90t4icfrbQqOWruibkyjVmSDvu4iajO6dkuibbmxibicibaZjY2FKOcY5exdFIJzbCoONSBXaFcGPJQlib38A/0?wx_fmt=png'
+export const sentencingIcon =
+  'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU90t4icfrbQqOWruibkyjVmSDvfTvcZRBMtKwlBhysY8yR5QBiaHzRnNrWDnZHWibQ9Pv7VnjjdNzrjkvg/0?wx_fmt=png'
+export const explanationIcon =
+  'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU90t4icfrbQqOWruibkyjVmSDvCwm0SGITK8lMtAaYSzibjCRw21GzdNO7yR4GwshYxvu2uibtrc7QwErA/0?wx_fmt=png'
+
 export function getTodayDateString() {
   return new Date().toLocaleDateString()
 }

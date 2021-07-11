@@ -14,9 +14,6 @@
     .section {
       font-size: 40px;
     }
-    .example {
-      font-size: 40px;
-    }
 
     .sentencings {
       font-size: 40px;
@@ -44,10 +41,24 @@
   }
 
   .example {
-    white-space: pre-wrap;
-    font-size: 32px;
+    position: relative;
     margin-bottom: 20px;
     margin-top: 10px;
+    .tag {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      font-size: 24px;
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 22px;
+      background: dodgerblue;
+      color: white;
+    }
+
+    .procuratorate {
+      background: darkred !important;
+    }
   }
 
   .sentencings {
@@ -178,5 +189,25 @@
 
 .at-icon-external-link {
   position: relative;
-  top: -3px;
+  top: -6px;
+}
+
+.at-accordion {
+  background-color: rgba(256, 256, 256, 0.4);
+  padding-top: 10px;
+  padding-left: 6px;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #c6823b;
+}
+
+.module-container {
+  position: relative;
+  .title-icon {
+    position: absolute;
+    top: 22px;
+    left: 10px;
+    width: 40px;
+    height: 40px;
+    z-index: 99;
+  }
 }

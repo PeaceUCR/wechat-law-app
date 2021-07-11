@@ -1,12 +1,12 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
-import { View, Text, Input, Button } from '@tarojs/components'
-import {AtActivityIndicator, AtIcon, AtFab, AtButton, AtBadge, AtDivider, AtAccordion, AtTabs, AtTabsPane} from "taro-ui";
+import { View, Text, Input, Button, Image } from '@tarojs/components'
+import {AtActivityIndicator, AtIcon, AtFab, AtButton, AtBadge, AtDivider, AtAccordion, AtCard} from "taro-ui";
 import throttle from "lodash/throttle";
 import DataPopup from '../../components/dataPopup/index.weapp'
 import {DiscussionArea} from '../../components/discussionArea/index.weapp'
 import { db } from '../../util/db'
 import {checkIfNewUser, redirectToIndexIfNewUser} from '../../util/login'
-import {lawIdLabelMap} from '../../util/util'
+import {lawIdLabelMap, exampleIcon, sentencingIcon, explanationIcon, definitionIcon} from '../../util/util'
 import './index.scss'
 import YiBenTongSection from "../../components/yibentongSection/index.weapp";
 import TextSection from "../../components/textSection/index.weapp";
@@ -16,7 +16,6 @@ const getTermNumber = (text) => {
   return text.substring(0, text.indexOf('条') + 1);
 }
 
-const tabs = [{title:'关联数据'}, {title: '其他'}]
 export default class TermDetail extends Component {
 
   state = {
@@ -26,23 +25,22 @@ export default class TermDetail extends Component {
     examples: [],
     courtExamples: [],
     complements: [],
-    yibentongData:[],
-    courtComplementExamples: [],
+    complementExamples: [],
     isProcuratorateExampleLoading: true,
     isCourtExampleLoading: true,
     isComplementLoading: true,
     isCollectedLoading: true,
-    isYibentongDataLoading: true,
     isSentencingLoading: true,
     isTermExplanationLoading: true,
     showTermExplanation: false,
     showSentencing: false,
+    showComplement: false,
+    showExample: false,
     sentencings: [],
     termExplanations: [],
     isCollected: false,
     isReadMode: false,
-    zoomIn: false,
-    currentTab: 0
+    zoomIn: false
   }
 
   config = {
@@ -96,12 +94,18 @@ export default class TermDetail extends Component {
             options: 'i',
           })}).get({
           success: (res) => {
-
             if (res.data.length > 0) {
-              const courtComplementExamples = res.data.filter(item => item.title.indexOf('案例') !== -1)
-              if(courtComplementExamples.length > 0) {
+              const complementExamples = res.data.filter(item => item.title.indexOf('案例') !== -1).map(e => {
+                if (e.title.indexOf('检') !== -1) {
+                  e.type = 'procuratorate'
+                } else {
+                  e.type = 'court'
+                }
+                return e;
+              })
+              if(complementExamples.length > 0) {
                 const complements = res.data.filter(item => item.title.indexOf('案例') === -1)
-                that.setState({complements, courtComplementExamples, isComplementLoading: false});
+                that.setState({complements, complementExamples, isComplementLoading: false});
 
               } else {
                 that.setState({complements: res.data, isComplementLoading: false});
@@ -201,6 +205,7 @@ export default class TermDetail extends Component {
     const num = getTermNumber(term.text).replace('第', '').replace('条', '');
     return (<View>
       {examples.map(example => (<View className='example' key={`example-${example._id}`}>
+        <Text className='tag procuratorate'>检</Text>
         <DataPopup data={example} type='procuratorate' num={num} zoomIn={zoomIn} />
       </View>))}
     </View>)
@@ -211,6 +216,7 @@ export default class TermDetail extends Component {
     const num = getTermNumber(term.text).replace('第', '').replace('条', '');
     return (<View>
       {courtExamples.map(example => (<View className='example' key={`court-example-${example._id}`}>
+        <Text className='tag'>法</Text>
         <DataPopup data={example} type='court' num={num} zoomIn={zoomIn} />
       </View>))}
     </View>)
@@ -246,11 +252,12 @@ export default class TermDetail extends Component {
   }
 
   renderCourtComplementExamples = () => {
-    const { courtComplementExamples, term, zoomIn } = this.state;
+    const { complementExamples, term, zoomIn } = this.state;
     const num = getTermNumber(term.text).replace('第', '').replace('条', '');
     return (<View>
-      {courtComplementExamples.map(complement => (<View className='example' key={`complement-${complement._id}`}>
-        <DataPopup data={complement} type='complement' num={num} zoomIn={zoomIn} />
+      {complementExamples.map(complement => (<View className='example' key={`complement-${complement._id}`}>
+        {complement.type === 'court' ? <Text className='tag'>法</Text>: <Text className='tag procuratorate'>检</Text>}
+        <DataPopup data={complement} type='complement-example' num={num} zoomIn={zoomIn} />
       </View>))}
     </View>)
   }
@@ -351,6 +358,7 @@ export default class TermDetail extends Component {
       comment: e.target.value
     })
   }
+
   handleClear = () => {
     this.setState({
       comment: ''
@@ -420,19 +428,13 @@ export default class TermDetail extends Component {
     }, 100)
   }
 
-  handleChangeTab = (value) => {
-    this.setState({
-      currentTab: value
-    })
-  }
-
   renderSentencings = () => {
     const {sentencings, zoomIn} = this.state
     return <View className='sentencings'>
       {sentencings.map((sentencing, index) => {
         const {crimeName, text, sourceName, sourceId, effectiveDate} = sentencing
         return (<View className='sentencing' key={`sentencing-key-${index}`}>
-          <View className='title line example'>量刑指导意见:</View>
+          {/*<View className='title line example'>量刑指导意见:</View>*/}
           <View className='line crime-line'>
             <Text className='crime-line-item'>罪名:<Text className='crime'>{crimeName}</Text></Text>
             <Text className='date crime-line-item'>
@@ -459,7 +461,6 @@ export default class TermDetail extends Component {
           <View className='line'>
             <TextSection data={text} zoomIn={zoomIn} />
           </View>
-          <AtDivider height='40' lineColor='#fff' />
         </View>)
       })}
     </View>
@@ -479,11 +480,27 @@ export default class TermDetail extends Component {
     })
   }
 
+  openComplement = () => {
+    const {showComplement} = this.state
+    this.setState({
+      showComplement: !showComplement
+    })
+  }
+
+  openExample = () => {
+    const {showExample} = this.state
+    this.setState({
+      showExample: !showExample
+    })
+  }
+
   render () {
-    const {isSent, comment, term, examples, courtExamples, complements, courtComplementExamples,
+    const {isSent, comment, term, examples, courtExamples, complementExamples,
+      complements, termExplanations,
       isProcuratorateExampleLoading, isCourtExampleLoading, isComplementLoading,
-      isCollectedLoading, isCollected, isReadMode, zoomIn, currentTab,
-      isSentencingLoading, sentencings, isTermExplanationLoading, showTermExplanation, showSentencing} = this.state;
+      isCollectedLoading, isCollected, isReadMode, zoomIn,
+      isSentencingLoading, sentencings, isTermExplanationLoading,
+      showTermExplanation, showSentencing, showComplement, showExample} = this.state;
     return (
       <View className={`term-detail-page ${isReadMode ? 'read-mode' : ''} ${zoomIn ? 'zoom-in' : ''}`}>
           <View className='main section'>
@@ -494,63 +511,88 @@ export default class TermDetail extends Component {
               {this.renderTermText()}
             </View>
           </View>
-          {/*<AtDivider lineColor='#d6e4ef' height='50' />*/}
-          {/*<AtTabs*/}
-          {/*  tabList={tabs}*/}
-          {/*  current={currentTab}*/}
-          {/*  onClick={this.handleChangeTab}*/}
-          {/*>*/}
-          {/*  <AtTabsPane current={currentTab} index={0} ></AtTabsPane>*/}
-          {/*  <AtTabsPane current={currentTab} index={1} ></AtTabsPane>*/}
-          {/*</AtTabs>*/}
-          {/*<View className='section'>*/}
-          {/*  {this.renderYiBenTong()}*/}
-          {/*</View>*/}
 
-          <AtAccordion
-            open={showTermExplanation}
-            onClick={this.openTermExplain}
-            title='刑法释义'
-            icon={{ value: 'alert-circle', color: '#c6823b', size: '16' }}
-            isAnimation={false}
-          >
-            <View>
+          {termExplanations.length > 0 &&
+          <View className='module-container'>
+            <Image
+              src={definitionIcon}
+              className='title-icon'
+              mode='widthFix'
+            />
+            <AtAccordion
+              hasBorder={false}
+              open={showTermExplanation}
+              onClick={this.openTermExplain}
+              title='刑法释义'
+              icon={{ value: 'alert-circle', color: 'transparent', size: '18' }}
+              isAnimation={false}
+            >
               {this.renderTermExplanation()}
-            </View>
-          </AtAccordion>
+            </AtAccordion>
+          </View>}
 
+
+        {sentencings && sentencings.length > 0 && <View className='module-container'>
+          <Image
+            src={sentencingIcon}
+            className='title-icon'
+            mode='widthFix'
+          />
           <AtAccordion
+            hasBorder={false}
             open={showSentencing}
-            onClick={this.openSentencing()}
+            onClick={this.openSentencing}
             title='量刑指导意见'
-            icon={{ value: 'alert-circle', color: '#c6823b', size: '16' }}
+            icon={{ value: 'alert-circle', color: 'transparent', size: '18' }}
             isAnimation={false}
           >
-            <View>
-              {this.renderSentencings()}
-            </View>
+            {this.renderSentencings()}
+          </AtAccordion>
+        </View>}
+
+        {
+          complements.length > 0 && <View className='module-container'>
+            <Image
+              src={explanationIcon}
+              className='title-icon'
+              mode='widthFix'
+            />
+            <AtAccordion
+              hasBorder={false}
+              open={showComplement}
+              onClick={this.openComplement}
+              title='相关法定解释、规定和指导意见'
+              icon={{ value: 'alert-circle', color: 'transparent', size: '18' }}
+              isAnimation={false}
+            >
+              {this.renderExplanationAndComplement()}
+            </AtAccordion>
+          </View>
+        }
+
+
+        {(examples.length > 0
+        || courtExamples.length > 0
+        || complementExamples.length >0) && <View className='module-container'>
+          <Image
+            src={exampleIcon}
+            className='title-icon'
+            mode='widthFix'
+          />
+          <AtAccordion
+            hasBorder={false}
+            open={showExample}
+            onClick={this.openExample}
+            title='相关案例'
+            icon={{ value: 'alert-circle', color: 'transparent', size: '16' }}
+            isAnimation={false}
+          >
+            {this.renderExample()}
+            {this.renderCourtExample()}
+            {this.renderCourtComplementExamples()}
           </AtAccordion>
 
-          <View className='examples section'>
-            <Text className='section-title'>相关法定解释、规定和指导意见：{complements.length ===0 ? '暂无' : ''}</Text>
-            <View>
-              {complements.length > 0 && this.renderExplanationAndComplement()}
-            </View>
-          </View>
-          <View className='examples section'>
-            <Text className='section-title'>相关检察院案例：{examples.length ===0 ? '暂无' : ''}</Text>
-            <View>
-              {examples.length > 0 && this.renderExample()}
-            </View>
-          </View>
-
-          <View className='examples section'>
-            <Text className='section-title'>相关法院案例：{courtExamples.length ===0 && courtComplementExamples.length ===0 ? '暂无' : ''}</Text>
-            <View>
-              {courtExamples.length > 0 && this.renderCourtExample()}
-              {courtComplementExamples.length > 0 && this.renderCourtComplementExamples()}
-            </View>
-          </View>
+        </View>}
 
         {(isProcuratorateExampleLoading || isCourtExampleLoading
           || isComplementLoading || isCollectedLoading || isSentencingLoading || isTermExplanationLoading) && <View className='loading-container'>
