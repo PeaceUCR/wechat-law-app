@@ -176,7 +176,8 @@ export default class Index extends Component {
       'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU93zibwIDAjqC1D6vUA9MoQMh7RfDn2viazdoymmbYkFWjziaMhGvxWHicFtQI7ib4XvgGvZ6xZygvvCIUg/0?wx_fmt=png'
     ],
     canClose: false,
-    enableAds: false
+    enableMainVideoAd: false,
+    // enablePosterAd: false
   }
 
   config = {
@@ -197,7 +198,8 @@ export default class Index extends Component {
           posterRedirect: res.data[0].posterRedirect,
           joinGroupUrl: res.data[0].joinGroupUrl,
           canClose: res.data[0].canClose,
-          enableAds: res.data[0].enableAds
+          enableMainVideoAd: res.data[0].enableMainVideoAd,
+          // enablePosterAd: res.data[0].enablePosterAd
         })
         if(res.data[0].forceLogin) {
           if(checkIfNewUser()) {
@@ -208,7 +210,7 @@ export default class Index extends Component {
                   setStorageSync('user', r.result.data[0]);
                   that.setState({isUserLoaded: true})
 
-                  if (!isTodayString(getStorageSync('poster-shown-at'))) {
+                  if (getStorageSync('poster-shown') !== res.data[0].posterUrl) {
                     that.setState({showPoster: true})
                   }
 
@@ -218,8 +220,10 @@ export default class Index extends Component {
               }
             })
           } else {
-            if (!isTodayString(getStorageSync('poster-shown-at'))) {
+            if (getStorageSync('poster-shown') !== res.data[0].posterUrl) {
               that.setState({showPoster: true})
+            } else {
+              // that.setState({enablePosterAd: res.data[0].enablePosterAd})
             }
           }
         } else {
@@ -283,7 +287,6 @@ export default class Index extends Component {
       })}
     </View>)
   }
-
 
   renderUserFloatButton () {
     const {isUserLoaded} = this.state;
@@ -357,8 +360,9 @@ export default class Index extends Component {
       url: '/pages/examples/index'
     })
   }
+
   render () {
-    const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl, joinGroupUrl, posterRedirect, swiperPosters, canClose, enableAds} = this.state;
+    const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl, joinGroupUrl, posterRedirect, swiperPosters, canClose, enableMainVideoAd} = this.state;
     return (
       <View className={`index-page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
@@ -377,7 +381,7 @@ export default class Index extends Component {
         {/*  <View className='icon-container'>*/}
         {/*    <Image src={lawIcon} className='icon-title' />*/}
         {/*  </View>*/}
-        {!enableAds && <Swiper
+        {!enableMainVideoAd && <Swiper
           className='main-swiper'
           indicatorColor='#999'
           indicatorActiveColor='#333'
@@ -396,7 +400,7 @@ export default class Index extends Component {
             </View>
           </SwiperItem>
         </Swiper>}
-        {enableAds && <Swiper className='video-container'>
+        {enableMainVideoAd && <Swiper className='video-container'>
           <SwiperItem >
             <ad unit-id='adunit-806ae2093227c183' ad-type='video' ad-theme='white'></ad>
           </SwiperItem>
@@ -468,7 +472,7 @@ export default class Index extends Component {
           {/*</View>*/}
           <AtCurtain isOpened={showPoster && !isPosterLoading && posterUrl} onClose={() => {
             this.setState({showPoster: false})
-            setStorageSync('poster-shown-at', getTodayDateString())
+            setStorageSync('poster-shown', posterUrl)
           }}
           >
             <Image
