@@ -171,11 +171,19 @@
   height: 550px;
 }
 
-.at-tabs__header {
-  border-top: 6px solid #c6823b;
+.at-search-bar {
+  border-top: 10px solid #c6823b;
 }
+
+//.at-tabs__header {
+//  border-top: 6px solid #c6823b;
+//}
 
 .at-tabs__item {
   padding-top: 30px !important;
   padding-bottom: 30px !important;
+}
+
+.at-search-bar__action {
+  display: none;
 }

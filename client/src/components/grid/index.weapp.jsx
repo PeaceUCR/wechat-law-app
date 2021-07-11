@@ -1,9 +1,10 @@
 import Taro from '@tarojs/taro'
-import {View,Image} from "@tarojs/components";
+import {View,Image,RichText} from "@tarojs/components";
 import { AtBadge, AtIcon } from "taro-ui";
 import throttle from 'lodash/throttle';
 import './index.scss'
 import constructionIcon from '../../static/under-construction.png';
+import {isStartWith} from "../../util/util";
 
 const colors = {
   '刑法': '#F67B78',
@@ -12,8 +13,17 @@ const colors = {
   '共有': '#BFA13C'
 }
 
+const findAndHighlight = (str, index, key) => {
+  const regExp =new RegExp(key,"g");
+  if (key) {
+    return '<div>' + key ? str.replace(regExp, `<span class='highlight-keyword'>${key}</span>`) : str + '</div>'
+  } else {
+    return '<div>' + str + '</div>'
+  }
+}
+
 const GridItem = (props) => {
-  let {option, disabled} = props;
+  let {option, disabled, keyword} = props;
   option = option ? option : {title: '', url: ''};
   const {title, url, isNew, isHot, isUpdated, isUnderConstruction} = option;
   const redirect = throttle(
@@ -48,7 +58,9 @@ const GridItem = (props) => {
         {isUnderConstruction && <View className='icon-container'><Image src={constructionIcon} className='construction-icon' /></View>}
         <View className='title-container'>
           <AtIcon value='chevron-right' size='22' color={colors[option.type]}></AtIcon>
-          <View className='title'>{title}</View>
+          <View className='title'>
+            <RichText nodes={findAndHighlight(title, 0, keyword)} ></RichText>
+          </View>
         </View>
       </View>
     </AtBadge>)

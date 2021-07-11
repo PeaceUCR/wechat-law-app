@@ -1,6 +1,6 @@
 import Taro, { Component, getStorageSync, setStorageSync } from '@tarojs/taro'
 import {View, Image, Text, Swiper, SwiperItem} from '@tarojs/components'
-import {AtIcon, AtDivider, AtBadge, AtNoticebar, AtTabs, AtTabsPane, AtCurtain } from "taro-ui";
+import {AtIcon, AtDivider, AtBadge, AtNoticebar, AtTabs, AtTabsPane, AtCurtain, AtSearchBar } from "taro-ui";
 import throttle from 'lodash/throttle';
 import { GridItem } from '../../components/grid/index.weapp'
 import { LoginPopup } from '../../components/loginPopup/index.weapp'
@@ -189,6 +189,7 @@ export default class Index extends Component {
     ],
     canClose: false,
     enableMainVideoAd: false,
+    searchValue: ''
     // enablePosterAd: false
   }
 
@@ -278,7 +279,7 @@ export default class Index extends Component {
   componentDidHide () { }
 
   renderGridItems () {
-    const {options, isNewUser, current} = this.state;
+    const {options, isNewUser, current, searchValue} = this.state;
     let displayOptions;
     if (current === 0) {
       displayOptions = Object.values(options)
@@ -287,11 +288,17 @@ export default class Index extends Component {
     }
     return (<View>
       {displayOptions.map((items, index) => {
+        const filteredOptions = items.filter(option => {
+          if (searchValue) {
+            return option.title.indexOf(searchValue) !== -1
+          }
+          return true
+        })
         return (
           <View key={`section-${current}-${index}`} className='grids'>
-            {items.map((option, i )=> {
+            {filteredOptions.map((option, i )=> {
               return (<View className='grid-container' key={`grid-${i}`}>
-                <GridItem option={option} disabled={isNewUser} />
+                <GridItem option={option} disabled={isNewUser} keyword={searchValue} />
               </View>)
             })}
           </View>
@@ -373,8 +380,18 @@ export default class Index extends Component {
     })
   }
 
+  onChange = (searchValue) => {
+    this.setState({searchValue})
+  }
+
+  onClear = () => {
+    this.setState({
+      searchValue: ''
+    });
+  }
+
   render () {
-    const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl, joinGroupUrl, posterRedirect, swiperPosters, canClose, enableMainVideoAd} = this.state;
+    const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl, joinGroupUrl, posterRedirect, swiperPosters, canClose, enableMainVideoAd, searchValue} = this.state;
     return (
       <View className={`index-page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
@@ -442,6 +459,13 @@ export default class Index extends Component {
               <AtIcon value='help' size='30' color='#000'></AtIcon>
             </AtBadge>
           </View>
+          <AtSearchBar
+            showActionButton
+            placeholder='搜模块'
+            value={searchValue}
+            onChange={this.onChange}
+            onClear={this.onClear}
+          />
           <View>
             <AtTabs animated={false} current={current} tabList={titles} onClick={this.handleClick}>
               <AtTabsPane current={current} index={0} >

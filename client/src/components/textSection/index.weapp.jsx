@@ -14,7 +14,7 @@ const refine = (str) => {
 }
 
 const findAndHighlight = (str, index, key) => {
-  var regExp =new RegExp(key,"g");
+  const regExp =new RegExp(key,"g");
   if (key) {
     return '<div>' + key ? str.replace(regExp, `<span class='highlight-keyword'>${key}</span>`) : str + '</div>'
   } else {
