@@ -32,7 +32,8 @@ const newLaws = {
   'anti-terrorism-law': '反恐怖主义法',
   'anti-drug-law': '禁毒法',
   'admin-litigation-law': '行政诉讼法',
-  'admin-litigation-explaination': '最高法关于适用"行政诉讼法"的解释'
+  'admin-litigation-explaination': '最高法关于适用"行政诉讼法"的解释',
+  'admin-force-law': '行政强制法'
 }
 
 const MyCollection = (props) => {

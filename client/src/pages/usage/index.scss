@@ -1,5 +1,6 @@
 .user-page {
-  padding: 100px 20px 0px 20px;
+  //padding: 100px 20px 0px 20px;
+  padding: 0px 20px 0px 20px;
   min-height: 100vh;
   box-sizing: border-box;
   &.read-mode {
@@ -18,7 +19,7 @@
 
   .float {
     position: fixed;
-    top: 200px;
+    bottom: 200px;
     left: 0px;
     z-index: 999;
     padding: 20px 20px 20px 10px;
@@ -43,3 +44,8 @@
   bottom: 4px
 }
 
+
+.video-container {
+  border-bottom: 10px solid #b07200;
+  height: 550px;
+}

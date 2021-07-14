@@ -168,7 +168,8 @@ export default class User extends Component {
         <AtNoticebar marquee speed={60}>
           收藏功能已升级，数据已存放于云端，再也不怕丢失啦！
         </AtNoticebar>
-        {enableAds && <Swiper className='video-container'>
+        {enableAds &&
+        <Swiper className='video-container'>
           <SwiperItem >
             <ad unit-id='adunit-6a2aa2a251227bf0' ad-type='video' ad-theme='white'></ad>
           </SwiperItem>

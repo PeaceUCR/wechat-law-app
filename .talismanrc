@@ -1,5 +1,3 @@
 fileignoreconfig:
-- filename: cloud/functions/getAdminLitigationLaw/yarn.lock
-  checksum: e6de6cafb74583117af07554937664d033387a04fa9c6c223b2b0ae9663dc5cb
-- filename: cloud/functions/getAdminLitigationExplaination/yarn.lock
-  checksum: 9d5ebc4c51e0d820d876634573570287234180cf8c31096550196ea461dd2cef
+- filename: cloud/functions/getAdminForceLaw/yarn.lock
+  checksum: e7fb5d4a38845a7336b966274f4a7b0a61258a9e894fb8cdb9f2c8adddaa8b3a

@@ -1,5 +1,5 @@
 import Taro, { Component, getStorageSync} from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Swiper,SwiperItem } from '@tarojs/components'
 import {AtIcon, AtListItem, AtList, AtActivityIndicator, AtLoadMore, AtSearchBar} from "taro-ui";
 import {isEmpty} from 'lodash';
 import './index.scss'
@@ -29,7 +29,7 @@ export default class User extends Component {
 
   onShareAppMessage() {
     return {
-      path: 'pages/index/index'
+      path: 'pages/usage/index'
     };
   }
 
@@ -131,9 +131,15 @@ export default class User extends Component {
     const {isLoading, isReadMode, loadResult, list, searchValue, todayUsers, date} = this.state;
     return (
       <View className={`user-page ${isReadMode ? 'read-mode' : ''}`}>
+        <ad unit-id='adunit-b09895fd83835652'></ad>
+        {/*<Swiper className='video-container'>*/}
+        {/*  <SwiperItem >*/}
+        {/*    <ad unit-id='adunit-aa47163462e4442f' ad-type='video' ad-theme='white'></ad>*/}
+        {/*  </SwiperItem>*/}
+        {/*</Swiper>*/}
         <View className='search'>
           <AtSearchBar
-            fixed
+            // fixed
             value={searchValue}
             onChange={this.onChange}
             onActionClick={() => {this.loadUser(0, true)}}

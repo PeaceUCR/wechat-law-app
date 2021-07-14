@@ -115,8 +115,14 @@ export default class Index extends Component {
           isNew: true
         },
         {
-          title: '最高法关于适用"行政诉讼法"的解释',
+          title: '最高法适用"行政诉讼法"的解释',
           url: '/pages/adminLitigationExplaination/index',
+          type: '行政',
+          isNew: true
+        },
+        {
+          title: '行政强制法',
+          url: '/pages/adminForceLaw/index',
           type: '行政',
           isNew: true
         },
@@ -461,7 +467,7 @@ export default class Index extends Component {
           </View>
           <AtSearchBar
             showActionButton
-            placeholder='搜模块'
+            placeholder='搜模块,比如刑法'
             value={searchValue}
             onChange={this.onChange}
             onClear={this.onClear}

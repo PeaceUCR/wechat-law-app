@@ -1,5 +1,6 @@
 .user-page {
-  padding: 0px 20px 60px 20px;
+  box-sizing: border-box;
+  padding: 500px 20px 60px 20px;
   min-height: 100vh;
   box-sizing: border-box;
   &.read-mode {
@@ -7,10 +8,18 @@
   }
 }
 
+
 .at-modal__container{
   width: 600px;
 }
 .video-container {
-  height: 550px;
+  height: 500px;
+  position: fixed;
+  top:0;
+  left:5vw;
+  width: 90vw;
+  background: white;
+  z-index: 1;
+  border-bottom: 6px solid #b07200;
 }
 

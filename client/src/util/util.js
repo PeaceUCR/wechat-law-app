@@ -125,3 +125,6 @@ export const adminLitigationLawCategoryLines =
 
 export const adminLitigationExplainationCategoryLines =
     [{"level":1,"value":"一、受案范围"},{"level":1,"value":"二、管辖"},{"level":1,"value":"三、诉讼参加人"},{"level":1,"value":"四、证据"},{"level":1,"value":"五、期间、送达"},{"level":1,"value":"六、起诉与受理"},{"level":1,"value":"七、审理与判决"},{"level":1,"value":"八、行政机关负责人出庭应诉"},{"level":1,"value":"九、复议机关作共同被告"},{"level":1,"value":"十、相关民事争议的一并审理"},{"level":1,"value":"十一、规范性文件的一并审查"},{"level":1,"value":"十二、执行"},{"level":1,"value":"十三、附则"}]
+
+export const adminForceLawCategoryLines =
+  [{"level":1,"value":"第一章 总则"},{"level":1,"value":"第二章 行政强制的种类和设定"},{"level":1,"value":"第三章 行政强制措施实施程序"},{"level":2,"value":"第一节 一般规定"},{"level":2,"value":"第二节 查封、扣押"},{"level":2,"value":"第三节 冻结"},{"level":1,"value":"第四章 行政机关强制执行程序"},{"level":2,"value":"第一节 一般规定"},{"level":2,"value":"第二节 金钱给付义务的执行"},{"level":2,"value":"第三节 代履行"},{"level":1,"value":"第五章 申请人民法院强制执行"},{"level":1,"value":"第六章 法律责任"},{"level":1,"value":"第七章 附则"}]
