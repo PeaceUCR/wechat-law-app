@@ -161,7 +161,7 @@ export default class RegulationDetail extends Component {
       })
     } else {
       let title;
-      if (type === 'litigation-explanation' || type === 'police' || type === 'police-admin-regulation' || type === 'public-order-admin-penalty-law' || type === 'supervision-law' || type === 'admin-punish-law' || type === 'labor-law' || type === 'labor-contract-law' || type === 'road-safe-law' || type === 'road-safe-regulation' || type === 'anti-terrorism-law' || type === 'anti-drug-law' || type === 'admin-litigation-law' || type === 'admin-litigation-explaination' || type === 'admin-force-law') {
+      if (type === 'litigation-explanation' || type === 'police' || type === 'police-admin-regulation' || type === 'public-order-admin-penalty-law' || type === 'supervision-law' || type === 'admin-punish-law' || type === 'labor-law' || type === 'labor-contract-law' || type === 'road-safe-law' || type === 'road-safe-regulation' || type === 'anti-terrorism-law' || type === 'anti-drug-law' || type === 'admin-litigation-law' || type === 'admin-litigation-explaination' || type === 'admin-force-law' || type === 'admin-reconsider-law' || type === 'admin-reconsider-regulation') {
         title = number
       } else if (type === 'civil-law-regulation') {
         title = `${number} ${tag}`
@@ -326,7 +326,7 @@ export default class RegulationDetail extends Component {
         {(type === 'civil-law-regulation' || type === 'litigation-law') && term.tag && <View className='tag-line'><Text className='pre-tag'>法条要旨:</Text><Text className='tag'>{term.tag}</Text></View>}
         <View className='main section'>
             <View>
-              {(type === 'police' || type === 'civil-law-regulation' || type === 'police-admin-regulation' || type === 'public-order-admin-penalty-law' || type === 'supervision-law' || type === 'admin-punish-law' || type === 'labor-law' || type === 'labor-contract-law' || type === 'road-safe-law' || type === 'road-safe-regulation' || type === 'anti-terrorism-law' || type === 'anti-drug-law'|| type === 'admin-litigation-law'|| type === 'admin-litigation-explaination' || type === 'admin-force-law') && this.renderAdminText()}
+              {(type === 'police' || type === 'civil-law-regulation' || type === 'police-admin-regulation' || type === 'public-order-admin-penalty-law' || type === 'supervision-law' || type === 'admin-punish-law' || type === 'labor-law' || type === 'labor-contract-law' || type === 'road-safe-law' || type === 'road-safe-regulation' || type === 'anti-terrorism-law' || type === 'anti-drug-law'|| type === 'admin-litigation-law'|| type === 'admin-litigation-explaination' || type === 'admin-force-law' || type === 'admin-reconsider-law' || type === 'admin-reconsider-regulation') && this.renderAdminText()}
               {(type === 'litigation-law' || type === 'litigation-regulation' || type === 'litigation-explanation') && this.renderLitigation()}
             </View>
           </View>

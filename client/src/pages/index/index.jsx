@@ -134,6 +134,20 @@ export default class Index extends Component {
           // isHot: true
         },
         {
+          title: '行政复议法',
+          url: '/pages/adminReconsiderLaw/index',
+          type: '行政',
+          isNew: true
+          // isHot: true
+        },
+        {
+          title: '行政复议法实施条例',
+          url: '/pages/adminReconsiderRegulation/index',
+          type: '行政',
+          isNew: true
+          // isHot: true
+        },
+        {
           title: '治安管理处罚法',
           url: '/pages/publicOrderAdminPenaltyLaw/index',
           type: '行政',
@@ -195,6 +209,7 @@ export default class Index extends Component {
     ],
     canClose: false,
     enableMainVideoAd: false,
+    enableMainBanner: false,
     searchValue: ''
     // enablePosterAd: false
   }
@@ -218,6 +233,7 @@ export default class Index extends Component {
           joinGroupUrl: res.data[0].joinGroupUrl,
           canClose: res.data[0].canClose,
           enableMainVideoAd: res.data[0].enableMainVideoAd,
+          enableMainBanner: res.data[0].enableMainBanner
           // enablePosterAd: res.data[0].enablePosterAd
         })
         if(res.data[0].forceLogin) {
@@ -257,6 +273,11 @@ export default class Index extends Component {
     });
   }
 
+  isNoOption = () => {
+    const {options, searchValue} = this.state
+    const found = Object.values(options).flat().filter(i => i.title.indexOf(searchValue) !== -1)
+    return found.length === 0
+  }
   componentDidMount () {
   }
 
@@ -388,6 +409,13 @@ export default class Index extends Component {
 
   onChange = (searchValue) => {
     this.setState({searchValue})
+    if (searchValue && this.isNoOption()) {
+      Taro.showToast({
+        title: '未找到模块!注意这个只是首页过滤,不是全局搜索',
+        icon: 'none',
+        duration: 6000
+      })
+    }
   }
 
   onClear = () => {
@@ -397,7 +425,7 @@ export default class Index extends Component {
   }
 
   render () {
-    const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl, joinGroupUrl, posterRedirect, swiperPosters, canClose, enableMainVideoAd, searchValue} = this.state;
+    const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl, joinGroupUrl, posterRedirect, swiperPosters, canClose, enableMainVideoAd, enableMainBanner, searchValue} = this.state;
     return (
       <View className={`index-page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
@@ -540,6 +568,7 @@ export default class Index extends Component {
             src={posterUrlForLoading}
             onLoad={this.onPosterLoaded}
           />
+        {enableMainBanner && <View><ad unit-id='adunit-918b26ec218137ab'></ad></View>}
       </View>
     )
   }

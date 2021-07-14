@@ -128,3 +128,7 @@ export const adminLitigationExplainationCategoryLines =
 
 export const adminForceLawCategoryLines =
   [{"level":1,"value":"第一章 总则"},{"level":1,"value":"第二章 行政强制的种类和设定"},{"level":1,"value":"第三章 行政强制措施实施程序"},{"level":2,"value":"第一节 一般规定"},{"level":2,"value":"第二节 查封、扣押"},{"level":2,"value":"第三节 冻结"},{"level":1,"value":"第四章 行政机关强制执行程序"},{"level":2,"value":"第一节 一般规定"},{"level":2,"value":"第二节 金钱给付义务的执行"},{"level":2,"value":"第三节 代履行"},{"level":1,"value":"第五章 申请人民法院强制执行"},{"level":1,"value":"第六章 法律责任"},{"level":1,"value":"第七章 附则"}]
+
+export const adminReconsiderLawCategoryLines = [{"level":1,"value":"第一章 总则"},{"level":1,"value":"第二章 行政复议范围"},{"level":1,"value":"第三章 行政复议申请"},{"level":1,"value":"第四章 行政复议受理"},{"level":1,"value":"第五章 行政复议决定"},{"level":1,"value":"第六章 法律责任"},{"level":1,"value":"第七章 附则"}]
+
+export const adminReconsiderRegulationCategoryLines = [{"level":1,"value":"第一章 总则"},{"level":1,"value":"第二章 行政复议申请"},{"level":2,"value":"第一节 申请人"},{"level":2,"value":"第二节 被申请人"},{"level":2,"value":"第三节 行政复议申请期限"},{"level":2,"value":"第四节 行政复议申请的提出"},{"level":1,"value":"第三章 行政复议受理"},{"level":1,"value":"第四章 行政复议决定"},{"level":1,"value":"第五章 行政复议指导和监督"},{"level":1,"value":"第六章 法律责任"},{"level":1,"value":"第七章 附则"}]
