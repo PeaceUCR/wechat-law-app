@@ -148,6 +148,13 @@ export default class Index extends Component {
           // isHot: true
         },
         {
+          title: '行政许可法',
+          url: '/pages/adminAllowLaw/index',
+          type: '行政',
+          isNew: true
+          // isHot: true
+        },
+        {
           title: '治安管理处罚法',
           url: '/pages/publicOrderAdminPenaltyLaw/index',
           type: '行政',
@@ -568,7 +575,7 @@ export default class Index extends Component {
             src={posterUrlForLoading}
             onLoad={this.onPosterLoaded}
           />
-        {enableMainBanner && <View><ad unit-id='adunit-918b26ec218137ab'></ad></View>}
+        {enableMainBanner && <View><ad unit-id='adunit-918b26ec218137ab' ad-intervals='30'></ad></View>}
       </View>
     )
   }

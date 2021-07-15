@@ -131,7 +131,7 @@ export default class User extends Component {
     const {isLoading, isReadMode, loadResult, list, searchValue, todayUsers, date} = this.state;
     return (
       <View className={`user-page ${isReadMode ? 'read-mode' : ''}`}>
-        <ad unit-id='adunit-b09895fd83835652'></ad>
+        <ad unit-id='adunit-b09895fd83835652' ad-intervals='30'></ad>
         {/*<Swiper className='video-container'>*/}
         {/*  <SwiperItem >*/}
         {/*    <ad unit-id='adunit-aa47163462e4442f' ad-type='video' ad-theme='white'></ad>*/}

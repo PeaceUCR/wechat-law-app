@@ -23,7 +23,8 @@ const regulationDetailSet = new Set(
     'admin-litigation-explaination',
     'admin-force-law',
     'admin-reconsider-law',
-    'admin-reconsider-regulation'
+    'admin-reconsider-regulation',
+    'admin-allow-law'
   ])
 
 const TermSearchItem = (props) => {

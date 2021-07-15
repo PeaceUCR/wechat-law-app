@@ -171,7 +171,8 @@ export default class User extends Component {
         {enableAds &&
         <Swiper className='video-container'>
           <SwiperItem >
-            <ad unit-id='adunit-6a2aa2a251227bf0' ad-type='video' ad-theme='white'></ad>
+            {/*<ad unit-id='adunit-6a2aa2a251227bf0' ad-type='video' ad-theme='white'></ad>*/}
+            <ad unit-id='adunit-3262d14cdd5955c8' ad-intervals='30'></ad>
           </SwiperItem>
         </Swiper>}
         <View>
