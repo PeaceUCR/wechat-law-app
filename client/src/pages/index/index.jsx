@@ -105,6 +105,13 @@ export default class Index extends Component {
           type: '民法典',
           isNew: true
           // isHot: true
+        },
+        {
+          title: '公司法',
+          url: '/pages/companyLaw/index',
+          type: '民法典',
+          isNew: true
+          // isHot: true
         }
       ],
       '行政相关': [

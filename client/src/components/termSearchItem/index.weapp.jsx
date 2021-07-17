@@ -24,7 +24,8 @@ const regulationDetailSet = new Set(
     'admin-force-law',
     'admin-reconsider-law',
     'admin-reconsider-regulation',
-    'admin-allow-law'
+    'admin-allow-law',
+    'company-law'
   ])
 
 const TermSearchItem = (props) => {

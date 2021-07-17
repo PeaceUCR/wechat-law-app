@@ -5,6 +5,8 @@ import {isEmpty} from 'lodash';
 import './index.scss'
 import {db} from "../../util/db";
 
+let videoAd = null
+
 export default class User extends Component {
 
   state = {
@@ -34,6 +36,24 @@ export default class User extends Component {
   }
 
   componentWillMount () {
+    if (wx.createRewardedVideoAd) {
+      videoAd = wx.createRewardedVideoAd({
+        adUnitId: 'adunit-f8070b31831d3c12'
+      })
+      videoAd.onLoad(() => {})
+      videoAd.onError((err) => {})
+      videoAd.onClose((res) => {})
+    }
+    if (videoAd) {
+      videoAd.show().catch(() => {
+        // 失败重试
+        videoAd.load()
+          .then(() => videoAd.show())
+          .catch(err => {
+            console.log('激励视频 广告显示失败')
+          })
+      })
+    }
     this.loadUser()
     this.loadTodayUsers()
     const setting = getStorageSync('setting');
@@ -131,7 +151,7 @@ export default class User extends Component {
     const {isLoading, isReadMode, loadResult, list, searchValue, todayUsers, date} = this.state;
     return (
       <View className={`user-page ${isReadMode ? 'read-mode' : ''}`}>
-        <ad unit-id='adunit-b09895fd83835652' ad-intervals='30'></ad>
+        {/*<ad unit-id='adunit-b09895fd83835652' ad-intervals='30'></ad>*/}
         {/*<Swiper className='video-container'>*/}
         {/*  <SwiperItem >*/}
         {/*    <ad unit-id='adunit-aa47163462e4442f' ad-type='video' ad-theme='white'></ad>*/}

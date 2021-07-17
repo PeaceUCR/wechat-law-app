@@ -1,3 +1,3 @@
 fileignoreconfig:
-- filename: cloud/functions/getAdminAllowLaw/yarn.lock
-  checksum: a3b0c53fd02bcb3018f1e0f1f4dcf3343074a9edc137eff6b2820f48643a05ce
+- filename: cloud/functions/getCompanyLaw/yarn.lock
+  checksum: ce321b04db1226b0bf8ea99a928653fd9c7d9a50457d67e7d604e74bd024bb0b

@@ -36,7 +36,8 @@ const newLaws = {
   'admin-force-law': '行政强制法',
   'admin-reconsider-law': '行政复议法',
   'admin-reconsider-regulation': '行政复议法实施条例',
-  'admin-allow-law': '行政许可法'
+  'admin-allow-law': '行政许可法',
+  'company-law': '公司法'
 }
 
 const MyCollection = (props) => {
