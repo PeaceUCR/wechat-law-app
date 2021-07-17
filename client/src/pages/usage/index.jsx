@@ -25,6 +25,24 @@ export default class User extends Component {
   }
   onPullDownRefresh () {
     console.log('pull')
+    if (wx.createRewardedVideoAd) {
+      videoAd = wx.createRewardedVideoAd({
+        adUnitId: 'adunit-f8070b31831d3c12'
+      })
+      videoAd.onLoad(() => {})
+      videoAd.onError((err) => {})
+      videoAd.onClose((res) => {})
+    }
+    if (videoAd) {
+      videoAd.show().catch(() => {
+        // 失败重试
+        videoAd.load()
+          .then(() => videoAd.show())
+          .catch(err => {
+            console.log('激励视频 广告显示失败')
+          })
+      })
+    }
     this.loadUser(0, true)
     this.loadTodayUsers()
   }
