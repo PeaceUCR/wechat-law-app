@@ -224,6 +224,7 @@ export default class Index extends Component {
     canClose: false,
     enableMainVideoAd: false,
     enableMainBanner: false,
+    enableMainBottomVideo: false,
     searchValue: ''
     // enablePosterAd: false
   }
@@ -247,7 +248,8 @@ export default class Index extends Component {
           joinGroupUrl: res.data[0].joinGroupUrl,
           canClose: res.data[0].canClose,
           enableMainVideoAd: res.data[0].enableMainVideoAd,
-          enableMainBanner: res.data[0].enableMainBanner
+          enableMainBanner: res.data[0].enableMainBanner,
+          enableMainBottomVideo: res.data[0].enableMainBottomVideo
           // enablePosterAd: res.data[0].enablePosterAd
         })
         if(res.data[0].forceLogin) {
@@ -439,7 +441,7 @@ export default class Index extends Component {
   }
 
   render () {
-    const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl, joinGroupUrl, posterRedirect, swiperPosters, canClose, enableMainVideoAd, enableMainBanner, searchValue} = this.state;
+    const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl, joinGroupUrl, posterRedirect, swiperPosters, canClose, enableMainVideoAd, enableMainBanner, searchValue, enableMainBottomVideo} = this.state;
     return (
       <View className={`index-page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
@@ -582,7 +584,12 @@ export default class Index extends Component {
             src={posterUrlForLoading}
             onLoad={this.onPosterLoaded}
           />
-        {enableMainBanner && <View><ad unit-id='adunit-918b26ec218137ab' ad-intervals='30'></ad></View>}
+        {/*{enableMainBanner && <View><ad unit-id='adunit-918b26ec218137ab' ad-intervals='30'></ad></View>}*/}
+        {enableMainBottomVideo && <Swiper className='video-container'>
+          <SwiperItem >
+            <ad unit-id='adunit-ac46445a5f7a8561' ad-type='video' ad-theme='white'></ad>
+          </SwiperItem>
+        </Swiper>}
       </View>
     )
   }
