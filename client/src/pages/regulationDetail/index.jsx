@@ -12,8 +12,47 @@ import {getText} from "../../util/util";
 
 const typeCollectionMap = {
   'police': 'police-regulation',
-
 }
+
+const shared = [
+  'police',
+  'police-admin-regulation',
+  'public-order-admin-penalty-law',
+  'supervision-law',
+  'admin-punish-law',
+  'labor-law',
+  'labor-contract-law',
+  'road-safe-law',
+  'road-safe-regulation',
+  'anti-terrorism-law',
+  'anti-drug-law',
+  'admin-litigation-law',
+  'admin-litigation-explaination',
+  'admin-force-law',
+  'admin-reconsider-law',
+  'admin-reconsider-regulation',
+  'admin-allow-law',
+  'company-law'
+]
+const otherLaws = ['criminal-litigation-explanation', 'civil-litigation-explanation']
+
+const commonLawSet = new Set(
+  [
+    'civil-law-regulation',
+    ...shared,
+    ...otherLaws
+  ]
+)
+
+const collectionCommonLawSet = new Set(
+  [
+  'litigation-explanation',
+    ...shared,
+    ...otherLaws
+  ]
+)
+
+const otherLawSet = new Set([...otherLaws])
 
 export default class RegulationDetail extends Component {
 
@@ -44,7 +83,14 @@ export default class RegulationDetail extends Component {
     const { id, type} = this.$router.params;
     const that = this;
 
-    if (type === 'litigation-law') {
+    if (otherLawSet.has(type)) {
+      db.collection('other-law').where({_id: id}).get({
+        success: (res) => {
+          const term = res.data[0];
+          that.setState({term, type});
+        }
+      })
+    } else if (type === 'litigation-law') {
       that.setState({isLoading: true})
       db.collection('litigation-law').where({_id: id}).get({
         success: (res) => {
@@ -161,7 +207,7 @@ export default class RegulationDetail extends Component {
       })
     } else {
       let title;
-      if (type === 'litigation-explanation' || type === 'police' || type === 'police-admin-regulation' || type === 'public-order-admin-penalty-law' || type === 'supervision-law' || type === 'admin-punish-law' || type === 'labor-law' || type === 'labor-contract-law' || type === 'road-safe-law' || type === 'road-safe-regulation' || type === 'anti-terrorism-law' || type === 'anti-drug-law' || type === 'admin-litigation-law' || type === 'admin-litigation-explaination' || type === 'admin-force-law' || type === 'admin-reconsider-law' || type === 'admin-reconsider-regulation' || type === 'admin-allow-law' || type === 'company-law') {
+      if (collectionCommonLawSet.has(type)) {
         title = number
       } else if (type === 'civil-law-regulation') {
         title = `${number} ${tag}`
@@ -326,7 +372,7 @@ export default class RegulationDetail extends Component {
         {(type === 'civil-law-regulation' || type === 'litigation-law') && term.tag && <View className='tag-line'><Text className='pre-tag'>法条要旨:</Text><Text className='tag'>{term.tag}</Text></View>}
         <View className='main section'>
             <View>
-              {(type === 'police' || type === 'civil-law-regulation' || type === 'police-admin-regulation' || type === 'public-order-admin-penalty-law' || type === 'supervision-law' || type === 'admin-punish-law' || type === 'labor-law' || type === 'labor-contract-law' || type === 'road-safe-law' || type === 'road-safe-regulation' || type === 'anti-terrorism-law' || type === 'anti-drug-law'|| type === 'admin-litigation-law'|| type === 'admin-litigation-explaination' || type === 'admin-force-law' || type === 'admin-reconsider-law' || type === 'admin-reconsider-regulation' || type === 'admin-allow-law' || type === 'company-law') && this.renderAdminText()}
+              {commonLawSet.has(type) && this.renderAdminText()}
               {(type === 'litigation-law' || type === 'litigation-regulation' || type === 'litigation-explanation') && this.renderLitigation()}
             </View>
           </View>

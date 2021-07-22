@@ -11,7 +11,8 @@ import qrcode from '../../static/qrcode.png';
 import {checkIfNewUser, getUserAvatar, getUserNickname, isSuperAdmin} from '../../util/login';
 import './index.scss'
 import {db} from "../../util/db";
-import {tmpId, isTodayString, getTodayDateString} from '../../util/util'
+import {tmpId} from '../../util/util'
+import {otherLawNameMap} from '../../util/otherLaw'
 
 const titles = [
   {title:'全部'},
@@ -37,10 +38,15 @@ export default class Index extends Component {
           isUpdated: true
         },
         {
-          title: '(最高法)适用刑事诉讼法的解释',
-          url: '/pages/litigationExplanation/index',
+          title: otherLawNameMap['criminal-litigation-explanation'],
+          url: '/pages/otherLaw/index?law=criminal-litigation-explanation',
           type: '刑法'
         },
+        // {
+        //   title: '(最高法)适用刑事诉讼法的解释',
+        //   url: '/pages/litigationExplanation/index',
+        //   type: '刑法'
+        // },
         {
           title: '(最高检)刑事诉讼规则',
           url: '/pages/litigationRegulation/index',
@@ -83,13 +89,18 @@ export default class Index extends Component {
         // isHot: true
         },
         {
+          title: '民法典相关司法解释',
+          url: '/pages/civilLawExplaination/index',
+          type: '民法典'
+        },
+        {
           title: '民事诉讼法',
           url: '/pages/civilLawRegulation/index',
           type: '民法典'
         },
         {
-          title: '民法典相关司法解释',
-          url: '/pages/civilLawExplaination/index',
+          title: otherLawNameMap['civil-litigation-explanation'],
+          url: '/pages/otherLaw/index?law=civil-litigation-explanation',
           type: '民法典'
         },
         {

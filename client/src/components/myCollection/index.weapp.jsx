@@ -8,6 +8,8 @@ import {
   civilTagMap,
   civilLawIdNumberMap
 } from '../../util/util';
+import {otherLawNameMap} from '../../util/otherLaw'
+
 import './index.scss'
 
 const otherTypes = [
@@ -37,7 +39,9 @@ const newLaws = {
   'admin-reconsider-law': '行政复议法',
   'admin-reconsider-regulation': '行政复议法实施条例',
   'admin-allow-law': '行政许可法',
-  'company-law': '公司法'
+  'company-law': '公司法',
+  'criminal-litigation-explanation': otherLawNameMap['criminal-litigation-explanation'],
+  'civil-litigation-explanation': otherLawNameMap['civil-litigation-explanation']
 }
 
 const MyCollection = (props) => {
