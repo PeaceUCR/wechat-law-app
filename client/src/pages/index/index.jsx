@@ -476,7 +476,6 @@ export default class Index extends Component {
           indicatorColor='#999'
           indicatorActiveColor='#333'
           circular
-          indicatorDots
           autoplay
         >
           <SwiperItem>

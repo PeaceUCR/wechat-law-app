@@ -1,11 +1,26 @@
 .civil-term-detail-page {
-  padding: 10px 20px;
+  padding: 10px 12px;
   min-height: 100vh;
   box-sizing: border-box;
   font-size: 32px;
   &.read-mode {
     background: #F4ECD8;
   }
+  &.zoom-in {
+    .header {
+      font-size: 36px;
+    }
+    .section {
+      font-size: 40px;
+    }
+    .understanding-line {
+      font-size: 40px;
+    }
+    .pane {
+      font-size: 40px !important;
+    }
+  }
+
   .header {
     color: gray;
   }
@@ -78,7 +93,7 @@
 
   .float-zoom {
     background: transparent;
-    margin-right: 40px;
+    margin-right: 10px;
     box-shadow: none;
   }
 
@@ -143,11 +158,43 @@
 }
 
 .at-accordion__info__title {
-  color: #6190E8;
-  font-weight: bold;
+  color: black;
+  font-size: 36px;
   white-space: pre-wrap;
+}
+.pane {
+  .at-accordion__info__title {
+    color: #20470e !important;
+  }
 }
 .at-accordion__arrow {
   color: #333333;
 }
 
+.at-accordion {
+  background-color: rgba(256, 256, 256, 0.4);
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 6px;
+  margin-bottom: 30px;
+}
+
+.module-container {
+  position: relative;
+  .title-icon {
+    position: absolute;
+    top: 18px;
+    left: 10px;
+    width: 50px;
+    height: 50px;
+    z-index: 99;
+  }
+}
+
+.understanding-line {
+  padding: 0 12px 0 2px;
+  .source {
+    font-size: 28px;
+    color: #5200cc;
+  }
+}
