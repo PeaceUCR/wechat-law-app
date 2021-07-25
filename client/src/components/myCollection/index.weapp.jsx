@@ -41,7 +41,8 @@ const newLaws = {
   'admin-allow-law': '行政许可法',
   'company-law': '公司法',
   'criminal-litigation-explanation': otherLawNameMap['criminal-litigation-explanation'],
-  'civil-litigation-explanation': otherLawNameMap['civil-litigation-explanation']
+  'civil-litigation-explanation': otherLawNameMap['civil-litigation-explanation'],
+  'road-safe-violation-handling': otherLawNameMap['road-safe-violation-handling']
 }
 
 const MyCollection = (props) => {

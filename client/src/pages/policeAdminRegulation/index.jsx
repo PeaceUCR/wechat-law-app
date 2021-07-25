@@ -78,7 +78,6 @@ export default class Index extends Component {
   }
 
    handleDBSearchSuccess = (res) => {
-    console.log(res)
     if (isEmpty(res.data)) {
       Taro.showToast({
         title: `未找到相应的法条`,

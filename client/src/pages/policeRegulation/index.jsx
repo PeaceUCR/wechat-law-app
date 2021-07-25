@@ -91,7 +91,6 @@ export default class Index extends Component {
     }
     if (selected === '搜全文') {
       if (!isNaN(parseInt(searchValue))) {
-        console.log(isNaN(parseInt(searchValue)))
         db.collection('police-regulation').where({number: db.RegExp({
             regexp: '.*' + convertNumberToChinese(parseInt(searchValue)),
             options: 'i',

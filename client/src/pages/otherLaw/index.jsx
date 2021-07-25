@@ -2,8 +2,8 @@ import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {View, Text} from '@tarojs/components'
 import { AtSearchBar, AtActivityIndicator, AtNoticebar, AtFab } from 'taro-ui'
 import {isEmpty} from "lodash";
-import { TermSearchItem } from '../../components/termSearchItem/index.weapp'
-import { CategoryList } from '../../components/categoryList/index.weapp'
+import TermSearchItem from '../../components/termSearchItem/index.weapp'
+import CategoryList from '../../components/categoryList/index.weapp'
 import '../litigationRegulation/index.scss'
 import {otherLawNameMap, otherLawAnnounceMap, otherLawCategoryMap} from '../../util/otherLaw'
 

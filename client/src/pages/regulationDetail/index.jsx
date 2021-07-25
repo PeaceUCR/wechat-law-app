@@ -34,7 +34,11 @@ const shared = [
   'admin-allow-law',
   'company-law'
 ]
-const otherLaws = ['criminal-litigation-explanation', 'civil-litigation-explanation']
+const otherLaws = [
+  'criminal-litigation-explanation',
+  'civil-litigation-explanation',
+  'road-safe-violation-handling'
+]
 
 const commonLawSet = new Set(
   [

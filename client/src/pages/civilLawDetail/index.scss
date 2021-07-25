@@ -1,5 +1,5 @@
 .civil-term-detail-page {
-  padding: 10px 12px;
+  padding: 0 4px;
   min-height: 100vh;
   box-sizing: border-box;
   font-size: 32px;
@@ -26,6 +26,7 @@
   }
 
   .section {
+    padding: 10px 0px 10px 10px;
     white-space: pre-wrap;
     font-size: 32px;
     margin-bottom: 50px;
@@ -184,7 +185,7 @@
   .title-icon {
     position: absolute;
     top: 18px;
-    left: 10px;
+    left: 16px;
     width: 50px;
     height: 50px;
     z-index: 99;
@@ -192,7 +193,7 @@
 }
 
 .understanding-line {
-  padding: 0 12px 0 2px;
+  padding: 0 6px 0 10px;
   .source {
     font-size: 28px;
     color: #5200cc;

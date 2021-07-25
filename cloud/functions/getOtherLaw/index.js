@@ -88,7 +88,19 @@ const lawMap = {
                 end: 629 },
         '第二十六章 依法不负刑事责任的精神病人的强制医疗程序':
             { value: '第二十六章 依法不负刑事责任的精神病人的强制医疗程序', start: 630, end: 649 },
-        '第二十七章 附则': { value: '第二十七章 附则', start: 650, end: 655 } }
+        '第二十七章 附则': { value: '第二十七章 附则', start: 650, end: 655 } },
+    'road-safe-violation-handling': { '第一章 总则': { value: '第一章 总则', start: 1, end: 3 },
+        '第二章 管辖': { value: '第二章 管辖', start: 4, end: 6 },
+        '第三章 调查取证': { value: '第三章 调查取证', start: 7, end: 23 },
+        '第一节 一般规定': { value: '第一节 一般规定', start: 7, end: 14 },
+        '第二节 交通技术监控': { value: '第二节 交通技术监控', start: 15, end: 23 },
+        '第四章 行政强制措施适用': { value: '第四章 行政强制措施适用', start: 24, end: 41 },
+        '第五章 行政处罚': { value: '第五章 行政处罚', start: 42, end: 62 },
+        '第一节 行政处罚的决定': { value: '第一节 行政处罚的决定', start: 42, end: 58 },
+        '第二节 行政处罚的执行': { value: '第二节 行政处罚的执行', start: 59, end: 62 },
+        '第六章 执法监督': { value: '第六章 执法监督', start: 63, end: 66 },
+        '第七章 其他规定': { value: '第七章 其他规定', start: 67, end: 76 },
+        '第八章 附则': { value: '第八章 附则', start: 77, end: 83 } }
 }
 
 exports.main = async (event, context) => {

@@ -192,6 +192,12 @@ export default class Index extends Component {
           isNew: true
         },
         {
+          title: otherLawNameMap['road-safe-violation-handling'],
+          url: '/pages/otherLaw/index?law=road-safe-violation-handling',
+          type: '行政',
+          isNew: true
+        },
+        {
           title: '公安机关办理行政案件程序规定',
           url: '/pages/policeAdminRegulation/index',
           type: '行政',
