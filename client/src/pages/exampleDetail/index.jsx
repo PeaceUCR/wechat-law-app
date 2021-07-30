@@ -120,11 +120,12 @@ export default class ExampleDetail extends Component {
   }
 
   renderSpecial = () => {
+    console.log('special')
     const {example, keyword, zoomIn} = this.state;
-    const {content, title, subTitle, subContent} = example;
+    const {text, title, subTitle, subContent} = example;
     return (<View>
       <TextSection data={title} keyword={keyword} zoomIn={zoomIn} isTitle={true} />
-      <TextSection data={content} keyword={keyword} zoomIn={zoomIn} />
+      <TextSection data={text} keyword={keyword} zoomIn={zoomIn} />
       <TextSection data={subTitle} keyword={keyword} zoomIn={zoomIn} isTitle={true} />
       <TextSection data={subContent} keyword={keyword} zoomIn={zoomIn} />
     </View>)

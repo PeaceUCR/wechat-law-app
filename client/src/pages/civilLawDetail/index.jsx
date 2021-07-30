@@ -1,6 +1,6 @@
 import Taro, {Component} from '@tarojs/taro'
 import {Button, Image, Input, Text, View} from '@tarojs/components'
-import {AtAccordion, AtActivityIndicator, AtBadge, AtButton, AtFab, AtIcon, AtListItem} from "taro-ui";
+import {AtAccordion, AtActivityIndicator, AtBadge, AtButton, AtFab, AtIcon, AtListItem, AtNoticebar} from "taro-ui";
 import throttle from 'lodash/throttle';
 import DataPopup from '../../components/dataPopup/index.weapp'
 import {db} from '../../util/db'
@@ -221,12 +221,6 @@ export default class CivilLawDetail extends Component {
     }))
   }
 
-  handleClick = (value) => {
-    this.setState({
-      current: value
-    })
-  }
-
   handleCommentChange = (e) => {
     this.setState({
       comment: e.target.value
@@ -340,7 +334,7 @@ export default class CivilLawDetail extends Component {
           {this.renderTermText()}
         </View>
 
-        <View className='module-container'>
+        {understanding && <View className='module-container'>
           <Image
             src={definitionIcon}
             className='title-icon'
@@ -354,12 +348,16 @@ export default class CivilLawDetail extends Component {
             icon={{value: 'alert-circle', color: 'transparent', size: '18'}}
             isAnimation={false}
           >
+            <AtNoticebar marquee speed={60}>
+              本《理解与适用》仅限于学习和向公众宣传普及《民法典》司法适用知识
+            </AtNoticebar>
             <View className='understanding-line'>
               <View className='source'>{understanding.source}</View>
               <TextSection data={understanding.text} zoomIn={zoomIn} />
             </View>
           </AtAccordion>
-        </View>
+        </View>}
+
 
         {validLinks.length > 0 && <View className='module-container'>
           <Image
