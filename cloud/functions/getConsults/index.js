@@ -9,13 +9,19 @@ exports.main = async (event, context) => {
   console.log(event)
   const wxContext = cloud.getWXContext();
   const db = cloud.database()
+  const _ = db.command
 
   const type = event.type
   const searchValue = event.searchValue
 
   let result
 
-  if (type === 'all') {
+  if (type === 'criminal-detail') {
+    result = await db.collection('consult').limit(1000).where({
+      number: _.in([...searchValue])
+    }).orderBy('number', 'desc').get();
+
+  } else if (type === 'all') {
     const regexpString1 = `${searchValue.split('').join('.*')}`
     const regexpString2 = `.*${searchValue}`
     result1 = await db.collection('consult').limit(1000).where({

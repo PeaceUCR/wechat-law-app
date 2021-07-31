@@ -32,6 +32,12 @@ export default class Index extends Component {
           // isHot: true
         },
         {
+          title:'刑法相关解释、规定',
+          url: '/pages/criminalComplement/index',
+          type: '刑法',
+          isNew: true
+        },
+        {
           title: '刑事诉讼法',
           url: '/pages/litigationLaw/index',
           type: '刑法',
@@ -85,8 +91,8 @@ export default class Index extends Component {
         {
         title: '民法典',
         url: '/pages/civilLaw/index',
-        type: '民法典'
-        // isHot: true
+        type: '民法典',
+        isUpdated: true
         },
         {
           title: '民法典相关司法解释',

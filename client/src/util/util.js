@@ -10,6 +10,8 @@ export const sentencingIcon =
   'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU90t4icfrbQqOWruibkyjVmSDvfTvcZRBMtKwlBhysY8yR5QBiaHzRnNrWDnZHWibQ9Pv7VnjjdNzrjkvg/0?wx_fmt=png'
 export const explanationIcon =
   'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU90t4icfrbQqOWruibkyjVmSDvCwm0SGITK8lMtAaYSzibjCRw21GzdNO7yR4GwshYxvu2uibtrc7QwErA/0?wx_fmt=png'
+export const consultIcon =
+  'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU9296FlDUP7WRJRsMbF3F1GZNQE6AhELyYOwJ7hcl4MyTibxicxGhujO3eUH2VqqSLSvITdQ2m7HXibow/0?wx_fmt=png'
 
 export function getTodayDateString() {
   return new Date().toLocaleDateString()

@@ -5,7 +5,7 @@
   "description": "lawApp",
   "appid": "wxf6d4249d423ff2a3",
   "setting": {
-    "urlCheck": true,
+    "urlCheck": false,
     "es6": false,
     "enhance": false,
     "postcss": false,

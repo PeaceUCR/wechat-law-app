@@ -28,7 +28,9 @@ const DataPopup = (props) => {
 
   } else if (type === 'source') {
     displayName = `来源:${sourceName}`
-  } else {
+  } else if (type === 'consult') {
+    displayName = `[${number}]${title}`
+  }else {
     displayName = name
   }
 

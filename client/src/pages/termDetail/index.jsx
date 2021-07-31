@@ -6,11 +6,11 @@ import DataPopup from '../../components/dataPopup/index.weapp'
 import {DiscussionArea} from '../../components/discussionArea/index.weapp'
 import { db } from '../../util/db'
 import {checkIfNewUser, redirectToIndexIfNewUser} from '../../util/login'
-import {lawIdLabelMap, exampleIcon, sentencingIcon, explanationIcon, definitionIcon} from '../../util/util'
+import {lawIdLabelMap, exampleIcon, sentencingIcon, explanationIcon, definitionIcon, consultIcon} from '../../util/util'
 import './index.scss'
-import YiBenTongSection from "../../components/yibentongSection/index.weapp";
 import TextSection from "../../components/textSection/index.weapp";
 import TextSectionLinked from "../../components/textSectionLinked/index.weapp";
+import {isEmpty} from "lodash";
 
 const getTermNumber = (text) => {
   return text.substring(0, text.indexOf('条') + 1);
@@ -36,8 +36,11 @@ export default class TermDetail extends Component {
     showSentencing: false,
     showComplement: false,
     showExample: false,
+    showConsult: false,
     sentencings: [],
     termExplanations: [],
+    consult: [],
+    isConsultLoading: true,
     isCollected: false,
     isReadMode: false,
     zoomIn: false
@@ -122,6 +125,26 @@ export default class TermDetail extends Component {
             that.setState({termExplanations: res.data, isTermExplanationLoading: false});
           }
         });
+
+        if (term.consult && term.consult.length > 0) {
+
+          Taro.cloud.callFunction({
+            name: 'getConsults',
+            data: {
+              type: 'criminal-detail',
+              searchValue: term.consult
+            },
+            complete: r => {
+
+              that.setState({consult: [...r.result.result.data], isConsultLoading: false});
+            }
+          })
+        } else {
+
+          that.setState( {
+            isConsultLoading: false
+          })
+        }
 
         // db.collection('yi-ben-tong').where({number: term.number}).get({
         //   success: (res) => {
@@ -258,6 +281,16 @@ export default class TermDetail extends Component {
       {complementExamples.map(complement => (<View className='example' key={`complement-${complement._id}`}>
         {complement.type === 'court' ? <Text className='tag'>法</Text>: <Text className='tag procuratorate'>检</Text>}
         <DataPopup data={complement} type='complement-example' num={num} zoomIn={zoomIn} />
+      </View>))}
+    </View>)
+  }
+
+  renderConsult = () => {
+    const {consult, term, zoomIn} = this.state;
+    const num = getTermNumber(term.text).replace('第', '').replace('条', '');
+    return (<View>
+      {consult.map(example => (<View className='example' key={`court-example-${example._id}`}>
+        <DataPopup data={example} type='consult' num={num} zoomIn={zoomIn} />
       </View>))}
     </View>)
   }
@@ -487,6 +520,13 @@ export default class TermDetail extends Component {
     })
   }
 
+  openConsult = () => {
+    const {showConsult} = this.state
+    this.setState({
+      showConsult: !showConsult
+    })
+  }
+
   openExample = () => {
     const {showExample} = this.state
     this.setState({
@@ -496,11 +536,11 @@ export default class TermDetail extends Component {
 
   render () {
     const {isSent, comment, term, examples, courtExamples, complementExamples,
-      complements, termExplanations,
+      complements, termExplanations, consult,
       isProcuratorateExampleLoading, isCourtExampleLoading, isComplementLoading,
       isCollectedLoading, isCollected, isReadMode, zoomIn,
-      isSentencingLoading, sentencings, isTermExplanationLoading,
-      showTermExplanation, showSentencing, showComplement, showExample} = this.state;
+      isSentencingLoading, sentencings, isTermExplanationLoading, isConsultLoading,
+      showTermExplanation, showSentencing, showComplement, showExample, showConsult} = this.state;
     return (
       <View className={`term-detail-page ${isReadMode ? 'read-mode' : ''} ${zoomIn ? 'zoom-in' : ''}`}>
           <View className='main section'>
@@ -594,8 +634,28 @@ export default class TermDetail extends Component {
 
         </View>}
 
+        {
+          consult.length > 0 && <View className='module-container'>
+            <Image
+              src={consultIcon}
+              className='title-icon'
+              mode='widthFix'
+            />
+            <AtAccordion
+              hasBorder={false}
+              open={showConsult}
+              onClick={this.openConsult}
+              title='刑事审判参考'
+              icon={{ value: 'alert-circle', color: 'transparent', size: '18' }}
+              isAnimation={false}
+            >
+              {this.renderConsult()}
+            </AtAccordion>
+          </View>
+        }
+
         {(isProcuratorateExampleLoading || isCourtExampleLoading
-          || isComplementLoading || isCollectedLoading || isSentencingLoading || isTermExplanationLoading) && <View className='loading-container'>
+          || isComplementLoading || isCollectedLoading || isSentencingLoading || isTermExplanationLoading || isConsultLoading) && <View className='loading-container'>
           <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
         </View>}
 
