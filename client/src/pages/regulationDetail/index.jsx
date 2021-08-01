@@ -65,7 +65,7 @@ export default class RegulationDetail extends Component {
     isSent: false,
     term: {},
     type: '',
-    isLoading: false,
+    isLoading: true,
     isCollected: false,
     isReadMode: true,
     zoomIn: false,
@@ -91,11 +91,14 @@ export default class RegulationDetail extends Component {
       db.collection('other-law').where({_id: id}).get({
         success: (res) => {
           const term = res.data[0];
-          that.setState({term, type});
+          that.setState({term, type, isLoading: false});
+        },
+        fail: () => {
+          console.log('fail')
+          that.setState({isLoading: false})
         }
       })
     } else if (type === 'litigation-law') {
-      that.setState({isLoading: true})
       db.collection('litigation-law').where({_id: id}).get({
         success: (res) => {
           const term = res.data[0];
@@ -103,22 +106,38 @@ export default class RegulationDetail extends Component {
           db.collection('litigation-law-definition').where({number: term.number}).get({
             success: (r) => {
               that.setState({litigationLawDefinition: r.data[0], isLoading: false});
+            },
+            fail: () => {
+              console.log('fail')
+              that.setState({isLoading: false})
             }
           });
+        },
+        fail: () => {
+          console.log('fail')
+          that.setState({isLoading: false})
         }
       })
     } else if (typeCollectionMap[type]) {
       db.collection(typeCollectionMap[type]).where({_id: id}).get({
         success: (res) => {
           const term = res.data[0];
-          that.setState({term, type});
+          that.setState({term, type, isLoading: false});
+        },
+        fail: () => {
+          console.log('fail')
+          that.setState({isLoading: false})
         }
       })
     } else {
       db.collection(type).where({_id: id}).get({
         success: (res) => {
           const term = res.data[0];
-          that.setState({term, type});
+          that.setState({term, type, isLoading: false});
+        },
+        fail: () => {
+          console.log('fail')
+          that.setState({isLoading: false})
         }
       })
     }
@@ -259,7 +278,6 @@ export default class RegulationDetail extends Component {
     }))
   }
 
-
   renderLitigation = () => {
     const {term} = this.state;
     const {part, chapter, section, text, number} = term;
@@ -369,8 +387,17 @@ export default class RegulationDetail extends Component {
     }, 100)
   }
 
+  renderNoData = () => {
+    return (<View>
+      <View className='no-data'>出错啦!</View>
+      <View className='no-data'>数据不存在或者已经迁移</View>
+      <View className='no-data'>麻烦重新搜索进入</View>
+    </View>)
+  }
+
   render () {
     const {isSent, comment, term, type, isCollected, isReadMode, zoomIn, isLoading, litigationLawDefinition} = this.state;
+    const {text} = term
     return (
       <View className={`term-detail-page ${isReadMode ? 'read-mode' : ''} ${zoomIn ? 'zoom-in' : ''}`}>
         {(type === 'civil-law-regulation' || type === 'litigation-law') && term.tag && <View className='tag-line'><Text className='pre-tag'>法条要旨:</Text><Text className='tag'>{term.tag}</Text></View>}
@@ -384,6 +411,7 @@ export default class RegulationDetail extends Component {
         {litigationLawDefinition && <View>
           {this.renderLitigationLawDefinition()}
         </View>}
+        {!isLoading && !text && this.renderNoData()}
         <View className='footer'>
           <View className='text'>
             <Input

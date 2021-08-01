@@ -44,12 +44,20 @@ export default class ExampleDetail extends Component {
       db.collection(typeCollectionMap[type]).where({_id: id}).get({
         success: (res) => {
           that.setState({example: res.data[0], isLoading: false, type, id, keyword});
+        },
+        fail: () => {
+          console.log('fail')
+          that.setState({isLoading: false})
         }
       });
     } else {
       db.collection(type).where({_id: id}).get({
         success: (res) => {
           that.setState({example: res.data[0], isLoading: false, type, id, keyword});
+        },
+        fail: () => {
+          console.log('fail')
+          that.setState({isLoading: false})
         }
       });
     }
@@ -272,9 +280,17 @@ export default class ExampleDetail extends Component {
     }, 100)
   }
 
+  renderNoData = () => {
+    return (<View>
+      <View className='no-data'>出错啦!</View>
+      <View className='no-data'>数据不存在或者已经迁移</View>
+      <View className='no-data'>麻烦重新搜索进入</View>
+    </View>)
+  }
+
   render () {
-    const {isSent, comment, example, type, zoomIn, isCollected, isReadMode, isLoading} = this.state;
-    const {special} = example
+    const {isSent, comment, example, zoomIn, isCollected, isReadMode, isLoading} = this.state;
+    const {special, text, title} = example
     return (
       <View className={`example-detail-page ${zoomIn ? 'zoom-in' : ''} ${isReadMode ? 'read-mode' : ''}`}>
         {(example._id === '89b4bfb25f7dbcac007cec4b1f087eb1' || example._id === '89b4bfb25f7dbcac007cec402fa9835f') &&
@@ -286,6 +302,7 @@ export default class ExampleDetail extends Component {
         {!special && <View>
           {this.renderExample()}
         </View>}
+        {!isLoading && !title && !text && this.renderNoData()}
         <View className='footer'>
           <View className='text'>
             <Input
