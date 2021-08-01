@@ -289,7 +289,7 @@ export default class ExampleDetail extends Component {
   }
 
   render () {
-    const {isSent, comment, example, zoomIn, isCollected, isReadMode, isLoading} = this.state;
+    const {isSent, comment, example, zoomIn, isCollected, isReadMode, isLoading, type} = this.state;
     const {special, text, title} = example
     return (
       <View className={`example-detail-page ${zoomIn ? 'zoom-in' : ''} ${isReadMode ? 'read-mode' : ''}`}>
@@ -297,6 +297,12 @@ export default class ExampleDetail extends Component {
         <AtNoticebar marquee speed={60}>
           最高人民法院关于部分指导性案例不再参照的通知(2021.1.1):为保证国家法律统一正确适用,根据《中华人民共和国民法典》等有关法律规定和审判实际,经最高人民法院审判委员会讨论决定,9号、20号指导性案例不再参照。但该指导性案例的裁判以及参照该指导性案例作出的裁判仍然有效。
         </AtNoticebar>
+        }
+        {
+          (type === 'consultant' || type === 'consult') &&
+          <AtNoticebar marquee speed={60}>
+            刑事审判参考仅限用于学习交流!
+          </AtNoticebar>
         }
         {special && this.renderSpecial()}
         {!special && <View>

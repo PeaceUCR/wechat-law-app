@@ -29,6 +29,7 @@
   }
 
   .section {
+    line-height:180%;
     margin-top: 10px;
     white-space: pre-wrap;
     font-size: 34px;
@@ -77,6 +78,7 @@
   }
 
   .footer {
+    line-height:100%;
     z-index: 9;
     position: fixed;
     left: 0;

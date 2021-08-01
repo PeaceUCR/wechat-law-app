@@ -687,7 +687,9 @@ export default class TermDetail extends Component {
               </AtBadge>
             </View>
           </View>
-          <DiscussionArea topicId={term._id} isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />
+          <View className='discussion-container'>
+            <DiscussionArea topicId={term._id} isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />
+          </View>
           <View id='comments'></View>
       </View>
     )

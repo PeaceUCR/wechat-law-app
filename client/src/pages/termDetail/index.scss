@@ -1,5 +1,5 @@
 .term-detail-page {
-  padding: 10px 20px;
+  //padding: 10px 20px;
   min-height: 100vh;
   box-sizing: border-box;
 
@@ -26,9 +26,11 @@
   }
 
   .section {
+    line-height:180%;
     white-space: pre-wrap;
     font-size: 32px;
     margin-bottom: 20px;
+    padding: 0 20px;
 
     .section-title {
       color: #6190E8;
@@ -92,6 +94,7 @@
   }
 
   .footer {
+    line-height:100%;
     z-index: 9;
     position: fixed;
     left: 0;
@@ -210,4 +213,12 @@
     height: 40px;
     z-index: 1;
   }
+}
+
+.discussion-container {
+  padding: 0 20px;
+}
+
+.at-accordion__body {
+  padding: 0 8px 0 12px;
 }
