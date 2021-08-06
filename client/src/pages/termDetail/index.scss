@@ -222,3 +222,13 @@
 .at-accordion__body {
   padding: 0 8px 0 12px;
 }
+
+.loading-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(256,256,256, 0.4);
+  z-index: 1000;
+}

@@ -1,6 +1,6 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import { View, Text, Input, Button, Image } from '@tarojs/components'
-import {AtActivityIndicator, AtIcon, AtFab, AtButton, AtBadge, AtDivider, AtAccordion, AtCard} from "taro-ui";
+import {AtActivityIndicator, AtIcon, AtFab, AtButton, AtBadge, AtDivider, AtAccordion} from "taro-ui";
 import throttle from "lodash/throttle";
 import DataPopup from '../../components/dataPopup/index.weapp'
 import {DiscussionArea} from '../../components/discussionArea/index.weapp'
@@ -10,7 +10,6 @@ import {lawIdLabelMap, exampleIcon, sentencingIcon, explanationIcon, definitionI
 import './index.scss'
 import TextSection from "../../components/textSection/index.weapp";
 import TextSectionLinked from "../../components/textSectionLinked/index.weapp";
-import {isEmpty} from "lodash";
 
 const getTermNumber = (text) => {
   return text.substring(0, text.indexOf('条') + 1);

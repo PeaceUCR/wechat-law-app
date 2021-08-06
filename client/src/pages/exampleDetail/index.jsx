@@ -292,7 +292,7 @@ export default class ExampleDetail extends Component {
     const {isSent, comment, example, zoomIn, isCollected, isReadMode, isLoading, type} = this.state;
     const {special, text, title} = example
     return (
-      <View className={`example-detail-page ${zoomIn ? 'zoom-in' : ''} ${isReadMode ? 'read-mode' : ''}`}>
+      <View>
         {(example._id === '89b4bfb25f7dbcac007cec4b1f087eb1' || example._id === '89b4bfb25f7dbcac007cec402fa9835f') &&
         <AtNoticebar marquee speed={60}>
           最高人民法院关于部分指导性案例不再参照的通知(2021.1.1):为保证国家法律统一正确适用,根据《中华人民共和国民法典》等有关法律规定和审判实际,经最高人民法院审判委员会讨论决定,9号、20号指导性案例不再参照。但该指导性案例的裁判以及参照该指导性案例作出的裁判仍然有效。
@@ -304,44 +304,46 @@ export default class ExampleDetail extends Component {
             刑事审判参考仅限用于学习交流!
           </AtNoticebar>
         }
-        {special && this.renderSpecial()}
-        {!special && <View>
-          {this.renderExample()}
-        </View>}
-        {!isLoading && !title && !text && this.renderNoData()}
-        <View className='footer'>
-          <View className='text'>
-            <Input
-              className='input'
-              value={comment}
-              onInput={this.handleCommentChange}
-              onClear={this.handleClear}
-              type='text'
-              placeholder='欢迎发表你的观点'
-            />
-            <AtButton type='primary' size='small' onClick={this.handleSend}>
-              发表
-            </AtButton>
+        <View className={`example-detail-page ${zoomIn ? 'zoom-in' : ''} ${isReadMode ? 'read-mode' : ''}`}>
+          {special && this.renderSpecial()}
+          {!special && <View>
+            {this.renderExample()}
+          </View>}
+          {!isLoading && !title && !text && this.renderNoData()}
+          <View className='footer'>
+            <View className='text'>
+              <Input
+                className='input'
+                value={comment}
+                onInput={this.handleCommentChange}
+                onClear={this.handleClear}
+                type='text'
+                placeholder='欢迎发表你的观点'
+              />
+              <AtButton type='primary' size='small' onClick={this.handleSend}>
+                发表
+              </AtButton>
+            </View>
+            <View className='favorite-container' onClick={this.handleCollect} >
+              <AtIcon value={isCollected ? 'star-2' : 'star'} size='32' color={isCollected ? '#ffcc00' : 'rgba(0, 0, 0, 0.6)'}></AtIcon>
+            </View>
+            <AtFab size='small' className='float-zoom' onClick={() => {this.handleZoom()}}>
+              <View  className={`zoom ${zoomIn ? 'zoom-in': 'zoom-out'}`} mode='widthFix' />
+            </AtFab>
+            <View className='share-container'>
+              <AtBadge value='分享'>
+                <Button className='share-button' openType='share'>
+                  <AtIcon value='share-2' size='32' color='#6190E8'></AtIcon>
+                </Button>
+              </AtBadge>
+            </View>
           </View>
-          <View className='favorite-container' onClick={this.handleCollect} >
-            <AtIcon value={isCollected ? 'star-2' : 'star'} size='32' color={isCollected ? '#ffcc00' : 'rgba(0, 0, 0, 0.6)'}></AtIcon>
-          </View>
-          <AtFab size='small' className='float-zoom' onClick={() => {this.handleZoom()}}>
-            <View  className={`zoom ${zoomIn ? 'zoom-in': 'zoom-out'}`} mode='widthFix' />
-          </AtFab>
-          <View className='share-container'>
-            <AtBadge value='分享'>
-              <Button className='share-button' openType='share'>
-                <AtIcon value='share-2' size='32' color='#6190E8'></AtIcon>
-              </Button>
-            </AtBadge>
-          </View>
+          <DiscussionArea topicId={example._id}  isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />
+          <View id='comments'></View>
+          {isLoading && <View className='loading-container'>
+            <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
+          </View>}
         </View>
-        <DiscussionArea topicId={example._id}  isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />
-        <View id='comments'></View>
-        {isLoading && <View className='loading-container'>
-          <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
-        </View>}
       </View>
     )
   }
