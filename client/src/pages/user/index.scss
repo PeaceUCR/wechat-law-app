@@ -1,6 +1,6 @@
 .user-page {
   box-sizing: border-box;
-  padding: 260px 20px 60px 20px;
+  padding: 0px 20px 260px 20px;
   min-height: 100vh;
   box-sizing: border-box;
   &.read-mode {
@@ -13,13 +13,12 @@
   width: 600px;
 }
 .video-container {
-  height: 260px;
+  height: 258px;
   position: fixed;
-  top:0;
+  bottom:0;
   left:0vw;
   width: 100vw;
   background: white;
   z-index: 1;
-  border-bottom: 6px solid #b07200;
 }
 

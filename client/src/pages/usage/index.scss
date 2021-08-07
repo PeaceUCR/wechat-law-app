@@ -19,7 +19,7 @@
 
   .float {
     position: fixed;
-    bottom: 200px;
+    top: 200px;
     left: 0px;
     z-index: 999;
     padding: 20px 20px 20px 10px;
@@ -45,7 +45,17 @@
 }
 
 
+//.video-container {
+//  border-bottom: 10px solid #b07200;
+//  height: 550px;
+//}
+
 .video-container {
-  border-bottom: 10px solid #b07200;
-  height: 550px;
+  height: 258px;
+  position: fixed;
+  bottom:0;
+  left:0vw;
+  width: 100vw;
+  background: white;
+  z-index: 1;
 }
