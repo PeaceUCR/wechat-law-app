@@ -6,12 +6,11 @@ import { GridItem } from '../../components/grid/index.weapp'
 import { LoginPopup } from '../../components/loginPopup/index.weapp'
 import { UserFloatButton } from '../../components/userFloatButton/index.weapp'
 import { ImageCropper } from '../../components/imageCropper/index.weapp'
-import logo from '../../static/logo.png';
 import qrcode from '../../static/qrcode.png';
 import {checkIfNewUser, getUserAvatar, getUserNickname, isSuperAdmin} from '../../util/login';
 import './index.scss'
 import {db} from "../../util/db";
-import {tmpId} from '../../util/util'
+import {tmpId, logoIcon} from '../../util/util'
 import {otherLawNameMap} from '../../util/otherLaw'
 
 const titles = [
@@ -64,20 +63,20 @@ export default class Index extends Component {
           type: '刑法'
         },
         {
-          title: '监察法',
-          url: '/pages/supervisionLaw/index',
+          title: otherLawNameMap['supervision-law'],
+          url: '/pages/otherLaw/index?law=supervision-law',
           type: '刑法',
           isNew: true
         },
         {
-          title: '反恐怖主义法',
-          url: '/pages/antiTerrorismLaw/index',
+          title: otherLawNameMap['anti-terrorism-law'],
+          url: '/pages/otherLaw/index?law=anti-terrorism-law',
           type: '刑法',
           isNew: true
         },
         {
-          title: '禁毒法',
-          url: '/pages/antiDrugLaw/index',
+          title: otherLawNameMap['anti-drug-law'],
+          url: '/pages/otherLaw/index?law=anti-drug-law',
           type: '刑法',
           isNew: true
         },
@@ -110,22 +109,22 @@ export default class Index extends Component {
           type: '民法典'
         },
         {
-          title: '劳动法',
-          url: '/pages/laborLaw/index',
+          title: otherLawNameMap['labor-law'],
+          url: '/pages/otherLaw/index?law=labor-law',
           type: '民法典',
           isNew: true
           // isHot: true
         },
         {
-          title: '劳动合同法',
-          url: '/pages/laborContractLaw/index',
+          title: otherLawNameMap['labor-contract-law'],
+          url: '/pages/otherLaw/index?law=labor-contract-law',
           type: '民法典',
           isNew: true
           // isHot: true
         },
         {
-          title: '公司法',
-          url: '/pages/companyLaw/index',
+          title: otherLawNameMap['company-law'],
+          url: '/pages/otherLaw/index?law=company-law',
           type: '民法典',
           isNew: true
           // isHot: true
@@ -133,67 +132,67 @@ export default class Index extends Component {
       ],
       '行政相关': [
         {
-          title: '行政诉讼法',
-          url: '/pages/adminLitigationLaw/index',
+          title: otherLawNameMap['admin-litigation-law'],
+          url: '/pages/otherLaw/index?law=admin-litigation-law',
           type: '行政',
           isNew: true
         },
         {
-          title: '最高法适用"行政诉讼法"的解释',
-          url: '/pages/adminLitigationExplaination/index',
+          title: otherLawNameMap['admin-litigation-explaination'],
+          url: '/pages/otherLaw/index?law=admin-litigation-explaination',
           type: '行政',
           isNew: true
         },
         {
-          title: '行政强制法',
-          url: '/pages/adminForceLaw/index',
+          title: otherLawNameMap['admin-force-law'],
+          url: '/pages/otherLaw/index?law=admin-force-law',
           type: '行政',
           isNew: true
         },
         {
-          title: '行政处罚法',
-          url: '/pages/adminPunishLaw/index',
-          type: '行政',
-          isNew: true
-          // isHot: true
-        },
-        {
-          title: '行政复议法',
-          url: '/pages/adminReconsiderLaw/index',
+          title: otherLawNameMap['admin-punish-law'],
+          url: '/pages/otherLaw/index?law=admin-punish-law',
           type: '行政',
           isNew: true
           // isHot: true
         },
         {
-          title: '行政复议法实施条例',
-          url: '/pages/adminReconsiderRegulation/index',
+          title: otherLawNameMap['admin-reconsider-law'],
+          url: '/pages/otherLaw/index?law=admin-reconsider-law',
           type: '行政',
           isNew: true
           // isHot: true
         },
         {
-          title: '行政许可法',
-          url: '/pages/adminAllowLaw/index',
+          title: otherLawNameMap['admin-reconsider-regulation'],
+          url: '/pages/otherLaw/index?law=admin-reconsider-regulation',
           type: '行政',
           isNew: true
           // isHot: true
         },
         {
-          title: '治安管理处罚法',
-          url: '/pages/publicOrderAdminPenaltyLaw/index',
+          title: otherLawNameMap['admin-allow-law'],
+          url: '/pages/otherLaw/index?law=admin-allow-law',
           type: '行政',
           isNew: true
           // isHot: true
         },
         {
-          title: '道路交通安全法',
-          url: '/pages/roadSafeLaw/index',
+          title: otherLawNameMap['public-order-admin-penalty-law'],
+          url: '/pages/otherLaw/index?law=public-order-admin-penalty-law',
+          type: '行政',
+          isNew: true
+          // isHot: true
+        },
+        {
+          title: otherLawNameMap['road-safe-law'],
+          url: '/pages/otherLaw/index?law=road-safe-law',
           type: '行政',
           isNew: true
         },
         {
-          title: '道路交通安全法实施条例',
-          url: '/pages/roadSafeRegulation/index',
+          title: otherLawNameMap['road-safe-regulation'],
+          url: '/pages/otherLaw/index?law=road-safe-regulation',
           type: '行政',
           isNew: true
         },
@@ -204,8 +203,8 @@ export default class Index extends Component {
           isNew: true
         },
         {
-          title: '公安机关办理行政案件程序规定',
-          url: '/pages/policeAdminRegulation/index',
+          title: otherLawNameMap['police-admin-regulation'],
+          url: '/pages/otherLaw/index?law=police-admin-regulation',
           type: '行政',
           isNew: true
         }
@@ -570,7 +569,7 @@ export default class Index extends Component {
           <View className='footer-container'>
             <AtDivider height='100'>
               <View className='footer' onClick={this.handleShowFooter}>
-                <Image src={logo} className='logo' />
+                <Image src={logoIcon} className='logo' />
                 {showFooter && <Text className='footer-logo'>武汉满屏星科技有限公司</Text>}
               </View>
             </AtDivider>

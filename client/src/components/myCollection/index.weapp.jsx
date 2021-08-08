@@ -5,8 +5,6 @@ import {
   lawIdLabelMap,
   courtExampleTitleComplementMap,
   procuratorateExampleTitleComplementMap,
-  civilTagMap,
-  civilLawIdNumberMap
 } from '../../util/util';
 import {otherLawNameMap} from '../../util/otherLaw'
 
@@ -51,7 +49,7 @@ const MyCollection = (props) => {
   const collectionObj = {};
   collection.forEach(c => collectionObj[c.collectionId] = c)
   const allKeys = Object.keys(collectionObj)
-  const civilKeys = Object.keys(collectionObj).filter(key => civilLawIdNumberMap[key])
+  const civilKeys = Object.keys(collectionObj).filter(key => collectionObj[key].type === 'civilLawTermDetail')
 
   const termKeys = allKeys.filter(key => lawIdLabelMap[key])
   const courtExampleKeys = allKeys.filter(key => collectionObj[key].type === 'court' || courtExampleTitleComplementMap[key])
@@ -94,7 +92,7 @@ const MyCollection = (props) => {
       {civilKeys.map(civilKey => (
         <AtListItem
           key={civilKey}
-          title={`${civilLawIdNumberMap[civilKey]} ${civilTagMap[civilLawIdNumberMap[civilKey]]}`}
+          title={collectionObj[civilKey].title}
           arrow='right'
           onClick={() => {
             Taro.navigateTo({

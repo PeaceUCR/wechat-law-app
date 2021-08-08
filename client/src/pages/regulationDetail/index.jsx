@@ -37,7 +37,24 @@ const shared = [
 const otherLaws = [
   'criminal-litigation-explanation',
   'civil-litigation-explanation',
-  'road-safe-violation-handling'
+  'road-safe-violation-handling',
+  'police-admin-regulation',
+  'road-safe-regulation',
+  'road-safe-law',
+  'public-order-admin-penalty-law',
+  'admin-allow-law',
+  'admin-reconsider-regulation',
+  'admin-reconsider-law',
+  'admin-punish-law',
+  'admin-force-law',
+  'admin-litigation-explaination',
+  'admin-litigation-law',
+  'company-law',
+  'labor-contract-law',
+  'labor-law',
+  'anti-drug-law',
+  'anti-terrorism-law',
+  'supervision-law',
 ]
 
 const commonLawSet = new Set(

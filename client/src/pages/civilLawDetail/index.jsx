@@ -48,7 +48,8 @@ export default class CivilLawDetail extends Component {
 
     const that = this;
     const {isCollected, term} = this.state;
-    const {_id} = term
+
+    const {_id, number, tag} = term
 
     that.setState({isLoading: true})
 
@@ -74,7 +75,7 @@ export default class CivilLawDetail extends Component {
         data: {
           id: _id,
           type: 'civilLawTermDetail',
-          title: lawIdLabelMap[_id]
+          title: `${number} ${tag}`
         },
         complete: (r) => {
           if (r && r.result && r.result.errMsg !== 'collection.add:ok') {

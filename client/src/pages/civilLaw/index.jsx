@@ -37,9 +37,10 @@ export default class Index extends Component {
     Taro.cloud.callFunction({
       name: 'getCivilLawsCategory',
       complete: ({result}) => {
-        const {civilLawIdMap, civilLawCategoryLines} = result
+        const {civilLawIdMap, civilLawCategoryLines, civilTagMap} = result
         setGlobalData('civilLawIdMap', civilLawIdMap)
         setGlobalData('civilLawCategoryLines', civilLawCategoryLines)
+        setGlobalData('civilTagMap', civilTagMap)
         that.setState({
           isCategoryLoading: false
         })
