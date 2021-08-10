@@ -35,8 +35,12 @@ export default class Index extends Component {
     };
   }
   componentWillMount () {
-    const {law} = this.$router.params;
-    this.setState({law})
+    const {law,searchValue} = this.$router.params;
+    this.setState({law,searchValue}, () => {
+      if (searchValue) {
+        this.onSearch(searchValue)
+      }
+    })
     if (otherLawNameMap[law]) {
       Taro.setNavigationBarTitle({title: otherLawNameMap[law]})
     }

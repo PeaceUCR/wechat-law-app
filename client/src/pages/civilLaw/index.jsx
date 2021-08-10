@@ -33,6 +33,16 @@ export default class Index extends Component {
     };
   }
   componentWillMount () {
+    const {searchValue} = this.$router.params;
+    if (searchValue && searchValue.trim()) {
+      this.setState({
+        searchValue,
+        isSearchMode: true
+      }, () => {
+        this.onSearch()
+      });
+    }
+
     const that = this;
     Taro.cloud.callFunction({
       name: 'getCivilLawsCategory',

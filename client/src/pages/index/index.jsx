@@ -462,6 +462,14 @@ export default class Index extends Component {
     });
   }
 
+  onSearch = () => {
+    const {searchValue} = this.state
+    Taro.navigateTo({
+      url: `/pages/globalSearch/index?searchValue=${searchValue}`,
+    })
+    return ;
+  }
+
   render () {
     const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl, joinGroupUrl, posterRedirect, swiperPosters, canClose, enableMainVideoAd, enableMainBanner, searchValue, enableMainBottomVideo} = this.state;
     return (
@@ -531,11 +539,13 @@ export default class Index extends Component {
             </AtBadge>
           </View>
           <AtSearchBar
-            showActionButton
             placeholder='搜模块,比如刑法'
             value={searchValue}
             onChange={this.onChange}
             onClear={this.onClear}
+            onActionClick={() => {
+              this.onSearch()
+            }}
           />
           <View>
             <AtTabs animated={false} current={current} tabList={titles} onClick={this.handleClick}>

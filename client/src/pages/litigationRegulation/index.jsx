@@ -40,6 +40,15 @@ export default class Index extends Component {
   }
 
   componentDidMount () {
+    const {searchValue} = this.$router.params;
+    if (searchValue && searchValue.trim()) {
+      this.setState({
+        searchValue
+      }, () => {
+        this.onSearch(searchValue)
+      });
+    }
+
     const setting = getStorageSync('setting');
     this.setState({isReadMode: setting && setting.isReadMode})
     if (setting && setting.isReadMode) {

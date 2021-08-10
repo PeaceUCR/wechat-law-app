@@ -1,6 +1,6 @@
 import Taro, {Component, getStorageSync } from '@tarojs/taro'
 import {View, Text, Picker, Image} from '@tarojs/components'
-import {AtSearchBar, AtActivityIndicator, AtFab, AtBadge, AtIcon, AtDivider, AtNoticebar} from 'taro-ui'
+import {AtSearchBar, AtActivityIndicator, AtFab, AtDivider, AtNoticebar} from 'taro-ui'
 import {isEmpty} from 'lodash';
 import { db } from '../../util/db'
 import { rank, rankBySearchValue } from '../../util/rank'
@@ -23,7 +23,7 @@ export default class Index extends Component {
     crimes: [],
     criminalLawTerms: [],
     showAllCategories: false,
-    isReadMode: false,
+    isReadMode: true,
     categoryLines: [],
     criminalTermsComplement: [],
     singleCriminalLaw: [],
@@ -38,10 +38,20 @@ export default class Index extends Component {
       path: 'pages/index/index'
     };
   }
+
   componentWillMount () {
   }
 
   componentDidMount () {
+    const {searchValue} = this.$router.params;
+    if (searchValue && searchValue.trim()) {
+      this.setState({
+        searchValue
+      }, () => {
+        this.onSearch()
+      });
+    }
+
     const that = this;
     that.setState({isLoading: true});
     db.collection('configuration').where({}).get({
@@ -169,6 +179,7 @@ export default class Index extends Component {
     const that = this;
     this.setState({isLoading: true});
     const { searchValue, selected } = this.state;
+    console.log(searchValue)
     if(!searchValue.trim()) {
       Taro.showToast({
         title: '搜索不能为空',

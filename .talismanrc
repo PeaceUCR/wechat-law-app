@@ -1,5 +1,4 @@
 fileignoreconfig:
-- filename: client/src/util/util.js
-  checksum: 3862a3c5bb5790f69e876511b7214c4f3ba2f9b5db5a40910f6150bfde9c6556
-- filename: cloud/functions/searchCriminalComplement/yarn.lock
-  checksum: 85c2c7726adf410f94e7c6eff9b4a510e8ca6e3a91ed783edbb4e932f6371109
+- filename: cloud/functions/globalSearch/yarn.lock
+  checksum: bb7fe3a0ee93dae94bcd07325966edd5e5e490cbbdfe102ea98a765055bfc2a1
+

@@ -1,4 +1,7 @@
 .litigation-regulation-page {
+  &.global-search {
+
+  }
   width: 100%;
   min-height: 100vh;
   background: #ddd;
@@ -107,4 +110,33 @@
   position: fixed;
   bottom: 5%;
   right: 5%;
+}
+
+.more {
+  font-size: 32px;
+  padding: 20px 0 30px 0;
+  color: #16459c;
+  text-decoration: underline;
+  text-decoration-color: #16459c;
+  text-align: center;
+}
+
+.at-list__item {
+  padding: 22px 10px 14px 10px;
+}
+
+.at-list__item {
+  .item-content__info-title {
+    font-size: 32px;
+    color: black;
+  }
+
+  .item-content__info-note {
+    font-size: 30px;
+    color: #802b00;
+  }
+}
+
+.type-container:nth-child(2n) {
+  background-color: rgba(153,230,153,0.2);
 }
