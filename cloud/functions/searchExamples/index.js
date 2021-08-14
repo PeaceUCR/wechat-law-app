@@ -16,7 +16,8 @@ exports.main = async (event, context) => {
 
   const regexpString = `${searchValue.split('').join('.*')}`
   // examples exclude typical(no number properties)
-  const procuratorateExamples = await db.collection('procuratorate-examples').where({
+  const procuratorateExamples = await db.collection('example').where({
+    type: 'guide-examples-procuratorate',
     text: db.RegExp({
       regexp: regexpString,
       options: 'i',
@@ -28,7 +29,8 @@ exports.main = async (event, context) => {
     return e
   })
 
-  const courtExamples = await db.collection('court-examples').where({
+  const courtExamples = await db.collection('example').where({
+    type: 'guide-examples-court',
     text: db.RegExp({
       regexp: regexpString,
       options: 'i',

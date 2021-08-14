@@ -10,7 +10,9 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
   const db = cloud.database()
 
-  let procuratorateExamples = await db.collection('procuratorate-examples').limit(1000).get()
+  let procuratorateExamples = await db.collection('example').where({
+    type: 'guide-examples-procuratorate'
+  }).limit(1000).get()
   procuratorateExamples = procuratorateExamples.data.filter(item => item.number).sort((a,b) => {
     return parseInt(a.number) - parseInt(b.number)
   }).map(item => {
@@ -21,7 +23,9 @@ exports.main = async (event, context) => {
     }
   })
 
-  let courtExamples = await db.collection('court-examples').limit(1000).get()
+  let courtExamples = await db.collection('example').where({
+    type: 'guide-examples-court'
+  }).limit(1000).get()
   courtExamples = courtExamples.data.filter(item => item.number).sort((a,b) => {
     return parseInt(a.number) - parseInt(b.number)
   }).map(item => {

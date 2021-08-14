@@ -36,6 +36,7 @@ export default class Index extends Component {
       path: 'pages/index/index'
     };
   }
+
   componentWillMount () {
   }
 
@@ -160,7 +161,6 @@ export default class Index extends Component {
         type: 'chapter'
       },
       complete: (r) => {
-
         that.handleDBSearchSuccess(r.result)
       }
     })

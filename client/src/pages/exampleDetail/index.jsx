@@ -176,14 +176,14 @@ export default class ExampleDetail extends Component {
       if (type === 'explanation') { title = example.name }
       else if (type === 'procuratorate') { title = `${example.number}${example.name}` }
       else if (type === 'consultant') { title = `第${example.number}号${example.name}` }
-      else if (type === 'civilLawExample') { title = example.content.split('\n').filter(line => line.trim() && line.trim().length > 0)[0] }
+      else if (type === 'civilLawExample') { title = example.text.split('\n').filter(line => line.trim() && line.trim().length > 0)[0] }
       else {title = example.title}
       Taro.cloud.callFunction({
         name: 'collect',
         data: {
           id: _id,
           type: type,
-          title: title
+          title: title.trim()
         },
         complete: (r) => {
           if (r && r.result && r.result.errMsg !== 'collection.add:ok') {

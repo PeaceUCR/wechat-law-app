@@ -55,6 +55,7 @@ const otherLaws = [
   'anti-drug-law',
   'anti-terrorism-law',
   'supervision-law',
+  'police-regulation',
 ]
 
 const commonLawSet = new Set(

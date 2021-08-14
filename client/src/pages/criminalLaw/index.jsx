@@ -326,7 +326,7 @@ export default class Index extends Component {
               {searchResult.length > 0 && this.renderSearchList()}
             </View>
             <View>
-              {searchResult.length === 0 && !showAllCategories && this.renderHintOptions()}
+              {searchResult.length === 0 && !searchValue && !showAllCategories && this.renderHintOptions()}
             </View>
             {/*<View>*/}
             {/*  {searchResult.length === 0 && this.renderHistories()}*/}

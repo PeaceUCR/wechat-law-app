@@ -17,14 +17,16 @@ exports.main = async (event, context) => {
   const regexpString1 = `${searchValue.split('').join('.*')}`
   const regexpString2 = `.*${searchValue}`
 
-  result1 = await db.collection('court-open').where({
+  result1 = await db.collection('example').where({
+    type:'open-examples-court',
     text: db.RegExp({
       regexp: regexpString1,
       options: 'i',
     })}).limit(1000).orderBy('date', 'desc').get();
 
   // exact match
-  result2 = await db.collection('court-open').where({
+  result2 = await db.collection('example').where({
+    type:'open-examples-court',
     text: db.RegExp({
       regexp: regexpString2,
       options: 'i',

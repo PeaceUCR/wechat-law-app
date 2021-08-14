@@ -53,13 +53,13 @@ export default class Index extends Component {
         //   type: '刑法'
         // },
         {
-          title: '(最高检)刑事诉讼规则',
-          url: '/pages/litigationRegulation/index',
+          title: otherLawNameMap['litigation-regulation'],
+          url: '/pages/otherLaw/index?law=litigation-regulation',
           type: '刑法'
         },
         {
-          title: '公安机关办理刑事案件程序规定',
-          url: '/pages/policeRegulation/index',
+          title: otherLawNameMap['police-regulation'],
+          url: '/pages/otherLaw/index?law=police-regulation',
           type: '刑法'
         },
         {

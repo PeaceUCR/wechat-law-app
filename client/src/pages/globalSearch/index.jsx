@@ -1,6 +1,6 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {View, Text} from '@tarojs/components'
-import { AtSearchBar, AtActivityIndicator, AtFab, AtListItem } from 'taro-ui'
+import { AtSearchBar, AtFab, AtListItem, AtNoticebar } from 'taro-ui'
 import {isEmpty, groupBy} from "lodash";
 import '../litigationRegulation/index.scss'
 import {otherLawNameMap} from '../../util/otherLaw'
@@ -19,7 +19,7 @@ export default class Index extends Component {
   }
 
   config = {
-    navigationBarTitleText: '法律法规全局搜索'
+    navigationBarTitleText: '法律法规全文精确搜索'
   }
 
   reset = () => {
@@ -73,7 +73,7 @@ export default class Index extends Component {
               <AtListItem
                 key={item._id}
                 title={item.text}
-                note={`刑法 ${item.chnNumber}`}
+                note={`[刑法]  ${item.chnNumber}`}
                 arrow='right'
                 onClick={() => {
                   Taro.navigateTo({
@@ -95,7 +95,7 @@ export default class Index extends Component {
               <AtListItem
                 key={item._id}
                 title={item.text}
-                note={`刑事诉讼法 ${item.item}`}
+                note={`[刑事诉讼法]  ${item.item}`}
                 arrow='right'
                 onClick={() => {
                   Taro.navigateTo({
@@ -110,50 +110,6 @@ export default class Index extends Component {
           })
         }}>去刑事诉讼法搜索更多...</View>
       </View>}
-      {searchResult['litigation-regulation'] && searchResult['litigation-regulation'].length > 0 && <View className='type-container'>
-        {searchResult['litigation-regulation'].map((
-          (item) => {
-            return (
-              <AtListItem
-                key={item._id}
-                title={item.text}
-                note={`(检)刑事诉讼规则 ${item.item}`}
-                arrow='right'
-                onClick={() => {
-                  Taro.navigateTo({
-                    url: `/pages/regulationDetail/index?id=${item._id}&type=litigation-regulation`,
-                  })
-                }}
-              />
-            )}))}
-        <View className='more' onClick={() => {
-          Taro.navigateTo({
-            url: `/pages/litigationRegulation/index?searchValue=${searchValue}`,
-          })
-        }}>去刑事诉讼规则搜索更多...</View>
-      </View>}
-      {searchResult['police-regulation'] && searchResult['police-regulation'].length > 0 && <View className='type-container'>
-        {searchResult['police-regulation'].map((
-          (item) => {
-            return (
-              <AtListItem
-                key={item._id}
-                title={item.text}
-                note={`公安机关刑事案件程序规定 ${item.number}`}
-                arrow='right'
-                onClick={() => {
-                  Taro.navigateTo({
-                    url: `/pages/regulationDetail/index?id=${item._id}&type=police`,
-                  })
-                }}
-              />
-            )}))}
-        <View className='more' onClick={() => {
-          Taro.navigateTo({
-            url: `/pages/policeRegulation/index?searchValue=${searchValue}`,
-          })
-        }}>去公安办理刑事案件规定搜索更多...</View>
-      </View>}
       {searchResult['civil-law'] && searchResult['civil-law'].length > 0 && <View className='type-container'>
         {searchResult['civil-law'].map((
           (item) => {
@@ -161,7 +117,7 @@ export default class Index extends Component {
               <AtListItem
                 key={item._id}
                 title={item.text}
-                note={`民法典 ${item.number}`}
+                note={`[民法典]  ${item.number}`}
                 arrow='right'
                 onClick={() => {
                   Taro.navigateTo({
@@ -183,7 +139,7 @@ export default class Index extends Component {
               <AtListItem
                 key={item._id}
                 title={item.text}
-                note={`民事诉讼法 ${item.number}`}
+                note={`[民事诉讼法]  ${item.number}`}
                 arrow='right'
                 onClick={() => {
                   Taro.navigateTo({
@@ -206,7 +162,7 @@ export default class Index extends Component {
                 <AtListItem
                   key={item._id}
                   title={item.text}
-                  note={`${otherLawNameMap[item.type]} ${convertNumberToChinese(item.number)}`}
+                  note={`[${otherLawNameMap[item.type]}]  ${convertNumberToChinese(item.number)}`}
                   arrow='right'
                   onClick={() => {
                     Taro.navigateTo({
@@ -286,7 +242,10 @@ export default class Index extends Component {
     const {searchValue, searchResult, isLoading, isReadMode, law} = this.state;
     return (
       <View className={`litigation-regulation-page global-search ${isReadMode ? 'read-mode' : ''}`}>
-          <View>
+        <AtNoticebar marquee speed={60}>
+          此为精确搜索(非模糊搜索),结果暂时根据序号排序！
+        </AtNoticebar>
+        <View>
             <AtSearchBar
               value={searchValue}
               onChange={this.onChange}
@@ -294,7 +253,7 @@ export default class Index extends Component {
                 this.onSearch(searchValue)
               }}
               onClear={this.onClear}
-              placeholder='法律法规全局搜索'
+              placeholder='法律法规全文精确搜索'
             />
           </View>
           <View>

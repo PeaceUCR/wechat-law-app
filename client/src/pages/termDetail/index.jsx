@@ -69,9 +69,11 @@ export default class TermDetail extends Component {
       success: (res) => {
         const term = res.data[0];
         that.setState({term});
-        db.collection('procuratorate-examples')
+        db.collection('example')
           .orderBy('number', 'desc')
-          .where({terms: db.RegExp({
+          .where({
+          type: 'guide-examples-procuratorate',
+          terms: db.RegExp({
             regexp: '.*' + getTermNumber(term.text),
             options: 'i',
           })}).get({
@@ -80,9 +82,11 @@ export default class TermDetail extends Component {
           }
         });
 
-        db.collection('court-examples')
+        db.collection('example')
           .orderBy('number', 'desc')
-          .where({criminalLaw: db.RegExp({
+          .where({
+          type: 'guide-examples-court',
+          criminalLaw: db.RegExp({
             regexp: '.*' + getTermNumber(term.text),
             options: 'i',
           })}).get({
@@ -622,7 +626,7 @@ export default class TermDetail extends Component {
             hasBorder={false}
             open={showExample}
             onClick={this.openExample}
-            title='相关案例'
+            title='指导案例'
             icon={{ value: 'alert-circle', color: 'transparent', size: '16' }}
             isAnimation={false}
           >

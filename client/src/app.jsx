@@ -41,7 +41,7 @@ class App extends Component {
       'pages/criminalLaw/index',
       'pages/other/index',
       'pages/litigationLaw/index',
-      'pages/litigationRegulation/index',
+      // 'pages/litigationRegulation/index',
       'pages/termDetail/index',
       'pages/exampleDetail/index',
       'pages/user/index',
@@ -50,7 +50,7 @@ class App extends Component {
       'pages/civilLawDetail/index',
       'pages/courtOpen/index',
       'pages/civilLawExplaination/index',
-      'pages/policeRegulation/index',
+      // 'pages/policeRegulation/index',
       'pages/regulationDetail/index',
       'pages/civilLawRegulation/index',
       // 'pages/litigationExplanation/index'
