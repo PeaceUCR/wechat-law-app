@@ -13,7 +13,7 @@ const typeCollectionMap = {
   'procuratorate': 'procuratorate-examples',
   'consultant': 'consult',
   'civilLawExample': 'civil-law-link-example-detail',
-  'civilLawExplaination': 'civil-law-explaination',
+  'civil-law-explaination': 'civil-law-explaination',
   'source': 'sentencing-source'
 }
 

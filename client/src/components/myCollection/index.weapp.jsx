@@ -16,7 +16,7 @@ const otherTypes = [
   'complement',
   'consultant',
   'court-open',
-  'civilLawExplaination',
+  'civil-law-explaination',
   'civilLawExample']
 
 const newLaws = {

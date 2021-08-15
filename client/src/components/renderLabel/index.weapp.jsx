@@ -11,8 +11,8 @@ const RenderLabel = (props) => {
   const t = fragments.join('条')
   if (n && t) {
     return (<View className='label'>
-      <Text className='number'>{`${n}条`}</Text>
-      <Text className='law'>{t.trim()}</Text>
+      <Text className='number'>{`${n}条 ${t.trim()}`}</Text>
+      {/*<Text className='law'>{t.trim()}</Text>*/}
       {/*<Image*/}
       {/*  src={rightArrowIcon}*/}
       {/*  className='left-hand'*/}
@@ -21,7 +21,7 @@ const RenderLabel = (props) => {
     </View>)
   }
 
-  return (<View><Text>{label}</Text></View>)
+  return (<View className='label'><Text className='number'>{label}</Text></View>)
 }
 
 export default RenderLabel;

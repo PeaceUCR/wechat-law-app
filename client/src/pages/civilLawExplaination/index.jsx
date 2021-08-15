@@ -1,9 +1,9 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {View, Text, Picker, Image, RichText} from '@tarojs/components'
-import {AtSearchBar, AtActivityIndicator, AtListItem, AtLoadMore, AtBadge, AtIcon, AtList, AtInput, AtTag} from 'taro-ui'
-import {isEmpty} from 'lodash';
+import {AtSearchBar, AtActivityIndicator, AtListItem, AtIcon, AtList} from 'taro-ui'
 import { db } from '../../util/db'
 import './index.scss'
+import {isEmpty} from "lodash";
 
 export default class Index extends Component {
 
@@ -11,9 +11,6 @@ export default class Index extends Component {
     searchValue: '',
     searchResult: [],
     isLoading: true,
-    selected: '全文搜索',
-    options: ['全文搜索'],
-    status: 'more',
     isReadMode: false,
     civilExplaination: {},
     civilExplainationTitles: [],
@@ -69,17 +66,18 @@ export default class Index extends Component {
     return (<View>
       <View>
         {searchResult.map(((example) => {return (
-          <AtListItem
-            key={`example-${example._id}`}
-            title={`${example.title}`}
-            note={example.date}
-            arrow='right'
-            onClick={() => {
-              Taro.navigateTo({
-                url: `/pages/exampleDetail/index?type=court-open&id=${example._id}&keyword=${searchValue}`,
-              })
-            }}
-          />
+          <View key={`example-${example._id}`} className='civil-explanation-item' onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/exampleDetail/index?type=civil-law-explaination&id=${example._id}&keyword=${searchValue}`,
+            })
+          }}
+          >
+            <View className='title'>
+              <Text className='text'>{example.title}</Text>
+            </View>
+            <AtIcon className='icon' value='chevron-right' size='40' color='#6190E8'></AtIcon>
+          </View>
+
           )}))}
       </View>
     </View>)
@@ -89,11 +87,17 @@ export default class Index extends Component {
     this.setState({searchValue})
   }
 
-  onSearch = (skip) => {
-    skip = skip ? skip : 0;
+  onClear = () => {
+    this.setState({
+      searchValue: '',
+      searchResult: [],
+    });
+  }
+
+  onSearch = () => {
     const that = this;
     this.setState({isLoading: true});
-    const { searchValue, searchResult, selected } = this.state;
+    const { searchValue } = this.state;
     if(!searchValue.trim()) {
       Taro.showToast({
         title: '搜索不能为空',
@@ -102,69 +106,26 @@ export default class Index extends Component {
       })
       return ;
     }
-    if (selected === '全文搜索') {
-      db.collection('court-open').orderBy('date', 'desc').skip(skip).where({text: db.RegExp({
-          regexp: '.*' + searchValue,
-          options: 'i',
-        })}).get({
-        success: (res) => {
-          if (isEmpty(res.data)) {
-            if (skip === 0) {
-              Taro.showToast({
-                title: `未找到含有${searchValue}的最高法公报`,
-                icon: 'none',
-                duration: 3000
-              })
-              that.setState({isLoading: false})
-              return;
-            } else {
-              Taro.showToast({
-                title: `没有更多啦`,
-                icon: 'none',
-                duration: 3000
-              })
-              that.setState({status: 'noMore', isLoading: false})
-            }
-          } else {
-            if (skip === 0) {
-              that.setState({searchResult: [...res.data], isLoading: false});
-            } else {
-              that.setState({searchResult: [...searchResult, ...res.data], isLoading: false});
-            }
-          }
 
+    Taro.cloud.callFunction({
+      name: 'searchCivilLawExplaination',
+      data: {
+        searchValue: searchValue
+      },
+      complete: (r) => {
+        const {result} = r
+        const {searchResult} = result
+        if (isEmpty(searchResult)) {
+          Taro.showToast({
+            title: `未找到含有${searchValue}的指导案例`,
+            icon: 'none',
+            duration: 3000
+          })
         }
-      });
-    }
-
+        that.setState({searchResult, isLoading: false});
+      }
+    })
   }
-
-  loadMore = () => {
-    const {searchResult} = this.state
-    this.onSearch(searchResult.length)
-  }
-
-  onClear = () => {
-    this.setState({
-      searchValue: '',
-      searchResult: [],
-    });
-  }
-
-
-  // renderExplanations = () => {
-  //   const titles = Object.keys(civilExplaination)
-  //   return titles.map((title, index) => {
-  //     return (<AtListItem key={`civil-explanation-${index}`} title={title.replace('最高人民法院','最高法')} arrow='right' onClick={
-  //       () => {
-  //         Taro.navigateTo({
-  //           url: `/pages/exampleDetail/index?type=civilLawExplaination&id=${civilExplaination[title]}`,
-  //         })
-  //       }
-  //     }
-  //     />)
-  //   })
-  // }
 
   findAndHighlight = (str, key) => {
     var regExp =new RegExp(key,"g");
@@ -174,6 +135,7 @@ export default class Index extends Component {
       return '<div>' + str + '</div>'
     }
   }
+
   renderExplanations = () => {
     const {searchValue, civilExplainationTitles, civilExplaination, civilExplainationIndex} = this.state
 
@@ -182,7 +144,7 @@ export default class Index extends Component {
         () => {
           if (civilExplaination[title]) {
             Taro.navigateTo({
-              url: `/pages/exampleDetail/index?type=civilLawExplaination&id=${civilExplaination[title]}`,
+              url: `/pages/exampleDetail/index?type=civil-law-explaination&id=${civilExplaination[title]}`,
             })
           }
         }
@@ -203,18 +165,20 @@ export default class Index extends Component {
     return (
       <View className={`example-page ${isReadMode ? 'read-mode' : ''}`}>
           <View>
-            <View className='fixed'>
-              <AtInput
-                type='text'
-                placeholder='搜标题'
+            <View>
+              <AtSearchBar
                 value={searchValue}
                 onChange={this.onChange}
-              /></View>
+                onActionClick={() => this.onSearch()}
+                onClear={this.onClear}
+                placeholder='全文搜索'
+              />
+            </View>
             <View>
               {searchResult.length > 0 && this.renderSearchList()}
             </View>
             <AtList>
-              {civilExplainationTitles.length > 0 && this.renderExplanations()}
+              {searchResult.length === 0 && civilExplainationTitles.length > 0 && this.renderExplanations()}
             </AtList>
             {isLoading && <View className='loading-container'>
               <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
