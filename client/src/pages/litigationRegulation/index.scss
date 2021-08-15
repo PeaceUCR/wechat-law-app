@@ -137,6 +137,20 @@
   }
 }
 
+.type-container {
+  .type-result-title {
+    padding: 32px 0 10px 0;
+    display: flex;
+    justify-content: center;
+    .title {
+      background-color: #6190E8;
+      color: white;
+      border-radius: 6px;
+      padding: 0px 10px;
+    }
+  }
+}
+
 .type-container:nth-child(2n) {
   background-color: rgba(153,230,153,0.2);
 }

@@ -23,13 +23,33 @@ exports.main = async (event, context) => {
         'other-law'
     ]
 
-    const requests = dbNames.map(name =>
-        db.collection(name).where({
-            text: db.RegExp({
-                regexp: exactRegexp,
-                options: 'i',
+    const reg = new RegExp(searchValue, "gi");
+    const getWeight = (text) => {
+       const ocurrences = (text.match(reg) || []).length;
+       return ocurrences / text.length
+    }
+
+    const limitPerLaw = 6
+
+    const requests = dbNames.map(async (name) => {
+            const result = await db.collection(name).where({
+                text: db.RegExp({
+                    regexp: exactRegexp,
+                    options: 'i',
+                })
+            }).limit(1000).orderBy('number', 'asc').get()
+
+            result.data.sort((a,b) => {
+                return getWeight(b.text) - getWeight(a.text)
             })
-        }).limit(name === 'other-law' ? 100 : 10).orderBy('number', 'asc').get())
+
+            if (result.data.length > limitPerLaw && name !== 'other-law') {
+                result.data = result.data.slice(0, limitPerLaw)
+            }
+
+            return result
+        }
+    )
 
     const results = await Promise.all(requests)
 

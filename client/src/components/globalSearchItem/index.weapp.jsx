@@ -15,11 +15,11 @@ const GlobalSearchItem = (props) => {
   }
 
   return (<View className='search-item' onClick={redirect} >
-    <View className='line'>
-      <Text className='law'>{law}</Text>
-      {/*<Text className='number'>{number}</Text>*/}
-      <Image src={rightArrowIcon} className='right-arrow' />
-    </View>
+    {/*<View className='line'>*/}
+    {/*  <Text className='law'>{law}</Text>*/}
+    {/*  <Text className='number'>{number}</Text>*/}
+    {/*  <Image src={rightArrowIcon} className='right-arrow' />*/}
+    {/*</View>*/}
     <View className='main-text'>
       {displayedText}
     </View>

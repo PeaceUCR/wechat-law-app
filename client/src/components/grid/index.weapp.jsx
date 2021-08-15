@@ -3,7 +3,7 @@ import {View,Image,RichText} from "@tarojs/components";
 import { AtBadge, AtIcon } from "taro-ui";
 import throttle from 'lodash/throttle';
 import './index.scss'
-import constructionIcon from '../../static/under-construction.png';
+// import constructionIcon from '../../static/under-construction.png';
 import {isStartWith} from "../../util/util";
 
 const colors = {
@@ -55,7 +55,7 @@ const GridItem = (props) => {
           {(option.type === '共有' || option.type === '民法典') && <View className='tag'>民</View>}
           {(option.type === '共有' || option.type === '行政') && <View className='tag admin'>行</View>}
         </View>
-        {isUnderConstruction && <View className='icon-container'><Image src={constructionIcon} className='construction-icon' /></View>}
+        {/*{isUnderConstruction && <View className='icon-container'><Image src={constructionIcon} className='construction-icon' /></View>}*/}
         <View className='title-container'>
           <AtIcon value='chevron-right' size='22' color={colors[option.type]}></AtIcon>
           <View className='title'>

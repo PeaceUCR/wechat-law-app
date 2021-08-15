@@ -1,6 +1,6 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {View, Text} from '@tarojs/components'
-import { AtSearchBar, AtFab, AtListItem, AtNoticebar } from 'taro-ui'
+import { AtSearchBar, AtFab, AtNoticebar } from 'taro-ui'
 import {isEmpty, groupBy} from "lodash";
 import '../litigationRegulation/index.scss'
 import {otherLawNameMap} from '../../util/otherLaw'
@@ -68,6 +68,9 @@ export default class Index extends Component {
     const other = groupBy(searchResult['other-law'], item => item.type)
     return (<View>
       {searchResult['terms'] && searchResult['terms'].length > 0 && <View className='type-container'>
+        <View className='type-result-title'>
+          <Text className='title'>刑法</Text>
+        </View>
         {searchResult['terms'].map((
           (item) => {
             return (
@@ -90,6 +93,9 @@ export default class Index extends Component {
         }}>去刑法搜索更多...</View>
       </View>}
       {searchResult['litigation-law'] && searchResult['litigation-law'].length > 0 && <View className='type-container'>
+        <View className='type-result-title'>
+          <Text className='title'>刑事诉讼法</Text>
+        </View>
         {searchResult['litigation-law'].map((
           (item) => {
             return (
@@ -112,6 +118,9 @@ export default class Index extends Component {
         }}>去刑事诉讼法搜索更多...</View>
       </View>}
       {searchResult['civil-law'] && searchResult['civil-law'].length > 0 && <View className='type-container'>
+        <View className='type-result-title'>
+          <Text className='title'>民法典</Text>
+        </View>
         {searchResult['civil-law'].map((
           (item) => {
             return (
@@ -134,6 +143,9 @@ export default class Index extends Component {
         }}>去民法典搜索更多...</View>
       </View>}
       {searchResult['civil-law-regulation'] && searchResult['civil-law-regulation'].length > 0 && <View className='type-container'>
+        <View className='type-result-title'>
+          <Text className='title'>民事诉讼法</Text>
+        </View>
         {searchResult['civil-law-regulation'].map((
           (item) => {
             return (
@@ -158,6 +170,9 @@ export default class Index extends Component {
       </View>}
       {searchResult['other-law'] && searchResult['other-law'].length > 0 && <View>
         {Object.keys(other).map(k => <View key={k} className='type-container'>
+          <View className='type-result-title'>
+            <Text className='title'>{otherLawNameMap[k]}</Text>
+          </View>
           {other[k].map((
             (item) => {
               return (
@@ -245,7 +260,7 @@ export default class Index extends Component {
     return (
       <View className={`litigation-regulation-page global-search ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
-          此为精确搜索(非模糊搜索),结果暂时根据序号排序！
+          此为精确搜索(非模糊搜索),且只显示部分结果,麻烦去具体法律模块搜索更多！
         </AtNoticebar>
         <View>
             <AtSearchBar
