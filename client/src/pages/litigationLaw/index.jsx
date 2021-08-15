@@ -6,7 +6,6 @@ import { db } from '../../util/db'
 import { LitigationSearchItem } from '../../components/litigationSearchItem/index.weapp'
 import {getNumber} from '../../util/convertNumber'
 import './index.scss'
-import {HierarchicalOptions} from "../../components/hierarchicalOptions/index.weapp";
 import {litigationLawCategoryLines} from "../../util/util";
 import {LawCategory} from "../../components/lawCategory/index.weapp";
 
@@ -15,7 +14,6 @@ export default class Index extends Component {
   state = {
     searchValue: '',
     searchResult: [],
-    litigationLawOptions: [],
     isLoading: false,
     modalContent: '',
     isOpened: false,
@@ -64,15 +62,6 @@ export default class Index extends Component {
   componentWillUnmount () { }
 
   componentDidShow () {
-    // const that = this;
-    // that.setState({isLoading: true});
-    // db.collection('configuration').where({}).get({
-    //   success: (res) => {
-    //     that.setState({
-    //       litigationLawOptions: res.data[0]['litigation-law'],
-    //       isLoading: false});
-    //   }
-    // });
   }
 
   componentDidHide () { }
@@ -209,29 +198,6 @@ export default class Index extends Component {
     })
   }
 
-  // onClickOptionItem = (category, searchValue) => {
-  //   this.setState({
-  //     searchValue
-  //   }, () => {
-  //     if(searchValue === '执行') {
-  //       this.onSearchByPart(searchValue);
-  //     } else if (category === "chapter") {
-  //       this.onSearchByChapter(searchValue);
-  //     } else {
-  //       this.onSearchBySection(searchValue);
-  //     }
-  //   });
-  // }
-  onClickOptionItem = (category, searchValue) => {
-    if(searchValue === '执行') {
-      this.onSearchByPart(searchValue);
-    } else if (category === "chapter") {
-      this.onSearchByChapter(searchValue);
-    } else {
-      this.onSearchBySection(searchValue);
-    }
-  }
-
   onChange = (searchValue) => {
     this.setState({searchValue})
   }
@@ -271,7 +237,7 @@ export default class Index extends Component {
       })
   }
   render () {
-    const {searchValue, searchResult, litigationLawOptions, isLoading, modalContent, isOpened, isReadMode} = this.state;
+    const {searchValue, searchResult, isLoading, modalContent, isOpened, isReadMode} = this.state;
     return (
       <View className={`litigation-law-page ${isReadMode ? 'read-mode' : ''}`}>
           <AtNoticebar marquee speed={60}>

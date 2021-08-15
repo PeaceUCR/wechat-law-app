@@ -2,13 +2,14 @@
   padding-left: 0;
 }
 .all-law-catgory-chapter {
-  padding-left: 26px;
+  padding-left: 22px;
 }
 .all-law-catgory-section {
-  padding-left: 52px;
+  padding-left: 44px;
 }
 .all-law-catgory-option {
-  padding: 16px 0px 16px 40px;
+  box-sizing: border-box;
+  padding: 16px 0px 16px 20px;
   font-size: 34px;
   max-width: 680px;
   white-space: nowrap;
@@ -19,13 +20,16 @@
 }
 
 .all-law-catgory-title {
-  padding: 24px;
+  padding: 20px 0 20px 10px;
   font-size: 34px;
-  color: #333333;
+  color: black;
 }
 
 .border {
   box-sizing: border-box;
   border-left: 2px solid #6190E8;
 }
+
+
+
 

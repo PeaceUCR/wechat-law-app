@@ -5,7 +5,8 @@
 }
 .at-accordion__info__note {
   color: #333333;
-  border-left: 6px solid #6190E8;
+  animation: indicator 4s ease-in-out infinite;
+  border-left: 8px solid #2063df;
   padding-left: 6px;
   font-size: 34px;
 }
@@ -50,5 +51,20 @@
 }
 .at-accordion__header {
   font-size: 34px;
+}
+
+
+
+
+@keyframes indicator {
+  0% {
+    border-left-color: #6190E8;
+  }
+  50% {
+    border-left-color: #b3ffb3;
+  }
+  100% {
+    border-left-color: #6190E8;
+  }
 }
 

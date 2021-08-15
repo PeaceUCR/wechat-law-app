@@ -1,9 +1,10 @@
 import Taro, {useState} from '@tarojs/taro'
-import {View} from "@tarojs/components";
+import {View, Text} from "@tarojs/components";
 import {AtAccordion} from "taro-ui";
 import './index.scss'
 import {getGlobalData} from '../../util/global'
-import {lawLabelMap, lawMap, policeRegulationIdMap, civilLawRegulationIdMap, litigationLawIdMap} from '../../util/util'
+import {lawLabelMap, lawMap, civilLawRegulationIdMap, litigationLawIdMap} from '../../util/util'
+import RenderLabel from '../renderLabel/index.weapp'
 
 const LawCategory = (props) => {
   let {catgoryLine, type} = props;
@@ -12,7 +13,7 @@ const LawCategory = (props) => {
   const getLabel = (law) => {
     if (type === 'civil') {
       return `${law} ${getGlobalData('civilTagMap')[law]}`
-    } else if (type === 'police' || type === 'civil-law-regulation' || type === 'litigation-law') {
+    } else if (type === 'civil-law-regulation' || type === 'litigation-law') {
       return law
     }
     return lawLabelMap[law]
@@ -36,10 +37,6 @@ const LawCategory = (props) => {
                 Taro.navigateTo({
                   url: `/pages/civilLawDetail/index?id=${getGlobalData('civilLawIdMap')[law]}`,
                 })
-              } else if (type === 'police') {
-                Taro.navigateTo({
-                  url: `/pages/regulationDetail/index?id=${policeRegulationIdMap[law]}&type=${type}`,
-                })
               } else if (type === 'civil-law-regulation') {
                 Taro.navigateTo({
                   url: `/pages/regulationDetail/index?id=${civilLawRegulationIdMap[law]}&type=${type}`,
@@ -56,7 +53,7 @@ const LawCategory = (props) => {
 
             }}
             >
-              {getLabel(law)}
+              <RenderLabel label={getLabel(law)} />
             </View>)
           }
         )}

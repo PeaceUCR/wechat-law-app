@@ -6,6 +6,7 @@ import '../litigationRegulation/index.scss'
 import {otherLawNameMap} from '../../util/otherLaw'
 import {convertNumberToChinese} from '../../util/convertNumber'
 import Loading2 from '../../components/loading2/index.weapp'
+import GlobalSearchItem from '../../components/globalSearchItem/index.weapp'
 
 
 export default class Index extends Component {
@@ -70,12 +71,12 @@ export default class Index extends Component {
         {searchResult['terms'].map((
           (item) => {
             return (
-              <AtListItem
+              <GlobalSearchItem
                 key={item._id}
-                title={item.text}
-                note={`[刑法]  ${item.chnNumber}`}
-                arrow='right'
-                onClick={() => {
+                text={item.text}
+                law='刑法'
+                number={item.chnNumber}
+                redirect={() => {
                   Taro.navigateTo({
                     url: `/pages/termDetail/index?id=${item._id}`,
                   })
@@ -92,12 +93,12 @@ export default class Index extends Component {
         {searchResult['litigation-law'].map((
           (item) => {
             return (
-              <AtListItem
+              <GlobalSearchItem
                 key={item._id}
-                title={item.text}
-                note={`[刑事诉讼法]  ${item.item}`}
-                arrow='right'
-                onClick={() => {
+                text={item.text}
+                law='刑事诉讼法'
+                number={item.item}
+                redirect={() => {
                   Taro.navigateTo({
                     url: `/pages/regulationDetail/index?id=${item._id}&type=litigation-law`,
                   })
@@ -114,12 +115,12 @@ export default class Index extends Component {
         {searchResult['civil-law'].map((
           (item) => {
             return (
-              <AtListItem
+              <GlobalSearchItem
                 key={item._id}
-                title={item.text}
-                note={`[民法典]  ${item.number}`}
-                arrow='right'
-                onClick={() => {
+                text={item.text}
+                law='民法典'
+                number={item.number}
+                redirect={() => {
                   Taro.navigateTo({
                     url: `/pages/civilLawDetail/index?id=${item._id}`,
                   })
@@ -136,12 +137,13 @@ export default class Index extends Component {
         {searchResult['civil-law-regulation'].map((
           (item) => {
             return (
-              <AtListItem
+              <GlobalSearchItem
                 key={item._id}
-                title={item.text}
-                note={`[民事诉讼法]  ${item.number}`}
-                arrow='right'
-                onClick={() => {
+                text={item.text}
+                law='民事诉讼法'
+                number={item.number}
+
+                redirect={() => {
                   Taro.navigateTo({
                     url: `/pages/regulationDetail/index?id=${item._id}&type=civil-law-regulation`,
                   })
@@ -159,12 +161,12 @@ export default class Index extends Component {
           {other[k].map((
             (item) => {
               return (
-                <AtListItem
+                <GlobalSearchItem
                   key={item._id}
-                  title={item.text}
-                  note={`[${otherLawNameMap[item.type]}]  ${convertNumberToChinese(item.number)}`}
-                  arrow='right'
-                  onClick={() => {
+                  text={item.text}
+                  law={otherLawNameMap[item.type]}
+                  number={convertNumberToChinese(item.number)}
+                  redirect={() => {
                     Taro.navigateTo({
                       url: `/pages/regulationDetail/index?id=${item._id}&type=${item.type}`,
                     })

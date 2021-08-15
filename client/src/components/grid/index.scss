@@ -17,12 +17,13 @@
     width: 140px;
     border-radius: 5px;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: flex-end;
     //background: #6190E8;
     .tag {
       font-size: 24px;
       display: inline-block;
       padding: 6px 10px;
+      margin-right: 8px;
       border-radius: 22px;
       background: #1e90ff;
       color: white;

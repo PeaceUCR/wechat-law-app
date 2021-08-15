@@ -18,8 +18,6 @@ exports.main = async (event, context) => {
     const dbNames = [
         'terms',
         'litigation-law',
-        'litigation-regulation',
-        'police-regulation',
         'civil-law',
         'civil-law-regulation',
         'other-law'

@@ -6,7 +6,6 @@ import { db } from '../../util/db'
 import { TermSearchItem } from '../../components/termSearchItem/index.weapp'
 import { LawCategory } from '../../components/lawCategory/index.weapp'
 import {convertNumberToChinese} from '../../util/convertNumber'
-import {policeRegulationCategoryLines} from '../../util/util'
 import './index.scss'
 
 
@@ -55,9 +54,6 @@ export default class Index extends Component {
 
   componentDidMount () {
     const that = this;
-    that.setState({
-      policeLawLines: policeRegulationCategoryLines
-    })
   }
 
   componentWillUnmount () { }

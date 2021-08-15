@@ -1,0 +1,29 @@
+
+.label {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  .number {
+    display: inline-block;
+    color: #16459c;
+    text-decoration: underline;
+    text-decoration-color: #16459c;
+    margin-right: 10px;
+  }
+
+  .law {
+    display: inline-block;
+    color: black;
+    margin-right: 10px;
+  }
+  .left-hand {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+

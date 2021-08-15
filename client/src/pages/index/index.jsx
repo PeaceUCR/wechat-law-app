@@ -247,7 +247,7 @@ export default class Index extends Component {
     enableMainVideoAd: false,
     enableMainBanner: false,
     enableMainBottomVideo: false,
-    searchValue: ''
+    searchValue: '盗窃'
     // enablePosterAd: false
   }
 
