@@ -576,14 +576,9 @@ export default class Index extends Component {
          </View>}
           {isNewUser && <LoginPopup handleLoginSuccess={this.handleLoginSuccess} handleCloseLogin={this.handleCloseLogin} canClose={canClose} />}
           {!isNewUser && this.renderUserFloatButton()}
-          <View className='footer-container'>
-            <AtDivider height='100'>
-              <View className='footer' onClick={this.handleShowFooter}>
-                <Image src={logoIcon} className='logo' />
-                {showFooter && <Text className='footer-logo'>武汉满屏星科技有限公司</Text>}
-              </View>
-            </AtDivider>
-          </View>
+
+        <AtDivider content='没有更多了' fontColor='#666' lineColor='#666'/>
+
           {/*<View>*/}
           {/*  <ImageCropper />*/}
           {/*</View>*/}
@@ -621,6 +616,14 @@ export default class Index extends Component {
             <ad unit-id='adunit-ac46445a5f7a8561' ad-type='video' ad-theme='white'></ad>
           </SwiperItem>
         </Swiper>}
+        <View className='footer-container'>
+          <AtDivider height='100'>
+            <View className='footer' onClick={this.handleShowFooter}>
+              <Image src={logoIcon} className='logo' />
+              {showFooter && <Text className='footer-logo'>武汉满屏星科技有限公司</Text>}
+            </View>
+          </AtDivider>
+        </View>
       </View>
     )
   }

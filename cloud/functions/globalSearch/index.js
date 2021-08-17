@@ -11,20 +11,94 @@ exports.main = async (event, context) => {
     const db = cloud.database()
     const _ = db.command;
 
-    const searchValue = event.searchValue
+    const {searchValue, selectedOption1} = event
 
     const exactRegexp = `.*${searchValue}`
 
-    const dbNames = [
+    let dbNames = [
         'terms',
         'litigation-law',
         'civil-law',
         'civil-law-regulation',
         'other-law'
     ]
+    let otherLawNames = [
+        'criminal-litigation-explanation',
+        'civil-litigation-explanation',
+        'road-safe-violation-handling',
+        'police-admin-regulation',
+        'road-safe-regulation',
+        'road-safe-law',
+        'public-order-admin-penalty-law',
+        'admin-allow-law',
+        'admin-reconsider-regulation',
+        'admin-reconsider-law',
+        'admin-punish-law',
+        'admin-force-law',
+        'admin-litigation-explaination',
+        'admin-litigation-law',
+        'company-law',
+        'labor-contract-law',
+        'labor-law',
+        'anti-drug-law',
+        'anti-terrorism-law',
+        'supervision-law',
+        'police-regulation',
+        'litigation-regulation'
+    ]
+
+    if (selectedOption1 === 'criminal') {
+        dbNames = [
+            'terms',
+            'litigation-law',
+            'other-law'
+        ]
+        otherLawNames = [
+            'criminal-litigation-explanation',
+            'anti-drug-law',
+            'anti-terrorism-law',
+            'supervision-law',
+            'police-regulation',
+            'litigation-regulation'
+        ]
+    } else if (selectedOption1 === 'civil') {
+        dbNames = [
+            'civil-law',
+            'civil-law-regulation',
+            'other-law'
+        ]
+        otherLawNames = [
+            'civil-litigation-explanation',
+            'company-law',
+            'labor-contract-law',
+            'labor-law',
+        ]
+    } else if (selectedOption1 === 'admin') {
+        dbNames = [
+            'other-law'
+        ]
+        otherLawNames = [
+            'road-safe-violation-handling',
+            'police-admin-regulation',
+            'road-safe-regulation',
+            'road-safe-law',
+            'public-order-admin-penalty-law',
+            'admin-allow-law',
+            'admin-reconsider-regulation',
+            'admin-reconsider-law',
+            'admin-punish-law',
+            'admin-force-law',
+            'admin-litigation-explaination',
+            'admin-litigation-law',
+        ]
+    }
+
 
     const reg = new RegExp(searchValue, "gi");
     const getWeight = (text) => {
+       if (Array.isArray(text)) {
+           text = text.join('\n')
+       }
        const ocurrences = (text.match(reg) || []).length;
        return ocurrences / text.length
     }
@@ -32,12 +106,29 @@ exports.main = async (event, context) => {
     const limitPerLaw = 6
 
     const requests = dbNames.map(async (name) => {
-            const result = await db.collection(name).where({
-                text: db.RegExp({
-                    regexp: exactRegexp,
+            let result;
+
+            if (name == 'other-law') {
+                result = await db.collection(name).where({
+                    text: db.RegExp({
+                        regexp: exactRegexp,
+                        options: 'i',
+                    }),
+                    type: db.RegExp({
+                    regexp: otherLawNames.join('|'),
                     options: 'i',
-                })
-            }).limit(1000).orderBy('number', 'asc').get()
+                    }),
+                }).limit(1000).orderBy('number', 'asc').get()
+
+            } else {
+                result = await db.collection(name).where({
+                    text: db.RegExp({
+                        regexp: exactRegexp,
+                        options: 'i',
+                    })
+                }).limit(1000).orderBy('number', 'asc').get()
+            }
+
 
             result.data.sort((a,b) => {
                 return getWeight(b.text) - getWeight(a.text)
