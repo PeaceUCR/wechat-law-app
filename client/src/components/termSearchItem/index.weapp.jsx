@@ -38,7 +38,7 @@ const TermSearchItem = (props) => {
   term = term ? term : {};
   let {text, crime, tag, _id, isDeleted, number} = term;
   if (type === 'civil-law-regulation') {
-    text = text.join('\n')
+    text = getText(text)
   }
 
   const isCrime = crime && tag === crime;

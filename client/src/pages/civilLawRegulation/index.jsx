@@ -117,7 +117,7 @@ export default class Index extends Component {
         })
         return ;
       }
-      db.collection('police-regulation').where({text: db.RegExp({
+      db.collection('civil-law-regulation').where({text: db.RegExp({
           regexp: '.*' + searchValue,
           options: 'i',
         })}).get({

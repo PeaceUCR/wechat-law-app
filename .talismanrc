@@ -1,3 +1,3 @@
 fileignoreconfig:
-- filename: cloud/functions/searchCivilLawExplaination/yarn.lock
-  checksum: 33c784a13668d4ece5e3c32f0b62b013b9ab155edb4f5d228b265a9d22660262
+- filename: client/src/util/util.js
+  checksum: ffe975eeaafee9eb23cee588ed130c96e52b153b333b18d3abc12240293ac34d

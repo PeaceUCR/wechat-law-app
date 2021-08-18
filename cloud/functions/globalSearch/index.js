@@ -129,7 +129,6 @@ exports.main = async (event, context) => {
                 }).limit(1000).orderBy('number', 'asc').get()
             }
 
-
             result.data.sort((a,b) => {
                 return getWeight(b.text) - getWeight(a.text)
             })

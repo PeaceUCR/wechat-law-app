@@ -22,6 +22,8 @@ export const tap =
 export const rightArrowIcon =
   'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU91NbdA7KD67zsicc1iaEY1YsyibRQH3y3YicvCEjtV0GLK3KsE7WXLkdNcnm4ykajNgzQicldwMicHkxktg/0?wx_fmt=png'
 
+export const settingIcon =
+  'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU92UYROmCwI9kIRFU6pnKzycaPtbJdQ4ibwv99ttVwWNj2GkAib2icbrPD3cyGLWuTNMjs8I3pB1X6QOw/0?wx_fmt=png'
 export function getTodayDateString() {
   return new Date().toLocaleDateString()
 }

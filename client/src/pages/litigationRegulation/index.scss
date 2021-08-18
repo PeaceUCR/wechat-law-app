@@ -159,15 +159,42 @@
   position: fixed;
   top: 180px;
   right: 40px;
+  z-index: 102;
+  .setting {
+    width: 100px;
+    height: 100px;
+  }
 }
 
 .at-modal__content {
-  height: 600px;
+  height: 760px;
 }
 
-.invalid {
-  border: 2px solid #ff1a1a;
+.normal {
+  border: 2px solid transparent;
+  &.invalid {
+    border: 2px solid #ff1a1a;
+  }
 }
+
+
+.at-radio__title {
+  color: #6190E8;
+}
+
 .select {
   margin-bottom: 10px;
+  color: #6190E8;
+  .at-radio__option-container {
+    font-weight: bold;
+  }
+  .at-radio__title {
+    color: black;
+  }
 }
+
+.at-radio::after, .at-radio::before {
+  border-top: none !important;
+  border-bottom: none !important;
+}
+

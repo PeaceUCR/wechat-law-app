@@ -1,5 +1,5 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
-import {View, Text, Button} from '@tarojs/components'
+import {View, Text, Button,Image} from '@tarojs/components'
 import { AtSearchBar, AtNoticebar, AtIcon, AtModal,AtModalHeader, AtModalContent,AtModalAction, AtRadio,AtDivider } from 'taro-ui'
 import {isEmpty, groupBy} from "lodash";
 import '../litigationRegulation/index.scss'
@@ -7,6 +7,7 @@ import {otherLawNameMap} from '../../util/otherLaw'
 import {convertNumberToChinese} from '../../util/convertNumber'
 import Loading2 from '../../components/loading2/index.weapp'
 import GlobalSearchItem from '../../components/globalSearchItem/index.weapp'
+import {settingIcon} from "../../util/util";
 
 
 export default class Index extends Component {
@@ -31,26 +32,47 @@ export default class Index extends Component {
   options2= {
     'criminal': [{
       value: 'term',
-      label: '-> 法律条文',
+      label: '• 法律条文',
       desc: ''
     },{
       value: 'complement',
-      label: '-> 司法解释/规定',
+      label: '• 司法解释/规定',
       desc: ''
+    },{
+      value: 'guide-example',
+      label: '• 指导案例'
+    },{
+      value: 'open-example',
+      label: '• 公报案例'
+    },{
+      value: 'consult',
+      label: '• 刑事审判参考'
     }],
     'civil': [{
       value: 'term',
-      label: '-> 法律条文',
+      label: '• 法律条文',
       desc: ''
     },{
       value: 'complement',
-      label: '-> 司法解释/规定',
+      label: '• 司法解释/规定',
       desc: ''
+    },{
+      value: 'guide-example',
+      label: '• 指导案例'
+    },{
+      value: 'open-example',
+      label: '• 公报案例'
     }],
     'admin': [{
       value: 'term',
-      label: '-> 法律条文',
+      label: '• 法律条文',
       desc: ''
+    },{
+      value: 'guide-example',
+      label: '• 指导案例'
+    },{
+      value: 'open-example',
+      label: '• 公报案例'
     }]
   }
 
@@ -315,6 +337,24 @@ export default class Index extends Component {
       isInvalid2: !selectedOption2
     })
     if (selectedOption1 && selectedOption2) {
+      if (selectedOption2 == 'guide-example') {
+        Taro.navigateTo({
+          url: `/pages/examples/index`
+        });
+        return ;
+      }
+      if (selectedOption2 == 'open-example') {
+        Taro.navigateTo({
+          url: `/pages/courtOpen/index`
+        });
+        return ;
+      }
+      if (selectedOption2 == 'consult') {
+        Taro.navigateTo({
+          url: `/pages/consultant/index`
+        });
+        return ;
+      }
       if (selectedOption1 == 'criminal' && selectedOption2 == 'complement') {
         Taro.navigateTo({
           url: `/pages/criminalComplement/index`
@@ -379,21 +419,21 @@ export default class Index extends Component {
             </View>
             {isLoading && <Loading2 />}
             <View onClick={this.handleOpen} className='float-setting'>
-              <AtIcon value='settings' size='36' color='#000'></AtIcon>
+              <Image src={settingIcon} className='setting' mode='widthFix' />
             </View>
 
           </View>
         <AtModal isOpened={showSetting}>
           <AtModalHeader>我要搜</AtModalHeader>
           <AtModalContent>
-            <View className={isInvalid1 ? 'invalid select' : 'select'}>
+            <View className={isInvalid1 ? 'invalid select normal' : 'select normal'}>
               <AtRadio
                 options={this.options1}
                 value={selectedOption1}
                 onClick={this.handleSelect1}
               />
             </View>
-            <View className={isInvalid2 ? 'invalid' : ''}>
+            <View className={isInvalid2 ? 'invalid normal' : 'normal'}>
               <AtRadio
                 options={this.options2[selectedOption1]}
                 value={selectedOption2}
@@ -403,7 +443,7 @@ export default class Index extends Component {
           </AtModalContent>
           <AtModalAction><Button onClick={this.handleClose} >确定</Button> </AtModalAction>
         </AtModal>
-        {!isLoading && <AtDivider content='没有更多了' fontColor='#666' lineColor='#666' />}
+        {!isLoading && <AtDivider content='没有更多了' fontColor='#666' lineColor='transparent' />}
       </View>
     )
   }
