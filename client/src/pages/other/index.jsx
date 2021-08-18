@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import {View, Image, Text} from '@tarojs/components'
+import {View, Image, Text, WebView} from '@tarojs/components'
 import {AtDivider} from "taro-ui";
 import './index.scss'
 import {db} from "../../util/db";
