@@ -227,7 +227,7 @@ export default class RegulationDetail extends Component {
 
     const that = this;
     const {isCollected, term, type} = this.state;
-    const {_id, item, number, tag} = term
+    const {_id, item, number, chnNumber, tag} = term
 
     that.setState({isLoading: true})
     if (isCollected) {
@@ -251,7 +251,7 @@ export default class RegulationDetail extends Component {
       if (collectionCommonLawSet.has(type)) {
         title = number
       } else if (type === 'civil-law-regulation') {
-        title = `${number} ${tag}`
+        title = `${chnNumber} ${tag}`
       } else if (type === 'litigation-law') {
         title = `${item} ${tag}`
       } else {

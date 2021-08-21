@@ -16,7 +16,6 @@ export default class Index extends Component {
     searchValue: '',
     searchResult: [],
     isLoading: false,
-    selected: "搜全文",
     showAllCategories: true,
     isReadMode: false,
     civilLawRegulationLines: []
@@ -88,7 +87,7 @@ export default class Index extends Component {
   onSearch = () => {
     const that = this;
     this.setState({isLoading: true});
-    const { searchValue, selected } = this.state;
+    const { searchValue } = this.state;
     if(!searchValue.trim()) {
       Taro.showToast({
         title: '搜索不能为空',
@@ -97,42 +96,22 @@ export default class Index extends Component {
       })
       return ;
     }
-    if (selected === '搜全文') {
-      if (!isNaN(parseInt(searchValue))) {
-        console.log(isNaN(parseInt(searchValue)))
-        db.collection('civil-law-regulation').where({number: db.RegExp({
-            regexp: '.*' + convertNumberToChinese(parseInt(searchValue)),
-            options: 'i',
-          })}).get({
-          success: (res) => {
-            if (isEmpty(res.data)) {
-              Taro.showToast({
-                title: `未找到含有${searchValue}的法条`,
-                icon: 'none',
-                duration: 3000
-              })
-            }
-            that.setState({searchResult: res.data, isLoading: false, hasSearched: true});
-          }
-        })
-        return ;
-      }
-      db.collection('civil-law-regulation').where({text: db.RegExp({
-          regexp: '.*' + searchValue,
-          options: 'i',
-        })}).get({
-        success: (res) => {
-          if (isEmpty(res.data)) {
-            Taro.showToast({
-              title: `未找到含有${searchValue}的法条`,
-              icon: 'none',
-              duration: 3000
-            })
-          }
-          that.setState({searchResult: res.data, isLoading: false, hasSearched: true});
+    Taro.cloud.callFunction({
+      name: 'getCivilLawRegulation',
+      data: {
+        searchValue: searchValue,
+      },
+      complete: (r) => {
+        if (isEmpty(r.result.data)) {
+          Taro.showToast({
+            title: `未找到含有${searchValue}的法条`,
+            icon: 'none',
+            duration: 3000
+          })
         }
-      });
-    }
+        that.setState({searchResult: r.result.data, isLoading: false});
+      }
+    })
   }
 
   onClear = () => {

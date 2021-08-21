@@ -1,6 +1,6 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {View, Text, Button,Image} from '@tarojs/components'
-import { AtSearchBar, AtNoticebar, AtIcon, AtModal,AtModalHeader, AtModalContent,AtModalAction, AtRadio,AtDivider } from 'taro-ui'
+import { AtSearchBar, AtNoticebar, AtModal,AtModalHeader, AtModalContent,AtModalAction, AtRadio,AtDivider } from 'taro-ui'
 import {isEmpty, groupBy} from "lodash";
 import '../litigationRegulation/index.scss'
 import {otherLawNameMap} from '../../util/otherLaw'
@@ -221,8 +221,7 @@ export default class Index extends Component {
                 key={item._id}
                 text={item.text}
                 law='民事诉讼法'
-                number={item.number}
-
+                number={item.chnNumber}
                 redirect={() => {
                   Taro.navigateTo({
                     url: `/pages/regulationDetail/index?id=${item._id}&type=civil-law-regulation`,
@@ -433,13 +432,14 @@ export default class Index extends Component {
                 onClick={this.handleSelect1}
               />
             </View>
-            <View className={isInvalid2 ? 'invalid normal' : 'normal'}>
+            {selectedOption1 && <View className={isInvalid2 ? 'invalid normal' : 'normal'}>
               <AtRadio
                 options={this.options2[selectedOption1]}
                 value={selectedOption2}
                 onClick={this.handleSelect2}
               />
-            </View>
+            </View>}
+
           </AtModalContent>
           <AtModalAction><Button onClick={this.handleClose} >确定</Button> </AtModalAction>
         </AtModal>

@@ -14,7 +14,8 @@ const typeCollectionMap = {
   'consultant': 'consult',
   'civilLawExample': 'civil-law-link-example-detail',
   'civil-law-explaination': 'civil-law-explaination',
-  'source': 'sentencing-source'
+  'source': 'sentencing-source',
+  'complement-example': 'complement'
 }
 
 export default class ExampleDetail extends Component {
