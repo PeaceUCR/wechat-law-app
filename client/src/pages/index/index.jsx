@@ -7,7 +7,7 @@ import { LoginPopup } from '../../components/loginPopup/index.weapp'
 import { UserFloatButton } from '../../components/userFloatButton/index.weapp'
 import { ImageCropper } from '../../components/imageCropper/index.weapp'
 import qrcode from '../../static/qrcode.png';
-import {checkIfNewUser, getUserAvatar, getUserNickname, isSuperAdmin} from '../../util/login';
+import {checkIfNewUser, getUserAvatar, getUserNickname, getUserOpenId, isSuperAdmin} from '../../util/login';
 import './index.scss'
 import {db} from "../../util/db";
 import {tmpId, logoIcon} from '../../util/util'
@@ -470,6 +470,20 @@ export default class Index extends Component {
     return ;
   }
 
+  jumpToMiniProgram = throttle(
+    () => {
+      const redirectStr = `/pages/index/index?userOpenId=${getUserOpenId()}&userName=${getUserNickname()}&userAvatar=${encodeURIComponent(getUserAvatar())}&law=criminal&number=264&searchValue=盗窃`
+      console.log(redirectStr)
+
+      Taro.navigateToMiniProgram({
+        appId: 'wxa7f48cf2a65948d7',
+        path: redirectStr
+      });
+    },
+    5000,
+    { trailing: false }
+  );
+
   render () {
     const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl, joinGroupUrl, posterRedirect, swiperPosters, canClose, enableMainVideoAd, enableMainBanner, searchValue, enableMainBottomVideo} = this.state;
     return (
@@ -577,7 +591,9 @@ export default class Index extends Component {
           {isNewUser && <LoginPopup handleLoginSuccess={this.handleLoginSuccess} handleCloseLogin={this.handleCloseLogin} canClose={canClose} />}
           {!isNewUser && this.renderUserFloatButton()}
 
-        <AtDivider content='没有更多了' fontColor='#666' lineColor='#666'/>
+          <View onClick={this.jumpToMiniProgram}>
+            <AtDivider content='没有更多了' fontColor='#666' lineColor='#666' />
+          </View>
 
           {/*<View>*/}
           {/*  <ImageCropper />*/}
