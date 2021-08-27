@@ -472,7 +472,7 @@ export default class Index extends Component {
 
   jumpToMiniProgram = throttle(
     () => {
-      const redirectStr = `/pages/index/index?userOpenId=${getUserOpenId()}&userName=${getUserNickname()}&userAvatar=${encodeURIComponent(getUserAvatar())}&law=criminal&number=264&searchValue=盗窃`
+      const redirectStr = `/pages/index/index?userOpenId=${getUserOpenId()}&userName=${getUserNickname()}&userAvatar=${encodeURIComponent(getUserAvatar())}&law=criminal&number=277&searchValue=妨害公务`
       console.log(redirectStr)
 
       Taro.navigateToMiniProgram({
