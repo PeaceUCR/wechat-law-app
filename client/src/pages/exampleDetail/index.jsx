@@ -9,8 +9,8 @@ import throttle from "lodash/throttle";
 import {DiscussionArea} from "../../components/discussionArea/index.weapp";
 
 const typeCollectionMap = {
-  'court': 'court-examples',
-  'procuratorate': 'procuratorate-examples',
+  'court': 'example',
+  'procuratorate': 'example',
   'consultant': 'consult',
   'civilLawExample': 'civil-law-link-example-detail',
   'civil-law-explaination': 'civil-law-explaination',

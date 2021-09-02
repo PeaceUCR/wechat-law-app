@@ -31,6 +31,8 @@ const regulationDetailSet = new Set(
     'road-safe-violation-handling',
     'police-regulation',
     'litigation-regulation',
+    'police-law',
+    'police-enforce-detail',
   ])
 
 const TermSearchItem = (props) => {

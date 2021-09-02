@@ -1,3 +1,5 @@
 fileignoreconfig:
-- filename: client/src/util/util.js
-  checksum: 164e6c62b4629dd2e4bb5e29275f687ad3c97e0c395948f69f55a95c11029751
+- filename: cloud/functions/countTodayUsage/index.js
+  checksum: e63be91e3f5a70000b71ddd1c5a0cb099349c860bd9b90ff99f3976abcd40cf4
+- filename: client/src/pages/index/index.jsx
+  checksum: 820754ec6dc9fc9921dd1d918aadfe1e6f09927903cee7db640bde53d167cf51

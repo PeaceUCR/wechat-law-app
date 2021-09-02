@@ -40,7 +40,9 @@ const newLaws = {
   'company-law': '公司法',
   'criminal-litigation-explanation': otherLawNameMap['criminal-litigation-explanation'],
   'civil-litigation-explanation': otherLawNameMap['civil-litigation-explanation'],
-  'road-safe-violation-handling': otherLawNameMap['road-safe-violation-handling']
+  'road-safe-violation-handling': otherLawNameMap['road-safe-violation-handling'],
+  'police-law':otherLawNameMap['police-law'],
+  'police-enforce-detail': otherLawNameMap['police-enforce-detail'],
 }
 
 const MyCollection = (props) => {
