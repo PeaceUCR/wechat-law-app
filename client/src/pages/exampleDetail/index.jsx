@@ -1,5 +1,5 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
-import {View,Input, Button} from '@tarojs/components'
+import {View,Input, Button, RichText} from '@tarojs/components'
 import {AtFab, AtIcon, AtActivityIndicator, AtNoticebar, AtButton, AtBadge} from "taro-ui";
 import { db } from '../../util/db'
 import TextSection from '../../components/textSection/index.weapp'
@@ -7,6 +7,7 @@ import './index.scss'
 import {checkIfNewUser, redirectToIndexIfNewUser} from "../../util/login";
 import throttle from "lodash/throttle";
 import {DiscussionArea} from "../../components/discussionArea/index.weapp";
+import {findAndHighlight, isStartWith} from "../../util/util";
 
 const typeCollectionMap = {
   'court': 'example',
@@ -20,6 +21,7 @@ const typeCollectionMap = {
 
 export default class ExampleDetail extends Component {
 
+  foundKey = ''
   state = {
     comment: '',
     isSent: false,
@@ -30,7 +32,8 @@ export default class ExampleDetail extends Component {
     zoomIn: false,
     isCollected: false,
     isReadMode: false,
-    isLoading: true
+    isLoading: true,
+    enableAutoScroll: false
   }
 
   config = {
@@ -96,6 +99,13 @@ export default class ExampleDetail extends Component {
       Taro.setNavigationBarColor({
         frontColor: '#000000',
         backgroundColor: '#F4ECD8'
+      })
+    }
+
+    const isEnableScroll = getStorageSync('enableAutoScroll');
+    if (isEnableScroll) {
+      that.setState({
+        enableAutoScroll: true
       })
     }
   }
@@ -281,6 +291,7 @@ export default class ExampleDetail extends Component {
     }, 100)
   }
 
+
   renderNoData = () => {
     return (<View>
       <View className='no-data'>出错啦!</View>
@@ -289,8 +300,41 @@ export default class ExampleDetail extends Component {
     </View>)
   }
 
+
+  renderComplement = () => {
+    const {example, keyword, zoomIn} = this.state;
+    const {text, title} = example;
+    const that = this
+    const setKey = (line, key) => {
+      const regExp = new RegExp(key,"g");
+      const ifFound = regExp.test(line)
+      if (ifFound) {
+        this.foundKey = 'foundKey1'
+        return 'foundKey1'
+      }
+      return ''
+    }
+    setTimeout(() => {
+      if (that.foundKey) {
+        Taro.pageScrollTo({
+          selector: `#${that.foundKey}`,
+          duration: 500
+        })
+      }
+    }, 600)
+
+    return (<View  className={`text-section ${zoomIn ? 'zoom-in' : ''}`}>
+      <View className='term-complement-title'>{title}</View>
+      <View className='content'>{text.split('\n').filter(line => line.trim() && line.trim().length > 0).map((line, index) => {
+        return (<View id={setKey(line, keyword)} className='line' key={`text-example-detail-${index}`} >
+          <RichText nodes={findAndHighlight(line, index, keyword)} ></RichText>
+        </View>)
+      })}</View>
+    </View>)
+  }
+
   render () {
-    const {isSent, comment, example, zoomIn, isCollected, isReadMode, isLoading, type} = this.state;
+    const {isSent, comment, example, zoomIn, isCollected, isReadMode, isLoading, type, enableAutoScroll} = this.state;
     const {special, text, title} = example
     return (
       <View>
@@ -308,7 +352,8 @@ export default class ExampleDetail extends Component {
         <View className={`example-detail-page ${zoomIn ? 'zoom-in' : ''} ${isReadMode ? 'read-mode' : ''}`}>
           {special && this.renderSpecial()}
           {!special && <View>
-            {this.renderExample()}
+            {enableAutoScroll && type === 'complement' && this.renderComplement()}
+            {(!(enableAutoScroll && type === 'complement'))&& this.renderExample()}
           </View>}
           {!isLoading && !title && !text && this.renderNoData()}
           <View className='footer'>

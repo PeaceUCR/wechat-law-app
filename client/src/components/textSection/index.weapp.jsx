@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import {RichText, View} from "@tarojs/components";
 import './index.scss'
-import {isStartWith} from "../../util/util";
+import {isStartWith, findAndHighlight} from "../../util/util";
 
 const highlights = ['指导案例', '裁判要点', '相关法条', '相关法律规定', '基本案情', '裁判结果', '裁判理由', '刑法',
   '关键词', '要旨', '基本案情', '诉讼过程', '检察工作情况', '检察机关监督情况', '指导意义', '相关规定',
@@ -13,15 +13,6 @@ const refine = (str) => {
     }
   }
   return str;
-}
-
-const findAndHighlight = (str, index, key) => {
-  const regExp =new RegExp(key,"g");
-  if (key) {
-    return '<div>' + key ? str.replace(regExp, `<span class='highlight-keyword'>${key}</span>`) : str + '</div>'
-  } else {
-    return '<div>' + str + '</div>'
-  }
 }
 
 const TextSection = (props) => {

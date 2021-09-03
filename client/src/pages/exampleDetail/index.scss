@@ -133,3 +133,43 @@
   margin-bottom: 40px;
   color: black;
 }
+
+
+
+.text-section {
+  &.title {
+    font-weight: bold !important;
+    text-align: center;
+  }
+  &.zoom-in {
+    .content {
+      font-size: 40px;
+    }
+
+    .line {
+      padding-bottom: 50px;
+      color: #111;
+    }
+  }
+  .content {
+    font-size: 32px;
+  }
+
+  .line {
+    padding-bottom: 40px;
+    line-height:180%;
+    color: #111;
+  }
+  .highlight {
+    font-weight: bold;
+    color: black;
+  }
+  .highlight-keyword {
+    color: black;
+    font-weight: bold;
+    font-style: italic;
+    background: gold;
+    padding: 0px 10px 0px 5px;
+  }
+
+}

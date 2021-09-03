@@ -286,6 +286,13 @@ export default class Index extends Component {
           enableMainBottomVideo: res.data[0].enableMainBottomVideo
           // enablePosterAd: res.data[0].enablePosterAd
         })
+
+        if (res.data[0].enableAutoScroll) {
+          setStorageSync('enableAutoScroll', true);
+        } else {
+          setStorageSync('enableAutoScroll', false);
+        }
+
         if(res.data[0].forceLogin) {
           if(checkIfNewUser()) {
             Taro.cloud.callFunction({
