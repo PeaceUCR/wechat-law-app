@@ -114,3 +114,18 @@ export const findAndHighlight = (str, index, key) => {
     return '<div>' + str + '</div>'
   }
 }
+
+export const getExampleSearchTag = (example) => {
+  const {type, number, date} = example
+  if (type === 'guide-examples-procuratorate') {
+    return `最高检指导案例第${number}号`
+  } else if (type === 'guide-examples-court') {
+    return `最高法指导案例第${number}号`
+  } else if (type === 'open-examples-court') {
+    return `最高法公报案例 ${date}`
+  } else if (type === 'typical-examples-court') {
+    return `最高法典型案例 ${date}`
+  }
+  return ''
+}
+

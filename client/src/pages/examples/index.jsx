@@ -1,26 +1,19 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {View, Text, Picker, Image} from '@tarojs/components'
-import { AtSearchBar, AtActivityIndicator, AtFab, AtBadge, AtIcon } from 'taro-ui'
+import { AtSearchBar, AtActivityIndicator, AtFab, AtBadge, AtIcon, AtListItem } from 'taro-ui'
 import {isEmpty} from 'lodash';
-import { db } from '../../util/db'
 import {
-  invalidCourtExample
+  invalidCourtExample, targetImageSource, getExampleSearchTag
 } from '../../util/util'
-import { ExampleSearchItem } from '../../components/exampleSearchItem/index.weapp'
-import {convertNumberToChinese} from '../../util/convertNumber'
-import clickIcon from '../../static/down.png';
 import './index.scss'
 
 export default class Index extends Component {
 
   state = {
     searchValue: '',
-    searchCourtResult: [],
-    searchProcuratorateResult: [],
+    searchResult: [],
     isLoading: false,
     isExpandLabel: false,
-    selected: '搜全文',
-    options: ['搜全文', '搜关键字', '搜案例名', '搜相关法条'],
     isReadMode: false,
     procuratorateMap: {},
     procuratorateExampleTitleMap: {},
@@ -29,7 +22,7 @@ export default class Index extends Component {
   }
 
   config = {
-    navigationBarTitleText: '指导案例搜索'
+    navigationBarTitleText: '指导/典型/公报案例搜索'
   }
 
   onShareAppMessage() {
@@ -62,13 +55,16 @@ export default class Index extends Component {
         const procuratorateExampleTitleMap = {}
         const courtMap = {}
         const courtExampleTitleMap = {}
+
+        const regex = new RegExp('指导案例.{1,3}号', 'g')
+
         procuratorateExamples.forEach(e => {
           procuratorateMap[e.number] = e._id
-          procuratorateExampleTitleMap[e._id] = `(检例第${e.number}号)${e.name}`
+          procuratorateExampleTitleMap[e._id] = e.name
         })
         courtExamples.forEach(e => {
           courtMap[e.number] = e._id
-          courtExampleTitleMap[e._id] = e.title
+          courtExampleTitleMap[e._id] = e.title.replace(regex,'').replace('：','').replace(':','')
         })
         that.setState({
           procuratorateMap,
@@ -91,18 +87,6 @@ export default class Index extends Component {
 
   componentDidHide () { }
 
-  renderSearchList = () => {
-    const {searchValue, searchCourtResult, searchProcuratorateResult, isReadMode} = this.state
-    return (<View>
-      <View>
-        {searchCourtResult.map(((example) => {return (<ExampleSearchItem isReadMode={isReadMode} example={example} type='court' searchValue={searchValue} key={`example-${example._id}`} />)}))}
-      </View>
-      <View>
-        {searchProcuratorateResult.map(((example) => {return (<ExampleSearchItem isReadMode={isReadMode} example={example} type='procuratorate' searchValue={searchValue} key={`example-${example._id}`} />)}))}
-      </View>
-    </View>)
-  }
-
   onChange = (searchValue) => {
     this.setState({searchValue})
   }
@@ -110,7 +94,7 @@ export default class Index extends Component {
   onSearch = () => {
     const that = this;
     this.setState({isLoading: true});
-    const { searchValue, selected } = this.state;
+    const { searchValue } = this.state;
     if(!searchValue.trim()) {
       Taro.showToast({
         title: '搜索不能为空',
@@ -119,144 +103,41 @@ export default class Index extends Component {
       })
       return ;
     }
-
-    if (selected === '搜全文') {
-      Taro.cloud.callFunction({
-        name: 'searchExamples',
-        data: {
-          searchValue: searchValue
-        },
-        complete: ({result}) => {
-          const {searchCourtResult, searchProcuratorateResult} = result
-          if (isEmpty(searchCourtResult) || isEmpty(searchProcuratorateResult)) {
-            Taro.showToast({
-              title: `未找到含有${searchValue}的指导案例`,
-              icon: 'none',
-              duration: 3000
-            })
-          }
-          that.setState({searchCourtResult, searchProcuratorateResult, isLoading: false});
+    Taro.cloud.callFunction({
+      name: 'searchAllExamples',
+      data: {
+        searchValue: searchValue
+      },
+      complete: ({result}) => {
+        console.log(result)
+        const {searchResult} = result
+        if (isEmpty(searchResult)) {
+          Taro.showToast({
+            title: `未找到含有${searchValue}的案例`,
+            icon: 'none',
+            duration: 3000
+          })
         }
-      })
-    }
+        that.setState({searchResult, isLoading: false});
+        // const {searchCourtResult, searchProcuratorateResult} = result
+        // if (isEmpty(searchCourtResult) || isEmpty(searchProcuratorateResult)) {
+        //   Taro.showToast({
+        //     title: `未找到含有${searchValue}的案例`,
+        //     icon: 'none',
+        //     duration: 3000
+        //   })
+        // }
+        // that.setState({searchCourtResult, searchProcuratorateResult, isLoading: false});
+      }
+    })
 
-
-    if (selected === '搜案例名') {
-      db.collection('court-examples').where({title: db.RegExp({
-          regexp: '.*' + searchValue,
-          options: 'i',
-        })}).orderBy('number', 'asc').get({
-        success: (res) => {
-          if (isEmpty(res.data)) {
-            Taro.showToast({
-              title: `未找到含有${searchValue}的法院指导案例`,
-              icon: 'none',
-              duration: 3000
-            })
-          }
-          that.setState({searchCourtResult: res.data, isLoading: false});
-        }
-      });
-
-      db.collection('procuratorate-examples').where({name: db.RegExp({
-          regexp: '.*' + searchValue,
-          options: 'i',
-        })}).orderBy('number', 'asc').get({
-        success: (res) => {
-          if (isEmpty(res.data)) {
-            Taro.showToast({
-              title: `未找到含有${searchValue}的检察院指导案例`,
-              icon: 'none',
-              duration: 3000
-            })
-          }
-          that.setState({searchProcuratorateResult: res.data, isLoading: false});
-        }
-      });
-    }
-
-    if (selected === '搜关键字') {
-      db.collection('court-examples').where({keyword: db.RegExp({
-          regexp: '.*' + searchValue,
-          options: 'i',
-        })}).orderBy('number', 'asc').get({
-        success: (res) => {
-          if (isEmpty(res.data)) {
-            Taro.showToast({
-              title: `未找到含有${searchValue}的法院指导案例`,
-              icon: 'none',
-              duration: 3000
-            })
-          }
-          that.setState({searchCourtResult: res.data, isLoading: false});
-        }
-      });
-
-      db.collection('procuratorate-examples').where({keyword: db.RegExp({
-          regexp: '.*' + searchValue,
-          options: 'i',
-        })}).orderBy('number', 'asc').get({
-        success: (res) => {
-          if (isEmpty(res.data)) {
-            Taro.showToast({
-              title: `未找到含有${searchValue}的检察院指导案例`,
-              icon: 'none',
-              duration: 3000
-            })
-          }
-          that.setState({searchProcuratorateResult: res.data, isLoading: false});
-        }
-      });
-    }
-
-    if (selected === '搜相关法条') {
-      db.collection('court-examples').where({terms: db.RegExp({
-          regexp: '.*' + convertNumberToChinese(searchValue),
-          options: 'i',
-        })}).orderBy('number', 'asc').get({
-        success: (res) => {
-          if (isEmpty(res.data)) {
-            Taro.showToast({
-              title: `未找到含有${searchValue}的法院指导案例`,
-              icon: 'none',
-              duration: 3000
-            })
-          }
-          that.setState({searchCourtResult: res.data, isLoading: false});
-        }
-      });
-
-      db.collection('procuratorate-examples').where({terms: db.RegExp({
-          regexp: '.*' + convertNumberToChinese(searchValue),
-          options: 'i',
-        })}).orderBy('number', 'asc').get({
-        success: (res) => {
-          if (isEmpty(res.data)) {
-            Taro.showToast({
-              title: `未找到含有${searchValue}的检察院指导案例`,
-              icon: 'none',
-              duration: 3000
-            })
-          }
-          that.setState({searchProcuratorateResult: res.data, isLoading: false});
-        }
-      });
-    }
   }
 
   onClear = () => {
     this.setState({
       searchValue: '',
-      searchCourtResult: [],
-      searchProcuratorateResult: []
+      searchResult: []
     });
-  }
-
-  onSelect = (e) => {
-    const {options} = this.state;
-    this.setState({
-      selected: options[e.detail.value]
-    })
   }
 
   onRedirect = (id, type) => {
@@ -274,13 +155,13 @@ export default class Index extends Component {
       courtExampleTitleMap
     } = this.state;
     return (<View>
-      <View className='title'>检察院指导案例：</View>
+      <View className='title'>最高检指导案例：</View>
       <View className='options'>
         {Object.keys(procuratorateMap)
         .map((number, index )=>
         {return (<Text className={`procuratorate-option option ${isExpandLabel ? 'expand': ''}`} key={`procuratorate-option-${index}`} onClick={() => {this.onRedirect(procuratorateMap[number], 'procuratorate')}}>{isExpandLabel ? procuratorateExampleTitleMap[procuratorateMap[number]] : number}</Text>)})}
       </View>
-      <View className='title'>法院指导案例：</View>
+      <View className='title'>最高法指导案例：</View>
       <View className='options'>
         {Object.keys(courtMap)
           .map((number, index )=>
@@ -289,37 +170,57 @@ export default class Index extends Component {
     </View>)
   }
 
+  renderSearchList = () => {
+    const {searchResult,searchValue} = this.state
+    return (<View>
+      <View>
+        {searchResult.map(((example) => {return (
+          <View className='result-item' key={`example-${example._id}`}>
+            <Image
+              src={targetImageSource}
+              className={example.exactMatch ? 'exact-match': 'exact-match-hide'}
+              mode='widthFix'
+            />
+            <AtListItem
+              title={`${example.title}`}
+              note={getExampleSearchTag(example)}
+              arrow='right'
+              onClick={() => {
+                Taro.navigateTo({
+                  url: `/pages/exampleDetail/index?type=court-open&id=${example._id}&keyword=${searchValue}`,
+                })
+              }}
+            />
+          </View>
+
+        )}))}
+      </View>
+    </View>)
+  }
+
   render () {
-    const {searchValue, searchCourtResult, searchProcuratorateResult, isLoading, selected, options, isExpandLabel, isReadMode} = this.state;
+    const {searchValue, searchResult, isLoading, isExpandLabel, isReadMode} = this.state;
     return (
       <View className={`example-page ${isReadMode ? 'read-mode' : ''}`}>
           <View className='header'>
-            <View className='select'>
-              <View>
-                <Picker mode='selector' mode='selector' range={options} onChange={this.onSelect}>
-                  <Text>{selected}</Text>
-                </Picker>
-              </View>
-              <Image src={clickIcon} className='icon-click' />
-            </View>
-            <View className='search'>
+            <View>
               <AtSearchBar
                 value={searchValue}
                 onChange={this.onChange}
                 onActionClick={this.onSearch}
                 onClear={this.onClear}
-                placeholder='搜法院检察院指导案例'
+                placeholder='案例全文搜索'
               />
             </View>
           </View>
           <View>
             <View>
-              {searchCourtResult.length === 0 && searchProcuratorateResult.length ===0 && this.renderOptionList()}
+              {searchResult.length === 0 && searchResult.length ===0 && this.renderOptionList()}
             </View>
             <View>
-              {(searchCourtResult.length > 0 || searchProcuratorateResult.length > 0) && this.renderSearchList()}
+              {(searchResult.length > 0 || searchResult.length > 0) && this.renderSearchList()}
             </View>
-            {searchCourtResult.length === 0 && searchProcuratorateResult.length ===0 && <AtFab className='float' onClick={() => this.setState({isExpandLabel: !isExpandLabel})}>
+            {searchResult.length === 0 && <AtFab className='float' onClick={() => this.setState({isExpandLabel: !isExpandLabel})}>
               <Text>{`${isExpandLabel ? '收缩' : '展开'}`}</Text>
             </AtFab>}
             {isLoading && <View className='loading-container'>

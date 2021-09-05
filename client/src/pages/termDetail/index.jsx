@@ -69,29 +69,28 @@ export default class TermDetail extends Component {
       success: (res) => {
         const term = res.data[0];
         that.setState({term});
-        db.collection('example')
-          .orderBy('number', 'desc')
-          .where({
-          type: 'guide-examples-procuratorate',
-          terms: db.RegExp({
-            regexp: '.*' + getTermNumber(term.text),
-            options: 'i',
-          })}).get({
-          success: (res) => {
-            that.setState({examples: res.data, isProcuratorateExampleLoading: false});
-          }
-        });
 
         db.collection('example')
           .orderBy('number', 'desc')
           .where({
-          type: 'guide-examples-court',
           criminalLaw: db.RegExp({
             regexp: '.*' + getTermNumber(term.text),
             options: 'i',
           })}).get({
           success: (res) => {
-            that.setState({courtExamples: res.data, isCourtExampleLoading: false});
+            const courts = [];
+            const procuratorates = [];
+            const other = []
+            res.data.forEach(item => {
+              if (item.type === 'guide-examples-court') {
+                courts.push(item)
+              } else if (item.type === 'guide-examples-procuratorate') {
+                procuratorates.push(item)
+              } else {
+                other.push(item)
+              }
+            })
+            that.setState({examples: procuratorates, courtExamples: courts, isCourtExampleLoading: false, isProcuratorateExampleLoading: false});
           }
         });
 

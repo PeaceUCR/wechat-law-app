@@ -39,11 +39,8 @@ export default class Index extends Component {
       label: '• 司法解释/规定',
       desc: ''
     },{
-      value: 'guide-example',
-      label: '• 指导案例'
-    },{
-      value: 'open-example',
-      label: '• 公报案例'
+      value: 'example',
+      label: '• 指导/典型/公报案例'
     },{
       value: 'consult',
       label: '• 刑事审判参考'
@@ -57,22 +54,16 @@ export default class Index extends Component {
       label: '• 司法解释/规定',
       desc: ''
     },{
-      value: 'guide-example',
-      label: '• 指导案例'
-    },{
-      value: 'open-example',
-      label: '• 公报案例'
+      value: 'example',
+      label: '• 指导/典型/公报案例'
     }],
     'admin': [{
       value: 'term',
       label: '• 法律条文',
       desc: ''
     },{
-      value: 'guide-example',
-      label: '• 指导案例'
-    },{
-      value: 'open-example',
-      label: '• 公报案例'
+      value: 'example',
+      label: '• 指导/典型/公报案例'
     }]
   }
 
@@ -336,7 +327,7 @@ export default class Index extends Component {
       isInvalid2: !selectedOption2
     })
     if (selectedOption1 && selectedOption2) {
-      if (selectedOption2 == 'guide-example') {
+      if (selectedOption2 == 'example') {
         Taro.navigateTo({
           url: `/pages/examples/index`
         });

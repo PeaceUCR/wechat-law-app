@@ -32,20 +32,24 @@
 
   .title {
     margin: 30px 10px 0px 20px;
+    text-align: center;
   }
   .options {
     margin: 10px 10px 0px 10px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: center;
     .option {
-      min-width: 70px;
+      font-size: 34px;
+      min-width: 60px;
       text-align: center;
-      margin: 5px 10px;
+      margin: 10px 8px;
+      padding: 2px 10px;
       border-radius: 6px;
       color: white;
       &.procuratorate-option {
-        background: darkred;
+        background: palevioletred;
       }
       &.court-option {
         &.out-dated {
@@ -58,10 +62,9 @@
       }
 
       &.expand {
-        width: 800px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        box-sizing: border-box;
+        width: 100vw;
+        white-space: pre-wrap;
         text-align: left;
       }
     }
@@ -100,3 +103,31 @@
     right: 60px;
   }
 }
+
+.result-item {
+  position: relative;
+  .exact-match {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 36px;
+    height: 36px;
+  }
+}
+
+.exact-match-hide {
+  display: none;
+}
+.at-search-bar {
+  width: 100vw;
+}
+.at-list__item {
+  padding: 20px;
+  .item-content__info-note {
+    color: #b07200;
+  }
+  .item-content__info-title {
+    font-size: 32px;
+  }
+}
+

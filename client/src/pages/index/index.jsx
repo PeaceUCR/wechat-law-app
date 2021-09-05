@@ -223,16 +223,16 @@ export default class Index extends Component {
       ],
       '共有': [
         {
-          title: '指导案例',
+          title: '指导/典型/公报案例',
           url: '/pages/examples/index',
           type: '共有',
           isUpdated: true
-        },
-        {
-          title: '最高法公报案例',
-          url: '/pages/courtOpen/index',
-          type: '共有'
         }
+        // {
+        //   title: '最高法公报案例',
+        //   url: '/pages/courtOpen/index',
+        //   type: '共有'
+        // }
         // {
         //   title: '裁判文书',
         //   url: '',

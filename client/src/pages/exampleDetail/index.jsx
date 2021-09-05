@@ -12,6 +12,7 @@ import {findAndHighlight, isStartWith} from "../../util/util";
 const typeCollectionMap = {
   'court': 'example',
   'procuratorate': 'example',
+  'court-open':'example',
   'consultant': 'consult',
   'civilLawExample': 'civil-law-link-example-detail',
   'civil-law-explaination': 'civil-law-explaination',
