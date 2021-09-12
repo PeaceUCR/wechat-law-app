@@ -13,8 +13,9 @@ exports.main = async (event, context) => {
   const searchValue = event.searchValue
 
   if (type === '搜全文') {
-    return await db.collection('civil-law').where({text: db.RegExp({
-            regexp: '.*' + searchValue,
+      const regexpString = `${searchValue.split('').join('.*')}`
+      return await db.collection('civil-law').where({text: db.RegExp({
+            regexp: regexpString,
             options: 'i',
         })}).orderBy('numberIndex', 'asc').limit(1000).get()
   } else if (type === '搜序号') {

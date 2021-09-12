@@ -5,8 +5,8 @@ import throttle from "lodash/throttle";
 import DataPopup from '../../components/dataPopup/index.weapp'
 import {DiscussionArea} from '../../components/discussionArea/index.weapp'
 import { db } from '../../util/db'
-import {checkIfNewUser, redirectToIndexIfNewUser} from '../../util/login'
-import {lawIdLabelMap, exampleIcon, sentencingIcon, explanationIcon, definitionIcon, consultIcon} from '../../util/util'
+import {checkIfNewUser, getUserAvatar, getUserNickname, getUserOpenId, redirectToIndexIfNewUser} from '../../util/login'
+import {lawIdLabelMap, exampleIcon, sentencingIcon, explanationIcon, definitionIcon, consultIcon, judgementIcon} from '../../util/util'
 import './index.scss'
 import TextSection from "../../components/textSection/index.weapp";
 import TextSectionLinked from "../../components/textSectionLinked/index.weapp";
@@ -536,6 +536,28 @@ export default class TermDetail extends Component {
     })
   }
 
+  jumpToMiniProgram = () => {
+    const {term} = this.state
+    const redirectStr = `/pages/index/index?userOpenId=${getUserOpenId()}&userName=${getUserNickname()}&userAvatar=${encodeURIComponent(getUserAvatar())}&law=criminal&number=${term.number}`
+    console.log(redirectStr)
+
+    Taro.navigateToMiniProgram({
+      appId: 'wxa7f48cf2a65948d7',
+      path: redirectStr
+    });
+  };
+
+  renderJudgementLine = () => {
+    return (<View className='judgement-line' onClick={this.jumpToMiniProgram}>
+      <Image
+        src={judgementIcon}
+        className='title-icon'
+        mode='widthFix'
+      />
+      <View className='text'>去裁判文书搜索更多😊</View>
+    </View>)
+  }
+
   render () {
     const {isSent, comment, term, examples, courtExamples, complementExamples,
       complements, termExplanations, consult,
@@ -655,6 +677,7 @@ export default class TermDetail extends Component {
             </AtAccordion>
           </View>
         }
+        {(term.number >=114 && term.number <=419) && this.renderJudgementLine()}
 
         {(isProcuratorateExampleLoading || isCourtExampleLoading
           || isComplementLoading || isCollectedLoading || isSentencingLoading || isTermExplanationLoading || isConsultLoading) && <View className='loading-container'>

@@ -8,6 +8,7 @@ import {convertNumberToChinese} from '../../util/convertNumber'
 import {setGlobalData, getGlobalData} from '../../util/global'
 import clickIcon from '../../static/down.png';
 import './index.scss'
+import {rankBySearchValue} from "../../util/rank";
 
 
 export default class Index extends Component {
@@ -148,7 +149,7 @@ export default class Index extends Component {
               duration: 3000
             })
           }
-          that.setState({searchResult: res.data, isLoading: false, hasSearched: true});
+          that.setState({searchResult: rankBySearchValue(res.data, 'text', searchValue), isLoading: false, hasSearched: true});
         }
       })
     }

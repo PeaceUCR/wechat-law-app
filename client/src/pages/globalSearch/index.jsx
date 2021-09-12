@@ -1,5 +1,5 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
-import {View, Text, Button,Image} from '@tarojs/components'
+import {View, Text, Button,Image, Swiper, SwiperItem} from '@tarojs/components'
 import { AtSearchBar, AtNoticebar, AtModal,AtModalHeader, AtModalContent,AtModalAction, AtRadio,AtDivider } from 'taro-ui'
 import {isEmpty, groupBy} from "lodash";
 import '../litigationRegulation/index.scss'
@@ -434,7 +434,12 @@ export default class Index extends Component {
           </AtModalContent>
           <AtModalAction><Button onClick={this.handleClose} >确定</Button> </AtModalAction>
         </AtModal>
-        {!isLoading && <AtDivider content='没有更多了' fontColor='#666' lineColor='transparent' />}
+        {!isLoading && <AtDivider content='没有更多了' fontColor='#333' />}
+        {!isLoading && !showSetting && <Swiper className='video-container'>
+          <SwiperItem >
+            <ad unit-id="adunit-aa47163462e4442f" ad-type="video" ad-theme="white"></ad>
+          </SwiperItem>
+        </Swiper>}
       </View>
     )
   }

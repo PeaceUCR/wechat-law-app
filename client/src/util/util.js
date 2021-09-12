@@ -12,6 +12,8 @@ export const explanationIcon =
   'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU90t4icfrbQqOWruibkyjVmSDvCwm0SGITK8lMtAaYSzibjCRw21GzdNO7yR4GwshYxvu2uibtrc7QwErA/0?wx_fmt=png'
 export const consultIcon =
   'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU9296FlDUP7WRJRsMbF3F1GZNQE6AhELyYOwJ7hcl4MyTibxicxGhujO3eUH2VqqSLSvITdQ2m7HXibow/0?wx_fmt=png'
+export const judgementIcon =
+  'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU91mpxjqkrribbOvVbnSmMeQAf4qGzmDSHDNSWj3l7PExS0cFMxxpl7PHo8icmKsMujWLtD7AjibgET6Q/0?wx_fmt=png'
 
 export const logoIcon =
   'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU90BjLQWC4xvdib5qLL6ySsG8APebKwkCvD1DfOQ08O6AyGEgg7UaFibM2lricaYcRBo0npQC3l7zmQUQ/0?wx_fmt=png'

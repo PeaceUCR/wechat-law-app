@@ -232,3 +232,21 @@
   background: rgba(256,256,256, 0.4);
   z-index: 1000;
 }
+
+.judgement-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 40px 0;
+  .title-icon {
+    width: 60px;
+    height: 60px;
+    z-index: 1;
+  }
+  .text {
+    font-size: 36px;
+    color: #6190E8;
+    text-decoration: underline;
+    text-decoration-color: #6190E8;
+  }
+}
