@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro'
-import {View,Image,RichText} from "@tarojs/components";
+import {View,Image,RichText,Text} from "@tarojs/components";
 import { AtBadge, AtIcon } from "taro-ui";
 import throttle from 'lodash/throttle';
 import './index.scss'
@@ -24,8 +24,8 @@ const findAndHighlight = (str, index, key) => {
 
 const GridItem = (props) => {
   let {option, disabled, keyword} = props;
-  option = option ? option : {title: '', url: ''};
-  const {title, url, isNew, isHot, isUpdated, isUnderConstruction} = option;
+  option = option ? option : {title: '', url: '', sub:''};
+  const {title, url, sub, isNew, isHot, isUpdated, isUnderConstruction} = option;
   const redirect = throttle(
     () => {
       if(disabled) {
@@ -60,6 +60,7 @@ const GridItem = (props) => {
           <AtIcon value='chevron-right' size='22' color={colors[option.type]}></AtIcon>
           <View className='title'>
             <RichText nodes={findAndHighlight(title, 0, keyword)} ></RichText>
+            <Text className='sub'>{sub}</Text>
           </View>
         </View>
       </View>

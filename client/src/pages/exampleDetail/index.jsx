@@ -34,7 +34,8 @@ export default class ExampleDetail extends Component {
     isCollected: false,
     isReadMode: false,
     isLoading: true,
-    enableAutoScroll: false
+    enableAutoScroll: false,
+    enableExampleDetailAd: false
   }
 
   config = {
@@ -44,6 +45,54 @@ export default class ExampleDetail extends Component {
   componentWillMount () {
     const that = this;
     const { id, type, keyword } = this.$router.params;
+
+    db.collection('configuration').where({}).get({
+      success: (res) => {
+        that.setState({
+          enableExampleDetailAd: res.data[0].enableExampleDetailAd,
+        })
+
+        if (res.data[0].enableAutoScroll) {
+          setStorageSync('enableAutoScroll', true);
+        } else {
+          setStorageSync('enableAutoScroll', false);
+        }
+
+        if(res.data[0].forceLogin) {
+          if(checkIfNewUser()) {
+            Taro.cloud.callFunction({
+              name: 'getUserInfo',
+              complete: r => {
+                if (r &&  r.result && r.result.data && r.result.data.length > 0 ) {
+                  setStorageSync('user', r.result.data[0]);
+                  that.setState({isUserLoaded: true})
+
+                  if (getStorageSync('poster-shown') !== res.data[0].posterUrl) {
+                    that.setState({showPoster: true})
+                  }
+
+                } else {
+                  that.setState({isNewUser: true});
+                }
+              }
+            })
+          } else {
+            if (getStorageSync('poster-shown') !== res.data[0].posterUrl) {
+              that.setState({showPoster: true})
+            } else {
+              // that.setState({enablePosterAd: res.data[0].enablePosterAd})
+            }
+          }
+        } else {
+          that.setState({showFooter: false})
+          // Taro.showModal({
+          //   title: '关于我们',
+          //   content: '这是一个法律学习，法律信息查询的工具小程序, 祝大家司法考试顺利！',
+          //   showCancel: false
+          // })
+        }
+      }
+    });
 
     if (typeCollectionMap[type]) {
       db.collection(typeCollectionMap[type]).where({_id: id}).get({
@@ -335,7 +384,7 @@ export default class ExampleDetail extends Component {
   }
 
   render () {
-    const {isSent, comment, example, zoomIn, isCollected, isReadMode, isLoading, type, enableAutoScroll} = this.state;
+    const {isSent, comment, example, zoomIn, isCollected, isReadMode, isLoading, type, enableAutoScroll, enableExampleDetailAd} = this.state;
     const {special, text, title} = example
     return (
       <View>
@@ -385,6 +434,9 @@ export default class ExampleDetail extends Component {
               </AtBadge>
             </View>
           </View>
+          {enableExampleDetailAd && !isLoading && <View>
+            <ad unit-id="adunit-918b26ec218137ab"></ad>
+          </View>}
           <DiscussionArea topicId={example._id}  isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />
           <View id='comments'></View>
           {isLoading && <View className='loading-container'>

@@ -9,6 +9,7 @@ import {DiscussionArea} from "../../components/discussionArea/index.weapp";
 import TextSection from "../../components/textSection/index.weapp";
 import {convertNumberToChinese, isNumber} from "../../util/convertNumber";
 import {getText} from "../../util/util";
+import {otherLawNameMap} from "../../util/otherLaw";
 
 const typeCollectionMap = {
   'police': 'police-regulation',
@@ -57,7 +58,10 @@ const otherLaws = [
   'supervision-law',
   'police-regulation',
   'police-law',
-  'police-enforce-detail'
+  'police-enforce-detail',
+  'national-compensation',
+  'exit-entry-law',
+  'help-law',
 ]
 
 const commonLawSet = new Set(
@@ -418,6 +422,18 @@ export default class RegulationDetail extends Component {
   render () {
     const {isSent, comment, term, type, isCollected, isReadMode, zoomIn, isLoading, litigationLawDefinition} = this.state;
     const {text} = term
+    let lawLabel
+    if (otherLawSet.has(type)) {
+      lawLabel = otherLawNameMap[type]
+    } else if (type === 'civil-law-regulation') {
+      lawLabel = '民事诉讼法'
+    } else if (type === 'litigation-law') {
+      lawLabel = '刑事诉讼法'
+    }
+    if (lawLabel) {
+      Taro.setNavigationBarTitle({title: lawLabel})
+    }
+
     return (
       <View className={`term-detail-page ${isReadMode ? 'read-mode' : ''} ${zoomIn ? 'zoom-in' : ''}`}>
         {(type === 'civil-law-regulation' || type === 'litigation-law') && term.tag && <View className='tag-line'><Text className='pre-tag'>法条要旨:</Text><Text className='tag'>{term.tag}</Text></View>}

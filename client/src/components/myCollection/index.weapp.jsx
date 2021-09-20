@@ -43,6 +43,9 @@ const newLaws = {
   'road-safe-violation-handling': otherLawNameMap['road-safe-violation-handling'],
   'police-law':otherLawNameMap['police-law'],
   'police-enforce-detail': otherLawNameMap['police-enforce-detail'],
+  'national-compensation': otherLawNameMap['national-compensation'],
+  'exit-entry-law': otherLawNameMap['exit-entry-law'],
+  'help-law': otherLawNameMap['help-law'],
 }
 
 const MyCollection = (props) => {

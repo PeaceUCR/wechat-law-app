@@ -38,8 +38,7 @@
 
   .title-container {
     display: flex;
-    align-items: center;
-    height: 60px;
+    height: 80px;
   }
 
   .title {
@@ -47,6 +46,10 @@
     width: 70vw;
     overflow: hidden;
     text-overflow: ellipsis;
+    .sub {
+      font-size: 28px;
+      color: #5200cc;
+    }
   }
 
   .icon-container {

@@ -434,7 +434,10 @@ export default class Index extends Component {
           </AtModalContent>
           <AtModalAction><Button onClick={this.handleClose} >确定</Button> </AtModalAction>
         </AtModal>
-        {!isLoading && <AtDivider content='没有更多了' fontColor='#333' />}
+        {!isLoading && <View className='no-more'>
+          <AtDivider content='没有更多了' fontColor='#333' />
+          <View>也可以去单独的模块进行更精确的搜索😊</View>
+        </View>}
         {!isLoading && !showSetting && <Swiper className='video-container'>
           <SwiperItem >
             <ad unit-id="adunit-aa47163462e4442f" ad-type="video" ad-theme="white"></ad>

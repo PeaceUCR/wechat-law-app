@@ -33,6 +33,9 @@ const regulationDetailSet = new Set(
     'litigation-regulation',
     'police-law',
     'police-enforce-detail',
+    'national-compensation',
+    'exit-entry-law',
+    'help-law',
   ])
 
 const TermSearchItem = (props) => {
