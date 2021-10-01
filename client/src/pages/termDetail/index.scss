@@ -250,3 +250,14 @@
     text-decoration-color: #6190E8;
   }
 }
+
+.copy-icon-container {
+  position: absolute;
+  top: 30px;
+  right: 60px;
+  .copy-icon {
+    width: 60px;
+    height: 60px;
+  }
+}
+

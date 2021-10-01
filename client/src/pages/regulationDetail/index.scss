@@ -224,3 +224,11 @@
   margin-bottom: 40px;
   color: black;
 }
+
+.copy-icon-container {
+  float: right;
+  .copy-icon {
+    width: 60px;
+    height: 60px;
+  }
+}

@@ -6,7 +6,7 @@ import DataPopup from '../../components/dataPopup/index.weapp'
 import {DiscussionArea} from '../../components/discussionArea/index.weapp'
 import { db } from '../../util/db'
 import {checkIfNewUser, getUserAvatar, getUserNickname, getUserOpenId, redirectToIndexIfNewUser} from '../../util/login'
-import {lawIdLabelMap, exampleIcon, sentencingIcon, explanationIcon, definitionIcon, consultIcon, judgementIcon} from '../../util/util'
+import {lawIdLabelMap, exampleIcon, sentencingIcon, explanationIcon, definitionIcon, consultIcon, judgementIcon, copy} from '../../util/util'
 import './index.scss'
 import TextSection from "../../components/textSection/index.weapp";
 import TextSectionLinked from "../../components/textSectionLinked/index.weapp";
@@ -558,6 +558,10 @@ export default class TermDetail extends Component {
     </View>)
   }
 
+  copyToClipboard = () => {
+    const {term} = this.state
+    copy(term.text)
+  }
   render () {
     const {isSent, comment, term, examples, courtExamples, complementExamples,
       complements, termExplanations, consult,
@@ -567,6 +571,13 @@ export default class TermDetail extends Component {
       showTermExplanation, showSentencing, showComplement, showExample, showConsult} = this.state;
     return (
       <View className={`term-detail-page ${isReadMode ? 'read-mode' : ''} ${zoomIn ? 'zoom-in' : ''}`}>
+          <View className='copy-icon-container' onClick={this.copyToClipboard}>
+            <Image
+              src='https://cdn-icons-png.flaticon.com/512/1828/1828249.png'
+              className='copy-icon'
+              mode='widthFix'
+            />
+          </View>
           <View className='main section'>
             <View>
               {this.renderSectionAndChapter()}
@@ -575,7 +586,6 @@ export default class TermDetail extends Component {
               {this.renderTermText()}
             </View>
           </View>
-
           {termExplanations.length > 0 &&
           <View className='module-container'>
             <Image

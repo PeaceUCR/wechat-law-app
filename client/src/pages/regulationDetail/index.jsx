@@ -1,5 +1,5 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
-import { View, Text, RichText, Input, Button } from '@tarojs/components'
+import { View, Text, RichText, Input, Button, Image } from '@tarojs/components'
 import {AtFab,AtIcon,AtBadge,AtButton,AtActivityIndicator, AtDivider} from "taro-ui";
 import { db } from '../../util/db'
 import {checkIfNewUser, redirectToIndexIfNewUser} from '../../util/login'
@@ -8,7 +8,7 @@ import throttle from "lodash/throttle";
 import {DiscussionArea} from "../../components/discussionArea/index.weapp";
 import TextSection from "../../components/textSection/index.weapp";
 import {convertNumberToChinese, isNumber} from "../../util/convertNumber";
-import {getText} from "../../util/util";
+import {copy, getText} from "../../util/util";
 import {otherLawNameMap} from "../../util/otherLaw";
 
 const typeCollectionMap = {
@@ -419,6 +419,11 @@ export default class RegulationDetail extends Component {
     </View>)
   }
 
+  copyToClipboard = () => {
+    const {term} = this.state
+    copy(term.text)
+  }
+
   render () {
     const {isSent, comment, term, type, isCollected, isReadMode, zoomIn, isLoading, litigationLawDefinition} = this.state;
     const {text} = term
@@ -436,6 +441,13 @@ export default class RegulationDetail extends Component {
 
     return (
       <View className={`term-detail-page ${isReadMode ? 'read-mode' : ''} ${zoomIn ? 'zoom-in' : ''}`}>
+        <View className='copy-icon-container' onClick={this.copyToClipboard}>
+          <Image
+            src='https://cdn-icons-png.flaticon.com/512/1828/1828249.png'
+            className='copy-icon'
+            mode='widthFix'
+          />
+        </View>
         {(type === 'civil-law-regulation' || type === 'litigation-law') && term.tag && <View className='tag-line'><Text className='pre-tag'>法条要旨:</Text><Text className='tag'>{term.tag}</Text></View>}
         <View className='main section'>
             <View>

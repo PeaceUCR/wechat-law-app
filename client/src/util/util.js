@@ -1,3 +1,5 @@
+import Taro from '@tarojs/taro'
+
 export const tmpId = 'cZWxYVaMH0JFtk2NIxjsEBLZcpazvU5vkYJcQlKsnBo'
 
 export const targetImageSource = 'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU92ZiaezOzgIyVO8wAQ7ZgFt3eo5pqEsoyExgibDIohRWa3dY3Lwiaxia5icUlr4CfWqjr9hGrmQpWiaNibmw/0?wx_fmt=png'
@@ -131,3 +133,15 @@ export const getExampleSearchTag = (example) => {
   return ''
 }
 
+export const copy = (text) => {
+  Taro.setClipboardData({
+    data: text,
+    success: function (res) {
+      Taro.showToast({
+        title: '法条文字已复制到剪贴板',
+        icon: 'none',
+        duration: 2000
+      })
+    }
+  });
+}

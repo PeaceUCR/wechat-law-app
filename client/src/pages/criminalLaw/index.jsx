@@ -117,6 +117,7 @@ export default class Index extends Component {
       {term.title}
     </View>) )
   }
+
   renderSingleCriminalLaw = () => {
     const {singleCriminalLaw} = this.state
     return singleCriminalLaw.map(term => (

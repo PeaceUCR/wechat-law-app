@@ -6,7 +6,7 @@ import DataPopup from '../../components/dataPopup/index.weapp'
 import {db} from '../../util/db'
 import {getNumber} from '../../util/convertNumber'
 import './index.scss'
-import {definitionIcon, exampleIcon, explanationIcon, lawIdLabelMap} from "../../util/util";
+import {copy, definitionIcon, exampleIcon, explanationIcon, lawIdLabelMap} from "../../util/util";
 import {checkIfNewUser, redirectToIndexIfNewUser} from "../../util/login";
 import {DiscussionArea} from "../../components/discussionArea/index.weapp";
 import {CivilLawLinkExplanation} from "../../components/civilLawLinkExplanation/index.weapp"
@@ -323,12 +323,25 @@ export default class CivilLawDetail extends Component {
     this.setState({zoomIn: !zoomIn})
   }
 
+  copyToClipboard = () => {
+    const {term} = this.state
+    copy(term.text)
+  }
+
   render() {
     const {isSent, comment, term, isLinkLoading, isExampleLinkLoading, isLoading, links, exampleLinks, understanding, isCollected, isReadMode, showRelatedLaw, showRelatedExample, showUnderstanding, isUnderstandingLoading, zoomIn} = this.state;
     const validLinks = links.filter(link => link.title.indexOf('时效性：失效') === -1)
 
     return (
       <View className={`civil-term-detail-page ${isReadMode ? 'read-mode' : ''} ${zoomIn ? 'zoom-in' : ''}`}>
+        <View className='copy-icon-container' onClick={this.copyToClipboard}>
+          <Image
+            src='https://cdn-icons-png.flaticon.com/512/1828/1828249.png'
+            className='copy-icon'
+            mode='widthFix'
+          />
+        </View>
+
         <View className='main section'>
           <View className='tag-line'><Text className='pre-tag'>法条要旨:</Text><Text
             className='tag'>{term.tag}</Text></View>

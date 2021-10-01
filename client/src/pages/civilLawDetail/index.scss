@@ -201,3 +201,14 @@
     margin: 10px 0;
   }
 }
+
+.copy-icon-container {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  .copy-icon {
+    width: 60px;
+    height: 60px;
+  }
+}
+
