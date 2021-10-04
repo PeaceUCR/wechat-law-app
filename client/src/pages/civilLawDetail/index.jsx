@@ -6,8 +6,14 @@ import DataPopup from '../../components/dataPopup/index.weapp'
 import {db} from '../../util/db'
 import {getNumber} from '../../util/convertNumber'
 import './index.scss'
-import {copy, definitionIcon, exampleIcon, explanationIcon, lawIdLabelMap} from "../../util/util";
-import {checkIfNewUser, redirectToIndexIfNewUser} from "../../util/login";
+import {copy, definitionIcon, exampleIcon, explanationIcon, judgementIcon, lawIdLabelMap} from "../../util/util";
+import {
+  checkIfNewUser,
+  getUserAvatar,
+  getUserNickname,
+  getUserOpenId,
+  redirectToIndexIfNewUser
+} from "../../util/login";
 import {DiscussionArea} from "../../components/discussionArea/index.weapp";
 import {CivilLawLinkExplanation} from "../../components/civilLawLinkExplanation/index.weapp"
 import TextSection from "../../components/textSection/index.weapp";
@@ -328,6 +334,28 @@ export default class CivilLawDetail extends Component {
     copy(term.text)
   }
 
+  renderJudgementLine = () => {
+    return (<View className='judgement-line' onClick={this.jumpToMiniProgram}>
+      <Image
+        src={judgementIcon}
+        className='title-icon'
+        mode='widthFix'
+      />
+      <View className='text'>去裁判文书搜索更多😊</View>
+    </View>)
+  }
+
+  jumpToMiniProgram = () => {
+    const {term} = this.state
+    const redirectStr = `/pages/index/index?userOpenId=${getUserOpenId()}&userName=${getUserNickname()}&userAvatar=${encodeURIComponent(getUserAvatar())}&law=civil&number=${term.numberIndex}`
+    console.log(redirectStr)
+
+    Taro.navigateToMiniProgram({
+      appId: 'wxa7f48cf2a65948d7',
+      path: redirectStr
+    });
+  };
+
   render() {
     const {isSent, comment, term, isLinkLoading, isExampleLinkLoading, isLoading, links, exampleLinks, understanding, isCollected, isReadMode, showRelatedLaw, showRelatedExample, showUnderstanding, isUnderstandingLoading, zoomIn} = this.state;
     const validLinks = links.filter(link => link.title.indexOf('时效性：失效') === -1)
@@ -426,6 +454,8 @@ export default class CivilLawDetail extends Component {
             </View>
           </AtAccordion>
         </View>}
+
+        {this.renderJudgementLine()}
 
         {
           (isLinkLoading || isExampleLinkLoading || isLoading || isUnderstandingLoading) &&

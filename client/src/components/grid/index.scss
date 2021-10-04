@@ -5,9 +5,9 @@
   box-shadow: 0px 0px 6px -1px rgba(180,180,0,0.6);
   border-radius: 6px;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  padding: 20px 18px 20px 26px;
+  flex-direction: row;
+  align-items: center;
+  padding: 20px 18px 12px 26px;
   box-sizing: border-box;
   background: rgba(256,256,256,0.6);
   .float-item {
@@ -38,7 +38,7 @@
 
   .title-container {
     display: flex;
-    height: 86px;
+    height: 88px;
   }
 
   .title {

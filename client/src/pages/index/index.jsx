@@ -277,16 +277,6 @@ export default class Index extends Component {
           type: '共有',
           isUpdated: true
         }
-        // {
-        //   title: '最高法公报案例',
-        //   url: '/pages/courtOpen/index',
-        //   type: '共有'
-        // }
-        // {
-        //   title: '裁判文书',
-        //   url: '',
-        //   isUnderConstruction: true
-        // }
       ]
     },
     isNewUser: false,
