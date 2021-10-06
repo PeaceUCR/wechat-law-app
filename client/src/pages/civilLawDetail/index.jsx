@@ -24,6 +24,7 @@ const getTermNumber = (text) => {
 export default class CivilLawDetail extends Component {
 
   state = {
+    number: '',
     comment: '',
     isSent: false,
     term: {},
@@ -107,49 +108,86 @@ export default class CivilLawDetail extends Component {
   }, 3000, {trailing: false})
 
   onShareAppMessage() {
-    const {term} = this.state
+    const {term, number} = this.state
     return {
-      path: `pages/civilLawDetail/index?id=${term._id}`
+      path: `pages/civilLawDetail/index?id=${term._id}&number=${number}`
     };
   }
 
   componentWillMount() {
-    const {id} = this.$router.params;
+    const {id, number} = this.$router.params;
     const that = this;
-    db.collection('civil-law').where({_id: id}).get({
-      success: (res) => {
-        const term = res.data[0];
-        that.setState({term});
-        db.collection('civil-law-links').where({number: getNumber(term.number)}).get({
-          success: (r) => {
-            if (r.data && r.data.length > 0) {
-              console.log(JSON.parse(r.data[0].data))
-              that.setState({links: JSON.parse(r.data[0].data) || [], isLinkLoading: false});
+    if (number) {
+      db.collection('civil-law').where({numberIndex: parseInt(number)}).get({
+        success: (res) => {
+          const term = res.data[0];
+          that.setState({term});
+          db.collection('civil-law-links').where({number: getNumber(term.number)}).get({
+            success: (r) => {
+              if (r.data && r.data.length > 0) {
+                console.log(JSON.parse(r.data[0].data))
+                that.setState({links: JSON.parse(r.data[0].data) || [], isLinkLoading: false});
+              }
+              that.setState({isLinkLoading: false});
             }
-            that.setState({isLinkLoading: false});
-          }
-        });
+          });
 
-        db.collection('civil-law-link-examples').where({number: getNumber(term.number)}).get({
-          success: (r) => {
-            console.log(r)
-            if (r.data && r.data.length > 0) {
-              that.setState({exampleLinks: r.data[0].examples || [], isExampleLinkLoading: false});
+          db.collection('civil-law-link-examples').where({number: getNumber(term.number)}).get({
+            success: (r) => {
+              console.log(r)
+              if (r.data && r.data.length > 0) {
+                that.setState({exampleLinks: r.data[0].examples || [], isExampleLinkLoading: false});
+              }
+              that.setState({isExampleLinkLoading: false});
             }
-            that.setState({isExampleLinkLoading: false});
-          }
-        });
+          });
 
-        db.collection('civil-law-understanding').where({number: getNumber(term.number)}).get({
-          success: (r) => {
-            console.log(r)
-            that.setState({understanding: r.data[0], isUnderstandingLoading: false});
-          }
-        });
+          db.collection('civil-law-understanding').where({number: getNumber(term.number)}).get({
+            success: (r) => {
+              console.log(r)
+              that.setState({understanding: r.data[0], isUnderstandingLoading: false});
+            }
+          });
 
 
-      }
-    })
+        }
+      })
+    } else {
+      db.collection('civil-law').where({_id: id}).get({
+        success: (res) => {
+          const term = res.data[0];
+          that.setState({term});
+          db.collection('civil-law-links').where({number: getNumber(term.number)}).get({
+            success: (r) => {
+              if (r.data && r.data.length > 0) {
+                console.log(JSON.parse(r.data[0].data))
+                that.setState({links: JSON.parse(r.data[0].data) || [], isLinkLoading: false});
+              }
+              that.setState({isLinkLoading: false});
+            }
+          });
+
+          db.collection('civil-law-link-examples').where({number: getNumber(term.number)}).get({
+            success: (r) => {
+              console.log(r)
+              if (r.data && r.data.length > 0) {
+                that.setState({exampleLinks: r.data[0].examples || [], isExampleLinkLoading: false});
+              }
+              that.setState({isExampleLinkLoading: false});
+            }
+          });
+
+          db.collection('civil-law-understanding').where({number: getNumber(term.number)}).get({
+            success: (r) => {
+              console.log(r)
+              that.setState({understanding: r.data[0], isUnderstandingLoading: false});
+            }
+          });
+
+
+        }
+      })
+    }
 
     that.setState({isLoading: true})
     Taro.cloud.callFunction({
