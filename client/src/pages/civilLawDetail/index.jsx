@@ -121,7 +121,7 @@ export default class CivilLawDetail extends Component {
       db.collection('civil-law').where({numberIndex: parseInt(number)}).get({
         success: (res) => {
           const term = res.data[0];
-          that.setState({term});
+          that.setState({term, number})
           db.collection('civil-law-links').where({number: getNumber(term.number)}).get({
             success: (r) => {
               if (r.data && r.data.length > 0) {

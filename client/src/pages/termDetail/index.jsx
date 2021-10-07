@@ -536,19 +536,17 @@ export default class TermDetail extends Component {
     })
   }
 
-  jumpToMiniProgram = () => {
+  jumpToJudgement = () => {
     const {term} = this.state
-    const redirectStr = `/pages/index/index?userOpenId=${getUserOpenId()}&userName=${getUserNickname()}&userAvatar=${encodeURIComponent(getUserAvatar())}&law=criminal&number=${term.number}`
-    console.log(redirectStr)
+    const redirectStr = `/pages/judgement/index?userOpenId=${getUserOpenId()}&userName=${getUserNickname()}&userAvatar=${encodeURIComponent(getUserAvatar())}&law=criminal&number=${term.number}`
 
-    Taro.navigateToMiniProgram({
-      appId: 'wxa7f48cf2a65948d7',
-      path: redirectStr
+    Taro.navigateTo({
+      url: redirectStr
     });
   };
 
   renderJudgementLine = () => {
-    return (<View className='judgement-line' onClick={this.jumpToMiniProgram}>
+    return (<View className='judgement-line' onClick={this.jumpToJudgement}>
       <Image
         src={judgementIcon}
         className='title-icon'
