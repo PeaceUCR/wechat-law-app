@@ -43,7 +43,8 @@ export default class Index extends Component {
   }
 
   config = {
-    navigationStyle: 'custom'
+    navigationBarTitleText: '裁判文书',
+    navigationBarBackgroundColor: '#F4ECD8'
   }
 
   onShareAppMessage() {
@@ -102,17 +103,17 @@ export default class Index extends Component {
     const userAvatar = getUserAvatar();
     this.setState({userAvatar})
 
-    if (!getStorageSync('hasVisit')) {
-      Taro.showToast({
-        title: `首次使用，请先点击右侧的帮助`,
-        icon: 'none',
-        duration: 4000
-      })
-      setStorageSync('hasVisit', true)
-      this.setState({hasVisit: false})
-    } else {
-      this.setState({hasVisit: true})
-    }
+    // if (!getStorageSync('hasVisit')) {
+    //   Taro.showToast({
+    //     title: `首次使用，请先点击右侧的帮助`,
+    //     icon: 'none',
+    //     duration: 4000
+    //   })
+    //   setStorageSync('hasVisit', true)
+    //   this.setState({hasVisit: false})
+    // } else {
+    //   this.setState({hasVisit: true})
+    // }
   }
 
   componentDidHide () { }
@@ -367,12 +368,12 @@ export default class Index extends Component {
 
   render () {
     const {isReadMode, law, number, searchValue, showSetting, showLoading,isMenuOpened, activeKeyMap, selectedCriminalKeywords, enableMainAd, resultList,
-    hasVisit} = this.state;
+    } = this.state;
     return (
       <View className={`index-page ${isReadMode ? 'read-mode' : ''}`}>
 
         <AtNoticebar marquee speed={60}>
-          本小程序数据信息均来源于裁判文书网，已收录超过20万份裁判文书，持续开发中...
+          数据信息均来源于裁判文书网，已收录超过10万份裁判文书，持续开发中...
         </AtNoticebar>
         <AtSearchBar
           placeholder='当前条件下搜索案由'
