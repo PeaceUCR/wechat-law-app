@@ -261,3 +261,19 @@
   }
 }
 
+.text-holder {
+  position: relative;
+  .yi-ben-tong-icon {
+    opacity: 0.8;
+    z-index: 1;
+    position: absolute;
+    bottom: 0px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+  }
+}
+
+.layout-body {
+  background: #F4ECD8;
+}

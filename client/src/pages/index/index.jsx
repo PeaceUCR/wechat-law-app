@@ -326,6 +326,8 @@ export default class Index extends Component {
           // enablePosterAd: res.data[0].enablePosterAd
         })
 
+        setStorageSync('enableYiBenTong', res.data[0].enableYiBenTong);
+
         if (res.data[0].enableAutoScroll) {
           setStorageSync('enableAutoScroll', true);
         } else {

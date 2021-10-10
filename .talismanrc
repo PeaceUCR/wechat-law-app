@@ -1,7 +1,3 @@
 fileignoreconfig:
-- filename: client/src/util/name.js
-  checksum: b61871c5c2544aaadd0b80783ce0748a0f5943862a77db39dba589f74feb5606
-- filename: client/src/pages/judgement/index.jsx
-  checksum: d7af5488f3a7ad13212cb2a53bfe2657d540ebb1025e53314fe4cd6a38c6184b
-- filename: cloud/functions/searchJudgements/yarn.lock
-  checksum: 1043e6f2f40bfdca516fc521da7142678748774bb89df43a7da118a4efe43cb2
+- filename: client/src/pages/termDetail/index.jsx
+  checksum: abf0a4a02214f775288a51b0b0317e7f2c417aa62a727ceb30884496475a1446

@@ -1,6 +1,6 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import { View, Text, Input, Button, Image } from '@tarojs/components'
-import {AtActivityIndicator, AtIcon, AtFab, AtButton, AtBadge, AtDivider, AtAccordion} from "taro-ui";
+import {AtActivityIndicator, AtIcon, AtFab, AtButton, AtBadge, AtDivider, AtAccordion, AtFloatLayout} from "taro-ui";
 import throttle from "lodash/throttle";
 import DataPopup from '../../components/dataPopup/index.weapp'
 import {DiscussionArea} from '../../components/discussionArea/index.weapp'
@@ -36,6 +36,10 @@ export default class TermDetail extends Component {
     showComplement: false,
     showExample: false,
     showConsult: false,
+    showYiBenTong: false,
+    enableYiBenTong: false,
+    yiBenTongContent: [],
+    isYiBenTongLoading: false,
     sentencings: [],
     termExplanations: [],
     consult: [],
@@ -194,7 +198,9 @@ export default class TermDetail extends Component {
     })
 
     const setting = getStorageSync('setting');
-    this.setState({isReadMode: setting && setting.isReadMode})
+    const enableYiBenTong = getStorageSync('enableYiBenTong');
+
+    this.setState({isReadMode: setting && setting.isReadMode, enableYiBenTong})
     if (setting && setting.isReadMode) {
       console.log('read')
       Taro.setNavigationBarColor({
@@ -560,13 +566,42 @@ export default class TermDetail extends Component {
     const {term} = this.state
     copy(term.text)
   }
+
+  openYiBenTong = () => {
+    const that = this
+    const {term} = this.state
+    that.setState({isYiBenTongLoading: true})
+    db.collection('yi-ben-tong').where({number:  term.number}).get({
+      success: (res) => {
+        console.log(res)
+        const {contents} = res.data[0]
+        that.setState({yiBenTongContent: contents, showYiBenTong: true, isYiBenTongLoading: false})
+      }
+    })
+  }
+
+  renderYiBenTong = () => {
+    const {yiBenTongContent, zoomIn} = this.state
+    return (<View>
+      {yiBenTongContent.map(item => {
+        return <View key={item.category}>
+          <TextSection data={item.category} zoomIn={zoomIn} isTitle />
+          <TextSection data={item.content} zoomIn={zoomIn} />
+        </View>
+      })}
+      {yiBenTongContent.length === 0 && <View>
+        <TextSection data={"暂无数据"} zoomIn={zoomIn} isTitle />
+      </View>}
+    </View>)
+  }
   render () {
     const {isSent, comment, term, examples, courtExamples, complementExamples,
       complements, termExplanations, consult,
       isProcuratorateExampleLoading, isCourtExampleLoading, isComplementLoading,
       isCollectedLoading, isCollected, isReadMode, zoomIn,
       isSentencingLoading, sentencings, isTermExplanationLoading, isConsultLoading,
-      showTermExplanation, showSentencing, showComplement, showExample, showConsult} = this.state;
+      showTermExplanation, showSentencing, showComplement, showExample, showConsult,
+      showYiBenTong, enableYiBenTong, isYiBenTongLoading} = this.state;
     return (
       <View className={`term-detail-page ${isReadMode ? 'read-mode' : ''} ${zoomIn ? 'zoom-in' : ''}`}>
           <View className='copy-icon-container' onClick={this.copyToClipboard}>
@@ -580,8 +615,14 @@ export default class TermDetail extends Component {
             <View>
               {this.renderSectionAndChapter()}
             </View>
-            <View>
+            <View className='text-holder'>
               {this.renderTermText()}
+              {enableYiBenTong && <Image
+                src='https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU91nE8WT2EPjiaWXdNEo7E0Thatent0Wibb9ETPxiaaBmsQRgFTGHSiaXtIrNhtODM1CXFYVur7hLiazTOg/0?wx_fmt=png'
+                className='yi-ben-tong-icon'
+                mode='widthFix'
+                onClick={this.openYiBenTong}
+              />}
             </View>
           </View>
           {termExplanations.length > 0 &&
@@ -688,10 +729,14 @@ export default class TermDetail extends Component {
         {(term.number >=114 && term.number <=419) && this.renderJudgementLine()}
 
         {(isProcuratorateExampleLoading || isCourtExampleLoading
-          || isComplementLoading || isCollectedLoading || isSentencingLoading || isTermExplanationLoading || isConsultLoading) && <View className='loading-container'>
+          || isComplementLoading || isCollectedLoading || isSentencingLoading
+          || isTermExplanationLoading || isConsultLoading || isYiBenTongLoading) && <View className='loading-container'>
           <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
         </View>}
 
+        <AtFloatLayout isOpened={showYiBenTong} scrollY title='YiBenTong' onClose={() => {this.setState({showYiBenTong: false})}}>
+          {this.renderYiBenTong()}
+        </AtFloatLayout>
           <View className='footer'>
             <View className='text'>
               <Input
