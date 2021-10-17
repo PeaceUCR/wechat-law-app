@@ -28,6 +28,9 @@ export const rightArrowIcon =
 
 export const settingIcon =
   'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU92UYROmCwI9kIRFU6pnKzycaPtbJdQ4ibwv99ttVwWNj2GkAib2icbrPD3cyGLWuTNMjs8I3pB1X6QOw/0?wx_fmt=png'
+export const scanIcon =
+  'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU923ibydicx0C74zMTcgQPQbvAZWZyeSibrP8BqkFJaLe3qfBibwFbeXjs0qXvQCibJ9hia0Bk85r7xG6FiaA/0?wx_fmt=png'
+
 export function getTodayDateString() {
   return new Date().toLocaleDateString()
 }

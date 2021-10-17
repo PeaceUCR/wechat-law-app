@@ -10,8 +10,9 @@ import qrcode from '../../static/qrcode.png';
 import {checkIfNewUser, getUserAvatar, getUserNickname, getUserOpenId, isSuperAdmin} from '../../util/login';
 import './index.scss'
 import {db} from "../../util/db";
-import {tmpId, logoIcon} from '../../util/util'
+import {tmpId, logoIcon, scanIcon} from '../../util/util'
 import {otherLawNameMap} from '../../util/otherLaw'
+import {ImageRecoginzer} from "../../components/imageRecoginzer/index.weapp";
 
 const titles = [
   {title:'全部'},
@@ -298,7 +299,10 @@ export default class Index extends Component {
     enableMainVideoAd: false,
     enableMainBanner: false,
     enableMainBottomVideo: false,
-    searchValue: ''
+    searchValue: '',
+
+    showImageRecognize: false,
+    token:''
     // enablePosterAd: false
   }
 
@@ -544,12 +548,34 @@ export default class Index extends Component {
     { trailing: false }
   );
 
+  open = () => {
+    Taro.cloud.callFunction({
+      name: 'countTodayUsage',
+      complete: r => {
+        const {token, data} = r.result;
+        Taro.showToast({
+          title: `每天3次机会,剩余${3 - data.length}`,
+          icon: 'none',
+          duration: 2000
+        })
+        if (data.length < 3) {
+          this.setState({ showImageRecognize: true, token })
+        }
+      }
+    })
+  }
+
+  close = () => {
+    this.setState({ showImageRecognize: false })
+  }
   render () {
-    const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl, joinGroupUrl, posterRedirect, swiperPosters, canClose, enableMainVideoAd, enableMainBanner, searchValue, enableMainBottomVideo} = this.state;
+    const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl,
+      joinGroupUrl, posterRedirect, swiperPosters, canClose, enableMainVideoAd, enableMainBanner, searchValue,
+      enableMainBottomVideo, showImageRecognize, token} = this.state;
     return (
       <View className={`index-page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
-          本小程序数据信息均来源于最高检、最高法、公安部、司法部、人大等权威发布
+          本小程序数据信息均来源于最高检、最高法、公安部、司法部、人大等权威发布，仅供个人学习、研究等合理范围内使用
         </AtNoticebar>
         {/*{getUserNickname() !== 'echo' && <View className='cake-container' onClick={() => {*/}
         {/*  Taro.navigateTo({*/}
@@ -610,6 +636,12 @@ export default class Index extends Component {
           >
             <AtBadge value='帮助'>
               <AtIcon value='help' size='30' color='#000'></AtIcon>
+            </AtBadge>
+          </View>
+          <View className='float-scan' onClick={this.open}
+          >
+            <AtBadge value='识别'>
+              <Image src={scanIcon} className='scan-icon' mode='widthFix' />
             </AtBadge>
           </View>
           <AtSearchBar
@@ -700,6 +732,10 @@ export default class Index extends Component {
             </View>
           </AtDivider>
         </View>
+
+        {
+          showImageRecognize && <ImageRecoginzer token={token} open={this.open} close={this.close} />
+        }
       </View>
     )
   }

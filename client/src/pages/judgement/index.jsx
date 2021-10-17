@@ -60,8 +60,7 @@ export default class Index extends Component {
       userOpenId,
       userName,
       userAvatar,
-      number,
-      searchValue
+      number
     })
     const that = this
     db.collection('configuration').where({}).get({

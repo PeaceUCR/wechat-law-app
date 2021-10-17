@@ -19,58 +19,67 @@ const ImageRecoginzer = (props) => {
   }
 
   const convertToBase64AndRecognize = () => {
-    Taro.cloud.callFunction({
-      name: 'record',
-      data: {
-        nickName: getUserNickname(),
-        type: 'recognize'
-      }
-    })
-    Taro.showLoading({
-      title: '识别中',
-    })
-    Taro.getFileSystemManager().readFile({
-      filePath: images[0].url,
-      encoding: 'base64',
-      success: (res) => {
-        console.log(res)
-        const base64 = res.data
-        Taro.request({
-          url: `https://aip.baidubce.com/rest/2.0/ocr/v1/general?access_token=${token}`,
-          method: 'post',
-          data: {
-            image: `data:image/png;base64,${base64}`
-          },
-          header: {
-            'content-type': 'application/x-www-form-urlencoded'
-          },
-          success: function (r) {
+    if (images && images[0] && images[0].url) {
+      Taro.cloud.callFunction({
+        name: 'record',
+        data: {
+          nickName: getUserNickname(),
+          type: 'recognize'
+        }
+      })
+      Taro.showLoading({
+        title: '识别中',
+      })
+      Taro.getFileSystemManager().readFile({
+        filePath: images[0].url,
+        encoding: 'base64',
+        success: (res) => {
+          console.log(res)
+          const base64 = res.data
+          Taro.request({
+            url: `https://aip.baidubce.com/rest/2.0/ocr/v1/general?access_token=${token}`,
+            method: 'post',
+            data: {
+              image: `data:image/png;base64,${base64}`
+            },
+            header: {
+              'content-type': 'application/x-www-form-urlencoded'
+            },
+            success: function (r) {
 
-            setResults(r.data.words_result)
+              setResults(r.data.words_result)
 
-            const data = r.data.words_result.map(result => {
-              const {top, left, width, height} =result.location
-              return {
-                top: parseInt(top * ratio),
-                left: parseInt(left * ratio),
-                width: parseInt(width * ratio),
-                height: parseInt(height * ratio),
-                word: result.words
-              }
-            })
+              const data = r.data.words_result.map(result => {
+                const {top, left, width, height} =result.location
+                return {
+                  top: parseInt(top * ratio),
+                  left: parseInt(left * ratio),
+                  width: parseInt(width * ratio),
+                  height: parseInt(height * ratio),
+                  word: result.words
+                }
+              })
 
-            setBroders(data)
+              setBroders(data)
 
-            Taro.hideLoading()
-            Taro.showToast({
-              title: '识别成功，点击复制',
-              icon: 'none',
-              duration: 2000
-            })
-          }
-        })
-      }
-    })
+              Taro.hideLoading()
+              Taro.showToast({
+                title: '识别成功，点击复制',
+                icon: 'none',
+                duration: 2000
+              })
+            }
+          })
+        }
+      })
+    } else {
+      Taro.showToast({
+        title: '请先点击 + 添加图片',
+        icon: 'none',
+        duration: 2000
+      });
+      return
+    }
   }
 
   const copyToClipboard = (text, isAll) => {

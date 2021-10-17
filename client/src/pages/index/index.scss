@@ -185,3 +185,12 @@
   padding-bottom: 30px !important;
 }
 
+.float-scan {
+  position: absolute;
+  top: 170px;
+  left: 60px;
+  .scan-icon {
+    width: 60px;
+    height: 60px;
+  }
+}

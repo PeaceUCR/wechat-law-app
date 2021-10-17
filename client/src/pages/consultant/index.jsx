@@ -213,7 +213,7 @@ export default class Index extends Component {
                 onChange={this.onChange}
                 onActionClick={() => this.onSearch(0)}
                 onClear={this.onClear}
-                placeholder={selected === '搜案例号' ? '123' : '诈骗'}
+                placeholder={selected === '搜案例号' ? '123' : '案由/案例号'}
               />
             </View>
           </View>
