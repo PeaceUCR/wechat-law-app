@@ -102,30 +102,9 @@ export default class Index extends Component {
     const userAvatar = getUserAvatar();
     this.setState({userAvatar})
 
-    // if (!getStorageSync('hasVisit')) {
-    //   Taro.showToast({
-    //     title: `首次使用，请先点击右侧的帮助`,
-    //     icon: 'none',
-    //     duration: 4000
-    //   })
-    //   setStorageSync('hasVisit', true)
-    //   this.setState({hasVisit: false})
-    // } else {
-    //   this.setState({hasVisit: true})
-    // }
   }
 
   componentDidHide () { }
-
-  renderUserFloatButton () {
-    const {isUserLoaded, userAvatar} = this.state;
-    return (<UserFloatButton isUserLoaded={isUserLoaded} avatarUrl={userAvatar} handleLoginSuccess={() => {
-      Taro.navigateTo({
-        url: '/pages/user/index'
-      })
-    }}
-    />)
-  }
 
   handleLoginSuccess = () => {
     this.setState({isNewUser: false});
@@ -226,55 +205,65 @@ export default class Index extends Component {
   onSearch = () => {
     const that = this;
     const  { law, number, searchValue, selectedCriminalKeywords, province } = this.state;
-    if (law === 'criminal') {
-      let intVal = Number(number)
-      if (isNaN(intVal) || number < 114 || number > 419) {
-        Taro.showToast({
-          title: `无效条文序号${number},请修正后再试！`,
-          icon: 'none',
-          duration: 4000
-        })
-        return ;
-      }
-    }
-    this.setState({
-      showLoading: true
-    })
-    Taro.cloud.callFunction({
-      name: 'searchJudgements',
-      data: {
-        law,
-        number,
-        searchValue,
-        selectedCriminalKeywords,
-        province
-      },
-      complete: (r) => {
-        console.log(r)
-        if (r && r.result && r.result.data && r.result.data.length > 0) {
-          that.setState({
-            resultList: r.result.data
-          })
+    if (number || searchValue ||  selectedCriminalKeywords.length > 0 || province) {
+      if (number && law === 'criminal') {
+        let intVal = Number(number)
+        if (isNaN(intVal) || number < 114 || number > 419) {
           Taro.showToast({
-            title: `仅显示前100个结果!`,
+            title: `无效条文序号${number},请修正后再试！`,
             icon: 'none',
             duration: 4000
           })
-        } else {
-          Taro.showToast({
-            title: `未找到,可能是还未收录,敬请期待!`,
-            icon: 'none',
-            duration: 6000
-          })
+          return ;
+        }
+      }
+      this.setState({
+        showLoading: true
+      })
+      Taro.cloud.callFunction({
+        name: 'searchJudgements',
+        data: {
+          law,
+          number,
+          searchValue,
+          selectedCriminalKeywords,
+          province
+        },
+        complete: (r) => {
+          console.log(r)
+          if (r && r.result && r.result.data && r.result.data.length > 0) {
+            that.setState({
+              resultList: r.result.data
+            })
+            Taro.showToast({
+              title: `仅显示前100个结果!`,
+              icon: 'none',
+              duration: 4000
+            })
+          } else {
+            Taro.showToast({
+              title: `未找到,可能是还未收录,敬请期待!`,
+              icon: 'none',
+              duration: 6000
+            })
+            that.setState({
+              resultList: []
+            })
+          }
           that.setState({
-            resultList: []
+            showLoading: false
           })
         }
-        that.setState({
-          showLoading: false
-        })
-      }
-    })
+      })
+    } else {
+      Taro.showToast({
+        title: '无搜索条件、无法搜索',
+        icon: 'none',
+        duration: 2000
+      })
+    }
+
+
   }
 
   handleClose = () => {
@@ -282,14 +271,6 @@ export default class Index extends Component {
     if (!law) {
       Taro.showToast({
         title: `请选法律`,
-        icon: 'none',
-        duration: 3000
-      })
-      return ;
-    }
-    if (!number && law === 'criminal') {
-      Taro.showToast({
-        title: `请选法条`,
         icon: 'none',
         duration: 3000
       })

@@ -86,44 +86,66 @@ exports.main = async (event, context) => {
   console.log('regexpString:', regexpString)
   const dbName = 'criminal-case'
 
+  let all;
   // match By own criminal law
-  const resultMatchByCriminalLaw = await db.collection(dbName).where({
-    criminalLaw: number.toString(),
-    tags: tags ? _.all(tags) : undefined,
-    opinion: regexpString ? db.RegExp({
-      regexp: regexpString,
-      options: 'ims',
-    }) : undefined,
-    caseNumber: provinceRegex ? db.RegExp({
-      regexp: provinceRegex,
-      options: 'ims',
-    }) : undefined,
-    courtName: courtNameRegex ?  db.RegExp({
-      regexp: courtNameRegex,
-      options: 'ims',
-    }) : undefined,
-  }).limit(100).orderBy('date', 'desc').get()
+  if (number) {
+    const resultMatchByCriminalLaw = await db.collection(dbName).where({
+      criminalLaw: number.toString(),
+      tags: tags ? _.all(tags) : undefined,
+      opinion: regexpString ? db.RegExp({
+        regexp: regexpString,
+        options: 'ims',
+      }) : undefined,
+      caseNumber: provinceRegex ? db.RegExp({
+        regexp: provinceRegex,
+        options: 'ims',
+      }) : undefined,
+      courtName: courtNameRegex ?  db.RegExp({
+        regexp: courtNameRegex,
+        options: 'ims',
+      }) : undefined,
+    }).limit(100).orderBy('date', 'desc').get()
 
-  // exact match BY law
-  const resultMatchByLaw = await db.collection(dbName).where({
-    law: parseInt(number),
-    tags: tags ? _.all(tags) : undefined,
-    opinion: regexpString ? db.RegExp({
-      regexp: regexpString,
-      options: 'ims',
-    }) : undefined,
-    caseNumber: provinceRegex ? db.RegExp({
-      regexp: provinceRegex,
-      options: 'ims',
-    }) : undefined,
-    courtName: courtNameRegex ?  db.RegExp({
-      regexp: courtNameRegex,
-      options: 'ims',
-    }) : undefined,
-  }).limit(100).orderBy('date', 'desc').get()
-  // exact match BY opinion
+    // exact match BY law
+    const resultMatchByLaw = await db.collection(dbName).where({
+      law: parseInt(number),
+      tags: tags ? _.all(tags) : undefined,
+      opinion: regexpString ? db.RegExp({
+        regexp: regexpString,
+        options: 'ims',
+      }) : undefined,
+      caseNumber: provinceRegex ? db.RegExp({
+        regexp: provinceRegex,
+        options: 'ims',
+      }) : undefined,
+      courtName: courtNameRegex ?  db.RegExp({
+        regexp: courtNameRegex,
+        options: 'ims',
+      }) : undefined,
+    }).limit(100).orderBy('date', 'desc').get()
+    // exact match BY opinion
 
-  const all = [...resultMatchByCriminalLaw.data, ...resultMatchByLaw.data]
+    all = [...resultMatchByCriminalLaw.data, ...resultMatchByLaw.data]
+
+  } else {
+    // no law number
+    const result  = await db.collection(dbName).where({
+      tags: tags ? _.all(tags) : undefined,
+      opinion: regexpString ? db.RegExp({
+        regexp: regexpString,
+        options: 'ims',
+      }) : undefined,
+      caseNumber: provinceRegex ? db.RegExp({
+        regexp: provinceRegex,
+        options: 'ims',
+      }) : undefined,
+      courtName: courtNameRegex ?  db.RegExp({
+        regexp: courtNameRegex,
+        options: 'ims',
+      }) : undefined,
+    }).limit(100).orderBy('date', 'desc').get()
+    all = result.data
+  }
 
   const removeDuplicates = all.filter((v,i,a)=>a.findIndex(t=>(t.rowkey === v.rowkey))===i)
 
