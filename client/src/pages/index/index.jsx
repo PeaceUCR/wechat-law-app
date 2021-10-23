@@ -35,15 +35,13 @@ export default class Index extends Component {
         {
           title:'刑法相关解释、规定',
           url: '/pages/criminalComplement/index',
-          type: '刑法',
-          isNew: true
+          type: '刑法'
         },
         {
           title: '刑事诉讼法',
           url: '/pages/litigationLaw/index',
           type: '刑法',
-          sub:'2018年10月26日',
-          isUpdated: true
+          sub:'2018年10月26日'
         },
         {
           title: otherLawNameMap['criminal-litigation-explanation'],
@@ -73,40 +71,41 @@ export default class Index extends Component {
           url: '/pages/otherLaw/index?law=supervision-law',
           sub:'2018年3月20日',
           type: '刑法',
-          isNew: true
+
         },
         {
           title: otherLawNameMap['police-law'],
           url: '/pages/otherLaw/index?law=police-law',
           sub:'2012年10月26日',
           type: '刑法',
-          isNew: true
+
         },
         {
           title: otherLawNameMap['police-enforce-detail'],
           url: '/pages/otherLaw/index?law=police-enforce-detail',
           sub:'2016年7月5日',
           type: '刑法',
-          isNew: true
+
         },
         {
           title: otherLawNameMap['anti-terrorism-law'],
           url: '/pages/otherLaw/index?law=anti-terrorism-law',
           sub:'2018年4月27日',
           type: '刑法',
-          isNew: true
+
         },
         {
           title: otherLawNameMap['anti-drug-law'],
           url: '/pages/otherLaw/index?law=anti-drug-law',
           sub:'2008年6月1日',
           type: '刑法',
-          isNew: true
+
         },
         {
           title: '刑事审判参考',
           url: '/pages/consultant/index',
-          type: '刑法'
+          type: '刑法',
+          isUpdated: true
         }
       ],
       '民法典相关': [
@@ -115,7 +114,7 @@ export default class Index extends Component {
         url: '/pages/civilLaw/index',
         sub:'2021年1月1日',
         type: '民法典',
-        isUpdated: true
+
         },
         {
           title: '民法典相关司法解释',
@@ -139,7 +138,7 @@ export default class Index extends Component {
           url: '/pages/otherLaw/index?law=labor-law',
           sub:'2018年12月29日',
           type: '民法典',
-          isNew: true
+
           // isHot: true
         },
         {
@@ -147,7 +146,7 @@ export default class Index extends Component {
           url: '/pages/otherLaw/index?law=labor-contract-law',
           sub:'2013年7月1日',
           type: '民法典',
-          isNew: true
+
           // isHot: true
         },
         {
@@ -155,7 +154,7 @@ export default class Index extends Component {
           url: '/pages/otherLaw/index?law=company-law',
           sub:'2018年10月26日',
           type: '民法典',
-          isNew: true
+
           // isHot: true
         }
       ],
@@ -165,28 +164,28 @@ export default class Index extends Component {
           url: '/pages/otherLaw/index?law=admin-litigation-law',
           sub:'2017年7月1日',
           type: '行政',
-          isNew: true
+
         },
         {
           title: otherLawNameMap['admin-litigation-explaination'],
           url: '/pages/otherLaw/index?law=admin-litigation-explaination',
           sub:'2018年2月8日',
           type: '行政',
-          isNew: true
+
         },
         {
           title: otherLawNameMap['admin-force-law'],
           url: '/pages/otherLaw/index?law=admin-force-law',
           sub:'2012年1月1日',
           type: '行政',
-          isNew: true
+
         },
         {
           title: otherLawNameMap['admin-punish-law'],
           url: '/pages/otherLaw/index?law=admin-punish-law',
           sub:'2021年7月15日',
           type: '行政',
-          isNew: true
+
           // isHot: true
         },
         {
@@ -194,7 +193,7 @@ export default class Index extends Component {
           url: '/pages/otherLaw/index?law=admin-reconsider-law',
           sub:'2017年9月1日',
           type: '行政',
-          isNew: true
+
           // isHot: true
         },
         {
@@ -202,7 +201,7 @@ export default class Index extends Component {
           url: '/pages/otherLaw/index?law=admin-reconsider-regulation',
           sub:'2007年8月1日',
           type: '行政',
-          isNew: true
+
           // isHot: true
         },
         {
@@ -210,7 +209,7 @@ export default class Index extends Component {
           url: '/pages/otherLaw/index?law=admin-allow-law',
           sub:'2019年4月23日',
           type: '行政',
-          isNew: true
+
           // isHot: true
         },
         {
@@ -218,7 +217,7 @@ export default class Index extends Component {
           url: '/pages/otherLaw/index?law=public-order-admin-penalty-law',
           sub:'2013年1月1日',
           type: '行政',
-          isNew: true
+
           // isHot: true
         },
         {
@@ -226,49 +225,49 @@ export default class Index extends Component {
           url: '/pages/otherLaw/index?law=road-safe-law',
           sub:'2021年4月29日',
           type: '行政',
-          isNew: true
+
         },
         {
           title: otherLawNameMap['road-safe-regulation'],
           url: '/pages/otherLaw/index?law=road-safe-regulation',
           sub:'2017年10月7日',
           type: '行政',
-          isNew: true
+
         },
         {
           title: otherLawNameMap['road-safe-violation-handling'],
           url: '/pages/otherLaw/index?law=road-safe-violation-handling',
           sub:'2020年5月1日',
           type: '行政',
-          isNew: true
+
         },
         {
           title: otherLawNameMap['police-admin-regulation'],
           url: '/pages/otherLaw/index?law=police-admin-regulation',
           sub:'2019年1月1日',
           type: '行政',
-          isNew: true
+
         },
         {
           title: otherLawNameMap['national-compensation'],
           url: '/pages/otherLaw/index?law=national-compensation',
           sub:'2013年1月1日',
           type: '行政',
-          isNew: true
+
         },
         {
           title: otherLawNameMap['exit-entry-law'],
           url: '/pages/otherLaw/index?law=exit-entry-law',
           sub:'2013年7月1日',
           type: '行政',
-          isNew: true
+
         },
         {
           title: otherLawNameMap['help-law'],
           url: '/pages/otherLaw/index?law=help-law',
           sub:'2022年1月1日',
           type: '行政',
-          isNew: true
+
         }
       ],
       '共有': [
@@ -549,6 +548,8 @@ export default class Index extends Component {
   );
 
   open = () => {
+    Taro.showLoading({
+    })
     Taro.cloud.callFunction({
       name: 'countTodayUsage',
       complete: r => {
@@ -559,6 +560,7 @@ export default class Index extends Component {
           duration: 2000
         })
         if (data.length < 3) {
+          Taro.hideLoading()
           this.setState({ showImageRecognize: true, token })
         }
       }
@@ -640,7 +642,7 @@ export default class Index extends Component {
           </View>
           <View className='float-scan' onClick={this.open}
           >
-            <AtBadge value='识别'>
+            <AtBadge value='图文识别'>
               <Image src={scanIcon} className='scan-icon' mode='widthFix' />
             </AtBadge>
           </View>

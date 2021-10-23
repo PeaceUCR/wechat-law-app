@@ -1,5 +1,3 @@
 fileignoreconfig:
-- filename: cloud/functions/countTodayUsage/index.js
-  checksum: 7e4ae5856a3a5ffc3b9801b41863538fd4bac6b9a47c5b7e03f45ddb444e8a01
-- filename: client/src/util/util.js
-  checksum: e7ad67cd9de68604963fd5ddeb11a280f53450cdc1d8893093678fcb2d31af2b
+- filename: cloud/functions/getConsultsCategory/yarn.lock
+  checksum: 7a1d65fd289f010d5307c1469478cc15faebc21c9fa65381cef4bff51f648db4
