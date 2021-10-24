@@ -25,7 +25,7 @@ export default class Index extends Component {
 
   onShareAppMessage() {
     return {
-      path: 'pages/index/index'
+      path: 'pages/consultant/index'
     };
   }
 
@@ -58,8 +58,10 @@ export default class Index extends Component {
     Taro.cloud.callFunction({
       name: 'getConsultsCategory',
       complete: ({result}) => {
-        console.log(result)
+
         const {categoryList} = result
+        categoryList.forEach(c => c.title = `第${c.key}辑 ${c.title ? c.title:''}`)
+
         this.setState({
           categoryList,
           isLoading: false
@@ -70,7 +72,6 @@ export default class Index extends Component {
 
   renderCategoryList = () => {
     const {categoryList} = this.state
-    categoryList.forEach(c => c.title = `第${c.key}辑 ${c.title ? c.title:''}`)
     return (<View style='height:100vh'>
       <AtIndexes
         list={categoryList}
