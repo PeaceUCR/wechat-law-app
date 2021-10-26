@@ -3,6 +3,7 @@ import {View} from "@tarojs/components";
 import {AtAvatar, AtActivityIndicator} from "taro-ui";
 import {getUserOpenId} from '../../util/login';
 import './index.scss'
+import moment from "moment";
 
 const DiscussionArea = (props) => {
   const [comments, setComments] = useState([]);
@@ -68,7 +69,7 @@ const DiscussionArea = (props) => {
           <View className='comment-text'>
             <View className='comment-name'>{comment.user.nickName}</View>
             <View className='comment-content'>{comment.content}</View>
-            <View className='comment-time'>{new Date(Date.parse(comment.time)).toLocaleString('zh-CN')}</View>
+            <View className='comment-time'>{moment(comment.time).format('YYYY-MM-DD HH:MM')}</View>
           </View>
         </View>)
       })

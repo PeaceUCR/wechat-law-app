@@ -2,12 +2,12 @@ import Taro from '@tarojs/taro'
 import {Text, View} from "@tarojs/components";
 import {AtIcon} from "taro-ui";
 import './index.scss'
+import moment from "moment";
 
 const DataPopup = (props) => {
   let {data ,type, num, zoomIn} = props;
   data = data ? data: {};
   const {name, number, title,  _id, sourceName, sourceId, crimeName, effectiveDate, special} = data;
-
   const isExample = type === 'procuratorate'
     || type === 'court'
     || type === 'complement-example'
@@ -50,7 +50,7 @@ const DataPopup = (props) => {
       <Text className='title'>{displayName}</Text>
       <AtIcon value='external-link' size='16' color='#4d4dff'></AtIcon>
     </View>
-    {effectiveDate && <View className='time'>{new Date(Date.parse(effectiveDate)).toLocaleDateString('fr-CA')}</View>}
+    {effectiveDate && <View className='time'>{moment(effectiveDate).format('YYYY-MM-DD')}</View>}
   </View>)
 }
 

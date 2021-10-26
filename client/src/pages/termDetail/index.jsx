@@ -10,6 +10,7 @@ import {lawIdLabelMap, exampleIcon, sentencingIcon, explanationIcon, definitionI
 import './index.scss'
 import TextSection from "../../components/textSection/index.weapp";
 import TextSectionLinked from "../../components/textSectionLinked/index.weapp";
+import moment from "moment";
 
 const getTermNumber = (text) => {
   return text.substring(0, text.indexOf('条') + 1);
@@ -479,7 +480,7 @@ export default class TermDetail extends Component {
           <View className='line crime-line'>
             <Text className='crime-line-item'>罪名:<Text className='crime'>{crimeName}</Text></Text>
             <Text className='date crime-line-item'>
-            实施日期:{new Date(Date.parse(effectiveDate)).toLocaleDateString('fr-CA')}</Text>
+            实施日期:{moment(effectiveDate).format('YYYY-MM-DD')}</Text>
           </View>
           <View className='line'>
             <TextSection data={text} zoomIn={zoomIn} />
