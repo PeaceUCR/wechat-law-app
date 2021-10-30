@@ -125,7 +125,7 @@ export default class Index extends Component {
     const {searchValue, searchResult, isLoading,
       showAllCategories, isReadMode} = this.state;
     return (
-      <View className={`civil-law-page ${isReadMode ? 'read-mode' : ''}`}>
+      <View className={`civil-law-page page ${isReadMode ? 'read-mode' : ''}`}>
           <AtNoticebar marquee speed={60}>
             中华人民共和国民事诉讼法(2017修订),颁布单位:全国人民代表大会常务委员会,文号:中华人民共和国主席令第71号,颁布日期:2017-06-27,执行日期:2017-07-01,时效性:现行有效,效力级别:法律
           </AtNoticebar>

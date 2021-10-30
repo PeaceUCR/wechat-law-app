@@ -233,7 +233,7 @@ export default class Index extends Component {
   render () {
     const {searchValue, searchResult, isLoading, selected, options, isReadMode, categoryList} = this.state;
     return (
-      <View className={`example-page ${isReadMode ? 'read-mode' : ''}`}>
+      <View className={`example-page page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
           刑事审判参考1-1433号案例已补全
         </AtNoticebar>

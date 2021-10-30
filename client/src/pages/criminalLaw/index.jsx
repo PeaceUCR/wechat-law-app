@@ -289,7 +289,7 @@ export default class Index extends Component {
   render () {
     const {searchValue, searchResult, isLoading, selected, options, showAllCategories, isReadMode} = this.state;
     return (
-      <View className={`criminal-page ${isReadMode ? 'read-mode' : ''}`}>
+      <View className={`criminal-page page ${isReadMode ? 'read-mode' : ''}`}>
           <AtNoticebar marquee speed={60}>
             中华人民共和国刑法修正案(十一)已于2021年3月1日起施行
           </AtNoticebar>

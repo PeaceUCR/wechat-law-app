@@ -350,7 +350,7 @@ export default class Index extends Component {
     const {isReadMode, law, number, searchValue, showSetting, showLoading,isMenuOpened, activeKeyMap, selectedCriminalKeywords, enableMainAd, resultList,
     } = this.state;
     return (
-      <View className={`index-page ${isReadMode ? 'read-mode' : ''}`}>
+      <View className={`index-page page ${isReadMode ? 'read-mode' : ''}`}>
 
         <AtNoticebar marquee speed={60}>
           数据信息均来源于裁判文书网，已收录超过10万份裁判文书，持续开发中...

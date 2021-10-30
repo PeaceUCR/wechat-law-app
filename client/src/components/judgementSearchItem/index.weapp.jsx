@@ -3,8 +3,13 @@ import {AtIcon} from "taro-ui";
 import {Text, View, Image} from "@tarojs/components";
 import './index.scss'
 
+const types = ['不起诉','起诉','抗诉']
+const getType = title => {
+  return types.find(t => title && title.indexOf(t) !== -1)
+}
+
 const JudgementSearchItem = (props) => {
-  let {text, title, date, caseNumber, courtName, redirect} = props;
+  let {text, title, date, caseNumber, courtName, redirect, pocuratorate} = props;
   let displayedText = text;
   let showDot = false
   if (text && text.length > 100) {
@@ -13,7 +18,10 @@ const JudgementSearchItem = (props) => {
     displayedText = `${text.substring(0, 100)}${showDot ? '...' : ''}`
   }
 
+  let type = getType(title)
+
   return (<View className='search-item' onClick={redirect} >
+    {type && pocuratorate && <View className='float-type'>{type.substring(0,3)}</View>}
     <View className='line'>
       <View className='law'>{title}</View>
       {/*<Text className='number'>{number}</Text>*/}

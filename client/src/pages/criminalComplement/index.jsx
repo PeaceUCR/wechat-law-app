@@ -5,6 +5,7 @@ import {isEmpty} from 'lodash';
 import { Loading } from '../../components/loading/index.weapp'
 import { targetImageSource } from '../../util/util'
 import './index.scss'
+import moment from "moment";
 
 export default class Index extends Component {
 
@@ -58,7 +59,7 @@ export default class Index extends Component {
             />
             <AtListItem
               title={`${complement.title}`}
-              note={new Date(Date.parse(complement.effectiveDate)).toLocaleDateString('fr-CA')}
+              note={moment(complement.effectiveDate).format('YYYY-MM-DD')}
               arrow='right'
               onClick={() => {
                 Taro.navigateTo({
@@ -119,7 +120,7 @@ export default class Index extends Component {
   render () {
     const {searchValue, searchResult, isLoading, isReadMode} = this.state;
     return (
-      <View className={`example-page ${isReadMode ? 'read-mode' : ''}`}>
+      <View className={`example-page page ${isReadMode ? 'read-mode' : ''}`}>
           <View className='header'>
             <View className='search'>
               <AtSearchBar

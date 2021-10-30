@@ -399,7 +399,7 @@ export default class ExampleDetail extends Component {
             刑事审判参考仅限用于学习交流!
           </AtNoticebar>
         }
-        <View className={`example-detail-page ${zoomIn ? 'zoom-in' : ''} ${isReadMode ? 'read-mode' : ''}`}>
+        <View className={`example-detail-page page ${zoomIn ? 'zoom-in' : ''} ${isReadMode ? 'read-mode' : ''}`}>
           {special && this.renderSpecial()}
           {!special && <View>
             {enableAutoScroll && type === 'complement' && this.renderComplement()}

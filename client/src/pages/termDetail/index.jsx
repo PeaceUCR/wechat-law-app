@@ -604,7 +604,7 @@ export default class TermDetail extends Component {
       showTermExplanation, showSentencing, showComplement, showExample, showConsult,
       showYiBenTong, enableYiBenTong, isYiBenTongLoading} = this.state;
     return (
-      <View className={`term-detail-page ${isReadMode ? 'read-mode' : ''} ${zoomIn ? 'zoom-in' : ''}`}>
+      <View className={`term-detail-page page ${isReadMode ? 'read-mode' : ''} ${zoomIn ? 'zoom-in' : ''}`}>
           <View className='copy-icon-container' onClick={this.copyToClipboard}>
             <Image
               src='https://cdn-icons-png.flaticon.com/512/1828/1828249.png'

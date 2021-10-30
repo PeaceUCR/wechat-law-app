@@ -158,7 +158,7 @@ export default class Index extends Component {
   render () {
     const {searchValue, searchResult, isLoading, isReadMode, law} = this.state;
     return (
-      <View className={`litigation-regulation-page ${isReadMode ? 'read-mode' : ''}`}>
+      <View className={`litigation-regulation-page page ${isReadMode ? 'read-mode' : ''}`}>
           <AtNoticebar marquee speed={60}>
             {otherLawAnnounceMap[law]}
           </AtNoticebar>

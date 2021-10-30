@@ -164,7 +164,7 @@ export default class User extends Component {
   render () {
     const {isLoading, isReadMode, collection, showImageRecognize, token, enableAds} = this.state;
     return (
-      <View className={`user-page ${isReadMode ? 'read-mode' : ''}`}>
+      <View className={`user-page page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
           收藏功能已升级，数据已存放于云端，再也不怕丢失啦！
         </AtNoticebar>

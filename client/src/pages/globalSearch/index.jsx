@@ -388,7 +388,7 @@ export default class Index extends Component {
   render () {
     const {searchValue, isLoading, isReadMode, showSetting, selectedOption1, selectedOption2, isInvalid1, isInvalid2} = this.state;
     return (
-      <View className={`litigation-regulation-page global-search ${isReadMode ? 'read-mode' : ''}`}>
+      <View className={`litigation-regulation-page page global-search ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
           此为精确搜索(非模糊搜索),且只显示部分结果,麻烦去具体法律模块搜索更多！
         </AtNoticebar>

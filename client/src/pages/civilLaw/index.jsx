@@ -233,7 +233,7 @@ export default class Index extends Component {
       placeholder = "搜法条要旨，比如代理的效力"
     }
     return (
-      <View className={`civil-law-page ${isReadMode ? 'read-mode' : ''}`}>
+      <View className={`civil-law-page page ${isReadMode ? 'read-mode' : ''}`}>
           {isSearchMode && <View className='header'>
             <View className='select'>
               <View>

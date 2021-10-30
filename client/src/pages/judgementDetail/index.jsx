@@ -313,7 +313,7 @@ export default class ExampleDetail extends Component {
     const { example, brief, zoomIn, isReadMode, isBriefLoading, isExampleLoading,
       isLoading, isCollected, type, showRelatedLaw} = this.state;
     return (<View>
-        <View className={`example-detail-page ${zoomIn ? 'zoom-in' : ''} ${isReadMode ? 'read-mode' : ''}`}>
+        <View className={`example-detail-page page ${zoomIn ? 'zoom-in' : ''} ${isReadMode ? 'read-mode' : ''}`}>
           <View>
             {!isExampleLoading && !isBriefLoading && example && this.renderExample()}
           </View>

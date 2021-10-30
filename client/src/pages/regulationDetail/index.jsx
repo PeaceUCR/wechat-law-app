@@ -440,7 +440,7 @@ export default class RegulationDetail extends Component {
     }
 
     return (
-      <View className={`term-detail-page ${isReadMode ? 'read-mode' : ''} ${zoomIn ? 'zoom-in' : ''}`}>
+      <View className={`term-detail-page page ${isReadMode ? 'read-mode' : ''} ${zoomIn ? 'zoom-in' : ''}`}>
         <View className='copy-icon-container' onClick={this.copyToClipboard}>
           <Image
             src='https://cdn-icons-png.flaticon.com/512/1828/1828249.png'

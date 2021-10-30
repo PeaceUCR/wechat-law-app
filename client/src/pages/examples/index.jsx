@@ -201,7 +201,7 @@ export default class Index extends Component {
   render () {
     const {searchValue, searchResult, isLoading, isExpandLabel, isReadMode} = this.state;
     return (
-      <View className={`example-page ${isReadMode ? 'read-mode' : ''}`}>
+      <View className={`example-page page ${isReadMode ? 'read-mode' : ''}`}>
           <View className='header'>
             <View>
               <AtSearchBar
