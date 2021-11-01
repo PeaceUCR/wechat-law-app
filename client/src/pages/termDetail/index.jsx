@@ -551,6 +551,14 @@ export default class TermDetail extends Component {
       url: redirectStr
     });
   };
+  jumpToProcuratorateDoc = () => {
+    const {term} = this.state
+    const redirectStr = `/pages/procuratorateDoc/index?searchValue=${term.chnNumber}`
+
+    Taro.navigateTo({
+      url: redirectStr
+    });
+  };
 
   renderJudgementLine = () => {
     return (<View className='judgement-line' onClick={this.jumpToJudgement}>
@@ -560,6 +568,17 @@ export default class TermDetail extends Component {
         mode='widthFix'
       />
       <View className='text'>去裁判文书搜索更多😊</View>
+    </View>)
+  }
+
+  renderProcuratorateDoc = () => {
+    return (<View className='judgement-line' onClick={this.jumpToProcuratorateDoc}>
+      <Image
+        src='https://cdn-icons.flaticon.com/png/512/3778/premium/3778199.png?token=exp=1635782563~hmac=4d9ade9b38285bc41e20786c52f0a81b'
+        className='title-icon'
+        mode='widthFix'
+      />
+      <View className='text'>去检察文书搜索更多😉</View>
     </View>)
   }
 
@@ -727,6 +746,8 @@ export default class TermDetail extends Component {
             </AtAccordion>
           </View>
         }
+
+        {this.renderProcuratorateDoc()}
         {(term.number >=114 && term.number <=419) && this.renderJudgementLine()}
 
         {(isProcuratorateExampleLoading || isCourtExampleLoading

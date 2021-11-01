@@ -267,7 +267,20 @@ export default class Index extends Component {
           url: '/pages/otherLaw/index?law=help-law',
           sub:'2022年1月1日',
           type: '行政',
-
+        },
+        {
+          title: '公安部关于印发《公安机关对部分违反治安管理行为实施处罚的裁量指导意见》的通知',
+          url: '/pages/exampleDetail/index?type=complement&id=8e170652617e95d301a5fafd24ddd9fe',
+          sub:'2022年1月1日',
+          type: '行政',
+          isNew: true
+        },
+        {
+          title: '公安部关于实施公安行政处罚裁量基准制度的指导意见',
+          url: '/pages/exampleDetail/index?type=complement&id=8e170652617e95d301a5fafe4138dc35',
+          sub:'2022年1月1日',
+          type: '行政',
+          isNew: true
         }
       ],
       '共有': [
@@ -278,7 +291,7 @@ export default class Index extends Component {
           isUpdated: true
         },
         {
-          title: '检察文书(体验版)',
+          title: '检察文书',
           url: '/pages/procuratorateDoc/index',
           type: '共有'
         }

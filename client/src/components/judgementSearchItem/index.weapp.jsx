@@ -3,7 +3,7 @@ import {AtIcon} from "taro-ui";
 import {Text, View, Image} from "@tarojs/components";
 import './index.scss'
 
-const types = ['不起诉','起诉','抗诉']
+const types = ['不起诉','起诉','抗诉', '申诉']
 const getType = title => {
   return types.find(t => title && title.indexOf(t) !== -1)
 }
@@ -13,9 +13,15 @@ const JudgementSearchItem = (props) => {
   let displayedText = text;
   let showDot = false
   if (text && text.length > 100) {
-    displayedText = text.substring(0, 100)
-    showDot = true
-    displayedText = `${text.substring(0, 100)}${showDot ? '...' : ''}`
+    if (pocuratorate) {
+      displayedText = text.substring(0, 40)
+      showDot = true
+      displayedText = `${text.substring(0, 40)}${showDot ? '...' : ''}`
+    } else {
+      displayedText = text.substring(0, 100)
+      showDot = true
+      displayedText = `${text.substring(0, 100)}${showDot ? '...' : ''}`
+    }
   }
 
   let type = getType(title)

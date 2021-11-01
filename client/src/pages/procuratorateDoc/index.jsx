@@ -1,6 +1,6 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {View, Text, Picker, Image} from '@tarojs/components'
-import { AtSearchBar, AtActivityIndicator, AtFab, AtBadge, AtIcon, AtListItem } from 'taro-ui'
+import { AtSearchBar, AtActivityIndicator, AtFab, AtBadge, AtIcon, AtListItem, AtDivider } from 'taro-ui'
 import {isEmpty} from 'lodash';
 import {
   targetImageSource, getExampleSearchTag
@@ -9,6 +9,8 @@ import '../examples/index.scss'
 import {db} from "../../util/db";
 import {getNumber} from "../../util/convertNumber";
 import JudgementSearchItem from "../../components/judgementSearchItem"
+import {getUserOpenId} from "../../../.temp/util/login";
+import Loading2 from "../../components/loading2/index.weapp";
 
 export default class Index extends Component {
 
@@ -42,13 +44,28 @@ export default class Index extends Component {
       })
     }
 
-    that.setState({isLoading: true});
-    db.collection('procuratorate-doc').where({}).orderBy('effectiveDate', 'desc').get({
-      success: (r) => {
-        console.log(r)
-        that.setState({searchResult: r.data, isLoading: false})
-      }
-    });
+    const { searchValue } = this.$router.params;
+    if (searchValue) {
+      this.setState({
+        searchValue
+      }, () => {
+        this.onSearch()
+      })
+    } else {
+
+      that.setState({isLoading: true});
+      db.collection('procuratorate-doc').where({}).orderBy('time', 'desc').get({
+        success: (r) => {
+          console.log(r)
+          that.setState({searchResult: r.data, isLoading: false})
+          Taro.showToast({
+            title: `加载20篇最近发布的检察文书`,
+            icon: 'none',
+            duration: 4000
+          })
+        }
+      });
+    }
   }
 
   componentDidMount () { }
@@ -76,16 +93,16 @@ export default class Index extends Component {
       })
       return ;
     }
-    db.collection('procuratorate-doc').where({text: db.RegExp({
-        regexp: '.*' + searchValue,
-        options: 'i',
-      })}).orderBy('effectiveDate', 'desc').get({
-      success: (r) => {
-        console.log(r)
-        that.setState({searchResult: r.data, isLoading: false})
+    Taro.cloud.callFunction({
+      name: 'searchProcuratorateDoc',
+      data: {
+        searchValue
+      },
+      complete: r => {
+        console.log(r.result.data)
+        that.setState({searchResult: r.result.data, isLoading: false})
       }
     });
-
   }
 
   onClear = () => {
@@ -121,6 +138,7 @@ export default class Index extends Component {
 
         )}))}
       </View>
+      {searchResult.length > 0 && <AtDivider content='没有更多了' fontColor='#666' />}
     </View>)
   }
 
@@ -144,9 +162,7 @@ export default class Index extends Component {
               {(searchResult.length > 0 || searchResult.length > 0) && this.renderSearchList()}
             </View>
 
-            {isLoading && <View className='loading-container'>
-              <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
-            </View>}
+            {isLoading && <Loading2 />}
           </View>
       </View>
     )

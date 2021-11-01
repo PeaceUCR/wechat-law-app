@@ -153,7 +153,7 @@ export default class ExampleDetail extends Component {
     }
 
     const isEnableScroll = getStorageSync('enableAutoScroll');
-    if (isEnableScroll) {
+    if (isEnableScroll && keyword) {
       that.setState({
         enableAutoScroll: true
       })
@@ -435,7 +435,7 @@ export default class ExampleDetail extends Component {
             </View>
           </View>
           {enableExampleDetailAd && !isLoading && <View>
-            <ad unit-id="adunit-918b26ec218137ab"></ad>
+            <ad unit-id="adunit-aa47163462e4442f" ad-type="video" ad-theme="white"></ad>
           </View>}
           <DiscussionArea topicId={example._id}  isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />
           <View id='comments'></View>
