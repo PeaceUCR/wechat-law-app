@@ -10,25 +10,33 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
   const db = cloud.database()
 
-  const searchValue = event.searchValue
+  const {isCategory, searchValue, type} = event
+
+  if (isCategory && type === "admin-criminal-link") {
+    return await db.collection('complement').limit(1000).where({
+      type: "admin-criminal-link"
+    }).get()
+  }
 
   let result
 
   const regexpString1 = `${searchValue.split('').join('.*')}`
   const regexpString2 = `.*${searchValue}`
   let result1 = await db.collection('complement').limit(1000).where({
-    text: db.RegExp({
+    text: searchValue ? db.RegExp({
       regexp: regexpString1,
       options: 'i',
-    })
+    }) : undefined,
+    type: type === "admin-criminal-link" ? "admin-criminal-link" : undefined
   }).orderBy('effectiveDate', 'desc').get();
 
   // exact match
   let result2 = await db.collection('complement').limit(1000).where({
-    text: db.RegExp({
+    text: searchValue ? db.RegExp({
       regexp: regexpString2,
       options: 'i',
-    })
+    }) : undefined,
+    type: type === "admin-criminal-link" ? "admin-criminal-link" : undefined
   }).orderBy('effectiveDate', 'desc').get();
 
   const exist = new Set(result2.data.map(item => item._id))
@@ -47,10 +55,13 @@ exports.main = async (event, context) => {
     data: [...result2Flag, ...complementFlag]
   }
 
-  result.data.forEach(r => {
-    delete r.content
-    delete r.text
-  })
+  if (type !== "admin-criminal-link") {
+    result.data.forEach(r => {
+      delete r.content
+      delete r.text
+    })
+  }
+
   return {
     result
   }

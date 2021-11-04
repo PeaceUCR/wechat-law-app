@@ -16,15 +16,16 @@ import {ImageRecoginzer} from "../../components/imageRecoginzer/index.weapp";
 
 const titles = [
   {title:'全部'},
-  {title:'刑法相关'},
-  {title:'民法典相关'},
-  {title:'行政相关'}
+  {title:'刑法'},
+  {title:'民法典'},
+  {title:'行政'},
+  {title:'公益'}
   ]
 export default class Index extends Component {
 
   state = {
     options: {
-      '刑法相关': [
+      '刑法': [
         {
           title:'刑法',
           url: '/pages/criminalLaw/index',
@@ -35,6 +36,11 @@ export default class Index extends Component {
         {
           title:'刑法相关解释、规定',
           url: '/pages/criminalComplement/index',
+          type: '刑法'
+        },
+        {
+          title: '行政—刑事衔接',
+          url: '/pages/adminCriminalLink/index',
           type: '刑法'
         },
         {
@@ -104,11 +110,15 @@ export default class Index extends Component {
         {
           title: '刑事审判参考',
           url: '/pages/consultant/index',
-          type: '刑法',
-          isUpdated: true
+          type: '刑法'
+        },
+        {
+          title: '裁判文书',
+          url: '/pages/judgement/index',
+          type: '刑法'
         }
       ],
-      '民法典相关': [
+      '民法典': [
         {
         title: '民法典',
         url: '/pages/civilLaw/index',
@@ -158,13 +168,12 @@ export default class Index extends Component {
           // isHot: true
         }
       ],
-      '行政相关': [
+      '行政': [
         {
           title: otherLawNameMap['admin-litigation-law'],
           url: '/pages/otherLaw/index?law=admin-litigation-law',
           sub:'2017年7月1日',
           type: '行政',
-
         },
         {
           title: otherLawNameMap['admin-litigation-explaination'],
@@ -269,20 +278,47 @@ export default class Index extends Component {
           type: '行政',
         },
         {
+          title: '人民检察院行政诉讼监督规则',
+          url: '/pages/exampleDetail/index?type=complement&id=83cfc1ac61815808017bb81b641e2107',
+          sub:'2021年9月1日',
+          type: '行政',
+          isNew: true
+        },
+        {
+          title: '《人民检察院行政诉讼监督规则》的理解与适用',
+          url: '/pages/exampleDetail/index?type=complement&id=150083c5618153f1000196501ef7dd25',
+          sub:'2021年9月16日',
+          type: '行政',
+          isNew: true
+        },
+        {
           title: '公安部关于印发《公安机关对部分违反治安管理行为实施处罚的裁量指导意见》的通知',
           url: '/pages/exampleDetail/index?type=complement&id=8e170652617e95d301a5fafd24ddd9fe',
-          sub:'2022年1月1日',
+          sub:'2018年6月6日',
           type: '行政',
           isNew: true
         },
         {
           title: '公安部关于实施公安行政处罚裁量基准制度的指导意见',
           url: '/pages/exampleDetail/index?type=complement&id=8e170652617e95d301a5fafe4138dc35',
-          sub:'2022年1月1日',
+          sub:'2016年1月2日',
           type: '行政',
           isNew: true
         }
       ],
+      '公益':[{
+        title: '最高检《人民检察院公益诉讼办案规则》',
+        url: '/pages/exampleDetail/index?type=complement&id=150083c5618153f10001964e07643f3e',
+        sub:'2021年7月1日',
+        type: '公益',
+        isNew: true
+      },{
+        title: '《人民检察院公益诉讼办案规则》的理解与适用',
+        url: '/pages/exampleDetail/index?type=complement&id=150083c5618153f10001964f2bc0c447',
+        sub:'2021年7月1日',
+        type: '公益',
+        isNew: true
+      }],
       '共有': [
         {
           title: '指导/典型/公报案例',
@@ -685,6 +721,9 @@ export default class Index extends Component {
                 {this.renderGridItems()}
               </AtTabsPane>
               <AtTabsPane current={current} index={3} >
+                {this.renderGridItems()}
+              </AtTabsPane>
+              <AtTabsPane current={current} index={4} >
                 {this.renderGridItems()}
               </AtTabsPane>
             </AtTabs>

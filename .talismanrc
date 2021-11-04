@@ -1,9 +1,5 @@
 fileignoreconfig:
-- filename: client/src/pages/termDetail/index.jsx
-  checksum: 16863dd25445ad0b28c4b4268801352711ee48690e3a2ed79afc57607bada5f8
-- filename: cloud/functions/countTodayUsage/index.js
-  checksum: 343fffc0b8fac5464a55078ed283f52bf29b95eb3f796381855e346e4a5f2035
 - filename: client/src/pages/index/index.jsx
-  checksum: 8c835566e4f42f5d9e5165c70e72fc62bb6618d638f4e0777534ca7c9650a35e
-- filename: cloud/functions/searchProcuratorateDoc/yarn.lock
-  checksum: 474934a705d849ec355c75e4052bbc053d0ba491dc5a2a2ab0381cc965507451
+  checksum: 389322388619dfd080c244241c8b264e38a0d611979e7d289c55e77e45890391
+- filename: client/src/util/util.js
+  checksum: d5feb980a4bef6c17b6d2e4a38a1bee369670170d2b5de7939ffe97262598f8a

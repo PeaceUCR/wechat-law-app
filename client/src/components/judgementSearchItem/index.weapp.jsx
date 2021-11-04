@@ -9,7 +9,7 @@ const getType = title => {
 }
 
 const JudgementSearchItem = (props) => {
-  let {text, title, date, caseNumber, courtName, redirect, pocuratorate} = props;
+  let {text, title, date, caseNumber, courtName, redirect, pocuratorate, category} = props;
   let displayedText = text;
   let showDot = false
   if (text && text.length > 100) {
@@ -28,6 +28,7 @@ const JudgementSearchItem = (props) => {
 
   return (<View className='search-item' onClick={redirect} >
     {type && pocuratorate && <View className='float-type'>{type.substring(0,3)}</View>}
+    {category && <View className='float-type'>{category}</View>}
     <View className='line'>
       <View className='law'>{title}</View>
       {/*<Text className='number'>{number}</Text>*/}

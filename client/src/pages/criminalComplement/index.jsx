@@ -59,7 +59,7 @@ export default class Index extends Component {
             />
             <AtListItem
               title={`${complement.title}`}
-              note={moment(complement.effectiveDate).format('YYYY-MM-DD')}
+              note={complement.effectiveDate ? moment(complement.effectiveDate).format('YYYY-MM-DD') : ''}
               arrow='right'
               onClick={() => {
                 Taro.navigateTo({

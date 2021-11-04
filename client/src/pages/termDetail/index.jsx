@@ -6,7 +6,7 @@ import DataPopup from '../../components/dataPopup/index.weapp'
 import {DiscussionArea} from '../../components/discussionArea/index.weapp'
 import { db } from '../../util/db'
 import {checkIfNewUser, getUserAvatar, getUserNickname, getUserOpenId, redirectToIndexIfNewUser} from '../../util/login'
-import {lawIdLabelMap, exampleIcon, sentencingIcon, explanationIcon, definitionIcon, consultIcon, judgementIcon, copy} from '../../util/util'
+import {lawIdLabelMap, exampleIcon, sentencingIcon, explanationIcon, definitionIcon, consultIcon, judgementIcon, pDocIcon, copy} from '../../util/util'
 import './index.scss'
 import TextSection from "../../components/textSection/index.weapp";
 import TextSectionLinked from "../../components/textSectionLinked/index.weapp";
@@ -574,7 +574,7 @@ export default class TermDetail extends Component {
   renderProcuratorateDoc = () => {
     return (<View className='judgement-line' onClick={this.jumpToProcuratorateDoc}>
       <Image
-        src='https://cdn-icons.flaticon.com/png/512/3778/premium/3778199.png?token=exp=1635782563~hmac=4d9ade9b38285bc41e20786c52f0a81b'
+        src={pDocIcon}
         className='title-icon'
         mode='widthFix'
       />
