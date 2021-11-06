@@ -14,7 +14,7 @@ exports.main = async (event, context) => {
   const type = event.type
   const searchValue = event.searchValue
 
-  let result
+  let result, result1, result2, result3;
 
   if (type === 'criminal-detail') {
     result = await db.collection('consult').limit(1000).where({
@@ -24,6 +24,8 @@ exports.main = async (event, context) => {
   } else if (type === 'all') {
     const regexpString1 = `${searchValue.split('').join('.*')}`
     const regexpString2 = `.*${searchValue}`
+
+    // around match
     result1 = await db.collection('consult').limit(1000).where({
       text: db.RegExp({
         regexp: regexpString1,
@@ -39,20 +41,36 @@ exports.main = async (event, context) => {
       })
     }).orderBy('number', 'desc').get();
 
-    const exist = new Set(result2.data.map(item => item._id))
-    const complement = result1.data.filter(item => !exist.has(item._id))
+    // exact match title
+    result3 = await db.collection('consult').limit(1000).where({
+      title: db.RegExp({
+        regexp: regexpString2,
+        options: 'i',
+      })
+    }).orderBy('number', 'desc').get();
 
-    result2Flag = result2.data.map(item => {
-      item.exactMatch = true
-      return item;
+
+    const allId = new Set([])
+
+    result3.data.forEach(item => item.exactMatch = true)
+    result2.data.forEach(item => item.exactMatch = true)
+    result1.data.forEach(item => item.exactMatch = false)
+
+    const all = [...result3.data, ...result2.data, ...result1.data]
+    const allUnique = []
+
+    all.forEach(item => {
+      if (allId.has(item._id)) {
+
+      } else {
+        allUnique.push(item)
+        allId.add(item._id)
+      }
     })
-    complementFlag = complement.map(item => {
-      item.exactMatch = false
-      return item
-    })
+
 
     result = {
-      data: [...result2Flag, ...complementFlag]
+      data: allUnique
     }
 
 

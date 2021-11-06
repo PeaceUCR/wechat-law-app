@@ -1,3 +1,6 @@
+import { flattenDeep, isEmpty } from "lodash";
+import {otherLawNameMap} from "./otherLaw";
+
 const lawNameMap = {
   'criminal': '刑事案件',
   'civil': '民事案件',
@@ -40,3 +43,321 @@ export const getCriminalLawNumber = (number) => {
 }
 
 export const lawIcon = 'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU90051UhswXRjkOshzDYNqY8lfLugm1vhWlOXZ6HVia3rFPJibhVAdPaNwlaN39FVtOcibVCImf2AMIdw/0?wx_fmt=png'
+
+export const homePageOptions = {
+  '刑法': [
+    {
+      title:'刑法',
+      url: '/pages/criminalLaw/index',
+      type: '刑法',
+      sub:'2021年3月1日'
+      // isHot: true
+    },
+    {
+      title:'刑法相关解释、规定',
+      url: '/pages/criminalComplement/index',
+      type: '刑法'
+    },
+    {
+      title: '行政—刑事衔接',
+      url: '/pages/adminCriminalLink/index',
+      type: '刑法'
+    },
+    {
+      title: '刑事诉讼法',
+      url: '/pages/litigationLaw/index',
+      type: '刑法',
+      sub:'2018年10月26日'
+    },
+    {
+      title: otherLawNameMap['criminal-litigation-explanation'],
+      url: '/pages/otherLaw/index?law=criminal-litigation-explanation',
+      sub:'2021年3月1日',
+      type: '刑法'
+    },
+    // {
+    //   title: '(最高法)适用刑事诉讼法的解释',
+    //   url: '/pages/litigationExplanation/index',
+    //   type: '刑法'
+    // },
+    {
+      title: otherLawNameMap['litigation-regulation'],
+      url: '/pages/otherLaw/index?law=litigation-regulation',
+      sub:'2019年12月30日',
+      type: '刑法'
+    },
+    {
+      title: otherLawNameMap['police-regulation'],
+      url: '/pages/otherLaw/index?law=police-regulation',
+      sub:'2020年07月20日',
+      type: '刑法'
+    },
+    {
+      title: otherLawNameMap['supervision-law'],
+      url: '/pages/otherLaw/index?law=supervision-law',
+      sub:'2018年3月20日',
+      type: '刑法',
+
+    },
+    {
+      title: otherLawNameMap['police-law'],
+      url: '/pages/otherLaw/index?law=police-law',
+      sub:'2012年10月26日',
+      type: '刑法',
+
+    },
+    {
+      title: otherLawNameMap['police-enforce-detail'],
+      url: '/pages/otherLaw/index?law=police-enforce-detail',
+      sub:'2016年7月5日',
+      type: '刑法',
+
+    },
+    {
+      title: otherLawNameMap['anti-terrorism-law'],
+      url: '/pages/otherLaw/index?law=anti-terrorism-law',
+      sub:'2018年4月27日',
+      type: '刑法',
+
+    },
+    {
+      title: otherLawNameMap['anti-drug-law'],
+      url: '/pages/otherLaw/index?law=anti-drug-law',
+      sub:'2008年6月1日',
+      type: '刑法',
+
+    },
+    {
+      title: '刑事审判参考',
+      url: '/pages/consultant/index',
+      type: '刑法'
+    },
+    {
+      title: '裁判文书',
+      url: '/pages/judgement/index',
+      type: '刑法'
+    }
+  ],
+  '民法典': [
+    {
+      title: '民法典',
+      url: '/pages/civilLaw/index',
+      sub:'2021年1月1日',
+      type: '民法典',
+
+    },
+    {
+      title: '民法典相关司法解释',
+      url: '/pages/civilLawExplaination/index',
+      type: '民法典'
+    },
+    {
+      title: '民事诉讼法',
+      url: '/pages/civilLawRegulation/index',
+      sub:'2017年6月27日',
+      type: '民法典'
+    },
+    {
+      title: otherLawNameMap['civil-litigation-explanation'],
+      url: '/pages/otherLaw/index?law=civil-litigation-explanation',
+      sub:'2020年12月23日',
+      type: '民法典'
+    },
+    {
+      title: otherLawNameMap['labor-law'],
+      url: '/pages/otherLaw/index?law=labor-law',
+      sub:'2018年12月29日',
+      type: '民法典',
+
+      // isHot: true
+    },
+    {
+      title: otherLawNameMap['labor-contract-law'],
+      url: '/pages/otherLaw/index?law=labor-contract-law',
+      sub:'2013年7月1日',
+      type: '民法典',
+
+      // isHot: true
+    },
+    {
+      title: otherLawNameMap['company-law'],
+      url: '/pages/otherLaw/index?law=company-law',
+      sub:'2018年10月26日',
+      type: '民法典',
+
+      // isHot: true
+    }
+  ],
+  '行政': [
+    {
+      title: otherLawNameMap['admin-litigation-law'],
+      url: '/pages/otherLaw/index?law=admin-litigation-law',
+      sub:'2017年7月1日',
+      type: '行政',
+    },
+    {
+      title: otherLawNameMap['admin-litigation-explaination'],
+      url: '/pages/otherLaw/index?law=admin-litigation-explaination',
+      sub:'2018年2月8日',
+      type: '行政',
+
+    },
+    {
+      title: otherLawNameMap['admin-force-law'],
+      url: '/pages/otherLaw/index?law=admin-force-law',
+      sub:'2012年1月1日',
+      type: '行政',
+
+    },
+    {
+      title: otherLawNameMap['admin-punish-law'],
+      url: '/pages/otherLaw/index?law=admin-punish-law',
+      sub:'2021年7月15日',
+      type: '行政',
+
+      // isHot: true
+    },
+    {
+      title: otherLawNameMap['admin-reconsider-law'],
+      url: '/pages/otherLaw/index?law=admin-reconsider-law',
+      sub:'2017年9月1日',
+      type: '行政',
+
+      // isHot: true
+    },
+    {
+      title: otherLawNameMap['admin-reconsider-regulation'],
+      url: '/pages/otherLaw/index?law=admin-reconsider-regulation',
+      sub:'2007年8月1日',
+      type: '行政',
+
+      // isHot: true
+    },
+    {
+      title: otherLawNameMap['admin-allow-law'],
+      url: '/pages/otherLaw/index?law=admin-allow-law',
+      sub:'2019年4月23日',
+      type: '行政',
+
+      // isHot: true
+    },
+    {
+      title: otherLawNameMap['public-order-admin-penalty-law'],
+      url: '/pages/otherLaw/index?law=public-order-admin-penalty-law',
+      sub:'2013年1月1日',
+      type: '行政',
+
+      // isHot: true
+    },
+    {
+      title: otherLawNameMap['road-safe-law'],
+      url: '/pages/otherLaw/index?law=road-safe-law',
+      sub:'2021年4月29日',
+      type: '行政',
+
+    },
+    {
+      title: otherLawNameMap['road-safe-regulation'],
+      url: '/pages/otherLaw/index?law=road-safe-regulation',
+      sub:'2017年10月7日',
+      type: '行政',
+
+    },
+    {
+      title: otherLawNameMap['road-safe-violation-handling'],
+      url: '/pages/otherLaw/index?law=road-safe-violation-handling',
+      sub:'2020年5月1日',
+      type: '行政',
+
+    },
+    {
+      title: otherLawNameMap['police-admin-regulation'],
+      url: '/pages/otherLaw/index?law=police-admin-regulation',
+      sub:'2019年1月1日',
+      type: '行政',
+
+    },
+    {
+      title: otherLawNameMap['national-compensation'],
+      url: '/pages/otherLaw/index?law=national-compensation',
+      sub:'2013年1月1日',
+      type: '行政',
+
+    },
+    {
+      title: otherLawNameMap['exit-entry-law'],
+      url: '/pages/otherLaw/index?law=exit-entry-law',
+      sub:'2013年7月1日',
+      type: '行政',
+
+    },
+    {
+      title: otherLawNameMap['help-law'],
+      url: '/pages/otherLaw/index?law=help-law',
+      sub:'2022年1月1日',
+      type: '行政',
+    },
+    {
+      title: '人民检察院行政诉讼监督规则',
+      url: '/pages/exampleDetail/index?type=complement&id=83cfc1ac61815808017bb81b641e2107',
+      sub:'2021年9月1日',
+      type: '行政',
+      isNew: true
+    },
+    {
+      title: '《人民检察院行政诉讼监督规则》的理解与适用',
+      url: '/pages/exampleDetail/index?type=complement&id=150083c5618153f1000196501ef7dd25',
+      sub:'2021年9月16日',
+      type: '行政',
+      isNew: true
+    },
+    {
+      title: '公安部关于印发《公安机关对部分违反治安管理行为实施处罚的裁量指导意见》的通知',
+      url: '/pages/exampleDetail/index?type=complement&id=8e170652617e95d301a5fafd24ddd9fe',
+      sub:'2018年6月6日',
+      type: '行政',
+      isNew: true
+    },
+    {
+      title: '公安部关于实施公安行政处罚裁量基准制度的指导意见',
+      url: '/pages/exampleDetail/index?type=complement&id=8e170652617e95d301a5fafe4138dc35',
+      sub:'2016年1月2日',
+      type: '行政',
+      isNew: true
+    }
+  ],
+  '公益':[{
+    title: '最高检《人民检察院公益诉讼办案规则》',
+    url: '/pages/exampleDetail/index?type=complement&id=150083c5618153f10001964e07643f3e',
+    sub:'2021年7月1日',
+    type: '公益',
+    isNew: true
+  },{
+    title: '《人民检察院公益诉讼办案规则》的理解与适用',
+    url: '/pages/exampleDetail/index?type=complement&id=150083c5618153f10001964f2bc0c447',
+    sub:'2021年7月1日',
+    type: '公益',
+    isNew: true
+  }],
+  '共有': [
+    {
+      title: '指导/典型/公报案例',
+      url: '/pages/examples/index',
+      type: '共有',
+      isUpdated: true
+    },
+    {
+      title: '检察文书',
+      url: '/pages/procuratorateDoc/index',
+      type: '共有'
+    }
+  ]
+}
+
+export const searchHomePageOptions = (searchValue) => {
+  if (isEmpty(searchValue)) {
+    return []
+  }
+  return flattenDeep(Object.values(homePageOptions))
+    .filter(item => item.title.indexOf(searchValue) !== -1)
+}

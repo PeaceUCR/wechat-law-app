@@ -73,6 +73,7 @@ export default class Index extends Component {
       return ;
     }
 
+    console.log('isCategory',isCategory)
     Taro.cloud.callFunction({
       name: 'searchCriminalComplement',
       data: {
@@ -81,7 +82,8 @@ export default class Index extends Component {
         searchValue
       },
       complete: r => {
-        that.setState({searchResult: isCategory ? r.result.data : r.result.result.data, isLoading: false})
+        console.log(r)
+        that.setState({searchResult: isCategory === true ? r.result.data : r.result.result.data, isLoading: false})
       }
     });
   }

@@ -169,6 +169,7 @@ export default class Index extends Component {
               duration: 3000
             })
           }
+          console.log(r)
           that.setState({searchResult: [...r.result.result.data], isLoading: false});
         }
       })

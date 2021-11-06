@@ -12,7 +12,7 @@ exports.main = async (event, context) => {
 
   const {isCategory, searchValue, type} = event
 
-  if (isCategory && type === "admin-criminal-link") {
+  if (isCategory === true && type === "admin-criminal-link") {
     return await db.collection('complement').limit(1000).where({
       type: "admin-criminal-link"
     }).get()
@@ -22,6 +22,7 @@ exports.main = async (event, context) => {
 
   const regexpString1 = `${searchValue.split('').join('.*')}`
   const regexpString2 = `.*${searchValue}`
+  // around match
   let result1 = await db.collection('complement').limit(1000).where({
     text: searchValue ? db.RegExp({
       regexp: regexpString1,
@@ -39,20 +40,35 @@ exports.main = async (event, context) => {
     type: type === "admin-criminal-link" ? "admin-criminal-link" : undefined
   }).orderBy('effectiveDate', 'desc').get();
 
-  const exist = new Set(result2.data.map(item => item._id))
-  const complement = result1.data.filter(item => !exist.has(item._id))
+  // exact match By title
+  let result3 = await db.collection('complement').limit(1000).where({
+    title: searchValue ? db.RegExp({
+      regexp: regexpString2,
+      options: 'i',
+    }) : undefined,
+    type: type === "admin-criminal-link" ? "admin-criminal-link" : undefined
+  }).orderBy('effectiveDate', 'desc').get();
 
-  let result2Flag = result2.data.map(item => {
-    item.exactMatch = true
-    return item;
+  const allId = new Set([])
+  result3.data.forEach(item => item.exactMatch = true)
+  result2.data.forEach(item => item.exactMatch = true)
+  result1.data.forEach(item => item.exactMatch = false)
+
+  const all = [...result3.data, ...result2.data, ...result1.data]
+  const allUnique = []
+
+  all.forEach(item => {
+    if (allId.has(item._id)) {
+
+    } else {
+      allUnique.push(item)
+      allId.add(item._id)
+    }
   })
-  let complementFlag = complement.map(item => {
-    item.exactMatch = false
-    return item
-  })
+
 
   result = {
-    data: [...result2Flag, ...complementFlag]
+    data: allUnique
   }
 
   if (type !== "admin-criminal-link") {

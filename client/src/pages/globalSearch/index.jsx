@@ -8,7 +8,8 @@ import {convertNumberToChinese} from '../../util/convertNumber'
 import Loading2 from '../../components/loading2/index.weapp'
 import GlobalSearchItem from '../../components/globalSearchItem/index.weapp'
 import {settingIcon} from "../../util/util";
-
+import {searchHomePageOptions} from '../../util/name'
+import {GridItem} from "../../components/grid/index.weapp";
 
 export default class Index extends Component {
   options1 = [
@@ -121,6 +122,19 @@ export default class Index extends Component {
   }
 
   componentDidHide () { }
+
+  renderHomeOptionSearchList = () => {
+    const {searchValue} = this.state;
+    const homeOptions = searchHomePageOptions(searchValue)
+    return (<View className='home-options'>
+      {homeOptions.length > 0 && <AtDivider content={`匹配${searchValue}模块`} fontColor='#333' />}
+      {homeOptions.length > 0 && homeOptions.map((option, i )=> {
+        return (<View className='grid-container' key={`grid-${i}`}>
+          <GridItem option={option} disabled={false} keyword={searchValue} />
+        </View>)
+      })}
+    </View>)
+  }
 
   renderSearchList = () => {
     const {searchResult, searchValue} = this.state
@@ -405,6 +419,7 @@ export default class Index extends Component {
           </View>
           <View>
             <View>
+              {this.renderHomeOptionSearchList()}
               {this.renderSearchList()}
             </View>
             {isLoading && <Loading2 />}
