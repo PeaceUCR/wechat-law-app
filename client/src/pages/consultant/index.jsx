@@ -252,6 +252,7 @@ export default class Index extends Component {
                 value={searchValue}
                 onChange={this.onChange}
                 onActionClick={() => this.onSearch(0)}
+                onBlur={() => this.onSearch(0)}
                 onClear={this.onClear}
                 placeholder={selected === '搜案例号' ? '123' : '案由/案例号'}
               />

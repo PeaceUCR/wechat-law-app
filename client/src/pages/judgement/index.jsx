@@ -360,6 +360,7 @@ export default class Index extends Component {
           value={searchValue}
           onChange={this.onChangeSearchValue}
           onActionClick={this.onSearch}
+          onBlur={this.onSearch}
         />
         {this.renderResults()}
         {/*<View>userOpenId: {userOpenId}</View>*/}

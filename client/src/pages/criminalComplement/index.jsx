@@ -127,6 +127,7 @@ export default class Index extends Component {
                 value={searchValue}
                 onChange={this.onChange}
                 onActionClick={() => this.onSearch(0)}
+                onBlur={() => this.onSearch(0)}
                 onClear={this.onClear}
                 placeholder='全文搜索'
               />
