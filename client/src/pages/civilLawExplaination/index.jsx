@@ -4,6 +4,7 @@ import {AtSearchBar, AtActivityIndicator, AtListItem, AtIcon, AtList} from 'taro
 import { db } from '../../util/db'
 import './index.scss'
 import {isEmpty} from "lodash";
+import moment from "moment";
 
 export default class Index extends Component {
 
@@ -66,17 +67,17 @@ export default class Index extends Component {
     return (<View>
       <View>
         {searchResult.map(((example) => {return (
-          <View key={`example-${example._id}`} className='civil-explanation-item' onClick={() => {
-            Taro.navigateTo({
-              url: `/pages/exampleDetail/index?type=civil-law-explaination&id=${example._id}&keyword=${searchValue}`,
-            })
-          }}
-          >
-            <View className='title'>
-              <Text className='text'>{example.title}</Text>
-            </View>
-            <AtIcon className='icon' value='chevron-right' size='40' color='#6190E8'></AtIcon>
-          </View>
+          <AtListItem
+            key={`example-${example._id}`}
+            title={`${example.title}`}
+            note={example.effectiveDate ? moment(example.effectiveDate).format('YYYY-MM-DD') : ''}
+            arrow='right'
+            onClick={() => {
+              Taro.navigateTo({
+                url: `/pages/exampleDetail/index?type=civil-law-explaination&id=${example._id}&keyword=${searchValue}`,
+              })
+            }}
+          />
 
           )}))}
       </View>
@@ -96,7 +97,6 @@ export default class Index extends Component {
 
   onSearch = () => {
     const that = this;
-    this.setState({isLoading: true});
     const { searchValue } = this.state;
     if(!searchValue.trim()) {
       Taro.showToast({
@@ -107,6 +107,7 @@ export default class Index extends Component {
       return ;
     }
 
+    this.setState({isLoading: true});
     Taro.cloud.callFunction({
       name: 'searchCivilLawExplaination',
       data: {
@@ -117,7 +118,7 @@ export default class Index extends Component {
         const {searchResult} = result
         if (isEmpty(searchResult)) {
           Taro.showToast({
-            title: `未找到含有${searchValue}的指导案例`,
+            title: `未找到含有${searchValue}的司法解释`,
             icon: 'none',
             duration: 3000
           })

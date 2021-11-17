@@ -1,5 +1,3 @@
 fileignoreconfig:
-- filename: client/src/util/name.js
-  checksum: ec785bb5a377195123e270358548e4d03c1776edb7014ffe3442d88198b11791
 - filename: client/src/pages/index/index.jsx
-  checksum: d4a90995a61b90141a209a43abcd5211fa20e8687a228ba2d683d3a4329b2e1e
+  checksum: e4a55ea69469afcbe800d3497291f961ab2745ea3882d1b9ae1680dc8cf23bb3

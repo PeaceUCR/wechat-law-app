@@ -127,7 +127,7 @@ export default class TermDetail extends Component {
           }
         })
 
-        db.collection('term-explanation').where({chnNumber: term.chnNumber}).get({
+        db.collection('term-explanation-faxin-2020').where({number: term.number}).get({
           success: (res) => {
             that.setState({termExplanations: res.data, isTermExplanationLoading: false});
           }

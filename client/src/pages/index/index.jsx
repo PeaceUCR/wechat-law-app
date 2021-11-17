@@ -38,7 +38,7 @@ export default class Index extends Component {
     isPosterLoading: true,
     posterRedirect: '',
     swiperPosters: [
-      'https://mmbiz.qpic.cn/mmbiz_gif/6fKEyhdZU92cC8JPU4xto4nia1UyLRqGvAia11YorBoNrN8WO4bFRIROZNsqGfGicaz6hZ660MUf5ia1sfEXeJeWgQ/0?wx_fmt=gif',
+      'https://mmbiz.qpic.cn/mmbiz_jpg/6fKEyhdZU93zibwIDAjqC1D6vUA9MoQMhuRBKvt2YTvnv6WibIp33kib9P2d0NhKLGzVMKallINfdfn6la92avSyg/0?wx_fmt=jpeg',
       'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU92ibe6ADcXKGhcicXzftTrV2y5usLhf0dWJQ7QNnLCxxhqF2Owbj8P3nqyKw2WGGAxQ9FibjTU32rrfA/0?wx_fmt=png'
     ],
     canClose: false,
