@@ -1,6 +1,6 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import { View, Text, RichText, Input, Button, Image } from '@tarojs/components'
-import {AtFab,AtIcon,AtBadge,AtButton,AtActivityIndicator, AtDivider} from "taro-ui";
+import {AtFab,AtIcon,AtBadge,AtButton,AtActivityIndicator, AtDivider, AtAccordion} from "taro-ui";
 import { db } from '../../util/db'
 import {checkIfNewUser, redirectToIndexIfNewUser} from '../../util/login'
 import './index.scss'
@@ -8,7 +8,7 @@ import throttle from "lodash/throttle";
 import {DiscussionArea} from "../../components/discussionArea/index.weapp";
 import TextSection from "../../components/textSection/index.weapp";
 import {convertNumberToChinese, isNumber} from "../../util/convertNumber";
-import {copy, getText} from "../../util/util";
+import {copy, definitionIcon, getText} from "../../util/util";
 import {otherLawNameMap} from "../../util/otherLaw";
 
 const typeCollectionMap = {
@@ -93,7 +93,8 @@ export default class RegulationDetail extends Component {
     isCollected: false,
     isReadMode: true,
     zoomIn: false,
-    litigationLawDefinition: null
+    explanation: null,
+    showExplanation: false
   }
 
   config = {
@@ -116,6 +117,18 @@ export default class RegulationDetail extends Component {
         success: (res) => {
           const term = res.data[0];
           that.setState({term, type, isLoading: false});
+          if (type === 'labor-contract-law') {
+            db.collection('labor-contract-law-explanation').where({number: term.number}).get({
+              success: (r) => {
+                that.setState({explanation: r.data[0], isLoading: false});
+              },
+              fail: () => {
+                console.log('fail')
+                that.setState({isLoading: false})
+              }
+            });
+
+          }
         },
         fail: () => {
           console.log('fail')
@@ -129,7 +142,7 @@ export default class RegulationDetail extends Component {
           that.setState({term, type});
           db.collection('litigation-law-definition').where({number: term.number}).get({
             success: (r) => {
-              that.setState({litigationLawDefinition: r.data[0], isLoading: false});
+              that.setState({explanation: r.data[0], isLoading: false});
             },
             fail: () => {
               console.log('fail')
@@ -199,16 +212,16 @@ export default class RegulationDetail extends Component {
   }
 
   renderLitigationLawDefinition = () => {
-    const {litigationLawDefinition, zoomIn} = this.state
+    const {explanation, type, zoomIn} = this.state
     return <View className='sentencings'>
       <AtDivider height='40' lineColor='#fff' />
-      <View className='line-title'>
+      {type === 'litigation-law' && <View className='line-title'>
         <AtIcon value='alert-circle' size={zoomIn ? 24 : 18} color='#c6823b'></AtIcon>
         <Text>人大刑事诉讼法释义</Text>
-      </View>
+      </View>}
       <View className='sentencing'>
       <View className='line'>
-        <TextSection data={litigationLawDefinition.text} zoomIn={zoomIn} />
+        <TextSection data={explanation.text} zoomIn={zoomIn} />
       </View>
       <AtDivider height='40' lineColor='#fff' />
     </View>
@@ -423,9 +436,15 @@ export default class RegulationDetail extends Component {
     const {term} = this.state
     copy(term.text)
   }
+  openTermExplain = () => {
+    const {showExplanation} = this.state
+    this.setState({
+      showExplanation: !showExplanation
+    })
+  }
 
   render () {
-    const {isSent, comment, term, type, isCollected, isReadMode, zoomIn, isLoading, litigationLawDefinition} = this.state;
+    const {isSent, comment, term, type, isCollected, isReadMode, zoomIn, isLoading, explanation, showExplanation} = this.state;
     const {text} = term
     let lawLabel
     if (otherLawSet.has(type)) {
@@ -456,9 +475,25 @@ export default class RegulationDetail extends Component {
             </View>
           </View>
 
-        {litigationLawDefinition && <View>
-          {this.renderLitigationLawDefinition()}
+        {explanation &&
+        <View className='module-container'>
+          <Image
+            src={definitionIcon}
+            className='title-icon'
+            mode='widthFix'
+          />
+          <AtAccordion
+            hasBorder={false}
+            open={showExplanation}
+            onClick={this.openTermExplain}
+            title='释义'
+            icon={{ value: 'alert-circle', color: 'transparent', size: '18' }}
+            isAnimation={false}
+          >
+            {this.renderLitigationLawDefinition()}
+          </AtAccordion>
         </View>}
+
         {!isLoading && !text && this.renderNoData()}
         <View className='footer'>
           <View className='text'>

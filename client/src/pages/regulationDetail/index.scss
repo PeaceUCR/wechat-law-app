@@ -232,3 +232,20 @@
     height: 60px;
   }
 }
+
+.at-accordion {
+  margin-bottom: 30px;
+  border-bottom: 2px solid #c6823b;
+}
+
+.module-container {
+  position: relative;
+  .title-icon {
+    position: absolute;
+    top: 12px;
+    left: 10px;
+    width: 40px;
+    height: 40px;
+    z-index: 1;
+  }
+}
