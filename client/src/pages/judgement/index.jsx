@@ -1,7 +1,6 @@
 import Taro, { Component, getStorageSync, setStorageSync } from '@tarojs/taro'
-import {View, Picker, Button, Image} from '@tarojs/components'
+import {View, Button, Image} from '@tarojs/components'
 import {AtDivider, AtSearchBar,AtNoticebar, AtList, AtListItem,  AtModal,AtModalHeader, AtModalContent,AtModalAction, AtInput, AtBadge, AtIcon, AtActionSheet, AtTag, AtDrawer, AtAccordion} from "taro-ui";
-import UserFloatButton from '../../components/userFloatButton/index.weapp'
 import './index.scss'
 import {db} from "../../util/db";
 import Loading2 from "../../components/loading2/index.weapp";
@@ -11,7 +10,6 @@ import {
   getCriminalLawNumber,
 } from "../../util/name";
 import JudgementSearchItem from '../../components/judgementSearchItem/index.weapp'
-import {getUserAvatar} from "../../util/login";
 
 
 const settingIcon =
@@ -22,12 +20,7 @@ const criminalKeywords = ['非法占有','自首','罚金','共同犯罪','故�
 export default class Index extends Component {
 
   state = {
-    isNewUser: false,
     isReadMode: false,
-    isUserLoaded: false,
-    userName: '',
-    userOpenId: '',
-    userAvatar: '',
     law: 'criminal',
     number: '',
     searchValue: '',
@@ -39,7 +32,7 @@ export default class Index extends Component {
     selectedCriminalKeywords: [],
     province: '',
     enableMainAd: false,
-    hasVisit: true
+    showCriminalLawOption: false
   }
 
   config = {
@@ -48,18 +41,15 @@ export default class Index extends Component {
   }
 
   onShareAppMessage() {
-    const {law, number, searchValue} = this.state;
+    const {law, number} = this.state;
     return {
-      path: `/pages/judgement/index?law=${law}&number=${number}&searchValue=${searchValue}`
+      path: `/pages/judgement/index?law=${law}&number=${number}`
     };
   }
 
   componentWillMount () {
-    const { userOpenId, userName, userAvatar, number, searchValue } = this.$router.params;
+    const { number } = this.$router.params;
     this.setState({
-      userOpenId,
-      userName,
-      userAvatar,
       number
     })
     const that = this
@@ -99,21 +89,15 @@ export default class Index extends Component {
       })
     }
 
-    const userAvatar = getUserAvatar();
-    this.setState({userAvatar})
-
   }
 
   componentDidHide () { }
 
-  handleLoginSuccess = () => {
-    this.setState({isNewUser: false});
-    Taro.hideLoading();
-  }
-
   selectCriminalNumber = (e) => {
+    const {name} = e
+    console.log(name)
     this.setState({
-      number: getCriminalLawNumber(criminalLawOptions[e.detail.value])
+      number: getCriminalLawNumber(name)
     })
   }
 
@@ -134,22 +118,7 @@ export default class Index extends Component {
     const {number, selectedCriminalKeywords, province} = this.state
     return <View>
       <View>
-        <Picker mode='selector' range={criminalLawOptions} onChange={this.selectCriminalNumber}>
-          <AtList>
-            <AtListItem
-              title='刑法法条'
-              extraText={getCriminalLawChnNumber(number)}
-            />
-          </AtList>
-        </Picker>
-        <View>
-          <AtInput
-            type='text'
-            placeholder='  或输入法条数字序号,如264'
-            value={number}
-            onChange={this.handleInputNumber}
-          />
-        </View>
+        <View className={`law-line ${number ? 'active': ''}`} onClick={() => {this.setState({showCriminalLawOption: true})}}>{number ? getCriminalLawChnNumber(number) : '点我选择刑法法条'}</View>
         <View className='icon-line' onClick={() => {
           this.setState({
             isMenuOpened: true
@@ -162,6 +131,9 @@ export default class Index extends Component {
         </View>
         <View className='icon-line'>
           <AtIcon value='map-pin' size='26' color='#b35900' onClick={() => {
+            Taro.showLoading({
+              title: '获取地理位置中...',
+            });
             const that = this
             Taro.getLocation({
               success(res) {
@@ -179,6 +151,7 @@ export default class Index extends Component {
                     that.setState({
                       province:province
                     })
+                    Taro.hideLoading()
                   }
                 })
 
@@ -187,7 +160,7 @@ export default class Index extends Component {
           }}></AtIcon>
           <AtInput
             type='text'
-            placeholder='位置'
+            placeholder='点我添加位置'
             value={province}
             onChange={this.handleProvinceChange}
           />
@@ -348,7 +321,7 @@ export default class Index extends Component {
 
   render () {
     const {isReadMode, law, number, searchValue, showSetting, showLoading,isMenuOpened, activeKeyMap, selectedCriminalKeywords, enableMainAd, resultList,
-    } = this.state;
+      showCriminalLawOption} = this.state;
     return (
       <View className={`index-page page ${isReadMode ? 'read-mode' : ''}`}>
 
@@ -411,6 +384,21 @@ export default class Index extends Component {
               )
             })}
           </View>
+        </AtActionSheet>
+        <AtActionSheet className='criminal-law-options' isOpened={showCriminalLawOption} title='请选罪名法条' cancelText='确定' onClose={() => {this.setState({showCriminalLawOption: false})}} onCancel={() => {this.setState({showCriminalLawOption: false})}}>
+          {showCriminalLawOption && <View>
+            {criminalLawOptions.map(option => {
+              return (
+                <AtTag
+                  key={option}
+                  name={option}
+                  circle
+                  active={option === getCriminalLawChnNumber(number)}
+                  onClick={this.selectCriminalNumber}
+                >{option}</AtTag>
+              )
+            })}
+          </View>}
         </AtActionSheet>
         {enableMainAd && resultList && resultList.length === 0 && !isMenuOpened && <View className='ad-bottom'>
           {/*<ad unit-id="adunit-0320f67c0e860e36"></ad>*/}

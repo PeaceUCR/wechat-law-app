@@ -21,6 +21,20 @@ exports.main = async (event, context) => {
     })
   }
 
+  const {location} = event
+  if (location) {
+    const {province, city} = location
+    return await db.collection('user').where({
+      //下面这3行，为筛选条件
+      openId
+    }).update({
+      data: {
+        province,
+        city,
+        lastTimeLogin: new Date()
+      }
+    })
+  }
   return await db.collection('user').where({
     //下面这3行，为筛选条件
     openId

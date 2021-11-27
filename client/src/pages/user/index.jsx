@@ -1,12 +1,13 @@
 import Taro, { Component, setStorageSync, getStorageSync} from '@tarojs/taro'
-import { View,Swiper,SwiperItem } from '@tarojs/components'
-import {AtSwitch,AtNoticebar,AtActivityIndicator} from "taro-ui";
+import { View } from '@tarojs/components'
+import {AtSwitch,AtNoticebar,AtActivityIndicator, AtIcon} from "taro-ui";
 import MyCollection from '../../components/myCollection'
 import './index.scss'
 import {tmpId} from '../../util/util'
 import {ImageRecoginzer} from "../../components/imageRecoginzer/index.weapp";
 import {db} from "../../util/db";
-
+import {setLocation, getLocation, getProvince, getCity} from '../../util/login'
+import {getNumber, isNumber} from "../../util/convertNumber";
 
 export default class User extends Component {
 
@@ -16,7 +17,9 @@ export default class User extends Component {
     isLoading: false,
     showImageRecognize: false,
     token: '',
-    enableAds: false
+    enableAds: false,
+    province: undefined,
+    city: undefined
   }
 
   config = {
@@ -31,6 +34,10 @@ export default class User extends Component {
 
   componentWillMount () {
     const that = this;
+    that.setState({
+      province: getProvince(),
+      city: getCity()
+    })
     db.collection('configuration').where({}).get({
       success: (res) => {
         that.setState({
@@ -162,7 +169,7 @@ export default class User extends Component {
   }
 
   render () {
-    const {isLoading, isReadMode, collection, showImageRecognize, token, enableAds} = this.state;
+    const {isLoading, isReadMode, collection, showImageRecognize, token, enableAds, province, city} = this.state;
     return (
       <View className={`user-page page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
@@ -179,7 +186,43 @@ export default class User extends Component {
           <AtSwitch title='护眼模式' checked={isReadMode} onChange={this.handleChange} />
         </View>
         <View>
-          <AtSwitch title='AI图片识别[体验版]' checked={showImageRecognize} onChange={this.open} />
+          <View className='icon-line' onClick={() => {
+            Taro.showLoading({
+              title: '获取地理位置中...',
+            });
+            const that = this
+            Taro.getLocation({
+              success(res) {
+                console.log(res)
+                const {latitude, longitude} = res
+                Taro.request({
+                  url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${latitude},${longitude}&key=4POBZ-YEXYD-NPQ4R-PNZJ4-3XEE5-FFBXF`,
+                  method: 'get',
+                  success: function (r) {
+                    console.log(r)
+                    const {data} = r
+                    const {result} = data
+                    const {address_component} = result
+                    console.log(address_component)
+                    const {province, city} = address_component
+                    that.setState({province, city})
+                    setLocation({province, city})
+                    Taro.cloud.callFunction({
+                      name: 'record',
+                      data: {
+                        location: {province, city}
+                      }
+                    })
+                    Taro.hideLoading()
+                  }
+                })
+
+              }
+            })
+          }}>
+            <AtIcon value='map-pin' size='26' color='#b35900'></AtIcon>
+            <View>{province && city ? `${province}-${city}` : '点我添加位置信息'}</View>
+          </View>
         </View>
         {/*<View>*/}
         {/*  <AtButton type='secondary' onClick={this.handleSubscribe}>点击订阅消息</AtButton>*/}

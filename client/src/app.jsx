@@ -60,6 +60,11 @@ class App extends Component {
       'pages/civilLawRegulation/index',
       // 'pages/litigationExplanation/index'
     ],
+    permission: {
+      "scope.userLocation": {
+        "desc": "你的位置信息将用于识别和推荐地域性法律、法规、案例等"
+      }
+    },
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',

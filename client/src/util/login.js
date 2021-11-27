@@ -1,4 +1,4 @@
-import Taro, { getStorageSync } from '@tarojs/taro'
+import Taro, { getStorageSync, setStorageSync } from '@tarojs/taro'
 
 export const redirectToIndexIfNewUser = () => {
   Taro.showToast({
@@ -36,3 +36,20 @@ export const isSuperAdmin = () => {
   return user.openId === 'o00Y-5C_d5zfv685dF7SI0zy4mS4' || user.openId === 'o00Y-5ECkT-Pz6rMDXTpDLj5a0NQ';
 }
 
+export const setLocation = (location) => {
+  const user = getStorageSync('user');
+  const {province, city} = location
+  user.province = province
+  user.city = city
+  setStorageSync('user', user);
+}
+
+export const getProvince = () => {
+  const user = getStorageSync('user');
+  return user.province;
+}
+
+export const getCity = () => {
+  const user = getStorageSync('user');
+  return user.city;
+}
