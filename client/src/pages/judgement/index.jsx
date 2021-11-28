@@ -10,7 +10,8 @@ import {
   getCriminalLawNumber,
 } from "../../util/name";
 import JudgementSearchItem from '../../components/judgementSearchItem/index.weapp'
-
+import {convertNumberToChinese} from '../../util/convertNumber'
+import throttle from "lodash/throttle";
 
 const settingIcon =
   'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU92UYROmCwI9kIRFU6pnKzycaPtbJdQ4ibwv99ttVwWNj2GkAib2icbrPD3cyGLWuTNMjs8I3pB1X6QOw/0?wx_fmt=png'
@@ -32,7 +33,8 @@ export default class Index extends Component {
     selectedCriminalKeywords: [],
     province: '',
     enableMainAd: false,
-    showCriminalLawOption: false
+    showCriminalLawOption: false,
+    filterValue: ''
   }
 
   config = {
@@ -260,6 +262,11 @@ export default class Index extends Component {
       showSetting: true
     });
   }
+  onChangeFilterValue = (value) => {
+    this.setState({
+      filterValue: Number.isInteger(parseInt(value)) ? convertNumberToChinese(parseInt(value)) : value
+    })
+  }
 
   renderResults = () => {
     const {law, resultList, searchValue, selectedCriminalKeywords} = this.state
@@ -321,7 +328,7 @@ export default class Index extends Component {
 
   render () {
     const {isReadMode, law, number, searchValue, showSetting, showLoading,isMenuOpened, activeKeyMap, selectedCriminalKeywords, enableMainAd, resultList,
-      showCriminalLawOption} = this.state;
+      showCriminalLawOption, filterValue} = this.state;
     return (
       <View className={`index-page page ${isReadMode ? 'read-mode' : ''}`}>
 
@@ -387,7 +394,11 @@ export default class Index extends Component {
         </AtActionSheet>
         <AtActionSheet className='criminal-law-options' isOpened={showCriminalLawOption} title='请选罪名法条' cancelText='确定' onClose={() => {this.setState({showCriminalLawOption: false})}} onCancel={() => {this.setState({showCriminalLawOption: false})}}>
           {showCriminalLawOption && <View>
-            {criminalLawOptions.map(option => {
+            <AtSearchBar
+              placeholder='罪名法条查找'
+              onChange={this.onChangeFilterValue}
+            />
+            {criminalLawOptions.filter(option => !filterValue || option.indexOf(filterValue) !== -1).map(option => {
               return (
                 <AtTag
                   key={option}

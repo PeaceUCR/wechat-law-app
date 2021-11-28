@@ -11,6 +11,7 @@ import {otherLawNameMap} from '../../util/otherLaw'
 import './index.scss'
 
 const otherTypes = [
+  'admin-explanation',
   'explanation',
   'terms-complement',
   'complement',

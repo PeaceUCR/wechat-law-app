@@ -13,7 +13,7 @@ exports.main = async (event, context) => {
   const db = cloud.database()
   const _ = db.command
 
-  const token = '24.ae448b1d2ddf3e76e3047d95e7ec8339.2592000.1638375240.282335-24304397'
+  const token = '24.3baaae76fbd21ab48767b21d0b0c7e29.2592000.1640664168.282335-24304397'
 
   const r = await db.collection("recognize").where({
     openId,

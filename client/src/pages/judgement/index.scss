@@ -205,6 +205,9 @@
 }
 
 .criminal-law-options {
+  .at-search-bar__action {
+    display: none;
+  }
   .at-action-sheet__body {
     max-height: 80vh;
     overflow-y: scroll;

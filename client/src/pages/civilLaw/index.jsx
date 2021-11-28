@@ -45,18 +45,25 @@ export default class Index extends Component {
     }
 
     const that = this;
-    Taro.cloud.callFunction({
-      name: 'getCivilLawsCategory',
-      complete: ({result}) => {
-        const {civilLawIdMap, civilLawCategoryLines, civilTagMap} = result
-        setGlobalData('civilLawIdMap', civilLawIdMap)
-        setGlobalData('civilLawCategoryLines', civilLawCategoryLines)
-        setGlobalData('civilTagMap', civilTagMap)
-        that.setState({
-          isCategoryLoading: false
-        })
-      }
-    })
+    if (getGlobalData('civilLawCategoryLines')) {
+      that.setState({
+        isCategoryLoading: false
+      })
+    } else {
+      console.log('fetch')
+      Taro.cloud.callFunction({
+        name: 'getCivilLawsCategory',
+        complete: ({result}) => {
+          const {civilLawIdMap, civilLawCategoryLines, civilTagMap} = result
+          setGlobalData('civilLawIdMap', civilLawIdMap)
+          setGlobalData('civilLawCategoryLines', civilLawCategoryLines)
+          setGlobalData('civilTagMap', civilTagMap)
+          that.setState({
+            isCategoryLoading: false
+          })
+        }
+      })
+    }
 
     // const setting = getStorageSync('setting');
     const setting = {isReadMode: true};

@@ -6,8 +6,7 @@ import './index.scss'
 import {tmpId} from '../../util/util'
 import {ImageRecoginzer} from "../../components/imageRecoginzer/index.weapp";
 import {db} from "../../util/db";
-import {setLocation, getLocation, getProvince, getCity} from '../../util/login'
-import {getNumber, isNumber} from "../../util/convertNumber";
+import {setLocation, getProvince, getCity} from '../../util/login'
 
 export default class User extends Component {
 

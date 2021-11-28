@@ -323,6 +323,20 @@ export const homePageOptions = {
       sub:'2016年1月2日',
       type: '行政',
       isNew: true
+    },
+    {
+      title: '娱乐场所管理条例',
+      url: '/pages/exampleDetail/index?type=admin-explanation&id=8e17065261a2389f05600a320cab3ba2',
+      sub:'2020年11月29日',
+      type: '行政',
+      isNew: true
+    },
+    {
+      title: '娱乐场所治安管理办法',
+      url: '/pages/exampleDetail/index?type=admin-explanation&id=8e17065261a23a6b05600a3303ad5a4a',
+      sub:'2008年10月01日',
+      type: '行政',
+      isNew: true
     }
   ],
   '公益':[{
