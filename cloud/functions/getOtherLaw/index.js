@@ -534,6 +534,14 @@ const lawMap = {
         '第五章　保障和监督': { value: '第五章　保障和监督', start: 51, end: 60 },
         '第六章　法律责任': { value: '第六章　法律责任', start: 61, end: 67 },
         '第七章　附　　则': { value: '第七章　附　　则', start: 68, end: 71 } },
+    'consumer-right-protect-law': { '第一章 总　则': { value: '第一章 总　则', start: 1, end: 6 },
+        '第二章 消费者的权利': { value: '第二章 消费者的权利', start: 7, end: 15 },
+        '第三章 经营者的义务': { value: '第三章 经营者的义务', start: 16, end: 29 },
+        '第四章 国家对消费者合法权益的保护': { value: '第四章 国家对消费者合法权益的保护', start: 30, end: 35 },
+        '第五章 消费者组织': { value: '第五章 消费者组织', start: 36, end: 38 },
+        '第六章 争议的解决': { value: '第六章 争议的解决', start: 39, end: 47 },
+        '第七章 法律责任': { value: '第七章 法律责任', start: 48, end: 61 },
+        '第八章 附　则': { value: '第八章 附　则', start: 62, end: 63 } },
 }
 
 exports.main = async (event, context) => {

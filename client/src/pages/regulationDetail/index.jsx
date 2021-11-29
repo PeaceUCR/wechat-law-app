@@ -62,6 +62,7 @@ const otherLaws = [
   'national-compensation',
   'exit-entry-law',
   'help-law',
+  'consumer-right-protect-law'
 ]
 
 const commonLawSet = new Set(
@@ -119,6 +120,19 @@ export default class RegulationDetail extends Component {
           that.setState({term, type, isLoading: false});
           if (type === 'labor-contract-law') {
             db.collection('labor-contract-law-explanation').where({number: term.number}).get({
+              success: (r) => {
+                that.setState({explanation: r.data[0], isLoading: false});
+              },
+              fail: () => {
+                console.log('fail')
+                that.setState({isLoading: false})
+              }
+            });
+
+          }
+
+          if (type === 'consumer-right-protect-law') {
+            db.collection('consumer-right-protect-explanation').where({number: term.number}).get({
               success: (r) => {
                 that.setState({explanation: r.data[0], isLoading: false});
               },

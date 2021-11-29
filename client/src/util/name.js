@@ -183,8 +183,14 @@ export const homePageOptions = {
       url: '/pages/otherLaw/index?law=company-law',
       sub:'2018年10月26日',
       type: '民法典',
-
       // isHot: true
+    },
+    {
+      title: otherLawNameMap['consumer-right-protect-law'],
+      url: '/pages/otherLaw/index?law=consumer-right-protect-law',
+      sub:'2014年03月15日',
+      type: '民法典',
+      isNew: true
     }
   ],
   '行政': [
