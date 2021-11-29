@@ -376,7 +376,6 @@ export default class Index extends Component {
           </AtBadge>
         </View>
 
-
         <AtActionSheet isOpened={isMenuOpened} cancelText='确定' title='请选择关键字(可多选)' onClose={() => {this.setState({isMenuOpened: false})}} onCancel={this.handleMenuClose}>
           <View>
             {criminalKeywords.map(criminalKeyword => {
@@ -392,25 +391,30 @@ export default class Index extends Component {
             })}
           </View>
         </AtActionSheet>
-        <AtActionSheet className='criminal-law-options' isOpened={showCriminalLawOption} title='请选罪名法条' cancelText='确定' onClose={() => {this.setState({showCriminalLawOption: false})}} onCancel={() => {this.setState({showCriminalLawOption: false})}}>
-          {showCriminalLawOption && <View>
-            <AtSearchBar
-              placeholder='罪名法条查找'
-              onChange={this.onChangeFilterValue}
-            />
-            {criminalLawOptions.filter(option => !filterValue || option.indexOf(filterValue) !== -1).map(option => {
-              return (
-                <AtTag
-                  key={option}
-                  name={option}
-                  circle
-                  active={option === getCriminalLawChnNumber(number)}
-                  onClick={this.selectCriminalNumber}
-                >{option}</AtTag>
-              )
-            })}
-          </View>}
-        </AtActionSheet>
+
+        <AtModal className='ad-bottom' isOpened={showCriminalLawOption}>
+          <AtModalHeader>请选择罪名法条</AtModalHeader>
+          <AtModalContent>
+            {showCriminalLawOption && <View>
+              <AtSearchBar
+                placeholder='罪名法条查找'
+                onChange={this.onChangeFilterValue}
+              />
+              {criminalLawOptions.filter(option => !filterValue || option.indexOf(filterValue) !== -1).map(option => {
+                return (
+                  <AtTag
+                    key={option}
+                    name={option}
+                    circle
+                    active={option === getCriminalLawChnNumber(number)}
+                    onClick={this.selectCriminalNumber}
+                  >{option}</AtTag>
+                )
+              })}
+            </View>}
+          </AtModalContent>
+          <AtModalAction><Button onClick={() => {this.setState({showCriminalLawOption: false})}}>确定</Button> </AtModalAction>
+        </AtModal>
         {enableMainAd && resultList && resultList.length === 0 && !isMenuOpened && <View className='ad-bottom'>
           {/*<ad unit-id="adunit-0320f67c0e860e36"></ad>*/}
         </View>}
