@@ -27,7 +27,7 @@ export const otherLawNameMap = {
   'exit-entry-law':'出境入境管理法',
   'help-law':'法律援助法',
   'consumer-right-protect-law':'消费者权益保护法',
-
+  'public-interest-rule':'最高检《人民检察院公益诉讼办案规则》',
 }
 
 export const otherLawAnnounceMap = {
@@ -59,6 +59,8 @@ export const otherLawAnnounceMap = {
   'exit-entry-law':'中华人民共和国出境入境管理法（2012年6月30日第十一届全国人民代表大会常务委员会第二十七次会议通过',
   'help-law':'2021年8月20日第十三届全国人民代表大会常务委员会第三十次会议通过',
   'consumer-right-protect-law':'根据2013年10月25日第十二届全国人民代表大会常务委员会第五次会议《关于修改＜中华人民共和国消费者权益保护法＞的决定》第二次修正',
+  'public-interest-rule':'2020年9月28日最高人民检察院第十三届检察委员会第五十二次会议通过，现予公布，自2021年7月1日起施行',
+
 }
 
 
@@ -91,4 +93,6 @@ export const otherLawCategoryMap = {
   'exit-entry-law':[{"level":1,"value":"第一章 总 则"},{"level":1,"value":"第二章 中国公民出境入境"},{"level":1,"value":"第三章 外国人入境出境"},{"level":2,"value":"第一节 签 证"},{"level":2,"value":"第二节 入境出境"},{"level":1,"value":"第四章 外国人停留居留"},{"level":2,"value":"第一节 停留居留"},{"level":2,"value":"第二节 永久居留"},{"level":1,"value":"第五章 交通运输工具出境入境边防检查"},{"level":1,"value":"第六章 调查和遣返"},{"level":1,"value":"第七章 法律责任"},{"level":1,"value":"第八章 附 则"}],
   'help-law':[{"level":1,"value":"第一章　总　　则"},{"level":1,"value":"第二章　机构和人员"},{"level":1,"value":"第三章　形式和范围"},{"level":1,"value":"第四章　程序和实施"},{"level":1,"value":"第五章　保障和监督"},{"level":1,"value":"第六章　法律责任"},{"level":1,"value":"第七章　附　　则"}],
   'consumer-right-protect-law': [{"level":1,"value":"第一章 总　则"},{"level":1,"value":"第二章 消费者的权利"},{"level":1,"value":"第三章 经营者的义务"},{"level":1,"value":"第四章 国家对消费者合法权益的保护"},{"level":1,"value":"第五章 消费者组织"},{"level":1,"value":"第六章 争议的解决"},{"level":1,"value":"第七章 法律责任"},{"level":1,"value":"第八章 附　则"}],
+  'public-interest-rule':[{"level":1,"value":"第一章　总　则"},{"level":1,"value":"第二章　一般规定"},{"level":2,"value":"第一节　管　辖"},{"level":2,"value":"第二节　回　避"},{"level":2,"value":"第三节　立　案"},{"level":2,"value":"第四节　调　查"},{"level":2,"value":"第五节　提起诉讼"},{"level":2,"value":"第六节　出席第一审法庭"},{"level":2,"value":"第七节　上　诉"},{"level":2,"value":"第八节　诉讼监督"},{"level":1,"value":"第三章　行政公益诉讼"},{"level":2,"value":"第一节　立案与调查"},{"level":2,"value":"第二节　检察建议"},{"level":2,"value":"第三节　提起诉讼"},{"level":1,"value":"第四章　民事公益诉讼"},{"level":2,"value":"第一节　立案与调查"},{"level":2,"value":"第二节　公　告"},{"level":2,"value":"第三节　提起诉讼"},{"level":2,"value":"第四节　支持起诉"},{"level":1,"value":"第五章　其他规定"},{"level":1,"value":"第六章　附　则"}],
+
 }

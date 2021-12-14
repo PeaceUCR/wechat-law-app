@@ -343,11 +343,17 @@ export const homePageOptions = {
       sub:'2008年10月01日',
       type: '行政',
       isNew: true
+    },
+    {
+      title: '行政相关法规',
+      url: '/pages/adminComplement/index',
+      type: '行政',
+      isNew: true
     }
   ],
   '公益':[{
-    title: '最高检《人民检察院公益诉讼办案规则》',
-    url: '/pages/exampleDetail/index?type=complement&id=150083c5618153f10001964e07643f3e',
+    title: otherLawNameMap['public-interest-rule'],
+    url: '/pages/otherLaw/index?law=public-interest-rule',
     sub:'2021年7月1日',
     type: '公益',
     isNew: true

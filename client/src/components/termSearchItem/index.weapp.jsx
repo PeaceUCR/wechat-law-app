@@ -36,7 +36,8 @@ const regulationDetailSet = new Set(
     'national-compensation',
     'exit-entry-law',
     'help-law',
-    'consumer-right-protect-law'
+    'consumer-right-protect-law',
+    'public-interest-rule'
   ])
 
 const TermSearchItem = (props) => {

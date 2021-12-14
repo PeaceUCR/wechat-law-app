@@ -62,7 +62,8 @@ const otherLaws = [
   'national-compensation',
   'exit-entry-law',
   'help-law',
-  'consumer-right-protect-law'
+  'consumer-right-protect-law',
+  'public-interest-rule'
 ]
 
 const commonLawSet = new Set(

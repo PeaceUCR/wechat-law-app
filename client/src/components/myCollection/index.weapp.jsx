@@ -48,6 +48,7 @@ const newLaws = {
   'exit-entry-law': otherLawNameMap['exit-entry-law'],
   'help-law': otherLawNameMap['help-law'],
   'consumer-right-protect-law': otherLawNameMap['consumer-right-protect-law'],
+  'public-interest-rule': otherLawNameMap['public-interest-rule'],
 }
 
 const MyCollection = (props) => {
