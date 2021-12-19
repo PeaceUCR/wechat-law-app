@@ -7,7 +7,8 @@ import './index.scss'
 import {checkIfNewUser, redirectToIndexIfNewUser} from "../../util/login";
 import throttle from "lodash/throttle";
 import {DiscussionArea} from "../../components/discussionArea/index.weapp";
-import {findAndHighlight, isStartWith} from "../../util/util";
+import {FloatSearch} from "../../components/floatSearch/index.weapp";
+import {findAndHighlight} from "../../util/util";
 
 const typeCollectionMap = {
   'court': 'example',
@@ -97,21 +98,29 @@ export default class ExampleDetail extends Component {
     if (typeCollectionMap[type]) {
       db.collection(typeCollectionMap[type]).where({_id: id}).get({
         success: (res) => {
-          that.setState({example: res.data[0], isLoading: false, type, id, keyword});
+          if (res.data[0]) {
+            that.setState({example: res.data[0], isLoading: false, type, id, keyword});
+          } else {
+            that.setState({isLoading: false, type})
+          }
         },
         fail: () => {
           console.log('fail')
-          that.setState({isLoading: false})
+          that.setState({isLoading: false, type})
         }
       });
     } else {
       db.collection(type).where({_id: id}).get({
         success: (res) => {
-          that.setState({example: res.data[0], isLoading: false, type, id, keyword});
+          if (res.data[0]) {
+            that.setState({example: res.data[0], isLoading: false, type, id, keyword});
+          } else {
+            that.setState({isLoading: false, type})
+          }
         },
         fail: () => {
           console.log('fail')
-          that.setState({isLoading: false})
+          that.setState({isLoading: false, type})
         }
       });
     }
@@ -152,12 +161,12 @@ export default class ExampleDetail extends Component {
       })
     }
 
-    const isEnableScroll = getStorageSync('enableAutoScroll');
-    if (isEnableScroll && keyword) {
-      that.setState({
-        enableAutoScroll: true
-      })
-    }
+    // const isEnableScroll = getStorageSync('enableAutoScroll');
+    // if (isEnableScroll && keyword) {
+    //   that.setState({
+    //     enableAutoScroll: true
+    //   })
+    // }
   }
 
   onShareAppMessage() {
@@ -343,10 +352,17 @@ export default class ExampleDetail extends Component {
 
 
   renderNoData = () => {
+    const {type} = this.state
     return (<View>
-      <View className='no-data'>出错啦!</View>
-      <View className='no-data'>数据不存在或者已经迁移</View>
-      <View className='no-data'>麻烦重新搜索进入</View>
+      {type !== 'local-law-detail' && <View>
+        <View className='no-data'>出错啦!</View>
+        <View className='no-data'>数据不存在或者已经迁移</View>
+        <View className='no-data'>麻烦重新搜索进入</View>
+      </View>}
+      {type === 'local-law-detail' && <View>
+        <View className='no-data'>数据还在收录中</View>
+        <View className='no-data'>敬请期待</View>
+      </View>}
     </View>)
   }
 
@@ -372,7 +388,6 @@ export default class ExampleDetail extends Component {
         })
       }
     }, 600)
-
     return (<View  className={`text-section ${zoomIn ? 'zoom-in' : ''}`}>
       <View className='term-complement-title'>{title}</View>
       <View className='content'>{text.split('\n').filter(line => line.trim() && line.trim().length > 0).map((line, index) => {
@@ -383,8 +398,31 @@ export default class ExampleDetail extends Component {
     </View>)
   }
 
+  changeKeyword = (keyword) => {
+    const {example} = this.state
+    const {text} = example
+    if (keyword && keyword.trim()) {
+      if (text.indexOf(keyword) === -1) {
+        Taro.showToast({
+          title: `未找到关键词"${keyword}"`,
+          icon: 'none',
+          duration: 2000
+        })
+        return ;
+      }
+      this.setState({keyword, enableAutoScroll: true})
+    } else {
+      Taro.showToast({
+        title: '搜索关键词不能为空！',
+        icon: 'none',
+        duration: 2000
+      })
+    }
+
+  }
+
   render () {
-    const {isSent, comment, example, zoomIn, isCollected, isReadMode, isLoading, type, enableAutoScroll, enableExampleDetailAd} = this.state;
+    const {isSent, keyword, comment, example, zoomIn, isCollected, isReadMode, isLoading, type, enableAutoScroll, enableExampleDetailAd} = this.state;
     const {special, text, title} = example
     return (
       <View>
@@ -402,10 +440,12 @@ export default class ExampleDetail extends Component {
         <View className={`example-detail-page page ${zoomIn ? 'zoom-in' : ''} ${isReadMode ? 'read-mode' : ''}`}>
           {special && this.renderSpecial()}
           {!special && <View>
-            {enableAutoScroll && type === 'complement' && this.renderComplement()}
-            {(!(enableAutoScroll && type === 'complement'))&& this.renderExample()}
+            {enableAutoScroll && this.renderComplement()}
+            {!enableAutoScroll && this.renderExample()}
           </View>}
           {!isLoading && !title && !text && this.renderNoData()}
+          {!special && <FloatSearch keyword={keyword} onConfirm={this.changeKeyword} />
+          }
           <View className='footer'>
             <View className='text'>
               <Input

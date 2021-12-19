@@ -1,4 +1,4 @@
-import Taro from '@tarojs/taro'
+import Taro, {useState} from '@tarojs/taro'
 import {RichText, View} from "@tarojs/components";
 import './index.scss'
 import {isStartWith, findAndHighlight} from "../../util/util";
@@ -21,17 +21,49 @@ const refine = (s) => {
   return str;
 }
 
+let canCopy = true
+
 const TextSection = (props) => {
   let {data, keyword, zoomIn, isTitle} = props;
   data = data ? data: '';
   keyword = keyword ? keyword: undefined
 
+  // const [showCopy, setShowCopy] = useState(false);
+  let pressTime;
+  const touchStart = (text) => {
+    console.log('start')
+    pressTime = setTimeout(() => {
+      //  你要do的事
+      console.log('long', canCopy)
+      if (canCopy) {
+        Taro.setClipboardData({
+          data: text,
+          success: function (res) {
+            Taro.showToast({
+              title: '本段已复制到剪贴板',
+              icon: 'none',
+              duration: 2000
+            })
+          }
+        });
+        canCopy = false
+      }
+
+    }, 2000);
+  }
+
+  const touchEnd = () => {
+    console.log('end')
+    clearTimeout(pressTime);
+  }
+
   return (<View  className={`text-section ${zoomIn ? 'zoom-in' : ''} ${isTitle ? 'title': ''}`}>
     <View className='content'>{data.split('\n').filter(line => line.trim() && line.trim().length > 0).map(line => refine(line)).map((line, index) => {
-      return (<View className='line' key={`text-example-detail-${index}`} >
+      return (<View className='line' key={`text-example-detail-${index}`} onTouchStart={() => touchStart(line)} onTouchEnd={touchEnd}>
         <RichText nodes={findAndHighlight(line, index, keyword)} className={isStartWith(line, highlights) ? 'highlight': ''} ></RichText>
       </View>)
     })}</View>
+    {/*{showCopy && <View className='copy'>复制</View>}*/}
   </View>)
 }
 

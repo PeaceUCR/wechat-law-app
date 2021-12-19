@@ -1,12 +1,13 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {View, Image} from '@tarojs/components'
-import {AtSearchBar, AtListItem} from 'taro-ui'
+import {AtSearchBar, AtListItem, AtIcon, AtNoticebar} from 'taro-ui'
 import {isEmpty} from 'lodash';
 import { Loading } from '../../components/loading/index.weapp'
-import { targetImageSource } from '../../util/util'
 import './index.scss'
 import moment from "moment";
-import {db} from "../../util/db";
+import {getCity, getProvince} from "../../util/login";
+import Loading2 from "../../components/loading2/index.weapp";
+import throttle from "lodash/throttle";
 
 export default class Index extends Component {
 
@@ -14,11 +15,13 @@ export default class Index extends Component {
     searchValue: '',
     searchResult: [],
     isLoading: false,
-    isReadMode: false
+    isReadMode: false,
+    province: undefined,
+    city: undefined
   }
 
   config = {
-    navigationBarTitleText: '行政相关法规'
+    navigationBarTitleText: '地方法律法规'
   }
 
   onShareAppMessage() {
@@ -37,19 +40,10 @@ export default class Index extends Component {
       })
     }
 
-    const that = this
-    that.setState({isLoading: true});
-    db.collection('admin-explanation').where({}).orderBy('effectiveDate', 'desc').get({
-      success: (r) => {
-        console.log(r)
-        that.setState({searchResult: r.data, isLoading: false})
-        Taro.showToast({
-          title: `加载20篇最近添加的法规`,
-          icon: 'none',
-          duration: 4000
-        })
-      }
-    });
+    this.setState({
+      province: getProvince(),
+      city: getCity()
+    })
   }
 
   componentDidMount () { }
@@ -61,24 +55,29 @@ export default class Index extends Component {
 
   componentDidHide () { }
 
+  renderLocation = () => {
+    const {province, city} = this.state
+    return (<View className='icon-line' onClick={() => {
+    }}>
+      <AtIcon value='map-pin' size='22' color='#b35900'></AtIcon>
+      {province && city && <View>{`${province}-${city}`}</View>}
+      {(!province && city)&& <View>暂无、请先在'我的'页面设置位置信息</View>}
+    </View>)
+  }
+
   renderSearchList = () => {
     const {searchResult, searchValue} = this.state
     return (<View>
       <View>
         {searchResult.map(((complement) => {return (
           <View className='result-item' key={`complement-${complement._id}`}>
-            <Image
-              src={targetImageSource}
-              className={complement.exactMatch ? 'exact-match': 'exact-match-hide'}
-              mode='widthFix'
-            />
             <AtListItem
               title={`${complement.title}`}
-              note={complement.effectiveDate ? moment(complement.effectiveDate).format('YYYY-MM-DD') : ''}
+              note={complement.publishInfo}
               arrow='right'
               onClick={() => {
                 Taro.navigateTo({
-                  url: `/pages/exampleDetail/index?type=admin-explanation&id=${complement._id}&keyword=${searchValue}`,
+                  url: `/pages/exampleDetail/index?type=local-law-detail&id=${complement._id}&keyword=${searchValue}`,
                 })
               }}
             />
@@ -92,37 +91,34 @@ export default class Index extends Component {
     this.setState({searchValue})
   }
 
-  onSearch = () => {
-    const that = this;
-    const { searchValue } = this.state;
-    if(!searchValue.trim()) {
-      Taro.showToast({
-        title: '搜索不能为空',
-        icon: 'none',
-        duration: 2000
-      })
-      return ;
-    }
-    this.setState({isLoading: true});
-    Taro.cloud.callFunction({
-      name: 'searchAdminComplement',
-      data: {
-        type: 'all',
-        searchValue: searchValue
-      },
-      complete: r => {
-        if (isEmpty(r.result.result.data)) {
-          Taro.showToast({
-            title: `未找到含有${searchValue}的案例`,
-            icon: 'none',
-            duration: 3000
-          })
+  onSearch = throttle(() => {
+      const that = this;
+      const { searchValue, province, city } = this.state;
+      console.log(searchValue, province, city)
+      this.setState({isLoading: true});
+      Taro.cloud.callFunction({
+        name: 'searchLocalLaw',
+        data: {
+          searchValue,
+          province,
+          city
+        },
+        complete: r => {
+          console.log(r)
+          if (isEmpty(r.result.data)) {
+            Taro.showToast({
+              title: `未找到!`,
+              icon: 'none',
+              duration: 2000
+            })
+          }
+          that.setState({searchResult: [...r.result.data], isLoading: false});
         }
-        that.setState({searchResult: [...r.result.result.data], isLoading: false});
-      }
-    })
+      })
+    },
+    1000,
+    { trailing: false })
 
-  }
 
   onClear = () => {
     this.setState({
@@ -135,7 +131,10 @@ export default class Index extends Component {
     const {searchValue, searchResult, isLoading, isReadMode} = this.state;
     return (
       <View className={`example-page page ${isReadMode ? 'read-mode' : ''}`}>
-          <View className='header'>
+        <AtNoticebar marquee speed={60}>
+          仍在开发中
+        </AtNoticebar>
+        <View className='header'>
             <View className='search'>
               <AtSearchBar
                 value={searchValue}
@@ -143,22 +142,17 @@ export default class Index extends Component {
                 onActionClick={() => this.onSearch(0)}
                 onBlur={() => this.onSearch(0)}
                 onClear={this.onClear}
-                placeholder='全文搜索'
+                placeholder='搜标题'
               />
             </View>
           </View>
-          <View>
+          <View >
+            {this.renderLocation()}
             <View>
               {searchResult.length > 0 && this.renderSearchList()}
             </View>
-            {isLoading && <Loading />}
+            {isLoading && <Loading2 />}
           </View>
-
-          <Image
-            src={targetImageSource}
-            className='exact-match-hide'
-            mode='widthFix'
-          />
       </View>
     )
   }

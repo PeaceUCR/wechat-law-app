@@ -1,4 +1,5 @@
 .text-section {
+  position: relative;
   &.title {
     font-weight: bold !important;
     text-align: center;
@@ -34,4 +35,7 @@
     padding: 0px 10px 0px 5px;
   }
 
+  .copy {
+    position: absolute;
+  }
 }

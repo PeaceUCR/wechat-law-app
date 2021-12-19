@@ -304,28 +304,28 @@ export const homePageOptions = {
     },
     {
       title: '人民检察院行政诉讼监督规则',
-      url: '/pages/exampleDetail/index?type=complement&id=83cfc1ac61815808017bb81b641e2107',
+      url: '/pages/exampleDetail/index?type=admin-explanation&id=83cfc1ac61815808017bb81b641e2107',
       sub:'2021年9月1日',
       type: '行政',
       isNew: true
     },
     {
       title: '《人民检察院行政诉讼监督规则》的理解与适用',
-      url: '/pages/exampleDetail/index?type=complement&id=150083c5618153f1000196501ef7dd25',
+      url: '/pages/exampleDetail/index?type=admin-explanation&id=150083c5618153f1000196501ef7dd25',
       sub:'2021年9月16日',
       type: '行政',
       isNew: true
     },
     {
       title: '公安部关于印发《公安机关对部分违反治安管理行为实施处罚的裁量指导意见》的通知',
-      url: '/pages/exampleDetail/index?type=complement&id=8e170652617e95d301a5fafd24ddd9fe',
+      url: '/pages/exampleDetail/index?type=admin-explanation&id=8e170652617e95d301a5fafd24ddd9fe',
       sub:'2018年6月6日',
       type: '行政',
       isNew: true
     },
     {
       title: '公安部关于实施公安行政处罚裁量基准制度的指导意见',
-      url: '/pages/exampleDetail/index?type=complement&id=8e170652617e95d301a5fafe4138dc35',
+      url: '/pages/exampleDetail/index?type=admin-explanation&id=8e170652617e95d301a5fafe4138dc35',
       sub:'2016年1月2日',
       type: '行政',
       isNew: true
@@ -365,11 +365,17 @@ export const homePageOptions = {
     isNew: true
   }],
   '共有': [
+
     {
       title: '指导/典型/公报案例',
       url: '/pages/examples/index',
       type: '共有',
       isUpdated: true
+    },
+    {
+      title: '地方法律法规',
+      url: '/pages/localLaw/index',
+      type: '共有'
     },
     {
       title: '检察文书',

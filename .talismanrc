@@ -1,5 +1,7 @@
 fileignoreconfig:
-- filename: client/src/pages/index/index.jsx
-  checksum: 65c88ad9071ad387ecc8315d54d510480fffcb73debc4717dffa06a938f229bc
-- filename: cloud/functions/searchAdminComplement/yarn.lock
-  checksum: 08df827db30f9cca8ca7118466006dd022012d58b2bc6ea7df7e976fcaaa64d5
+- filename: client/src/util/name.js
+  checksum: ea46f74a0e4eb070a1ec482ae3b0171bb4a3ae27c1693aeac40190ac6b76f335
+- filename: client/src/components/floatSearch/index.weapp.jsx
+  checksum: 91dd7cc616da8ac71f6325e2f2a317b9f96818e38cb7636b38fcd4540e728b14
+- filename: cloud/functions/searchLocalLaw/yarn.lock
+  checksum: f32f995467e2952208ebdb5e43c823590f82bd92b3d85e3882e92e5bfbd8207b

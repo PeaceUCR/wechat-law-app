@@ -83,7 +83,6 @@ const ImageRecoginzer = (props) => {
   }
 
   const copyToClipboard = (text, isAll) => {
-
     Taro.setClipboardData({
       data: text,
       success: function (res) {

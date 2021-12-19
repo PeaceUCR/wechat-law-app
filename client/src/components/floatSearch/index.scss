@@ -1,0 +1,38 @@
+.float-search {
+  position: fixed;
+  right: 6px;
+  top:200px;
+  display: flex;
+  height: 60px;
+  align-items: center;
+  width: 460px;
+  //transition: width 0.2s ease-in-out;
+  &.hide {
+    width: 60px;
+    input, button {
+      display: none;
+    }
+  }
+  .input {
+    width: 300px;
+    height: 100%;
+    padding-left: 10px;
+    font-size: 32px;
+    color: black;
+    background: rgba(255, 255, 255, 0.8);
+  }
+  .button {
+    font-size: 32px;
+    width: 100px;
+    height: 100%;
+    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #4d4dff;
+  }
+  .search {
+    height: 60px;
+    width: 60px;
+  }
+}
