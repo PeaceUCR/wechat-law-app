@@ -6,7 +6,7 @@ import DataPopup from '../../components/dataPopup/index.weapp'
 import {DiscussionArea} from '../../components/discussionArea/index.weapp'
 import { db } from '../../util/db'
 import {checkIfNewUser, getUserAvatar, getUserNickname, getUserOpenId, redirectToIndexIfNewUser} from '../../util/login'
-import {lawIdLabelMap, exampleIcon, sentencingIcon, explanationIcon, definitionIcon, consultIcon, judgementIcon, pDocIcon, copy} from '../../util/util'
+import {lawIdLabelMap, exampleIcon, sentencingIcon, explanationIcon, definitionIcon, consultIcon, judgementIcon, pDocIcon, evidenceIcon, copy} from '../../util/util'
 import './index.scss'
 import TextSection from "../../components/textSection/index.weapp";
 import TextSectionLinked from "../../components/textSectionLinked/index.weapp";
@@ -26,6 +26,7 @@ export default class TermDetail extends Component {
     courtExamples: [],
     complements: [],
     complementExamples: [],
+    evidence: [],
     isProcuratorateExampleLoading: true,
     isCourtExampleLoading: true,
     isComplementLoading: true,
@@ -37,6 +38,7 @@ export default class TermDetail extends Component {
     showComplement: false,
     showExample: false,
     showConsult: false,
+    showEvidence: false,
     showYiBenTong: false,
     enableYiBenTong: false,
     yiBenTongContent: [],
@@ -74,6 +76,18 @@ export default class TermDetail extends Component {
       success: (res) => {
         const term = res.data[0];
         that.setState({term});
+
+        const {number} = term
+
+        db.collection('criminal-evidence')
+          .where({
+            number
+          }).get({
+          success: (res) => {
+            console.log(res.data)
+            this.setState({evidence: res.data})
+          }
+        });
 
         db.collection('example')
           .orderBy('number', 'desc')
@@ -494,6 +508,25 @@ export default class TermDetail extends Component {
     </View>
   }
 
+  renderEvidence = () => {
+    const {evidence, zoomIn} = this.state
+    return <View className='sentencings'>
+      {evidence.map((sentencing, index) => {
+        const {text, crime} = sentencing
+        return (<View className='sentencing' key={`sentencing-key-${index}`}>
+          {/*<View className='title line example'>量刑指导意见:</View>*/}
+          <View className='line crime-line'>
+            <Text className='crime-line-item'>罪名:<Text className='crime'>{crime}</Text></Text>
+          </View>
+          <View className='line'>
+            <TextSection data={text} zoomIn={zoomIn} />
+          </View>
+          <AtDivider height='40' lineColor='#fff' />
+        </View>)
+      })}
+    </View>
+  }
+
   renderTermExplanation = () => {
     const {termExplanations, zoomIn} = this.state
     return <View className='sentencings'>
@@ -540,6 +573,13 @@ export default class TermDetail extends Component {
     const {showExample} = this.state
     this.setState({
       showExample: !showExample
+    })
+  }
+
+  openEvidence = () => {
+    const {showEvidence} = this.state
+    this.setState({
+      showEvidence: !showEvidence
     })
   }
 
@@ -621,7 +661,7 @@ export default class TermDetail extends Component {
       isCollectedLoading, isCollected, isReadMode, zoomIn,
       isSentencingLoading, sentencings, isTermExplanationLoading, isConsultLoading,
       showTermExplanation, showSentencing, showComplement, showExample, showConsult,
-      showYiBenTong, enableYiBenTong, isYiBenTongLoading} = this.state;
+      showYiBenTong, enableYiBenTong, isYiBenTongLoading, evidence, showEvidence} = this.state;
     return (
       <View className={`term-detail-page page ${isReadMode ? 'read-mode' : ''} ${zoomIn ? 'zoom-in' : ''}`}>
           <View className='copy-icon-container' onClick={this.copyToClipboard}>
@@ -664,6 +704,23 @@ export default class TermDetail extends Component {
             </AtAccordion>
           </View>}
 
+        {evidence && evidence.length > 0 && <View className='module-container'>
+          <Image
+            src={evidenceIcon}
+            className='title-icon'
+            mode='widthFix'
+          />
+          <AtAccordion
+            hasBorder={false}
+            open={showEvidence}
+            onClick={this.openEvidence}
+            title='证据指引'
+            icon={{ value: 'alert-circle', color: 'transparent', size: '18' }}
+            isAnimation={false}
+          >
+            {this.renderEvidence()}
+          </AtAccordion>
+        </View>}
 
         {sentencings && sentencings.length > 0 && <View className='module-container'>
           <Image

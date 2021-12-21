@@ -18,7 +18,8 @@ export const judgementIcon =
   'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU91mpxjqkrribbOvVbnSmMeQAf4qGzmDSHDNSWj3l7PExS0cFMxxpl7PHo8icmKsMujWLtD7AjibgET6Q/0?wx_fmt=png'
 export const pDocIcon =
   'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU92f3O9AicaUccrUYibKVW8YJ0fQS6pVcX6BQYIJjPsXFMbKoCww86ndHibUVp3QQCX9IELNNZe16QCnQ/0?wx_fmt=png'
-
+export const evidenceIcon =
+  'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU93JsDwJUYe7Oggjt9e32sLIGjuiaEsSMmBZU5OaNnA7uO55dUcyVQEr6PLKxwdGHpTPubqzBExl1tg/0?wx_fmt=png'
 
 export const logoIcon =
   'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU90BjLQWC4xvdib5qLL6ySsG8APebKwkCvD1DfOQ08O6AyGEgg7UaFibM2lricaYcRBo0npQC3l7zmQUQ/0?wx_fmt=png'
