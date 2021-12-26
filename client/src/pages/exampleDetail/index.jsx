@@ -3,6 +3,7 @@ import {View,Input, Button, RichText} from '@tarojs/components'
 import {AtFab, AtIcon, AtActivityIndicator, AtNoticebar, AtButton, AtBadge} from "taro-ui";
 import { db } from '../../util/db'
 import TextSection from '../../components/textSection/index.weapp'
+import TextSectionComponent from '../../components/textSectionComponent/index'
 import './index.scss'
 import {checkIfNewUser, redirectToIndexIfNewUser} from "../../util/login";
 import throttle from "lodash/throttle";
@@ -186,6 +187,7 @@ export default class ExampleDetail extends Component {
   componentDidHide () { }
 
   renderExample = () => {
+    console.log('example')
     const {example, keyword, zoomIn} = this.state;
     const {text, title} = example;
     if (title) {
@@ -193,7 +195,7 @@ export default class ExampleDetail extends Component {
     }
     return (<View>
       <View className='term-complement-title'>{title}</View>
-      <TextSection data={text} keyword={keyword} zoomIn={zoomIn} />
+      <TextSectionComponent data={text} keyword={keyword} zoomIn={zoomIn} />
     </View>)
   }
 
@@ -366,7 +368,6 @@ export default class ExampleDetail extends Component {
     </View>)
   }
 
-
   renderComplement = () => {
     const {example, keyword, zoomIn} = this.state;
     const {text, title} = example;
@@ -418,7 +419,10 @@ export default class ExampleDetail extends Component {
         duration: 2000
       })
     }
+  }
 
+  onCancel = () => {
+    this.setState({keyword: '',enableAutoScroll: false})
   }
 
   render () {
@@ -444,8 +448,7 @@ export default class ExampleDetail extends Component {
             {!enableAutoScroll && this.renderExample()}
           </View>}
           {!isLoading && !title && !text && this.renderNoData()}
-          {!special && <FloatSearch keyword={keyword} onConfirm={this.changeKeyword} />
-          }
+          {!special && <FloatSearch keyword={keyword} onConfirm={this.changeKeyword} onCancel={this.onCancel} />}
           <View className='footer'>
             <View className='text'>
               <Input

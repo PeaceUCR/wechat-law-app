@@ -591,6 +591,7 @@ export default class TermDetail extends Component {
       url: redirectStr
     });
   };
+
   jumpToProcuratorateDoc = () => {
     const {term} = this.state
     const redirectStr = `/pages/procuratorateDoc/index?searchValue=${term.chnNumber}`
@@ -654,6 +655,7 @@ export default class TermDetail extends Component {
       </View>}
     </View>)
   }
+
   render () {
     const {isSent, comment, term, examples, courtExamples, complementExamples,
       complements, termExplanations, consult,

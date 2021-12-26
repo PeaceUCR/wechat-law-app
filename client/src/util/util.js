@@ -141,14 +141,49 @@ export const getExampleSearchTag = (example) => {
 }
 
 export const copy = (text) => {
-  Taro.setClipboardData({
-    data: text,
-    success: function (res) {
-      Taro.showToast({
-        title: '法条文字已复制到剪贴板',
-        icon: 'none',
-        duration: 2000
-      })
+  Taro.cloud.callFunction({
+    name: 'checkBeforeCopy',
+    complete: r => {
+      console.log(r)
+      const {result} = r
+      if (result.isValid) {
+        Taro.setClipboardData({
+          data: text,
+          success: function () {
+            Taro.showToast({
+              title: '文字已复制到剪贴板',
+              icon: 'none',
+              duration: 2000
+            })
+          }
+        });
+      } else {
+        Taro.showToast({
+          title: '复制失败: 无积分或其他原因',
+          icon: 'none',
+          duration: 4000
+        })
+      }
+
     }
-  });
+  })
+
+}
+
+export const highlights = ['指导案例', '裁判要点', '相关法条', '相关法律规定', '基本案情', '裁判结果', '裁判理由', '刑法',
+  '关键词', '要旨', '基本案情', '诉讼过程', '检察工作情况', '检察机关监督情况', '指导意义', '相关规定',
+  '一、基本案情', '二、主要问题', '三、裁判理由','检察机关履职过程', '检察机关履职情况','裁判要旨','条文主旨','条文理解','审判实践中应注意的问题', '本条主旨', '本条释义',
+  '办案经过','典型意义','检察履职情况'
+];
+export const refine = (s) => {
+  const str = s.trim()
+  if(str && str.length > 0) {
+    if(str.charAt(0) === '【' && str.charAt(str.length-1) === '】' ){
+      return str.replace('【', '').replace('】', '');
+    }
+    if(str.charAt(0) === '[' && str.charAt(str.length-1) === ']' ){
+      return str.replace('[', '').replace(']', '');
+    }
+  }
+  return str;
 }

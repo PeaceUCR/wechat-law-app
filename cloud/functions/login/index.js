@@ -24,6 +24,7 @@ exports.main = async (event, context) => {
       openId: wxContext.OPENID,//获取操作者_openid的方法
       avatarUrl: event.avatarUrl,
       nickName: event.nickName,
+      score: 3,
       lastTimeLogin: new Date()
     }
   })

@@ -18,7 +18,8 @@ export default class User extends Component {
     token: '',
     enableAds: false,
     province: undefined,
-    city: undefined
+    city: undefined,
+    score: undefined
   }
 
   config = {
@@ -59,6 +60,18 @@ export default class User extends Component {
       withSubscriptions: true,
       success: (res) => {
         console.log(res)
+      }
+    })
+
+    Taro.cloud.callFunction({
+      name: 'login',
+      complete: r => {
+        console.log(r.result.data[0])
+        const {score} = r.result.data[0]
+        that.setState({
+          score
+        })
+        setStorageSync('user', r.result.data[0]);
       }
     })
   }
@@ -168,7 +181,7 @@ export default class User extends Component {
   }
 
   render () {
-    const {isLoading, isReadMode, collection, showImageRecognize, token, enableAds, province, city} = this.state;
+    const {isLoading, isReadMode, collection, showImageRecognize, token, enableAds, province, city, score} = this.state;
     return (
       <View className={`user-page page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
@@ -183,6 +196,18 @@ export default class User extends Component {
         {/*</Swiper>}*/}
         <View>
           <AtSwitch title='护眼模式' checked={isReadMode} onChange={this.handleChange} />
+        </View>
+        <View>
+          <View className='icon-line' onClick={() => {
+            Taro.showToast({
+              title: '每天使用搜法可获得积分',
+              icon: 'none',
+              duration: 2000
+            });
+          }}>
+            <AtIcon value='money' size='26' color='#b35900' ></AtIcon>
+            <View>{score ? `当前积分: ${score}` : '暂无积分'}</View>
+          </View>
         </View>
         <View>
           <View className='icon-line' onClick={() => {
