@@ -18,19 +18,17 @@ exports.main = async (event, context) => {
   }).get();
 
   const user = res.data[0]
+  // update not work, but remove then add works, _.inc only works for positive
   if (user && user.score > 0) {
-    const updateResult = await db.collection('user').doc(user._id).update({
+    const updateResult = await db.collection('user').doc(user._id).remove()
+    user.score = user.score - 1
+    await db.collection('user').add({
       data: {
-        score: _.inc(-1)
+        ...user
       }
     })
     return {
-      isValid: true,
-      user: await db.collection('user').where({
-        //下面这3行，为筛选条件
-        openId
-      }).get(),
-      updateResult
+      isValid: true
     }
   }
   return {

@@ -10,6 +10,7 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
   const openId = wxContext.OPENID;
   const db = cloud.database()
+  const _ = db.command
 
   if (event.type === 'recognize') {
     return await db.collection("recognize").add({
@@ -40,6 +41,7 @@ exports.main = async (event, context) => {
     openId
   }).update({
     data: {
+      score: _.inc(1),
       lastTimeLogin: new Date()
     }
   });
