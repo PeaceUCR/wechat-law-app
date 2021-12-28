@@ -1,12 +1,12 @@
 import Taro, { Component, setStorageSync, getStorageSync} from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import {AtSwitch,AtNoticebar,AtActivityIndicator, AtIcon} from "taro-ui";
+import {AtSwitch,AtNoticebar,AtActivityIndicator, AtIcon, AtAvatar, AtDivider} from "taro-ui";
 import MyCollection from '../../components/myCollection'
 import './index.scss'
 import {tmpId} from '../../util/util'
 import {ImageRecoginzer} from "../../components/imageRecoginzer/index.weapp";
 import {db} from "../../util/db";
-import {setLocation, getProvince, getCity} from '../../util/login'
+import {setLocation, getProvince, getCity, getUserAvatar, getUserNickname} from '../../util/login'
 
 export default class User extends Component {
 
@@ -194,59 +194,58 @@ export default class User extends Component {
         {/*    <ad unit-id='adunit-3262d14cdd5955c8' ad-intervals='30'></ad>*/}
         {/*  </SwiperItem>*/}
         {/*</Swiper>}*/}
-        <View>
-          <AtSwitch title='护眼模式' checked={isReadMode} onChange={this.handleChange} />
-        </View>
-        <View>
+        <View className='main'>
+          <AtAvatar circle image={getUserAvatar()}></AtAvatar>
+          <View>{getUserNickname()}</View>
           <View className='icon-line' onClick={() => {
             Taro.showToast({
               title: '每天使用搜法可获得积分',
               icon: 'none',
               duration: 2000
             });
-          }}>
-            <AtIcon value='money' size='26' color='#b35900' ></AtIcon>
-            <View>{score ? `当前积分: ${score}` : '暂无积分'}</View>
+          }}>我的积分: {score ? score : '暂无'}</View>
+          <View>
+            <View className='icon-line' onClick={() => {
+              Taro.showLoading({
+                title: '获取地理位置中...',
+              });
+              const that = this
+              Taro.getLocation({
+                success(res) {
+                  console.log(res)
+                  const {latitude, longitude} = res
+                  Taro.request({
+                    url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${latitude},${longitude}&key=4POBZ-YEXYD-NPQ4R-PNZJ4-3XEE5-FFBXF`,
+                    method: 'get',
+                    success: function (r) {
+                      console.log(r)
+                      const {data} = r
+                      const {result} = data
+                      const {address_component} = result
+                      console.log(address_component)
+                      const {province, city} = address_component
+                      that.setState({province, city})
+                      setLocation({province, city})
+                      Taro.cloud.callFunction({
+                        name: 'record',
+                        data: {
+                          location: {province, city}
+                        }
+                      })
+                      Taro.hideLoading()
+                    }
+                  })
+
+                }
+              })
+            }}>
+              <AtIcon value='map-pin' size='24' color='#b35900'></AtIcon>
+              <View>{province && city ? `${province}-${city}` : '点我添加位置信息'}</View>
+            </View>
           </View>
         </View>
         <View>
-          <View className='icon-line' onClick={() => {
-            Taro.showLoading({
-              title: '获取地理位置中...',
-            });
-            const that = this
-            Taro.getLocation({
-              success(res) {
-                console.log(res)
-                const {latitude, longitude} = res
-                Taro.request({
-                  url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${latitude},${longitude}&key=4POBZ-YEXYD-NPQ4R-PNZJ4-3XEE5-FFBXF`,
-                  method: 'get',
-                  success: function (r) {
-                    console.log(r)
-                    const {data} = r
-                    const {result} = data
-                    const {address_component} = result
-                    console.log(address_component)
-                    const {province, city} = address_component
-                    that.setState({province, city})
-                    setLocation({province, city})
-                    Taro.cloud.callFunction({
-                      name: 'record',
-                      data: {
-                        location: {province, city}
-                      }
-                    })
-                    Taro.hideLoading()
-                  }
-                })
-
-              }
-            })
-          }}>
-            <AtIcon value='map-pin' size='26' color='#b35900'></AtIcon>
-            <View>{province && city ? `${province}-${city}` : '点我添加位置信息'}</View>
-          </View>
+          <AtSwitch title='护眼模式' checked={isReadMode} onChange={this.handleChange} />
         </View>
         {/*<View>*/}
         {/*  <AtButton type='secondary' onClick={this.handleSubscribe}>点击订阅消息</AtButton>*/}
