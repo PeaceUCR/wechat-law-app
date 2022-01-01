@@ -152,8 +152,8 @@ export const homePageOptions = {
     },
     {
       title: '民事诉讼法',
-      url: '/pages/civilLawRegulation/index',
-      sub:'2017年6月27日',
+      url: '/pages/otherLaw/index?law=civil-law-regulation',
+      sub:'2022年1月1日',
       type: '民法典'
     },
     {

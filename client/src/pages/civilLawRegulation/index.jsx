@@ -16,7 +16,7 @@ export default class Index extends Component {
     searchValue: '',
     searchResult: [],
     isLoading: false,
-    showAllCategories: true,
+    showAllCategories: false,
     isReadMode: false,
     civilLawRegulationLines: []
   }
@@ -49,12 +49,29 @@ export default class Index extends Component {
         backgroundColor: '#F4ECD8'
       })
     }
+
   }
 
   componentDidMount () {
     const that = this;
     that.setState({
       civilLawRegulationLines: civilLawRegulationCategoryLines
+    })
+    that.setState({isLoading: true});
+    Taro.cloud.callFunction({
+      name: 'getCivilLawRegulation',
+      data: {
+        type: 'all',
+      },
+      complete: (r) => {
+        that.setState({searchResult: r.result.data, isLoading: false});
+      }
+    })
+
+    Taro.showToast({
+      title: '加载全部法条, 目录/条旨版将随后推出',
+      icon: 'none',
+      duration: 3000
     })
   }
 
@@ -86,7 +103,6 @@ export default class Index extends Component {
 
   onSearch = () => {
     const that = this;
-    this.setState({isLoading: true});
     const { searchValue } = this.state;
     if(!searchValue.trim()) {
       Taro.showToast({
@@ -96,6 +112,7 @@ export default class Index extends Component {
       })
       return ;
     }
+    this.setState({isLoading: true});
     Taro.cloud.callFunction({
       name: 'getCivilLawRegulation',
       data: {
@@ -127,7 +144,7 @@ export default class Index extends Component {
     return (
       <View className={`civil-law-page page ${isReadMode ? 'read-mode' : ''}`}>
           <AtNoticebar marquee speed={60}>
-            中华人民共和国民事诉讼法(2017修订),颁布单位:全国人民代表大会常务委员会,文号:中华人民共和国主席令第71号,颁布日期:2017-06-27,执行日期:2017-07-01,时效性:现行有效,效力级别:法律
+            《全国人民代表大会常务委员会关于修改＜中华人民共和国民事诉讼法＞的决定》已由中华人民共和国第十三届全国人民代表大会常务委员会第三十二次会议于2021年12月24日通过，现予公布，自2022年1月1日起施行。
           </AtNoticebar>
           <View className='search'>
             <AtSearchBar
@@ -145,9 +162,6 @@ export default class Index extends Component {
             </View>
             <View>
               {searchResult.length > 0 && this.renderSearchList()}
-            </View>
-            <View>
-              {searchResult.length === 0 && !showAllCategories && this.renderHintOptions()}
             </View>
             {isLoading && <View className='loading-container'>
               <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>

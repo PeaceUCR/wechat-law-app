@@ -141,6 +141,9 @@ export const getExampleSearchTag = (example) => {
 }
 
 export const copy = (text) => {
+  Taro.showLoading({
+    title: '复制中',
+  })
   Taro.cloud.callFunction({
     name: 'checkBeforeCopy',
     complete: r => {
@@ -150,6 +153,7 @@ export const copy = (text) => {
         Taro.setClipboardData({
           data: text,
           success: function () {
+            Taro.hideLoading()
             Taro.showToast({
               title: '文字已复制到剪贴板',
               icon: 'none',
@@ -163,6 +167,7 @@ export const copy = (text) => {
           icon: 'none',
           duration: 4000
         })
+        Taro.hideLoading()
       }
 
     }

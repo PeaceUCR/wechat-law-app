@@ -61,7 +61,7 @@ export default class Index extends Component {
     }}>
       <AtIcon value='map-pin' size='22' color='#b35900'></AtIcon>
       {province && city && <View>{`${province}-${city}`}</View>}
-      {(!province && city)&& <View>暂无、请先在'我的'页面设置位置信息</View>}
+      {(!province || !city) && <View>暂无、请先在'我的'页面设置位置信息</View>}
     </View>)
   }
 
@@ -95,26 +95,34 @@ export default class Index extends Component {
       const that = this;
       const { searchValue, province, city } = this.state;
       console.log(searchValue, province, city)
-      this.setState({isLoading: true});
-      Taro.cloud.callFunction({
-        name: 'searchLocalLaw',
-        data: {
-          searchValue,
-          province,
-          city
-        },
-        complete: r => {
-          console.log(r)
-          if (isEmpty(r.result.data)) {
-            Taro.showToast({
-              title: `未找到!`,
-              icon: 'none',
-              duration: 2000
-            })
+      if (province && city) {
+        this.setState({isLoading: true});
+        Taro.cloud.callFunction({
+          name: 'searchLocalLaw',
+          data: {
+            searchValue,
+            province,
+            city
+          },
+          complete: r => {
+            console.log(r)
+            if (isEmpty(r.result.data)) {
+              Taro.showToast({
+                title: `未找到!`,
+                icon: 'none',
+                duration: 2000
+              })
+            }
+            that.setState({searchResult: [...r.result.data], isLoading: false});
           }
-          that.setState({searchResult: [...r.result.data], isLoading: false});
-        }
-      })
+        })
+      } else {
+        Taro.showToast({
+          title: "请先在'我的'页面设置位置信息",
+          icon: 'none',
+          duration: 2000
+        })
+      }
     },
     1000,
     { trailing: false })

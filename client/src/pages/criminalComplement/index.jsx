@@ -79,7 +79,6 @@ export default class Index extends Component {
 
   onSearch = () => {
     const that = this;
-    this.setState({isLoading: true});
     const { searchValue } = this.state;
     if(!searchValue.trim()) {
       Taro.showToast({
@@ -89,7 +88,7 @@ export default class Index extends Component {
       })
       return ;
     }
-
+    this.setState({isLoading: true});
     Taro.cloud.callFunction({
       name: 'searchCriminalComplement',
       data: {

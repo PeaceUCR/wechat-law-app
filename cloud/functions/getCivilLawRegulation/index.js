@@ -9,14 +9,19 @@ exports.main = async (event, context) => {
     console.log(event)
     const db = cloud.database()
 
-    const searchValue = event.searchValue
+    const {searchValue, type} = event
+
+    if (type === 'all') {
+        return await db.collection('2022-civil-law-regulation')
+            .orderBy('number', 'asc').limit(1000).get()
+    }
 
     if (!isNaN(parseInt(searchValue))) {
-        return await db.collection('civil-law-regulation')
+        return await db.collection('2022-civil-law-regulation')
             .where({number: parseInt(searchValue)}).orderBy('number', 'asc').limit(1000).get()
     }
 
-    return await db.collection('civil-law-regulation')
+    return await db.collection('2022-civil-law-regulation')
         .where({
             text: db.RegExp({
                 regexp: '.*' + searchValue,

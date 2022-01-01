@@ -5,7 +5,7 @@ import './index.scss'
 const FloatSearch = (props) => {
   let {keyword, onConfirm, onCancel} = props;
   console.log('float search keyword', keyword)
-  const [isExpand, setIsExpand] = useState(false);
+  const [isExpand, setIsExpand] = useState(keyword ? true : false);
   const [value, setValue] = useState('');
 
   return (<View className={`float-search ${isExpand ? '' : 'hide'}`} >

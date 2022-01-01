@@ -63,12 +63,12 @@ const otherLaws = [
   'exit-entry-law',
   'help-law',
   'consumer-right-protect-law',
-  'public-interest-rule'
+  'public-interest-rule',
+  'civil-law-regulation'
 ]
 
 const commonLawSet = new Set(
   [
-    'civil-law-regulation',
     ...shared,
     ...otherLaws
   ]

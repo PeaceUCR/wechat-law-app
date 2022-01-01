@@ -82,7 +82,6 @@ export default class Index extends Component {
 
   onSearch = () => {
     const that = this;
-    this.setState({isLoading: true});
     const { searchValue, selected } = this.state;
     if(!searchValue.trim()) {
       Taro.showToast({
@@ -92,7 +91,7 @@ export default class Index extends Component {
       })
       return ;
     }
-
+    this.setState({isLoading: true});
     if (selected === '全文搜索') {
       Taro.cloud.callFunction({
         name: 'searchCourtOpen',

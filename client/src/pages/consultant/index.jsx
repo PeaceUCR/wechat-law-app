@@ -119,7 +119,6 @@ export default class Index extends Component {
 
   onSearch = () => {
     const that = this;
-    this.setState({isLoading: true});
     const { searchValue, selected } = this.state;
     if(!searchValue.trim()) {
       Taro.showToast({
@@ -129,7 +128,7 @@ export default class Index extends Component {
       })
       return ;
     }
-
+    this.setState({isLoading: true});
     if (selected === '搜全文') {
 
       if (!isNaN(parseInt(searchValue))) {

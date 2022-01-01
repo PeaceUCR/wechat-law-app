@@ -28,6 +28,7 @@ export const otherLawNameMap = {
   'help-law':'法律援助法',
   'consumer-right-protect-law':'消费者权益保护法',
   'public-interest-rule':'最高检《人民检察院公益诉讼办案规则》',
+  'civil-law-regulation':'民事诉讼法',
 }
 
 export const otherLawAnnounceMap = {
@@ -60,7 +61,7 @@ export const otherLawAnnounceMap = {
   'help-law':'2021年8月20日第十三届全国人民代表大会常务委员会第三十次会议通过',
   'consumer-right-protect-law':'根据2013年10月25日第十二届全国人民代表大会常务委员会第五次会议《关于修改＜中华人民共和国消费者权益保护法＞的决定》第二次修正',
   'public-interest-rule':'2020年9月28日最高人民检察院第十三届检察委员会第五十二次会议通过，现予公布，自2021年7月1日起施行',
-
+  'civil-law-regulation':'《全国人民代表大会常务委员会关于修改＜中华人民共和国民事诉讼法＞的决定》已由中华人民共和国第十三届全国人民代表大会常务委员会第三十二次会议于2021年12月24日通过，现予公布，自2022年1月1日起施行。',
 }
 
 
@@ -94,5 +95,5 @@ export const otherLawCategoryMap = {
   'help-law':[{"level":1,"value":"第一章　总　　则"},{"level":1,"value":"第二章　机构和人员"},{"level":1,"value":"第三章　形式和范围"},{"level":1,"value":"第四章　程序和实施"},{"level":1,"value":"第五章　保障和监督"},{"level":1,"value":"第六章　法律责任"},{"level":1,"value":"第七章　附　　则"}],
   'consumer-right-protect-law': [{"level":1,"value":"第一章 总　则"},{"level":1,"value":"第二章 消费者的权利"},{"level":1,"value":"第三章 经营者的义务"},{"level":1,"value":"第四章 国家对消费者合法权益的保护"},{"level":1,"value":"第五章 消费者组织"},{"level":1,"value":"第六章 争议的解决"},{"level":1,"value":"第七章 法律责任"},{"level":1,"value":"第八章 附　则"}],
   'public-interest-rule':[{"level":1,"value":"第一章　总　则"},{"level":1,"value":"第二章　一般规定"},{"level":2,"value":"第一节　管　辖"},{"level":2,"value":"第二节　回　避"},{"level":2,"value":"第三节　立　案"},{"level":2,"value":"第四节　调　查"},{"level":2,"value":"第五节　提起诉讼"},{"level":2,"value":"第六节　出席第一审法庭"},{"level":2,"value":"第七节　上　诉"},{"level":2,"value":"第八节　诉讼监督"},{"level":1,"value":"第三章　行政公益诉讼"},{"level":2,"value":"第一节　立案与调查"},{"level":2,"value":"第二节　检察建议"},{"level":2,"value":"第三节　提起诉讼"},{"level":1,"value":"第四章　民事公益诉讼"},{"level":2,"value":"第一节　立案与调查"},{"level":2,"value":"第二节　公　告"},{"level":2,"value":"第三节　提起诉讼"},{"level":2,"value":"第四节　支持起诉"},{"level":1,"value":"第五章　其他规定"},{"level":1,"value":"第六章　附　则"}],
-
+  'civil-law-regulation':[{"level":1,"value":"第一章 任务、适用范围和基本原则"},{"level":1,"value":"第二章 管 辖"},{"level":2,"value":"第一节 级别管辖"},{"level":2,"value":"第二节 地域管辖"},{"level":2,"value":"第三节 移送管辖和指定管辖"},{"level":1,"value":"第三章 审判组织"},{"level":1,"value":"第四章 回 避"},{"level":1,"value":"第五章 诉讼参加人"},{"level":2,"value":"第一节 当事人"},{"level":2,"value":"第二节 诉讼代理人"},{"level":1,"value":"第六章 证 据"},{"level":1,"value":"第七章 期间、送达"},{"level":2,"value":"第一节 期 间"},{"level":2,"value":"第二节 送 达"},{"level":1,"value":"第八章 调 解"},{"level":1,"value":"第九章 保全和先予执行"},{"level":1,"value":"第十章 对妨害民事诉讼的强制措施"},{"level":1,"value":"第十一章 诉讼费用"},{"level":1,"value":"第十二章 第一审普通程序"},{"level":2,"value":"第一节 起诉和受理"},{"level":2,"value":"第二节 审理前的准备"},{"level":2,"value":"第三节 开庭审理"},{"level":2,"value":"第四节 诉讼中止和终结"},{"level":2,"value":"第五节 判决和裁定"},{"level":1,"value":"第十三章 简易程序"},{"level":1,"value":"第十四章 第二审程序"},{"level":1,"value":"第十五章 特别程序"},{"level":2,"value":"第一节 一般规定"},{"level":2,"value":"第二节 选民资格案件"},{"level":2,"value":"第三节 宣告失踪、宣告死亡案件"},{"level":2,"value":"第四节 认定公民无民事行为能力、限制民事行为能力案件"},{"level":2,"value":"第五节 认定财产无主案件"},{"level":2,"value":"第六节 确认调解协议案件"},{"level":2,"value":"第七节 实现担保物权案件"},{"level":1,"value":"第十六章 审判监督程序"},{"level":1,"value":"第十七章 督促程序"},{"level":1,"value":"第十八章 公示催告程序"},{"level":1,"value":"第十九章 一般规定"},{"level":1,"value":"第二十章 执行的申请和移送"},{"level":1,"value":"第二十一章 执行措施"},{"level":1,"value":"第二十二章 执行中止和终结"},{"level":1,"value":"第二十三章 一般原则"},{"level":1,"value":"第二十四章 管 辖"},{"level":1,"value":"第二十五章 送达、期间"},{"level":1,"value":"第二十六章 仲 裁"},{"level":1,"value":"第二十七章 司法协助"}]
 }

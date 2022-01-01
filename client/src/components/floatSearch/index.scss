@@ -6,6 +6,7 @@
   height: 60px;
   align-items: center;
   width: 460px;
+  z-index: 999;
   //transition: width 0.2s ease-in-out;
   &.hide {
     width: 60px;

@@ -1,4 +1,5 @@
  const cloud = require('wx-server-sdk')
+ const moment = require('moment')
 
  // https://developers.weixin.qq.com/miniprogram/dev/wxcloud/reference-server-api/database/collection.where.html
 cloud.init({
@@ -36,19 +37,38 @@ exports.main = async (event, context) => {
       }
     })
   }
-  return await db.collection('user').where({
-    //下面这3行，为筛选条件
-    openId
-  }).update({
+
+  const today = moment().format('YYYY-MM-DD')
+  await db.collection('visit').add({
     data: {
-      score: _.inc(1),
-      lastTimeLogin: new Date()
+      openId,
+      today
     }
-  });
+  })
+  const {total} = await db.collection('visit').where({
+    openId,
+    today
+  }).count()
 
+  if (total < 1) {
+    return await db.collection('user').where({
+      //下面这3行，为筛选条件
+      openId
+    }).update({
+      data: {
+        score: _.inc(1),
+        lastTimeLogin: new Date()
+      }
+    });
+  } else {
+    return await db.collection('user').where({
+      //下面这3行，为筛选条件
+      openId
+    }).update({
+      data: {
+        lastTimeLogin: new Date()
+      }
+    });
+  }
 
-  //
-  // return {
-  //   openid: wxContext.OPENID
-  // }
 }

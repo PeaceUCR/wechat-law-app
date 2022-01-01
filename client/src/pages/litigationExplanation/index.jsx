@@ -136,7 +136,6 @@ export default class Index extends Component {
 
   onSearch = (searchValue) => {
     const that = this;
-    this.setState({isLoading: true});
     if(!searchValue.trim()) {
       Taro.showToast({
         title: '搜索不能为空',
@@ -145,6 +144,7 @@ export default class Index extends Component {
       })
       return ;
     }
+    this.setState({isLoading: true});
     Taro.cloud.callFunction({
       name: 'getLitigationExplanation',
       data: {
@@ -166,7 +166,6 @@ export default class Index extends Component {
 
   onSearchByChapter = (searchValue) => {
     const that = this;
-    this.setState({isLoading: true});
     if(!searchValue.trim()) {
       Taro.showToast({
         title: '搜索不能为空',
@@ -175,6 +174,7 @@ export default class Index extends Component {
       })
       return ;
     }
+    this.setState({isLoading: true});
     Taro.cloud.callFunction({
       name: 'getLitigationExplanation',
       data: {
@@ -195,7 +195,6 @@ export default class Index extends Component {
 
   onSearchBySection = (searchValue) => {
     const that = this;
-    this.setState({isLoading: true});
     if(!searchValue.trim()) {
       Taro.showToast({
         title: '搜索不能为空',
@@ -204,6 +203,7 @@ export default class Index extends Component {
       })
       return ;
     }
+    this.setState({isLoading: true});
     Taro.cloud.callFunction({
       name: 'getLitigationExplanation',
       data: {
