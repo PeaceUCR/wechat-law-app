@@ -39,18 +39,18 @@ exports.main = async (event, context) => {
   }
 
   const today = moment().format('YYYY-MM-DD')
+  const {total} = await db.collection('visit').where({
+    openId,
+    today
+  }).count()
+
   await db.collection('visit').add({
     data: {
       openId,
       today
     }
   })
-  const {total} = await db.collection('visit').where({
-    openId,
-    today
-  }).count()
-
-  if (total < 1) {
+  if (total < 2) {
     return await db.collection('user').where({
       //下面这3行，为筛选条件
       openId
