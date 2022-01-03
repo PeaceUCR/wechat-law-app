@@ -37,7 +37,8 @@ const regulationDetailSet = new Set(
     'exit-entry-law',
     'help-law',
     'consumer-right-protect-law',
-    'public-interest-rule'
+    'public-interest-rule',
+    'fire-fighting'
   ])
 
 const TermSearchItem = (props) => {

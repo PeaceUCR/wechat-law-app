@@ -64,7 +64,8 @@ const otherLaws = [
   'help-law',
   'consumer-right-protect-law',
   'public-interest-rule',
-  'civil-law-regulation'
+  'civil-law-regulation',
+  'fire-fighting'
 ]
 
 const commonLawSet = new Set(

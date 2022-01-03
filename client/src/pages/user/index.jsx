@@ -236,6 +236,14 @@ export default class User extends Component {
                     }
                   })
 
+                },
+                fail() {
+                  Taro.hideLoading()
+                  Taro.showToast({
+                    title: '获取位置失败，请在右上角设置中开启位置后重试!',
+                    icon: 'none',
+                    duration: 4000
+                  });
                 }
               })
             }}>

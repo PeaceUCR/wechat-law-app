@@ -140,7 +140,7 @@ export default class Index extends Component {
     return (
       <View className={`example-page page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
-          仍在开发中
+          收录十万+地方法规
         </AtNoticebar>
         <View className='header'>
             <View className='search'>

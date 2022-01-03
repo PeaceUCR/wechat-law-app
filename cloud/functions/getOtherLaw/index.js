@@ -6,6 +6,13 @@ cloud.init({
 })
 
 const lawMap = {
+    'fire-fighting': { '第一章　总则': { value: '第一章　总则', start: 1, end: 7 },
+        '第二章　火灾预防': { value: '第二章　火灾预防', start: 8, end: 34 },
+        '第三章　消防组织': { value: '第三章　消防组织', start: 35, end: 42 },
+        '第四章　灭火救援': { value: '第四章　灭火救援', start: 43, end: 51 },
+        '第五章　监督检查': { value: '第五章　监督检查', start: 52, end: 57 },
+        '第六章　法律责任': { value: '第六章　法律责任', start: 58, end: 72 },
+        '第七章　附则': { value: '第七章　附则', start: 73, end: 74 } },
     'civil-law-regulation': { '第一章 任务、适用范围和基本原则': { value: '第一章 任务、适用范围和基本原则', start: 1, end: 17 },
         '第二章 管 辖': { value: '第二章 管 辖', start: 18, end: 39 },
         '第一节 级别管辖': { value: '第一节 级别管辖', start: 18, end: 21 },

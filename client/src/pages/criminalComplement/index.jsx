@@ -35,6 +35,24 @@ export default class Index extends Component {
         backgroundColor: '#F4ECD8'
       })
     }
+
+    const that = this
+    this.setState({isLoading: true});
+    Taro.cloud.callFunction({
+      name: 'searchCriminalComplement',
+      data: {
+        type: 'all-initial'
+      },
+      complete: r => {
+        console.log(r)
+        that.setState({searchResult: [...r.result.data], isLoading: false});
+        Taro.showToast({
+          title: `加载20篇最近添加的法规`,
+          icon: 'none',
+          duration: 4000
+        })
+      }
+    })
   }
 
   componentDidMount () { }
@@ -106,7 +124,6 @@ export default class Index extends Component {
         that.setState({searchResult: [...r.result.result.data], isLoading: false});
       }
     })
-
   }
 
   onClear = () => {

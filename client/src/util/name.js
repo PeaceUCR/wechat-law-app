@@ -349,7 +349,14 @@ export const homePageOptions = {
       url: '/pages/adminComplement/index',
       type: '行政',
       isNew: true
-    }
+    },
+    {
+      title: otherLawNameMap['fire-fighting'],
+      url: '/pages/otherLaw/index?law=fire-fighting',
+      sub:'2021年4月29日',
+      type: '行政',
+      isNew: true
+    },
   ],
   '公益':[{
     title: otherLawNameMap['public-interest-rule'],
@@ -375,7 +382,8 @@ export const homePageOptions = {
     {
       title: '地方法律法规',
       url: '/pages/localLaw/index',
-      type: '共有'
+      type: '共有',
+      isNew: true
     },
     {
       title: '检察文书',

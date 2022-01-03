@@ -156,9 +156,13 @@
   }
 
   .line {
+    position: relative;
     padding-bottom: 40px;
     line-height:180%;
     color: #111;
+    &.show-copy {
+      background: rgba(0,0,0,0.4);
+    }
   }
   .highlight {
     font-weight: bold;
@@ -172,4 +176,12 @@
     padding: 0px 10px 0px 5px;
   }
 
+}
+
+.copy {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 1;
 }

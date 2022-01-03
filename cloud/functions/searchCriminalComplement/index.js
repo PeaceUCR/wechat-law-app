@@ -1,6 +1,6 @@
 const cloud = require('wx-server-sdk')
 
- // https://developers.weixin.qq.com/miniprogram/dev/wxcloud/reference-server-api/database/collection.where.html
+// https://developers.weixin.qq.com/miniprogram/dev/wxcloud/reference-server-api/database/collection.where.html
 cloud.init({
   env: cloud.DYNAMIC_CURRENT_ENV
 })
@@ -16,6 +16,10 @@ exports.main = async (event, context) => {
     return await db.collection('complement').limit(1000).where({
       type: "admin-criminal-link"
     }).get()
+  }
+
+  if (type === "all-initial") {
+    return await db.collection('complement').limit(20).orderBy('effectiveDate', 'desc').get();
   }
 
   let result

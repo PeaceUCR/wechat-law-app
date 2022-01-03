@@ -9,7 +9,7 @@ import {checkIfNewUser, redirectToIndexIfNewUser} from "../../util/login";
 import throttle from "lodash/throttle";
 import {DiscussionArea} from "../../components/discussionArea/index.weapp";
 import {FloatSearch} from "../../components/floatSearch/index.weapp";
-import {findAndHighlight} from "../../util/util";
+import {copy, findAndHighlight, highlights, isStartWith, refine} from "../../util/util";
 
 const typeCollectionMap = {
   'court': 'example',
@@ -24,7 +24,7 @@ const typeCollectionMap = {
 
 export default class ExampleDetail extends Component {
 
-  foundKey = ''
+  foundKey = undefined
   state = {
     comment: '',
     isSent: false,
@@ -37,7 +37,8 @@ export default class ExampleDetail extends Component {
     isReadMode: false,
     isLoading: true,
     enableAutoScroll: false,
-    enableExampleDetailAd: false
+    enableExampleDetailAd: false,
+    selectedLine: -1
   }
 
   config = {
@@ -368,20 +369,47 @@ export default class ExampleDetail extends Component {
     </View>)
   }
 
+  pressTime
+  touchStart = (index) => {
+    console.log('start')
+    this.pressTime = setTimeout(() => {
+      //  你要do的事
+      this.setState({selectedLine: index})
+      // Taro.setClipboardData({
+      //   data: text,
+      //   success: function (res) {
+      //     Taro.showToast({
+      //       title: '本段已复制到剪贴板',
+      //       icon: 'none',
+      //       duration: 2000
+      //     })
+      //   }
+      // });
+    }, 2000);
+  }
+
+  touchEnd = () => {
+    console.log('end')
+    clearTimeout(this.pressTime);
+  }
+
   renderComplement = () => {
-    const {example, keyword, zoomIn} = this.state;
+    const {example, keyword, zoomIn, selectedLine} = this.state;
     const {text, title} = example;
     const that = this
     const setKey = (line, key) => {
-      const regExp = new RegExp(key,"g");
-      const ifFound = regExp.test(line)
-      if (ifFound) {
-        this.foundKey = 'foundKey1'
-        return 'foundKey1'
+      if (line && key) {
+        const regExp = new RegExp(key,"g");
+        const ifFound = regExp.test(line)
+        if (ifFound) {
+          this.foundKey = 'foundKey1'
+          return 'foundKey1'
+        }
       }
       return ''
     }
     setTimeout(() => {
+      console.log('that.foundKey:', that.foundKey)
       if (that.foundKey) {
         Taro.pageScrollTo({
           selector: `#${that.foundKey}`,
@@ -389,11 +417,20 @@ export default class ExampleDetail extends Component {
         })
       }
     }, 600)
+
+    const lines = text ? text.split('\n').filter(line => line.trim() && line.trim().length > 0).map(line => refine(line)) : []
+
     return (<View  className={`text-section ${zoomIn ? 'zoom-in' : ''}`}>
       <View className='term-complement-title'>{title}</View>
-      <View className='content'>{text.split('\n').filter(line => line.trim() && line.trim().length > 0).map((line, index) => {
-        return (<View id={setKey(line, keyword)} className='line' key={`text-example-detail-${index}`} >
-          <RichText nodes={findAndHighlight(line, index, keyword)} ></RichText>
+      <View className='content'>{lines.map((line, index) => {
+        return (<View id={setKey(line, keyword)}
+                      className={`line ${index === selectedLine ? 'show-copy' : ''}`}
+                      key={`text-example-detail-${index}`}
+                      onTouchStart={() => this.touchStart(index)}
+                      onTouchEnd={this.touchEnd}
+        >
+          <RichText nodes={findAndHighlight(line, index, keyword)} className={isStartWith(line, highlights) ? 'highlight': ''} ></RichText>
+          {index === selectedLine && <View className='copy'><AtButton size='small' type='primary' onClick={() => copy(line)}>复制</AtButton></View>}
         </View>)
       })}</View>
     </View>)
@@ -444,8 +481,8 @@ export default class ExampleDetail extends Component {
         <View className={`example-detail-page page ${zoomIn ? 'zoom-in' : ''} ${isReadMode ? 'read-mode' : ''}`}>
           {special && this.renderSpecial()}
           {!special && <View>
-            {enableAutoScroll && this.renderComplement()}
-            {!enableAutoScroll && this.renderExample()}
+            {this.renderComplement()}
+            {/*{!enableAutoScroll && this.renderExample()}*/}
           </View>}
           {!isLoading && !title && !text && this.renderNoData()}
           {!special && <FloatSearch keyword={keyword} onConfirm={this.changeKeyword} onCancel={this.onCancel} />}
