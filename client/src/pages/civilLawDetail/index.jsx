@@ -17,6 +17,8 @@ import {
 import {DiscussionArea} from "../../components/discussionArea/index.weapp";
 import {CivilLawLinkExplanation} from "../../components/civilLawLinkExplanation/index.weapp"
 import TextSection from "../../components/textSection/index.weapp";
+import TextSectionComponent from "../../components/textSectionComponent/index";
+
 
 const getTermNumber = (text) => {
   return text.substring(0, text.indexOf('条') + 1);
@@ -433,7 +435,7 @@ export default class CivilLawDetail extends Component {
             </AtNoticebar>
             <View className='understanding-line'>
               <View className='source'>{understanding.source}</View>
-              <TextSection data={understanding.text} zoomIn={zoomIn} />
+              <TextSectionComponent data={understanding.text} zoomIn={zoomIn} />
             </View>
           </AtAccordion>
         </View>}

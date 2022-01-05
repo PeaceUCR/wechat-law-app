@@ -7,6 +7,7 @@ import './index.scss'
 import throttle from "lodash/throttle";
 import {DiscussionArea} from "../../components/discussionArea/index.weapp";
 import TextSection from "../../components/textSection/index.weapp";
+import TextSectionComponent from "../../components/textSectionComponent/index";
 import {convertNumberToChinese, isNumber} from "../../util/convertNumber";
 import {copy, definitionIcon, getText} from "../../util/util";
 import {otherLawNameMap} from "../../util/otherLaw";
@@ -237,7 +238,7 @@ export default class RegulationDetail extends Component {
       </View>}
       <View className='sentencing'>
       <View className='line'>
-        <TextSection data={explanation.text} zoomIn={zoomIn} />
+        <TextSectionComponent data={explanation.text} zoomIn={zoomIn} />
       </View>
       <AtDivider height='40' lineColor='#fff' />
     </View>

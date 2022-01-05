@@ -9,6 +9,7 @@ import {checkIfNewUser, getUserAvatar, getUserNickname, getUserOpenId, redirectT
 import {lawIdLabelMap, exampleIcon, sentencingIcon, explanationIcon, definitionIcon, consultIcon, judgementIcon, pDocIcon, evidenceIcon, copy} from '../../util/util'
 import './index.scss'
 import TextSection from "../../components/textSection/index.weapp";
+import TextSectionComponent from "../../components/textSectionComponent/index";
 import TextSectionLinked from "../../components/textSectionLinked/index.weapp";
 import moment from "moment";
 
@@ -497,7 +498,7 @@ export default class TermDetail extends Component {
             实施日期:{moment(effectiveDate).format('YYYY-MM-DD')}</Text>
           </View>
           <View className='line'>
-            <TextSection data={text} zoomIn={zoomIn} />
+            <TextSectionComponent data={text} zoomIn={zoomIn} />
           </View>
           <View className='line link'>
             <DataPopup data={{sourceName, sourceId, crimeName}} type='source'zoomIn={zoomIn} />
@@ -519,7 +520,7 @@ export default class TermDetail extends Component {
             <Text className='crime-line-item'>罪名:<Text className='crime'>{crime}</Text></Text>
           </View>
           <View className='line'>
-            <TextSection data={text} zoomIn={zoomIn} />
+            <TextSectionComponent data={text} zoomIn={zoomIn} />
           </View>
           <AtDivider height='40' lineColor='#fff' />
         </View>)
@@ -534,7 +535,7 @@ export default class TermDetail extends Component {
         const {text} = sentencing
         return (<View className='sentencing' key={`sentencing-key-${index}`}>
           <View className='line'>
-            <TextSection data={text} zoomIn={zoomIn} />
+            <TextSectionComponent data={text} zoomIn={zoomIn} />
           </View>
         </View>)
       })}
@@ -646,12 +647,12 @@ export default class TermDetail extends Component {
     return (<View>
       {yiBenTongContent.map(item => {
         return <View key={item.category}>
-          <TextSection data={item.category} zoomIn={zoomIn} isTitle />
-          <TextSection data={item.content} zoomIn={zoomIn} />
+          <TextSectionComponent data={item.category} zoomIn={zoomIn} isTitle />
+          <TextSectionComponent data={item.content} zoomIn={zoomIn} />
         </View>
       })}
       {yiBenTongContent.length === 0 && <View>
-        <TextSection data={"暂无数据"} zoomIn={zoomIn} isTitle />
+        <TextSectionComponent data={"暂无数据"} zoomIn={zoomIn} isTitle />
       </View>}
     </View>)
   }

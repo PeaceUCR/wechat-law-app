@@ -1,7 +1,7 @@
 import Taro, {useState} from '@tarojs/taro'
 import {RichText, View} from "@tarojs/components";
 import './index.scss'
-import {isStartWith, findAndHighlight} from "../../util/util";
+import {isStartWith, findAndHighlight, copy} from "../../util/util";
 
 const highlights = ['指导案例', '裁判要点', '相关法条', '相关法律规定', '基本案情', '裁判结果', '裁判理由', '刑法',
   '关键词', '要旨', '基本案情', '诉讼过程', '检察工作情况', '检察机关监督情况', '指导意义', '相关规定',
@@ -21,8 +21,6 @@ const refine = (s) => {
   return str;
 }
 
-let canCopy = true
-
 const TextSection = (props) => {
   let {data, keyword, zoomIn, isTitle} = props;
   data = data ? data: '';
@@ -34,20 +32,7 @@ const TextSection = (props) => {
     console.log('start')
     pressTime = setTimeout(() => {
       //  你要do的事
-      console.log('long', canCopy)
-      if (canCopy) {
-        Taro.setClipboardData({
-          data: text,
-          success: function (res) {
-            Taro.showToast({
-              title: '本段已复制到剪贴板',
-              icon: 'none',
-              duration: 2000
-            })
-          }
-        });
-        canCopy = false
-      }
+      copy(text)
 
     }, 2000);
   }

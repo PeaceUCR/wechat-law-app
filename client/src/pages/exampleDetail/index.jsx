@@ -408,15 +408,19 @@ export default class ExampleDetail extends Component {
       }
       return ''
     }
-    setTimeout(() => {
-      console.log('that.foundKey:', that.foundKey)
-      if (that.foundKey) {
-        Taro.pageScrollTo({
-          selector: `#${that.foundKey}`,
-          duration: 500
-        })
-      }
-    }, 600)
+    if (selectedLine === -1) {
+      setTimeout(() => {
+        console.log('that.foundKey:', that.foundKey)
+        if (that.foundKey) {
+          Taro.pageScrollTo({
+            selector: `#${that.foundKey}`,
+            duration: 500
+          })
+        }
+      }, 600)
+    } else {
+      console.log('detect copy')
+    }
 
     const lines = text ? text.split('\n').filter(line => line.trim() && line.trim().length > 0).map(line => refine(line)) : []
 
