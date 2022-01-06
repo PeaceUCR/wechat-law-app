@@ -173,6 +173,12 @@ export default class ExampleDetail extends Component {
 
   onShareAppMessage() {
     const {type, id, keyword} = this.state;
+    Taro.cloud.callFunction({
+      name: 'share',
+      data: {
+        url: `/pages/exampleDetail/index?type=${type}&id=${id}&keyword=${keyword}`
+      }
+    })
     return {
       path: `/pages/exampleDetail/index?type=${type}&id=${id}&keyword=${keyword}`
     };
@@ -459,6 +465,7 @@ export default class ExampleDetail extends Component {
         icon: 'none',
         duration: 2000
       })
+      this.setState({keyword: undefined})
     }
   }
 

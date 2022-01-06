@@ -111,6 +111,12 @@ export default class CivilLawDetail extends Component {
 
   onShareAppMessage() {
     const {term, number} = this.state
+    Taro.cloud.callFunction({
+      name: 'share',
+      data: {
+        url: `pages/civilLawDetail/index?id=${term._id}&number=${number}`
+      }
+    })
     return {
       path: `pages/civilLawDetail/index?id=${term._id}&number=${number}`
     };

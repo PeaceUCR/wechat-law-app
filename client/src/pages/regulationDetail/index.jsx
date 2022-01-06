@@ -107,6 +107,12 @@ export default class RegulationDetail extends Component {
 
   onShareAppMessage() {
     const {term,type} = this.state
+    Taro.cloud.callFunction({
+      name: 'share',
+      data: {
+        url: `pages/regulationDetail/index?id=${term._id}&type=${type}`
+      }
+    })
     return {
       path: `pages/regulationDetail/index?id=${term._id}&type=${type}`
     };

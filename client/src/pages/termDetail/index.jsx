@@ -59,6 +59,12 @@ export default class TermDetail extends Component {
 
   onShareAppMessage() {
     const {term} = this.state
+    Taro.cloud.callFunction({
+      name: 'share',
+      data: {
+        url: `pages/termDetail/index?id=${term._id}`
+      }
+    })
     return {
       path: `pages/termDetail/index?id=${term._id}`
     };

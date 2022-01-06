@@ -57,6 +57,12 @@ export default class Index extends Component {
   }
 
   onShareAppMessage() {
+    Taro.cloud.callFunction({
+      name: 'share',
+      data: {
+        url: 'pages/index/index'
+      }
+    })
     return {
       path: 'pages/index/index'
     };

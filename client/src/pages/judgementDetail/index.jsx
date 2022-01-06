@@ -135,6 +135,12 @@ export default class ExampleDetail extends Component {
 
   onShareAppMessage() {
     const {type, id, keyword} = this.state;
+    Taro.cloud.callFunction({
+      name: 'share',
+      data: {
+        url: `/pages/judgementDetail/index?type=${type}&id=${id}&keyword=${keyword}`
+      }
+    })
     return {
       path: `/pages/judgementDetail/index?type=${type}&id=${id}&keyword=${keyword}`
     };
