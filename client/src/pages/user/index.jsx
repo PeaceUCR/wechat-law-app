@@ -199,7 +199,7 @@ export default class User extends Component {
           <View>{getUserNickname()}</View>
           <View className='icon-line' onClick={() => {
             Taro.showToast({
-              title: '每天使用搜法可获得积分',
+              title: '每天使用/分享可获得积分!',
               icon: 'none',
               duration: 2000
             });

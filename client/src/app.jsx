@@ -20,7 +20,7 @@ class App extends Component {
       'pages/procuratorateDoc/index',
       'pages/judgement/index',
       'pages/judgementHelp/index',
-      'pages/globalSearch/index',
+      'pages/globalSearch+/index',
       'pages/criminalComplement/index',
       'pages/otherLaw/index',
       'pages/judgementDetail/index',

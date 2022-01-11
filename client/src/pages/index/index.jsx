@@ -281,7 +281,7 @@ export default class Index extends Component {
   onSearch = () => {
     const {searchValue} = this.state
     Taro.navigateTo({
-      url: `/pages/globalSearch/index?searchValue=${searchValue}`,
+      url: `/pages/globalSearch+/index?searchValue=${searchValue}`,
     })
     return ;
   }

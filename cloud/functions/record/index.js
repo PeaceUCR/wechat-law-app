@@ -50,7 +50,7 @@ exports.main = async (event, context) => {
       today
     }
   })
-  if (total < 2) {
+  if (total < 1) {
     return await db.collection('user').where({
       //下面这3行，为筛选条件
       openId

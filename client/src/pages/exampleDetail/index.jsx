@@ -22,6 +22,8 @@ const typeCollectionMap = {
   'complement-example': 'complement'
 }
 
+const demoSet = new Set(Object.keys(typeCollectionMap))
+
 export default class ExampleDetail extends Component {
 
   foundKey = undefined
@@ -400,7 +402,7 @@ export default class ExampleDetail extends Component {
   }
 
   renderComplement = () => {
-    const {example, keyword, zoomIn, selectedLine} = this.state;
+    const {example, keyword, zoomIn, selectedLine, enableAutoScroll} = this.state;
     const {text, title} = example;
     const that = this
     const setKey = (line, key) => {
@@ -414,7 +416,7 @@ export default class ExampleDetail extends Component {
       }
       return ''
     }
-    if (selectedLine === -1) {
+    if (selectedLine === -1 && enableAutoScroll) {
       setTimeout(() => {
         console.log('that.foundKey:', that.foundKey)
         if (that.foundKey) {
@@ -525,8 +527,11 @@ export default class ExampleDetail extends Component {
               </AtBadge>
             </View>
           </View>
-          {enableExampleDetailAd && !isLoading && <View>
+          {enableExampleDetailAd && !isLoading && !demoSet.has(type) && <View>
             <ad unit-id="adunit-aa47163462e4442f" ad-type="video" ad-theme="white"></ad>
+          </View>}
+          {enableExampleDetailAd && !isLoading && demoSet.has(type) && <View>
+            <ad unit-id="adunit-918b26ec218137ab"></ad>
           </View>}
           <DiscussionArea topicId={example._id}  isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />
           <View id='comments'></View>
