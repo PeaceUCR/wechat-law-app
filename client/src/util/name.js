@@ -154,7 +154,8 @@ export const homePageOptions = {
       title: '民事诉讼法',
       url: '/pages/otherLaw/index?law=civil-law-regulation',
       sub:'2022年1月1日',
-      type: '民法典'
+      type: '民法典',
+      isNew: true
     },
     {
       title: otherLawNameMap['civil-litigation-explanation'],
@@ -388,7 +389,8 @@ export const homePageOptions = {
     {
       title: '检察文书',
       url: '/pages/procuratorateDoc/index',
-      type: '共有'
+      type: '共有',
+      isNew: true
     }
   ]
 }

@@ -3,6 +3,7 @@ import {View, Button, Image} from '@tarojs/components'
 import {AtIcon, AtBadge, AtDivider, AtModal,AtModalHeader, AtModalContent,AtModalAction} from "taro-ui";
 import { db } from '../../util/db'
 import TextSection from '../../components/textSection/index.weapp'
+import TextSectionComponent from '../../components/textSectionComponent/index'
 import './index.scss'
 import {checkIfNewUser, redirectToIndexIfNewUser} from "../../util/login";
 import throttle from "lodash/throttle";
@@ -163,12 +164,12 @@ export default class ExampleDetail extends Component {
     // use opinion instead of textReason to reduce the size
     return (<View>
       <View className='term-complement-title'>{brief.title}</View>
-      <TextSection data={textHead} keyword={keyword} zoomIn={zoomIn} isTitle />
-      <TextSection data={textPartner} keyword={keyword} zoomIn={zoomIn} />
-      <TextSection data={textMain} keyword={keyword} zoomIn={zoomIn} />
-      <TextSection data={opinion} keyword={keyword} zoomIn={zoomIn} />
-      <TextSection data={textDecide} keyword={keyword} zoomIn={zoomIn} />
-      <TextSection data={textJudge} keyword={keyword} zoomIn={zoomIn} />
+      <TextSectionComponent data={textHead} keyword={keyword} zoomIn={zoomIn} isTitle />
+      <TextSectionComponent data={textPartner} keyword={keyword} zoomIn={zoomIn} />
+      <TextSectionComponent data={textMain} keyword={keyword} zoomIn={zoomIn} />
+      <TextSectionComponent data={opinion} keyword={keyword} zoomIn={zoomIn} />
+      <TextSectionComponent data={textDecide} keyword={keyword} zoomIn={zoomIn} />
+      <TextSectionComponent data={textJudge} keyword={keyword} zoomIn={zoomIn} />
     </View>)
   }
 

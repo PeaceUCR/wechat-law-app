@@ -13,11 +13,26 @@ export default class TextSectionComponent extends Component {
     isTitle: false,
     selectedLine: -1
   }
+  // fix judgement detail fail
+  constructor(props) {
+    super(props);
+    // Don't call this.setState() here!
+    const {data, keyword, zoomIn, isTitle} = props
+    const lines = data ? data.split('\n').filter(line => line.trim() && line.trim().length > 0).map(line => refine(line)) : []
+    this.state = {
+      lines,
+      keyword,
+      zoomIn,
+      isTitle,
+      selectedLine: -1
+    };
+  }
 
   componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方法
     console.log('receive')
     const {data, keyword, zoomIn, isTitle} = nextProps
     const lines = data.split('\n').filter(line => line.trim() && line.trim().length > 0).map(line => refine(line))
+
     this.setState({
       lines,
       keyword,

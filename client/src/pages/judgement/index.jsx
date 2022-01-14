@@ -349,7 +349,7 @@ export default class Index extends Component {
         {/*<View>law: {law}</View>*/}
         {/*<View>number: {number}</View>*/}
         {/*<View>searchValue: {searchValue}</View>*/}
-        <AtModal isOpened={showSetting}>
+        <AtModal isOpened={showSetting} onClose={this.handleClose}>
           <AtModalHeader>我要搜(刑事案件)</AtModalHeader>
           <AtModalContent>
             {this.renderSearchCriteria()}

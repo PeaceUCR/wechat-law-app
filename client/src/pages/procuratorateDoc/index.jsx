@@ -11,6 +11,7 @@ import {getNumber} from "../../util/convertNumber";
 import JudgementSearchItem from "../../components/judgementSearchItem"
 import {getUserOpenId} from "../../../.temp/util/login";
 import Loading2 from "../../components/loading2/index.weapp";
+import {getCity, getProvince} from "../../util/login";
 
 export default class Index extends Component {
 
@@ -19,7 +20,9 @@ export default class Index extends Component {
     searchResult: [],
     isLoading: false,
     isExpandLabel: false,
-    isReadMode: false
+    isReadMode: false,
+    province: '',
+    city: ''
   }
 
   config = {
@@ -47,24 +50,49 @@ export default class Index extends Component {
     const { searchValue } = this.$router.params;
     if (searchValue) {
       this.setState({
-        searchValue
+        searchValue,
+        province: getProvince(),
+        city: getCity()
       }, () => {
         this.onSearch()
       })
     } else {
+      that.setState({
+        isLoading: true,
+        province: getProvince(),
+        city: getCity()
+      }, () => {
+        const {province, city} = that.state
+        const regexpProvince = '.*' + province
+        const regexpCity = '.*' + city
 
-      that.setState({isLoading: true});
-      db.collection('procuratorate-doc').where({}).orderBy('time', 'desc').get({
-        success: (r) => {
-          console.log(r)
-          that.setState({searchResult: r.data, isLoading: false})
-          Taro.showToast({
-            title: `加载20篇最近发布的检察文书`,
-            icon: 'none',
-            duration: 4000
-          })
-        }
+        const _ = db.command
+        db.collection('procuratorate-doc').where(_.or([
+          {
+            location: db.RegExp({
+              regexp: regexpProvince,
+              options: 'i'
+            })
+          },
+          {
+            location: db.RegExp({
+              regexp: regexpCity,
+              options: 'i'
+            })
+          },
+        ])).orderBy('time', 'desc').get({
+          success: (r) => {
+            console.log(r)
+            that.setState({searchResult: r.data, isLoading: false})
+            Taro.showToast({
+              title: `加载20篇最近发布的检察文书`,
+              icon: 'none',
+              duration: 4000
+            })
+          }
+        });
       });
+
     }
   }
 
@@ -83,7 +111,7 @@ export default class Index extends Component {
 
   onSearch = () => {
     const that = this;
-    const { searchValue } = this.state;
+    const { searchValue, province, city } = this.state;
     if(!searchValue.trim()) {
       Taro.showToast({
         title: '搜索不能为空',
@@ -96,7 +124,9 @@ export default class Index extends Component {
     Taro.cloud.callFunction({
       name: 'searchProcuratorateDoc',
       data: {
-        searchValue
+        searchValue,
+        province,
+        city
       },
       complete: r => {
         console.log(r.result.data)
@@ -142,6 +172,16 @@ export default class Index extends Component {
     </View>)
   }
 
+  renderLocation = () => {
+    const {province, city} = this.state
+    return (<View className='icon-line' onClick={() => {
+    }}>
+      <AtIcon value='map-pin' size='22' color='#b35900'></AtIcon>
+      {province && city && <View>{`${province}-${city}`}</View>}
+      {(!province || !city) && <View>暂无、请先在'我的'页面设置位置信息</View>}
+    </View>)
+  }
+
   render () {
     const {searchValue, searchResult, isLoading, isExpandLabel, isReadMode} = this.state;
     return (
@@ -158,6 +198,7 @@ export default class Index extends Component {
             </View>
           </View>
           <View>
+            {this.renderLocation()}
             <View>
               {(searchResult.length > 0 || searchResult.length > 0) && this.renderSearchList()}
             </View>
