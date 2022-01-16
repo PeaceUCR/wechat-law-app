@@ -5,7 +5,7 @@ import './index.scss'
 import {rightArrowIcon} from'../../util/util'
 
 const GlobalSearchItem = (props) => {
-  let {text,title, law, number, redirect} = props;
+  let {text,title, law, number, redirect, type, publishInfo} = props;
   let displayedText = text;
   let showDot = false
   if (text && text.length > 40) {
@@ -14,15 +14,18 @@ const GlobalSearchItem = (props) => {
   }
 
   return (<View className='search-item' onClick={redirect} >
+    {type && <View className='float-type'>{type}</View>}
     {/*<View className='line'>*/}
     {/*  <Text className='law'>{law}</Text>*/}
     {/*  <Text className='number'>{number}</Text>*/}
     {/*  <Image src={rightArrowIcon} className='right-arrow' />*/}
     {/*</View>*/}
     {title && <View>{title}</View>}
-    <View className='main-text'>
+    {!title && <View className='main-text'>
       {displayedText}
-    </View>
+    </View>}
+    {publishInfo && <View className='publish-info'>{publishInfo}</View>}
+
   </View>)
 }
 

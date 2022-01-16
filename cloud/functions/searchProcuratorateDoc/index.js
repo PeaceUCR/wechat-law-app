@@ -10,11 +10,30 @@ exports.main = async (event, context) => {
     const db = cloud.database()
     const _ = db.command
 
-    const {searchValue, province, city, limit} = event
-    const regexpSearchValue = '.*' + searchValue
-    const regexpProvince = '.*' + province
-    const regexpCity = '.*' + city
+    const limit = 100
 
+    const {searchValue, province, city} = event
+    const regexpSearchValue = '.*' + searchValue
+    const regexpProvince = '.*' + province.replace('省','')
+    const regexpCity = '.*' + city.replace('市','')
+
+    const cityResult = await db.collection('procuratorate-doc').where(_.and([
+        {
+            title: db.RegExp({
+                regexp: regexpSearchValue,
+                options: 'i'
+            })
+        },
+        {
+            location: db.RegExp({
+                regexp: regexpCity,
+                options: 'i'
+            })
+        }
+    ])).orderBy('time', 'desc').limit(limit).get()
+    if (cityResult.data.length > 0) {
+        return cityResult
+    }
     return await db.collection('procuratorate-doc').where(_.and([
         {
             title: db.RegExp({
@@ -36,5 +55,5 @@ exports.main = async (event, context) => {
                 })
             },
         ])
-    ])).orderBy('time', 'desc').limit(limit ? limit : 1000).get()
+    ])).orderBy('time', 'desc').limit(limit).get()
 }

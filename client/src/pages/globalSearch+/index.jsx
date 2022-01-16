@@ -91,7 +91,7 @@ export default class Index extends Component {
               <GlobalSearchItem
                 key={item._id}
                 text={item.text}
-                law='刑法'
+                type='刑法'
                 number={item.chnNumber}
                 redirect={() => {
                   Taro.navigateTo({
@@ -116,7 +116,7 @@ export default class Index extends Component {
               <GlobalSearchItem
                 key={item._id}
                 text={item.text}
-                law='民法典'
+                type='民法典'
                 number={item.number}
                 redirect={() => {
                   Taro.navigateTo({
@@ -131,81 +131,85 @@ export default class Index extends Component {
           })
         }}>去民法典搜索更多...</View>
       </View>}
-      {searchResult['complement'] && searchResult['complement'].length > 0 && <View className='type-container'>
-        <View className='type-result-title'>
-          <Text className='title'>其他刑事法规</Text>
+      {mode !== 'faxin' && <View>
+        <View className='type-container'>
+          <View className='type-result-title'>
+            <Text className='title'>其他刑事法规</Text>
+          </View>
+          {searchResult['complement'] && searchResult['complement'].map((
+            (item) => {
+              return (
+                <GlobalSearchItem
+                  key={item._id}
+                  text={item.text}
+                  title={item.title}
+                  type='刑事'
+                  number={item.number}
+                  redirect={() => {
+                    Taro.navigateTo({
+                      url: `/pages/exampleDetail/index?id=${item._id}&type=complement`,
+                    })
+                  }}
+                />
+              )}))}
+          <View className='more' onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/criminalComplement/index?searchValue=${searchValue}`,
+            })
+          }}>去其他刑事法规搜索更多...</View>
         </View>
-        {searchResult['complement'].map((
-          (item) => {
-            return (
-              <GlobalSearchItem
-                key={item._id}
-                text={item.text}
-                title={item.title}
-                number={item.number}
-                redirect={() => {
-                  Taro.navigateTo({
-                    url: `/pages/exampleDetail/index?id=${item._id}&type=complement`,
-                  })
-                }}
-              />
-            )}))}
-        <View className='more' onClick={() => {
-          Taro.navigateTo({
-            url: `/pages/criminalComplement/index?searchValue=${searchValue}`,
-          })
-        }}>去其他刑事法规搜索更多...</View>
-      </View>}
-      {searchResult['civil-law-explaination'] && searchResult['civil-law-explaination'].length > 0 && <View className='type-container'>
-        <View className='type-result-title'>
-          <Text className='title'>其他民事法规</Text>
+        <View className='type-container'>
+          <View className='type-result-title'>
+            <Text className='title'>其他民事法规</Text>
+          </View>
+          {searchResult['civil-law-explaination'] && searchResult['civil-law-explaination'].map((
+            (item) => {
+              return (
+                <GlobalSearchItem
+                  key={item._id}
+                  text={item.text}
+                  title={item.title}
+                  type='民事'
+                  number={item.number}
+                  redirect={() => {
+                    Taro.navigateTo({
+                      url: `/pages/exampleDetail/index?id=${item._id}&type=civil-law-explaination`,
+                    })
+                  }}
+                />
+              )}))}
+          <View className='more' onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/civilLawExplaination/index?searchValue=${searchValue}`,
+            })
+          }}>去其他民事法规搜索更多...</View>
         </View>
-        {searchResult['civil-law-explaination'].map((
-          (item) => {
-            return (
-              <GlobalSearchItem
-                key={item._id}
-                text={item.text}
-                title={item.title}
-                law='民法典'
-                number={item.number}
-                redirect={() => {
-                  Taro.navigateTo({
-                    url: `/pages/exampleDetail/index?id=${item._id}&type=civil-law-explaination`,
-                  })
-                }}
-              />
-            )}))}
-        <View className='more' onClick={() => {
-          Taro.navigateTo({
-            url: `/pages/civilLawExplaination/index?searchValue=${searchValue}`,
-          })
-        }}>去其他民事法规搜索更多...</View>
-      </View>}
-      {searchResult['admin-explanation'] && searchResult['admin-explanation'].length > 0 && <View className='type-container'>
-        <View className='type-result-title'>
-          <Text className='title'>行政法规</Text>
+        <View className='type-container'>
+          <View className='type-result-title'>
+            <Text className='title'>行政法规</Text>
+          </View>
+          {searchResult['admin-explanation'] && searchResult['admin-explanation'].map((
+            (item) => {
+              return (
+                <GlobalSearchItem
+                  key={item._id}
+                  text={item.text}
+                  title={item.title}
+                  type='行政'
+                  number={item.number}
+                  redirect={() => {
+                    Taro.navigateTo({
+                      url: `/pages/exampleDetail/index?id=${item._id}&type=admin-explanation`,
+                    })
+                  }}
+                />
+              )}))}
+          <View className='more' onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/adminComplement/index?searchValue=${searchValue}`,
+            })
+          }}>去行政法规搜索更多...</View>
         </View>
-        {searchResult['admin-explanation'].map((
-          (item) => {
-            return (
-              <GlobalSearchItem
-                key={item._id}
-                text={item.text}
-                title={item.title}
-                number={item.number}
-                redirect={() => {
-                  Taro.navigateTo({
-                    url: `/pages/exampleDetail/index?id=${item._id}&type=admin-explanation`,
-                  })
-                }}
-              />
-            )}))}
-        <View className='more' onClick={() => {
-          Taro.navigateTo({
-            url: `/pages/adminComplement/index?searchValue=${searchValue}`,
-          })
-        }}>去行政法规搜索更多...</View>
       </View>}
       {searchResult['faxin-law'] && searchResult['faxin-law'].length > 0 && <View className='type-container'>
         <View className='type-result-title'>
@@ -218,7 +222,9 @@ export default class Index extends Component {
                 key={item._id}
                 text={item.text}
                 title={item.title}
+                type={item.type ? item.type:'其他'}
                 number={item.number}
+                publishInfo={item.publishInfo}
                 redirect={() => {
                   Taro.navigateTo({
                     url: `/pages/exampleDetail/index?id=${item._id}&type=faxin-law-detail`,
@@ -234,7 +240,6 @@ export default class Index extends Component {
           })
         }}>其他搜索更多...</View>}
       </View>}
-
     </View>)
   }
 

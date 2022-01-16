@@ -129,7 +129,7 @@ export default class Index extends Component {
         city
       },
       complete: r => {
-        console.log(r.result.data)
+        console.log(r)
         that.setState({searchResult: r.result.data, isLoading: false})
       }
     });

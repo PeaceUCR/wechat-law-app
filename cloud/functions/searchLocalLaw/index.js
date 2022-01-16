@@ -14,8 +14,8 @@ exports.main = async (event, context) => {
   const {province, city, searchValue} = event
 
   const regexpSearchValue = '.*' + searchValue
-  const regexpProvince = '.*' + province
-  const regexpCity = '.*' + city
+  const regexpProvince = '.*' + province.replace('省','')
+  const regexpCity = '.*' + city.replace('市','')
 
   return await db.collection('local-law').where(_.and([
     {
@@ -38,6 +38,6 @@ exports.main = async (event, context) => {
         })
       },
     ])
-  ])).limit(1000).get()
+  ])).limit(100).get()
 
 }
