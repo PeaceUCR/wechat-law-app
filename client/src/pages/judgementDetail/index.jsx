@@ -325,7 +325,9 @@ export default class ExampleDetail extends Component {
             {!isExampleLoading && !isBriefLoading && example && this.renderExample()}
           </View>
           {(!isExampleLoading && !isBriefLoading && !example) && this.renderNoData()}
-          <ad unit-id="adunit-3262d14cdd5955c8"></ad>
+          <View className='ad-container'>
+            <ad unit-id="adunit-3262d14cdd5955c8"></ad>
+          </View>
           {this.renderLink()}
           {(isBriefLoading || isExampleLoading || isLoading) && <Loading2 />}
           {!isExampleLoading && !isBriefLoading && <AtDivider content='没有更多了' fontColor='#666' lineColor='transparent' />}

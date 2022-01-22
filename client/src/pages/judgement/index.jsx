@@ -1,6 +1,6 @@
 import Taro, { Component, getStorageSync, setStorageSync } from '@tarojs/taro'
-import {View, Button, Image} from '@tarojs/components'
-import {AtDivider, AtSearchBar,AtNoticebar, AtList, AtListItem,  AtModal,AtModalHeader, AtModalContent,AtModalAction, AtInput, AtBadge, AtIcon, AtActionSheet, AtTag, AtDrawer, AtAccordion} from "taro-ui";
+import {View, Button, Image, Text} from '@tarojs/components'
+import {AtDivider, AtSearchBar,AtNoticebar, AtList, AtListItem,  AtModal,AtModalHeader, AtModalContent,AtModalAction, AtInput, AtBadge, AtIcon, AtActionSheet, AtTag, AtFab} from "taro-ui";
 import './index.scss'
 import {db} from "../../util/db";
 import Loading2 from "../../components/loading2/index.weapp";
@@ -331,7 +331,6 @@ export default class Index extends Component {
       showCriminalLawOption, filterValue} = this.state;
     return (
       <View className={`index-page page ${isReadMode ? 'read-mode' : ''}`}>
-
         <AtNoticebar marquee speed={60}>
           数据信息均来源于裁判文书网，已收录超过10万份裁判文书，持续开发中...
         </AtNoticebar>
@@ -342,6 +341,23 @@ export default class Index extends Component {
           onActionClick={this.onSearch}
           onBlur={this.onSearch}
         />
+        <AtFab className='float-back' onClick={() => {
+          this.setState({
+            showSetting: true,
+            number: '',
+            searchValue: '',
+            showLoading: false,
+            resultList: [],
+            isMenuOpened: false,
+            activeKeyMap: {},
+            selectedCriminalKeywords: [],
+            province: '',
+            filterValue: ''
+          })
+        }}
+        >
+          <Text>重置</Text>
+        </AtFab>
         {this.renderResults()}
         {/*<View>userOpenId: {userOpenId}</View>*/}
         {/*<View>userName: {userName}</View>*/}
@@ -362,7 +378,9 @@ export default class Index extends Component {
 
         {showLoading && <Loading2 />}
         <View onClick={this.handleOpen} className='float-setting'>
-          <Image src={settingIcon} className='setting' mode='widthFix' />
+          <AtBadge value='检索条件'>
+            <Image src={settingIcon} className='setting' mode='widthFix' />
+          </AtBadge>
         </View>
 
         <View className='float-help' onClick={() => {
