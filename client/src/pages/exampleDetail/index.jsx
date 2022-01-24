@@ -1,5 +1,5 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
-import {View,Input, Button, RichText} from '@tarojs/components'
+import {View,Input, Button, RichText, Text} from '@tarojs/components'
 import {AtFab, AtIcon, AtActivityIndicator, AtNoticebar, AtButton, AtBadge} from "taro-ui";
 import { db } from '../../util/db'
 import TextSection from '../../components/textSection/index.weapp'
@@ -40,7 +40,9 @@ export default class ExampleDetail extends Component {
     isLoading: true,
     enableAutoScroll: false,
     enableExampleDetailAd: false,
-    selectedLine: -1
+    selectedLine: -1,
+    categories: undefined,
+    openCategory: false
   }
 
   config = {
@@ -402,7 +404,7 @@ export default class ExampleDetail extends Component {
   }
 
   renderComplement = () => {
-    const {example, keyword, zoomIn, selectedLine, enableAutoScroll} = this.state;
+    const {example, keyword, zoomIn, selectedLine, enableAutoScroll, categories} = this.state;
     const {text, title} = example;
     const that = this
     const setKey = (line, key) => {
@@ -432,6 +434,13 @@ export default class ExampleDetail extends Component {
 
     const lines = text ? text.split('\n').filter(line => line.trim() && line.trim().length > 0).map(line => refine(line)) : []
 
+    let c = categories
+    if (!categories && text) {
+      c = lines.filter(l => isStartWith(l, highlights))
+      that.setState({
+        categories: c
+      })
+    }
     return (<View  className={`text-section ${zoomIn ? 'zoom-in' : ''}`}>
       <View className='term-complement-title'>{title}</View>
       <View className='content'>{lines.map((line, index) => {
@@ -441,6 +450,7 @@ export default class ExampleDetail extends Component {
                       onTouchStart={() => this.touchStart(index)}
                       onTouchEnd={this.touchEnd}
         >
+          {isStartWith(line, highlights) && c && <View id={`category-${c.indexOf(line)}`}></View>}
           <RichText nodes={findAndHighlight(line, index, keyword)} className={isStartWith(line, highlights) ? 'highlight': ''} ></RichText>
           {index === selectedLine && <View className='copy'><AtButton size='small' type='primary' onClick={() => copy(line)}>复制</AtButton></View>}
         </View>)
@@ -475,8 +485,24 @@ export default class ExampleDetail extends Component {
     this.setState({keyword: '',enableAutoScroll: false})
   }
 
+  renderCategory = () => {
+    const {categories} = this.state
+    return (<View className='float-category'>
+      {categories.map((c, index) => (<View
+        className='float-category-item'
+        key={c}
+        onClick={() => {
+          console.log(`click ${c}`)
+          Taro.pageScrollTo({
+            selector: `#category-${index}`,
+            duration: 500
+          })
+        }}
+      >{`> ${c}`}</View>))}
+    </View>)
+  }
   render () {
-    const {isSent, keyword, comment, example, zoomIn, isCollected, isReadMode, isLoading, type, enableAutoScroll, enableExampleDetailAd} = this.state;
+    const {isSent, keyword, comment, example, zoomIn, isCollected, isReadMode, isLoading, type, enableAutoScroll, enableExampleDetailAd, categories, openCategory} = this.state;
     const {special, text, title} = example
     return (
       <View>
@@ -492,11 +518,15 @@ export default class ExampleDetail extends Component {
           </AtNoticebar>
         }
         <View className={`example-detail-page page ${zoomIn ? 'zoom-in' : ''} ${isReadMode ? 'read-mode' : ''}`}>
+          {categories && categories.length > 0 && openCategory && this.renderCategory()}
           {special && this.renderSpecial()}
           {!special && <View>
             {this.renderComplement()}
             {/*{!enableAutoScroll && this.renderExample()}*/}
           </View>}
+          {categories && categories.length > 0 && <AtFab onClick={() => this.setState({openCategory: !openCategory})} size='small' className='float-category-icon'>
+            <Text className={`at-fab__icon at-icon ${openCategory ? 'at-icon-close' : 'at-icon-menu'}`}></Text>
+          </AtFab>}
           {!isLoading && !title && !text && this.renderNoData()}
           {!special && <FloatSearch keyword={keyword} onConfirm={this.changeKeyword} onCancel={this.onCancel} />}
           <View className='footer'>

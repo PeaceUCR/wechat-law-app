@@ -79,14 +79,13 @@ export function processLitigationOptions(litigationRegulationChapters= [], litig
   return result;
 }
 
-export function isStartWith(target, list) {
-  let result = false;
-  list.forEach(line => {
-    if (target.indexOf(line) === 0) {
-      result = true;
+export function isStartWith(line, highlightWords) {
+  for (let i = 0; i < highlightWords.length; i++) {
+    if (line.indexOf(highlightWords[i]) === 0 && line.trim().length === highlightWords[i].length) {
+      return highlightWords[i];
     }
-  })
-  return result;
+  }
+  return false;
 }
 
 export function getText(text) {
