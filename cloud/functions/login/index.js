@@ -17,17 +17,27 @@ exports.main = async (event, context) => {
   }).get();
 
   if (res.data && res.data.length > 0) {
-    return res;
+    await db.collection('user').where({
+      //下面这3行，为筛选条件
+      openId
+    }).update({
+      data: {
+        avatarUrl: event.avatarUrl,
+        nickName: event.nickName,
+        lastTimeLogin: new Date()
+      }
+    });
+  } else {
+    await db.collection("user").add({
+      data: {
+        openId: wxContext.OPENID,//获取操作者_openid的方法
+        avatarUrl: event.avatarUrl,
+        nickName: event.nickName,
+        score: 3,
+        lastTimeLogin: new Date()
+      }
+    })
   }
-  await db.collection("user").add({
-    data: {
-      openId: wxContext.OPENID,//获取操作者_openid的方法
-      avatarUrl: event.avatarUrl,
-      nickName: event.nickName,
-      score: 3,
-      lastTimeLogin: new Date()
-    }
-  })
 
   return await db.collection('user').where({
     //下面这3行，为筛选条件

@@ -1,6 +1,6 @@
 import Taro, { Component, setStorageSync, getStorageSync} from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import {AtSwitch,AtNoticebar,AtActivityIndicator, AtIcon, AtAvatar, AtDivider} from "taro-ui";
+import {AtSwitch,AtNoticebar,AtActivityIndicator, AtIcon, AtAvatar, AtDivider, AtBadge} from "taro-ui";
 import MyCollection from '../../components/myCollection'
 import './index.scss'
 import {tmpId} from '../../util/util'
@@ -180,13 +180,45 @@ export default class User extends Component {
     this.setState({ showImageRecognize: false })
   }
 
+  refreshUserInfo = () => {
+    const that = this;
+    wx.getUserProfile({
+      desc: '用于更新最新的个人信息',
+      fail: () => {
+        Taro.showToast({
+          title: '授权失败',
+          icon: 'none',
+          duration: 1000
+        });
+      },
+      success: (res) => {
+        console.log(res.userInfo)
+        that.setState({
+          isLoading: true
+        })
+        Taro.cloud.callFunction({
+          name: 'login',
+          data: {
+            nickName: res.userInfo.nickName,
+            avatarUrl: res.userInfo.avatarUrl
+          },
+          complete: r => {
+            setStorageSync('user', r.result.data[0]);
+            that.setState({
+              isLoading: false
+            })
+          }
+        })
+      }
+    })
+  }
   render () {
     const {isLoading, isReadMode, collection, showImageRecognize, token, enableAds, province, city, score} = this.state;
     return (
       <View className={`user-page page ${isReadMode ? 'read-mode' : ''}`}>
-        <AtNoticebar marquee speed={60}>
-          收藏功能已升级，数据已存放于云端，再也不怕丢失啦！
-        </AtNoticebar>
+        {/*<AtNoticebar marquee speed={60}>*/}
+        {/*  收藏功能已升级，数据已存放于云端，再也不怕丢失啦！*/}
+        {/*</AtNoticebar>*/}
         {/*{enableAds &&*/}
         {/*<Swiper className='video-container'>*/}
         {/*  <SwiperItem >*/}
@@ -195,6 +227,9 @@ export default class User extends Component {
         {/*  </SwiperItem>*/}
         {/*</Swiper>}*/}
         <View className='main'>
+          <AtBadge className='reload-icon' value='更新' >
+            <AtIcon value='reload' size='30' color='green' onClick={this.refreshUserInfo}></AtIcon>
+          </AtBadge>
           <AtAvatar circle image={getUserAvatar()}></AtAvatar>
           <View>{getUserNickname()}</View>
           <View className='icon-line' onClick={() => {

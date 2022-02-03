@@ -436,7 +436,7 @@ export default class ExampleDetail extends Component {
 
     let c = categories
     if (!categories && text) {
-      c = lines.filter(l => isStartWith(l, highlights))
+      c = Array.from(new Set(lines.filter(l => isStartWith(l, highlights))))
       that.setState({
         categories: c
       })
@@ -498,7 +498,7 @@ export default class ExampleDetail extends Component {
             duration: 500
           })
         }}
-      >{`> ${c}`}</View>))}
+      >{`${c}`}</View>))}
     </View>)
   }
   render () {

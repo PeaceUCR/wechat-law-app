@@ -1,3 +1,3 @@
 fileignoreconfig:
-- filename: cloud/functions/globalSearchPlus/yarn.lock
-  checksum: 1b89ad0e9282da46e7c4ac46df675682670feb635d7b109943f8fa41702b970b
+- filename: client/src/pages/index/index.jsx
+  checksum: a253450c43bf8bc21b5edcab0850669282a169e26ff9b8f3c4c833d2446219f5

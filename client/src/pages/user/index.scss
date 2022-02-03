@@ -1,6 +1,6 @@
 .user-page {
   box-sizing: border-box;
-  padding: 0px 20px 260px 20px;
+  padding: 10px 20px 260px 20px;
   min-height: 100vh;
   box-sizing: border-box;
   &.read-mode {
@@ -8,9 +8,15 @@
   }
 
   .main {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
+    .reload-icon {
+      position: absolute;
+      top: 20px;
+      right: 20vw;
+    }
   }
 }
 

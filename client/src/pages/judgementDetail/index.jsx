@@ -1,6 +1,6 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
-import {View, Button, Image} from '@tarojs/components'
-import {AtIcon, AtBadge, AtDivider, AtModal,AtModalHeader, AtModalContent,AtModalAction} from "taro-ui";
+import {View, Button, Image, Text} from '@tarojs/components'
+import {AtIcon, AtBadge, AtDivider, AtModal,AtModalHeader, AtModalContent,AtModalAction, AtFab} from "taro-ui";
 import { db } from '../../util/db'
 import TextSection from '../../components/textSection/index.weapp'
 import TextSectionComponent from '../../components/textSectionComponent/index'
@@ -26,7 +26,9 @@ export default class ExampleDetail extends Component {
     isBriefLoading: true,
     isExampleLoading: true,
     isLoading: false,
-    showRelatedLaw: false
+    showRelatedLaw: false,
+    categories: ['事实认定', '裁判理由', '裁判结果'],
+    openCategory: false
   }
 
   config = {
@@ -166,8 +168,11 @@ export default class ExampleDetail extends Component {
       <View className='term-complement-title'>{brief.title}</View>
       <TextSectionComponent data={textHead} keyword={keyword} zoomIn={zoomIn} isTitle />
       <TextSectionComponent data={textPartner} keyword={keyword} zoomIn={zoomIn} />
+      <View id='category-0' className='term-complement-title sub'>事实认定</View>
       <TextSectionComponent data={textMain} keyword={keyword} zoomIn={zoomIn} />
+      <View id='category-1' className='term-complement-title sub'>裁判理由</View>
       <TextSectionComponent data={opinion} keyword={keyword} zoomIn={zoomIn} />
+      <View id='category-2' className='term-complement-title sub'>裁判结果</View>
       <TextSectionComponent data={textDecide} keyword={keyword} zoomIn={zoomIn} />
       <TextSectionComponent data={textJudge} keyword={keyword} zoomIn={zoomIn} />
     </View>)
@@ -316,14 +321,35 @@ export default class ExampleDetail extends Component {
 
   }
 
+  renderCategory = () => {
+    const {categories} = this.state
+    return (<View className='float-category'>
+      {categories.map((c, index) => (<View
+        className='float-category-item'
+        key={c}
+        onClick={() => {
+          console.log(`click ${c}`)
+          Taro.pageScrollTo({
+            selector: `#category-${index}`,
+            duration: 500
+          })
+        }}
+      >{`${c}`}</View>))}
+    </View>)
+  }
+
   render () {
     const { example, brief, zoomIn, isReadMode, isBriefLoading, isExampleLoading,
-      isLoading, isCollected, type, showRelatedLaw} = this.state;
+      isLoading, isCollected, type, showRelatedLaw, categories, openCategory} = this.state;
     return (<View>
         <View className={`example-detail-page page ${zoomIn ? 'zoom-in' : ''} ${isReadMode ? 'read-mode' : ''}`}>
           <View>
             {!isExampleLoading && !isBriefLoading && example && this.renderExample()}
           </View>
+          <AtFab onClick={() => this.setState({openCategory: !openCategory})} size='small' className='float-category-icon'>
+            <Text className={`at-fab__icon at-icon ${openCategory ? 'at-icon-close' : 'at-icon-menu'}`}></Text>
+          </AtFab>
+          {categories && categories.length > 0 && openCategory && this.renderCategory()}
           {(!isExampleLoading && !isBriefLoading && !example) && this.renderNoData()}
           <View className='ad-container'>
             <ad unit-id="adunit-3262d14cdd5955c8"></ad>
