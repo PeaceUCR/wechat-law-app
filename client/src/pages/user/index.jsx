@@ -2,6 +2,7 @@ import Taro, { Component, setStorageSync, getStorageSync} from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import {AtSwitch,AtNoticebar,AtActivityIndicator, AtIcon, AtAvatar, AtDivider, AtBadge} from "taro-ui";
 import MyCollection from '../../components/myCollection'
+import MyCollection2 from '../../components/myCollection2'
 import './index.scss'
 import {tmpId} from '../../util/util'
 import {ImageRecoginzer} from "../../components/imageRecoginzer/index.weapp";
@@ -212,6 +213,31 @@ export default class User extends Component {
       }
     })
   }
+
+  removeCollectionAtIndex = (c, index) => {
+    console.log(index)
+    const that = this
+    const {collection} = this.state
+    Taro.cloud.callFunction({
+      name: 'deleteCollection',
+      data: {
+        id: c.collectionId,
+        type: c.type
+      },
+      complete: (res) => {
+        console.log(res)
+        Taro.showToast({
+          title: '删除收藏成功',
+          icon: 'none',
+          duration: 1000
+        })
+
+        collection.splice(index, 1)
+        that.setState({collection: [...collection]});
+      }
+    })
+
+  }
   render () {
     const {isLoading, isReadMode, collection, showImageRecognize, token, enableAds, province, city, score} = this.state;
     return (
@@ -293,7 +319,7 @@ export default class User extends Component {
         {/*<View>*/}
         {/*  <AtButton type='secondary' onClick={this.handleSubscribe}>点击订阅消息</AtButton>*/}
         {/*</View>*/}
-        <MyCollection collection={collection} />
+        <MyCollection2 collection={collection} removeCollectionAtIndex={this.removeCollectionAtIndex}/>
         {
           showImageRecognize && <ImageRecoginzer token={token} open={this.open} close={this.close} />
         }

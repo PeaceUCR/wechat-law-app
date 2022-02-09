@@ -17,34 +17,11 @@ exports.main = async (event, context) => {
     const regexpProvince = '.*' + province.replace('省','')
     const regexpCity = '.*' + city.replace('市','')
 
-    const cityResult = await db.collection('procuratorate-doc').where(_.and([
-        {
-            title: db.RegExp({
-                regexp: regexpSearchValue,
-                options: 'i'
-            })
-        },
-        {
-            location: db.RegExp({
-                regexp: regexpCity,
-                options: 'i'
-            })
-        }
-    ])).orderBy('time', 'desc').limit(limit).get()
-    if (cityResult.data.length > 0) {
-        return cityResult
-    }
-    return await db.collection('procuratorate-doc').where(_.and([
-        {
-            title: db.RegExp({
-                regexp: regexpSearchValue,
-                options: 'i'
-            })
-        },
-        _.or([
+    if (province && city) {
+        const cityResult = await db.collection('procuratorate-doc').where(_.and([
             {
-                location: db.RegExp({
-                    regexp: regexpProvince,
+                text: db.RegExp({
+                    regexp: regexpSearchValue,
                     options: 'i'
                 })
             },
@@ -53,7 +30,42 @@ exports.main = async (event, context) => {
                     regexp: regexpCity,
                     options: 'i'
                 })
+            }
+        ])).orderBy('time', 'desc').limit(limit).get()
+        if (cityResult.data.length > 0) {
+            return cityResult
+        }
+        const provinceResult = await db.collection('procuratorate-doc').where(_.and([
+            {
+                text: db.RegExp({
+                    regexp: regexpSearchValue,
+                    options: 'i'
+                })
             },
-        ])
-    ])).orderBy('time', 'desc').limit(limit).get()
+            _.or([
+                {
+                    location: db.RegExp({
+                        regexp: regexpProvince,
+                        options: 'i'
+                    })
+                },
+                {
+                    location: db.RegExp({
+                        regexp: regexpCity,
+                        options: 'i'
+                    })
+                },
+            ])
+        ])).orderBy('time', 'desc').limit(limit).get()
+        if (provinceResult.data.length > 0) {
+            return provinceResult
+        }
+    }
+
+    return await db.collection('procuratorate-doc').where({
+        text: db.RegExp({
+            regexp: regexpSearchValue,
+            options: 'i'
+        })
+    }).orderBy('time', 'desc').limit(limit).get()
 }

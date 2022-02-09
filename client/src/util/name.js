@@ -1,5 +1,6 @@
 import { flattenDeep, isEmpty } from "lodash";
 import {otherLawNameMap} from "./otherLaw";
+import {refine} from "./util";
 
 const lawNameMap = {
   'criminal': '刑事案件',
@@ -401,4 +402,14 @@ export const searchHomePageOptions = (searchValue) => {
   }
   return flattenDeep(Object.values(homePageOptions))
     .filter(item => item.title.indexOf(searchValue) !== -1)
+}
+
+export const noTitleExampleTypes = {
+  'faxin-law-detail': 'faxin-law',
+  'local-law-detail': 'local-law',
+  'civilLawExample': 'civil-law-link-example-detail',
+}
+
+export const getFirstLine = text => {
+  return text.split('\n').filter(line => line.trim() && line.trim().length > 0)[0]
 }

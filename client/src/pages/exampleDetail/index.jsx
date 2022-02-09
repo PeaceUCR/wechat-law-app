@@ -10,6 +10,7 @@ import throttle from "lodash/throttle";
 import {DiscussionArea} from "../../components/discussionArea/index.weapp";
 import {FloatSearch} from "../../components/floatSearch/index.weapp";
 import {copy, findAndHighlight, highlights, isStartWith, refine} from "../../util/util";
+import {noTitleExampleTypes, getFirstLine} from "../../util/name";
 
 const typeCollectionMap = {
   'court': 'example',
@@ -235,7 +236,7 @@ export default class ExampleDetail extends Component {
 
     const that = this;
     const { isCollected, example, type } = this.state;
-    const {_id} = example;
+    const {_id, text} = example;
     that.setState({isLoading: true});
 
     if (isCollected) {
@@ -266,7 +267,7 @@ export default class ExampleDetail extends Component {
         data: {
           id: _id,
           type: type,
-          title: title.trim()
+          title: noTitleExampleTypes[type] ? getFirstLine(text): title.trim()
         },
         complete: (r) => {
           if (r && r.result && r.result.errMsg !== 'collection.add:ok') {
