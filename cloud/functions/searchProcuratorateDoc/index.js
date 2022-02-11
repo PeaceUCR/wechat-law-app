@@ -14,10 +14,11 @@ exports.main = async (event, context) => {
 
     const {searchValue, province, city} = event
     const regexpSearchValue = '.*' + searchValue
-    const regexpProvince = '.*' + province.replace('省','')
-    const regexpCity = '.*' + city.replace('市','')
 
     if (province && city) {
+        const regexpProvince = '.*' + province.replace('省','')
+        const regexpCity = '.*' + city.replace('市','')
+
         const cityResult = await db.collection('procuratorate-doc').where(_.and([
             {
                 text: db.RegExp({
