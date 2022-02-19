@@ -39,9 +39,8 @@ export default class Index extends Component {
     isPosterLoading: true,
     posterRedirect: '',
     swiperPosters: [
-      'https://mmbiz.qpic.cn/mmbiz_jpg/6fKEyhdZU93zibwIDAjqC1D6vUA9MoQMhuRBKvt2YTvnv6WibIp33kib9P2d0NhKLGzVMKallINfdfn6la92avSyg/0?wx_fmt=jpeg',
       'https://mmbiz.qpic.cn/mmbiz_gif/6fKEyhdZU92cC8JPU4xto4nia1UyLRqGvAia11YorBoNrN8WO4bFRIROZNsqGfGicaz6hZ660MUf5ia1sfEXeJeWgQ/0?wx_fmt=gif',
-      'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU90MKDv6GWFiaObCSphJ6xocAIrOKgNT72HzLWL6Su7G2hId9HIib9gib7VVMvg9bLp9ytJfZNWU8oGyg/0?wx_fmt=png'
+      'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU92Iz6PPMWHuyFOLUv3vhY65auk6goic8ZibQibnaIRVXyjiczU1orwBqvknGBT6fniaHgJkUty2t9lV4Fg/0?wx_fmt=png'
     ],
     canClose: false,
     enableMainVideoAd: false,
@@ -363,11 +362,6 @@ export default class Index extends Component {
           <SwiperItem>
             <View className='swiper-item-container' onClick={this.handleClickMainSwiper}>
               <Image className='image' src={swiperPosters[1]} mode='aspectFill' />
-            </View>
-          </SwiperItem>
-          <SwiperItem>
-            <View className='swiper-item-container' onClick={this.handleClickSecondSwiper}>
-              <Image className='image' src={swiperPosters[2]} mode='aspectFill' />
             </View>
           </SwiperItem>
         </Swiper>}

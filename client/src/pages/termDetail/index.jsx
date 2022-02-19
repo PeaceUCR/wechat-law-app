@@ -507,7 +507,7 @@ export default class TermDetail extends Component {
             <TextSectionComponent data={text} zoomIn={zoomIn} />
           </View>
           <View className='line link'>
-            <DataPopup data={{sourceName, sourceId, crimeName}} type='source'zoomIn={zoomIn} />
+            <DataPopup data={{sourceName, sourceId, crimeName}} type='source' zoomIn={zoomIn} />
           </View>
           <AtDivider height='40' lineColor='#fff' />
         </View>)

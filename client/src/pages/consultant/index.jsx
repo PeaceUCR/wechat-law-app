@@ -24,12 +24,18 @@ export default class Index extends Component {
   }
 
   onShareAppMessage() {
+    const {categoryList} = this.state
     return {
-      path: 'pages/consultant/index'
+      path: `pages/consultant/index?isCategory=${categoryList.length > 0 ? 'true' : 'false'}`
     };
   }
 
   componentWillMount () {
+    const {isCategory} = this.$router.params;
+    if (isCategory === 'true') {
+      this.loadCategory()
+    }
+
     const setting = getStorageSync('setting');
     this.setState({isReadMode: setting && setting.isReadMode})
     if (setting && setting.isReadMode) {
@@ -82,7 +88,7 @@ export default class Index extends Component {
           })
         }}
       >
-        <View className='category-divider'>裁判文书全目录</View>
+        <View className='category-divider'>刑事审判参考全目录</View>
       </AtIndexes>
     </View>)
   }

@@ -38,7 +38,7 @@ const DataPopup = (props) => {
     <View className={`${isExample ? 'example': ''} line-center`} onClick={() => {
       if (type === 'source') {
         Taro.navigateTo({
-          url: `/pages/exampleDetail/index?type=${type}&id=${sourceId}&keyword=${crimeName}`,
+          url: `/pages/exampleDetail/index?type=complement&id=${sourceId}&keyword=${crimeName}`,
         })
         return ;
       }

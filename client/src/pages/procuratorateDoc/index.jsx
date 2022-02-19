@@ -63,34 +63,45 @@ export default class Index extends Component {
         city: getCity()
       }, () => {
         const {province, city} = that.state
-        const regexpProvince = '.*' + province
-        const regexpCity = '.*' + city
+        if (province && city) {
+          const regexpProvince = '.*' + province
+          const regexpCity = '.*' + city
 
-        const _ = db.command
-        db.collection('procuratorate-doc').where(_.or([
-          {
-            location: db.RegExp({
-              regexp: regexpProvince,
-              options: 'i'
-            })
-          },
-          {
-            location: db.RegExp({
-              regexp: regexpCity,
-              options: 'i'
-            })
-          },
-        ])).orderBy('time', 'desc').get({
-          success: (r) => {
-            console.log(r)
-            that.setState({searchResult: r.data, isLoading: false})
-            Taro.showToast({
-              title: `加载20篇最近发布的检察文书`,
-              icon: 'none',
-              duration: 4000
-            })
-          }
-        });
+          const _ = db.command
+          db.collection('procuratorate-doc').where(_.or([
+            {
+              location: db.RegExp({
+                regexp: regexpProvince,
+                options: 'i'
+              })
+            },
+            {
+              location: db.RegExp({
+                regexp: regexpCity,
+                options: 'i'
+              })
+            },
+          ])).orderBy('time', 'desc').get({
+            success: (r) => {
+              console.log(r)
+              that.setState({searchResult: r.data, isLoading: false})
+              Taro.showToast({
+                title: `加载20篇最近发布的检察文书`,
+                icon: 'none',
+                duration: 4000
+              })
+            }
+          });
+        } else {
+          Taro.showToast({
+            title: `无位置信息，无法加载最新检察文书`,
+            icon: 'none',
+            duration: 4000
+          })
+          that.setState({
+            isLoading: false
+          })
+        }
       });
 
     }
