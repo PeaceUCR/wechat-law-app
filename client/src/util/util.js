@@ -1,4 +1,5 @@
 import Taro from '@tarojs/taro'
+import moment from "moment";
 
 export const tmpId = 'cZWxYVaMH0JFtk2NIxjsEBLZcpazvU5vkYJcQlKsnBo'
 
@@ -190,4 +191,11 @@ export const refine = (s) => {
     }
   }
   return str;
+}
+
+export const getSentencingTag = (crimeName, location, effectiveDate) => {
+  if (location) {
+    return `${moment(effectiveDate).format('YYYY')} ${location} ${crimeName}`
+  }
+  return `${moment(effectiveDate).format('YYYY')} 全国 ${crimeName}`
 }

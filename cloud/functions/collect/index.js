@@ -26,6 +26,7 @@ exports.main = async (event, context) => {
       collectionId: event.id,
       type: event.type,
       title: event.title,
+      criminalLawNumber: event.criminalLawNumber,
       time: new Date()
     }
   })

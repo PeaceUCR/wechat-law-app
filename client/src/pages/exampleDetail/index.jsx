@@ -19,7 +19,7 @@ const typeCollectionMap = {
   'consultant': 'consult',
   'civilLawExample': 'civil-law-link-example-detail',
   'civil-law-explaination': 'civil-law-explaination',
-  'source': 'sentencing-source',
+  'source': 'sentencingDetail-source',
   'complement-example': 'complement'
 }
 

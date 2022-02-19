@@ -8,10 +8,8 @@ import { db } from '../../util/db'
 import {checkIfNewUser, getUserAvatar, getUserNickname, getUserOpenId, redirectToIndexIfNewUser} from '../../util/login'
 import {lawIdLabelMap, exampleIcon, sentencingIcon, explanationIcon, definitionIcon, consultIcon, judgementIcon, pDocIcon, evidenceIcon, copy} from '../../util/util'
 import './index.scss'
-import TextSection from "../../components/textSection/index.weapp";
 import TextSectionComponent from "../../components/textSectionComponent/index";
 import TextSectionLinked from "../../components/textSectionLinked/index.weapp";
-import moment from "moment";
 
 const getTermNumber = (text) => {
   return text.substring(0, text.indexOf('条') + 1);
@@ -32,10 +30,8 @@ export default class TermDetail extends Component {
     isCourtExampleLoading: true,
     isComplementLoading: true,
     isCollectedLoading: true,
-    isSentencingLoading: true,
     isTermExplanationLoading: true,
     showTermExplanation: false,
-    showSentencing: false,
     showComplement: false,
     showExample: false,
     showConsult: false,
@@ -44,7 +40,6 @@ export default class TermDetail extends Component {
     enableYiBenTong: false,
     yiBenTongContent: [],
     isYiBenTongLoading: false,
-    sentencings: [],
     termExplanations: [],
     consult: [],
     isConsultLoading: true,
@@ -173,27 +168,6 @@ export default class TermDetail extends Component {
             isConsultLoading: false
           })
         }
-
-        // db.collection('yi-ben-tong').where({number: term.number}).get({
-        //   success: (res) => {
-        //     // console.log(res.data)
-        //     that.setState({yibentongData: res.data, isYibentongDataLoading: false});
-        //   }
-        // })
-
-        Taro.cloud.callFunction({
-          name: 'getSentencing',
-          data: {
-            criminalLawNumber: term.number
-          },
-          complete: r => {
-            that.setState( {
-              isSentencingLoading: false,
-              sentencings: r.result.data
-            })
-          }
-        })
-
       }
     })
 
@@ -324,25 +298,6 @@ export default class TermDetail extends Component {
       </View>))}
     </View>)
   }
-
-  // renderYiBenTong = () => {
-  //   const {yibentongData, term, zoomIn} = this.state;
-  //   const num = getTermNumber(term.text).replace('第', '').replace('条', '')
-  //   return yibentongData.map((item, i) => {
-  //     return (<View key={`yibentong-item-${i}`}>
-  //       {item.contents.map((c, j) => {
-  //         return (<YiBenTongSection
-  //           key={`yibentong-item-${j}`}
-  //           data={c.content}
-  //           title={c.category}
-  //           zoomIn={zoomIn}
-  //           keyword={num}
-  //         >
-  //         </YiBenTongSection>)
-  //       })}
-  //     </View>)
-  //   })
-  // }
 
   handleCollect = throttle(() => {
     if (checkIfNewUser()) {
@@ -491,30 +446,6 @@ export default class TermDetail extends Component {
     }, 100)
   }
 
-  renderSentencings = () => {
-    const {sentencings, zoomIn} = this.state
-    return <View className='sentencings'>
-      {sentencings.map((sentencing, index) => {
-        const {crimeName, text, sourceName, sourceId, effectiveDate} = sentencing
-        return (<View className='sentencing' key={`sentencing-key-${index}`}>
-          {/*<View className='title line example'>量刑指导意见:</View>*/}
-          <View className='line crime-line'>
-            <Text className='crime-line-item'>罪名:<Text className='crime'>{crimeName}</Text></Text>
-            <Text className='date crime-line-item'>
-            实施日期:{moment(effectiveDate).format('YYYY-MM-DD')}</Text>
-          </View>
-          <View className='line'>
-            <TextSectionComponent data={text} zoomIn={zoomIn} />
-          </View>
-          <View className='line link'>
-            <DataPopup data={{sourceName, sourceId, crimeName}} type='source' zoomIn={zoomIn} />
-          </View>
-          <AtDivider height='40' lineColor='#fff' />
-        </View>)
-      })}
-    </View>
-  }
-
   renderEvidence = () => {
     const {evidence, zoomIn} = this.state
     return <View className='sentencings'>
@@ -552,13 +483,6 @@ export default class TermDetail extends Component {
     const {showTermExplanation} = this.state
     this.setState({
       showTermExplanation: !showTermExplanation
-    })
-  }
-
-  openSentencing = () => {
-    const {showSentencing} = this.state
-    this.setState({
-      showSentencing: !showSentencing
     })
   }
 
@@ -607,6 +531,26 @@ export default class TermDetail extends Component {
       url: redirectStr
     });
   };
+
+  jumpToSentencing = () => {
+    const {term} = this.state
+    const redirectStr = `/pages/sentencingDetail/index?id=${term._id}&criminalLawNumber=${term.number}`
+
+    Taro.navigateTo({
+      url: redirectStr
+    });
+  };
+
+  renderSentencingLine = () => {
+    return (<View className='judgement-line' onClick={this.jumpToSentencing}>
+      <Image
+        src={sentencingIcon}
+        className='title-icon'
+        mode='widthFix'
+      />
+      <View className='text'>去量刑指导意见</View>
+    </View>)
+  }
 
   renderJudgementLine = () => {
     return (<View className='judgement-line' onClick={this.jumpToJudgement}>
@@ -668,8 +612,8 @@ export default class TermDetail extends Component {
       complements, termExplanations, consult,
       isProcuratorateExampleLoading, isCourtExampleLoading, isComplementLoading,
       isCollectedLoading, isCollected, isReadMode, zoomIn,
-      isSentencingLoading, sentencings, isTermExplanationLoading, isConsultLoading,
-      showTermExplanation, showSentencing, showComplement, showExample, showConsult,
+      isTermExplanationLoading, isConsultLoading,
+      showTermExplanation, showComplement, showExample, showConsult,
       showYiBenTong, enableYiBenTong, isYiBenTongLoading, evidence, showEvidence} = this.state;
     return (
       <View className={`term-detail-page page ${isReadMode ? 'read-mode' : ''} ${zoomIn ? 'zoom-in' : ''}`}>
@@ -730,25 +674,6 @@ export default class TermDetail extends Component {
             {this.renderEvidence()}
           </AtAccordion>
         </View>}
-
-        {sentencings && sentencings.length > 0 && <View className='module-container'>
-          <Image
-            src={sentencingIcon}
-            className='title-icon'
-            mode='widthFix'
-          />
-          <AtAccordion
-            hasBorder={false}
-            open={showSentencing}
-            onClick={this.openSentencing}
-            title='量刑指导意见'
-            icon={{ value: 'alert-circle', color: 'transparent', size: '18' }}
-            isAnimation={false}
-          >
-            {this.renderSentencings()}
-          </AtAccordion>
-        </View>}
-
         {
           complements.length > 0 && <View className='module-container'>
             <Image
@@ -812,12 +737,12 @@ export default class TermDetail extends Component {
             </AtAccordion>
           </View>
         }
-
+        {this.renderSentencingLine()}
         {this.renderProcuratorateDoc()}
         {(term.number >=114 && term.number <=419) && this.renderJudgementLine()}
 
         {(isProcuratorateExampleLoading || isCourtExampleLoading
-          || isComplementLoading || isCollectedLoading || isSentencingLoading
+          || isComplementLoading || isCollectedLoading
           || isTermExplanationLoading || isConsultLoading || isYiBenTongLoading) && <View className='loading-container'>
           <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
         </View>}

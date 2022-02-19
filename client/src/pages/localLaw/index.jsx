@@ -26,7 +26,7 @@ export default class Index extends Component {
 
   onShareAppMessage() {
     return {
-      path: 'pages/index/index'
+      path: 'pages/localLaw/index'
     };
   }
   componentWillMount () {

@@ -14,8 +14,6 @@ exports.main = async (event, context) => {
 
     return await db.collection('sentencing')
         .where({
-            criminalLawNumber
+            criminalLawNumber: parseInt(criminalLawNumber)
         }).orderBy('effectiveDate', 'desc').limit(1000).get()
-
-
 }
