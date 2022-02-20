@@ -12,8 +12,12 @@ exports.main = async (event, context) => {
 
     const { criminalLawNumber, crimeName } = event
 
-    return await db.collection('sentencing')
+    const r = await db.collection('sentencing')
         .where({
             criminalLawNumber: parseInt(criminalLawNumber)
         }).orderBy('effectiveDate', 'desc').limit(1000).get()
+    const all = r.data.filter(s => !s.location)
+    const other = r.data.filter(s => s.location)
+    r.data = [...all, ...other]
+    return r;
 }
