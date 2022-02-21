@@ -36,6 +36,18 @@ export const settingIcon =
 export const scanIcon =
   'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU923ibydicx0C74zMTcgQPQbvAZWZyeSibrP8BqkFJaLe3qfBibwFbeXjs0qXvQCibJ9hia0Bk85r7xG6FiaA/0?wx_fmt=png'
 
+export const adminIcon =
+  'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU90J7W3LDMa1A6q9c6kP6OKlkXo7oibpJIKZibSzm7HO6icTiaH13KZNLQpooXibV9avY1HBuh87AbufuyA/0?wx_fmt=png'
+
+export const publicInterestIcon =
+  'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU90J7W3LDMa1A6q9c6kP6OKlwT9Cr2Q9FaxxlSedASoV82Mibwqy71LryjibJ5lxN63eCejicK2LWWGRA/0?wx_fmt=png'
+
+export const criminalIcon =
+  'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU90Af9AjYC5UfTekTzibaNaCQMI9Yiao93yQxe6ibibIo6aea41fejXUkP5s4hbzcMCFZgmaaiaDrZ4nRYw/0?wx_fmt=png'
+
+export const civilIcon =
+  'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU90Af9AjYC5UfTekTzibaNaCQrL4OQo8ria1LEVRKdtsPI7UvAReQvXS9vveanicmx2KEjIXRtqF3lU8g/0?wx_fmt=png'
+
 export function getTodayDateString() {
   return new Date().toLocaleDateString()
 }

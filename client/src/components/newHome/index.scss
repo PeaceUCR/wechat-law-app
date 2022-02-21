@@ -1,0 +1,24 @@
+.new-home {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 30px 20px;
+  .option {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 30vw;
+    border-radius: 8px;
+    margin: 10px 30px 60px 30px;
+    padding: 10px 20px;
+    border: solid 6px #6190E8;
+    color: #000;
+    font-size: 46px;
+    .option-icon {
+      margin-bottom: 16px;
+      width: 120px;
+    }
+  }
+}
+

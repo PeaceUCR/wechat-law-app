@@ -4,15 +4,15 @@ import {AtIcon, AtDivider, AtBadge, AtNoticebar, AtTabs, AtTabsPane, AtCurtain, 
 import throttle from 'lodash/throttle';
 import moment from "moment";
 import { GridItem } from '../../components/grid/index.weapp'
+import { NewHome } from '../../components/newHome/index.weapp'
 import { LoginPopup } from '../../components/loginPopup/index.weapp'
 import { UserFloatButton } from '../../components/userFloatButton/index.weapp'
 import { ImageCropper } from '../../components/imageCropper/index.weapp'
 import qrcode from '../../static/qrcode.png';
-import {checkIfNewUser, getUserAvatar, getUserNickname, getUserOpenId, isSuperAdmin} from '../../util/login';
+import {checkIfNewUser, getUserAvatar, getUserNickname, getUserOpenId, isSuperAdmin, setUserIsNewVersion, getUserIsNewVersion} from '../../util/login';
 import './index.scss'
 import {db} from "../../util/db";
 import {tmpId, logoIcon, scanIcon} from '../../util/util'
-import {otherLawNameMap} from '../../util/otherLaw'
 import {ImageRecoginzer} from "../../components/imageRecoginzer/index.weapp";
 import {homePageOptions} from '../../util/name'
 
@@ -47,10 +47,10 @@ export default class Index extends Component {
     enableMainBanner: false,
     enableMainBottomVideo: false,
     searchValue: '',
-
     showImageRecognize: false,
-    token:''
+    token:'',
     // enablePosterAd: false
+    isNewVersion: getUserIsNewVersion() !== undefined ? getUserIsNewVersion() : true
   }
 
   config = {
@@ -98,7 +98,7 @@ export default class Index extends Component {
               complete: r => {
                 if (r &&  r.result && r.result.data && r.result.data.length > 0 ) {
                   setStorageSync('user', r.result.data[0]);
-                  that.setState({isUserLoaded: true})
+                  that.setState({isUserLoaded: true, isNewVersion: getUserIsNewVersion()})
 
                   if (getStorageSync('poster-shown') !== res.data[0].posterUrl) {
                     that.setState({showPoster: true})
@@ -324,10 +324,16 @@ export default class Index extends Component {
   close = () => {
     this.setState({ showImageRecognize: false })
   }
+  // for new home
+  selectCurrent = i => {
+    this.setState({
+      current: i
+    })
+  }
   render () {
     const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl,
       joinGroupUrl, posterRedirect, swiperPosters, canClose, enableMainVideoAd, enableMainBanner, searchValue,
-      enableMainBottomVideo, showImageRecognize, token} = this.state;
+      enableMainBottomVideo, showImageRecognize, token, isNewVersion} = this.state;
     return (
       <View className={`index-page page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
@@ -410,25 +416,72 @@ export default class Index extends Component {
               this.onSearch()
             }}
           />
-          <View>
-            <AtTabs animated={false} current={current} tabList={titles} onClick={this.handleClick}>
-              <AtTabsPane current={current} index={0} >
-                {this.renderGridItems()}
-              </AtTabsPane>
-              <AtTabsPane current={current} index={1} >
-                {this.renderGridItems()}
-              </AtTabsPane>
-              <AtTabsPane current={current} index={2} >
-                {this.renderGridItems()}
-              </AtTabsPane>
-              <AtTabsPane current={current} index={3} >
-                {this.renderGridItems()}
-              </AtTabsPane>
-              <AtTabsPane current={current} index={4} >
-                {this.renderGridItems()}
-              </AtTabsPane>
-            </AtTabs>
+        {isNewVersion && <View>
+          {current === 0 && <NewHome selectCurrent={this.selectCurrent} />}
+          {current > 0 && <View>
+            <View className='back' onClick={() => this.setState({current: 0})}>返回</View>
+            {this.renderGridItems()}
+          </View>}
+          <View
+            className='back'
+            onClick={() => {
+            this.setState({
+              isNewVersion: false
+            })
+            Taro.cloud.callFunction({
+                name: 'syncUser',
+                data: {
+                  isNewVersion: false
+                },
+                complete: r => {
+                  console.log(r)
+                  setUserIsNewVersion(false)
+                }
+              })
+          }}
+          >
+            点我返回旧版
           </View>
+        </View>}
+        {!isNewVersion && <View>
+          <AtTabs animated={false} current={current} tabList={titles} onClick={this.handleClick}>
+            <AtTabsPane current={current} index={0} >
+              {this.renderGridItems()}
+            </AtTabsPane>
+            <AtTabsPane current={current} index={1} >
+              {this.renderGridItems()}
+            </AtTabsPane>
+            <AtTabsPane current={current} index={2} >
+              {this.renderGridItems()}
+            </AtTabsPane>
+            <AtTabsPane current={current} index={3} >
+              {this.renderGridItems()}
+            </AtTabsPane>
+            <AtTabsPane current={current} index={4} >
+              {this.renderGridItems()}
+            </AtTabsPane>
+          </AtTabs>
+          <View
+            className='back'
+            onClick={() => {
+              this.setState({
+                isNewVersion: true
+              })
+              Taro.cloud.callFunction({
+                name: 'syncUser',
+                data: {
+                  isNewVersion: true
+                },
+                complete: r => {
+                  console.log(r)
+                  setUserIsNewVersion(true)
+                }
+              })
+            }}
+          >
+            点我体验新版
+          </View>
+        </View>}
          {(!isSuperAdmin()) && getUserNickname() && <View className='qrcode-container' onClick={() => {
            Taro.previewImage({
              current: joinGroupUrl,

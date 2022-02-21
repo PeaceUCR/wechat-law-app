@@ -53,3 +53,14 @@ export const getCity = () => {
   const user = getStorageSync('user');
   return user.city;
 }
+
+export const getUserIsNewVersion = () => {
+  const user = getStorageSync('user');
+  return user.isNewVersion;
+}
+
+export const setUserIsNewVersion = (isNewVersion) => {
+  const user = getStorageSync('user');
+  user.isNewVersion = isNewVersion
+  setStorageSync('user', user);
+}
