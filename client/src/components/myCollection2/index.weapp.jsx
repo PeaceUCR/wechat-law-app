@@ -36,7 +36,7 @@ const newLaws = {
   'help-law': otherLawNameMap['help-law'],
   'consumer-right-protect-law': otherLawNameMap['consumer-right-protect-law'],
   'public-interest-rule': otherLawNameMap['public-interest-rule'],
-  'fire-fighting': otherLawNameMap['fire-fighting'],
+  'fire-fighting': otherLawNameMap['fire-fighting']
 }
 
 const typeMap = {
@@ -74,6 +74,11 @@ const MyCollection2 = (props) => {
       case 'sentencing':
         Taro.navigateTo({
           url: `/pages/sentencingDetail/index?id=${collectionId}&criminalLawNumber=${c.criminalLawNumber}`,
+        })
+        break;
+      case 'cai-pan-gui-ze':
+        Taro.navigateTo({
+          url: `/pages/caiPanGuiZeDetail/index?id=${collectionId}`,
         })
         break;
       default:

@@ -4,10 +4,22 @@
   box-sizing: border-box;
   font-size: 34px;
   white-space: pre-wrap;
-  background: rgba(256,256,256,0.6);
+  background: #F4ECD8;
   position: relative;
   border-bottom: 1px solid lightgray;
   //box-shadow: 0px 0px 20px -1px rgba(199,199,199,1);
+
+  .title {
+    width: calc(100% - 20px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 3px 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background: dodgerblue;
+    color: white;
+  }
 
   .line {
     display: flex;

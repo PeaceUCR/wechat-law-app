@@ -2,12 +2,9 @@
   width: 100%;
   min-height: 100vh;
   padding-bottom: 200px;
-  background: lightgrey;
+  background: #F4ECD8 !important;
   overflow-y: scroll;
   box-sizing: border-box;
-  &.read-mode {
-    background: #F4ECD8;
-  }
   .header {
     .search {
       width: 100%;

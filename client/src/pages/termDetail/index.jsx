@@ -15,6 +15,10 @@ const getTermNumber = (text) => {
   return text.substring(0, text.indexOf('条') + 1);
 }
 
+const criminalLawNumberHasSentence = new Set(
+  [133, 176, 192, 196, 224, 234, 236, 238, 263, 264, 266, 267, 271, 274, 277, 292, 293, 312, 347, 348, 354, 359]
+)
+
 export default class TermDetail extends Component {
 
   state = {
@@ -517,7 +521,6 @@ export default class TermDetail extends Component {
   jumpToJudgement = () => {
     const {term} = this.state
     const redirectStr = `/pages/judgement/index?userOpenId=${getUserOpenId()}&userName=${getUserNickname()}&userAvatar=${encodeURIComponent(getUserAvatar())}&law=criminal&number=${term.number}`
-
     Taro.navigateTo({
       url: redirectStr
     });
@@ -526,7 +529,6 @@ export default class TermDetail extends Component {
   jumpToProcuratorateDoc = () => {
     const {term} = this.state
     const redirectStr = `/pages/procuratorateDoc/index?searchValue=${term.chnNumber}`
-
     Taro.navigateTo({
       url: redirectStr
     });
@@ -535,7 +537,14 @@ export default class TermDetail extends Component {
   jumpToSentencing = () => {
     const {term} = this.state
     const redirectStr = `/pages/sentencingDetail/index?id=${term._id}&criminalLawNumber=${term.number}`
+    Taro.navigateTo({
+      url: redirectStr
+    });
+  };
 
+  jumpToCaiPanGuiZe = () => {
+    const {term} = this.state
+    const redirectStr = `/pages/caiPanGuiZe/index?criminalLawNumber=${term.number}&criminalLaw=${term.crime}`
     Taro.navigateTo({
       url: redirectStr
     });
@@ -572,6 +581,13 @@ export default class TermDetail extends Component {
       />
       <View className='text'>去检察文书搜索更多😉</View>
     </View>)
+  }
+
+  renderCaiPanGuiZe = () => {
+    return (<View className='judgement-line' onClick={this.jumpToCaiPanGuiZe}>
+      <View className='text'>去搜索更多裁判要旨案例</View>
+    </View>)
+
   }
 
   copyToClipboard = () => {
@@ -694,10 +710,7 @@ export default class TermDetail extends Component {
           </View>
         }
 
-
-        {(examples.length > 0
-        || courtExamples.length > 0
-        || complementExamples.length >0) && <View className='module-container'>
+        <View className='module-container'>
           <Image
             src={exampleIcon}
             className='title-icon'
@@ -711,12 +724,17 @@ export default class TermDetail extends Component {
             icon={{ value: 'alert-circle', color: 'transparent', size: '16' }}
             isAnimation={false}
           >
-            {this.renderExample()}
-            {this.renderCourtExample()}
-            {this.renderCourtComplementExamples()}
+            {(examples.length > 0
+              || courtExamples.length > 0
+              || complementExamples.length >0) &&
+            <View>{this.renderExample()}
+              {this.renderCourtExample()}
+              {this.renderCourtComplementExamples()}
+            </View>}
+            {this.renderCaiPanGuiZe()}
           </AtAccordion>
 
-        </View>}
+        </View>
 
         {
           consult.length > 0 && <View className='module-container'>
@@ -737,8 +755,8 @@ export default class TermDetail extends Component {
             </AtAccordion>
           </View>
         }
-        {this.renderSentencingLine()}
-        {this.renderProcuratorateDoc()}
+        {criminalLawNumberHasSentence.has(term.number) && this.renderSentencingLine()}
+        {(term.number >=114 && term.number <=419) && this.renderProcuratorateDoc()}
         {(term.number >=114 && term.number <=419) && this.renderJudgementLine()}
 
         {(isProcuratorateExampleLoading || isCourtExampleLoading
