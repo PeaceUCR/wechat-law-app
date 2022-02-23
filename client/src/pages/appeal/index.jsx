@@ -6,10 +6,7 @@ import {
   targetImageSource, getExampleSearchTag
 } from '../../util/util'
 import '../examples/index.scss'
-import {db} from "../../util/db";
-import {getNumber} from "../../util/convertNumber";
 import JudgementSearchItem from "../../components/judgementSearchItem"
-import {getUserOpenId} from "../../../.temp/util/login";
 import Loading2 from "../../components/loading2/index.weapp";
 
 export default class Index extends Component {
@@ -23,12 +20,12 @@ export default class Index extends Component {
   }
 
   config = {
-    navigationBarTitleText: '行政—刑事衔接规定搜索'
+    navigationBarTitleText: '控申工作实用法规'
   }
 
   onShareAppMessage() {
     return {
-      path: 'pages/adminCriminalLink/index'
+      path: 'pages/appeal/index'
     };
   }
 
@@ -76,12 +73,12 @@ export default class Index extends Component {
     Taro.cloud.callFunction({
       name: 'searchCriminalComplement',
       data: {
-        type: 'admin-criminal-link',
+        type: 'appeal',
         isCategory,
         searchValue
       },
       complete: r => {
-        console.log(r)
+        // console.log(r)
         that.setState({searchResult: isCategory === true ? r.result.data : r.result.result.data, isLoading: false})
       }
     });
@@ -105,6 +102,12 @@ export default class Index extends Component {
               text={example.text}
               category={example.category}
               redirect={() => {
+                if (example.link) {
+                  Taro.navigateTo({
+                    url: `/${example.link}`,
+                  })
+                  return ;
+                }
                 Taro.navigateTo({
                   url: `/pages/exampleDetail/index?type=complement&id=${example._id}&keyword=${searchValue}`,
                 })

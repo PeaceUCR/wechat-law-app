@@ -10,11 +10,13 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
   const db = cloud.database()
 
+  const specialSet = new Set(["admin-criminal-link", "appeal"])
+
   const {isCategory, searchValue, type} = event
 
-  if (isCategory === true && type === "admin-criminal-link") {
+  if (isCategory === true && specialSet.has(type)) {
     return await db.collection('complement').limit(1000).where({
-      type: "admin-criminal-link"
+      type
     }).get()
   }
 
@@ -32,7 +34,7 @@ exports.main = async (event, context) => {
       regexp: regexpString1,
       options: 'i',
     }) : undefined,
-    type: type === "admin-criminal-link" ? "admin-criminal-link" : undefined
+    type: specialSet.has(type) ? type : undefined
   }).orderBy('effectiveDate', 'desc').get();
 
   // exact match
@@ -41,7 +43,7 @@ exports.main = async (event, context) => {
       regexp: regexpString2,
       options: 'i',
     }) : undefined,
-    type: type === "admin-criminal-link" ? "admin-criminal-link" : undefined
+    type: specialSet.has(type) ? type : undefined
   }).orderBy('effectiveDate', 'desc').get();
 
   // exact match By title
@@ -50,7 +52,7 @@ exports.main = async (event, context) => {
       regexp: regexpString2,
       options: 'i',
     }) : undefined,
-    type: type === "admin-criminal-link" ? "admin-criminal-link" : undefined
+    type: specialSet.has(type) ? type : undefined
   }).orderBy('effectiveDate', 'desc').get();
 
   const allId = new Set([])
@@ -75,7 +77,7 @@ exports.main = async (event, context) => {
     data: allUnique
   }
 
-  if (type !== "admin-criminal-link") {
+  if (!specialSet.has(type)) {
     result.data.forEach(r => {
       delete r.content
       delete r.text
