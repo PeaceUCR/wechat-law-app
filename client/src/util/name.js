@@ -280,7 +280,7 @@ export const homePageOptions = {
     {
       title: otherLawNameMap['police-admin-regulation'],
       url: '/pages/otherLaw/index?law=police-admin-regulation',
-      sub:'2019年1月1日',
+      sub:'2020年8月6日',
       type: '行政',
 
     },
