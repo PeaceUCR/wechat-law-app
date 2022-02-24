@@ -1,6 +1,6 @@
+import Taro from '@tarojs/taro'
 import { flattenDeep, isEmpty } from "lodash";
 import {otherLawNameMap} from "./otherLaw";
-import {refine} from "./util";
 
 const lawNameMap = {
   'criminal': '刑事案件',
@@ -92,13 +92,12 @@ export const homePageOptions = {
       sub:'2020年07月20日',
       type: '刑法'
     },
-    {
-      title: otherLawNameMap['supervision-law'],
-      url: '/pages/otherLaw/index?law=supervision-law',
-      sub:'2018年3月20日',
-      type: '刑法',
-
-    },
+    // {
+    //   title: otherLawNameMap['supervision-law'],
+    //   url: '/pages/otherLaw/index?law=supervision-law',
+    //   sub:'2018年3月20日',
+    //   type: '刑法',
+    // },
     {
       title: otherLawNameMap['police-law'],
       url: '/pages/otherLaw/index?law=police-law',
@@ -163,6 +162,17 @@ export const homePageOptions = {
       url: '/pages/otherLaw/index?law=civil-litigation-explanation',
       sub:'2020年12月23日',
       type: '民法典'
+    },
+    {
+      title: '裁判文书',
+      url: '/pages/judgement/index',
+      type: '民法典',
+      redirect: () => {
+        Taro.navigateToMiniProgram({
+          appId: 'wxa7f48cf2a65948d7',
+          path: '/pages/index/index'
+        });
+      }
     },
     {
       title: otherLawNameMap['labor-law'],

@@ -31,6 +31,10 @@ const GridItem = (props) => {
       if(disabled) {
         return ;
       }
+      if(option.redirect) {
+        option.redirect()
+        return ;
+      }
       if (url) {
         Taro.navigateTo({
           url: option.url,

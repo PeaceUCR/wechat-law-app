@@ -2,7 +2,7 @@ import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {View, Image} from '@tarojs/components'
 import {AtSearchBar, AtListItem} from 'taro-ui'
 import {isEmpty} from 'lodash';
-import { Loading } from '../../components/loading/index.weapp'
+import Loading2 from '../../components/loading2/index.weapp'
 import { targetImageSource } from '../../util/util'
 import './index.scss'
 import moment from "moment";
@@ -153,7 +153,7 @@ export default class Index extends Component {
             <View>
               {searchResult.length > 0 && this.renderSearchList()}
             </View>
-            {isLoading && <Loading />}
+            {isLoading && <Loading2 />}
           </View>
 
           <Image

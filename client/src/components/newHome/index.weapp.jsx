@@ -1,6 +1,6 @@
 import Taro from '@tarojs/taro'
-import {View,Image,RichText,Text} from "@tarojs/components";
-import {criminalIcon, civilIcon, adminIcon, publicInterestIcon, appealIcon} from '../../util/util'
+import {View,Image} from "@tarojs/components";
+import {criminalIcon, civilIcon, adminIcon, publicInterestIcon, appealIcon, supervisionIcon} from '../../util/util'
 import './index.scss'
 
 const options = [
@@ -22,6 +22,14 @@ const options = [
     redirect: () => {
       Taro.navigateTo({
         url: `/pages/appeal/index`,
+      })
+    }
+  },{
+    title: '纪监',
+    icon: supervisionIcon,
+    redirect: () => {
+      Taro.navigateTo({
+        url: `/pages/supervision/index`,
       })
     }
   },

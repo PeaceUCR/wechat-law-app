@@ -14,6 +14,7 @@ class App extends Component {
   config = {
     pages: [
       'pages/index/index',
+      'pages/supervision/index',
       'pages/appeal/index',
       'pages/caiPanGuiZe/index',
       'pages/caiPanGuiZeDetail/index',
@@ -42,7 +43,7 @@ class App extends Component {
       // 'pages/laborContractLaw/index',
       // 'pages/laborLaw/index',
       // 'pages/adminPunishLaw/index',
-      // 'pages/supervisionLaw/index',
+      // 'pages/supervision/index',
       // 'pages/cake/index',
       // 'pages/publicOrderAdminPenaltyLaw/index',
       // 'pages/policeAdminRegulation/index',

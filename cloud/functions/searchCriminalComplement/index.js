@@ -10,7 +10,7 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
   const db = cloud.database()
 
-  const specialSet = new Set(["admin-criminal-link", "appeal"])
+  const specialSet = new Set(["admin-criminal-link", "appeal", "supervision"])
 
   const {isCategory, searchValue, type} = event
 
