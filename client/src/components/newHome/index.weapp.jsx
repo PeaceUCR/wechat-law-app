@@ -1,6 +1,6 @@
 import Taro from '@tarojs/taro'
 import {View,Image} from "@tarojs/components";
-import {criminalIcon, civilIcon, adminIcon, publicInterestIcon, appealIcon, supervisionIcon} from '../../util/util'
+import {criminalIcon, civilIcon, adminIcon, publicInterestIcon, appealIcon, supervisionIcon, criminalExecutionIcon} from '../../util/util'
 import './index.scss'
 
 const options = [
@@ -14,8 +14,13 @@ const options = [
     title: '行政',
     icon: adminIcon
   },{
-    title: '公益',
-    icon: publicInterestIcon
+    title: '纪监',
+    icon: supervisionIcon,
+    redirect: () => {
+      Taro.navigateTo({
+        url: `/pages/supervision/index`,
+      })
+    }
   },{
     title: '控申',
     icon: appealIcon,
@@ -25,14 +30,20 @@ const options = [
       })
     }
   },{
-    title: '纪监',
-    icon: supervisionIcon,
+    title: '刑执',
+    icon: criminalExecutionIcon,
     redirect: () => {
       Taro.navigateTo({
-        url: `/pages/supervision/index`,
+        url: `/pages/criminalExecution/index`,
       })
     }
-  },
+  },{
+    title: '公益',
+    icon: publicInterestIcon
+  },{
+    title: '案例',
+    icon: adminIcon
+  }
 ]
 
 
@@ -45,7 +56,13 @@ const NewHome = (props) => {
           if (option.redirect) {
             option.redirect()
           } else {
-            selectCurrent(index + 1)
+            if (option.title === '公益') {
+              selectCurrent(4)
+            } else if (option.title === '案例') {
+              selectCurrent(5)
+            } else {
+              selectCurrent(index + 1)
+            }
           }
         }}>
           <Image src={option.icon} className='option-icon' mode='widthFix' />

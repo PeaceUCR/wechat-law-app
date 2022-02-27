@@ -14,6 +14,7 @@ class App extends Component {
   config = {
     pages: [
       'pages/index/index',
+      'pages/criminalExecution/index',
       'pages/supervision/index',
       'pages/appeal/index',
       'pages/caiPanGuiZe/index',

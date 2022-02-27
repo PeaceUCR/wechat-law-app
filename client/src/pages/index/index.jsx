@@ -14,7 +14,7 @@ import './index.scss'
 import {db} from "../../util/db";
 import {tmpId, logoIcon, scanIcon} from '../../util/util'
 import {ImageRecoginzer} from "../../components/imageRecoginzer/index.weapp";
-import {homePageOptions} from '../../util/name'
+import {homePageOptions, exampleOptions} from '../../util/name'
 
 const titles = [
   {title:'全部'},
@@ -165,6 +165,8 @@ export default class Index extends Component {
     let displayOptions;
     if (current === 0) {
       displayOptions = Object.values(options)
+    } else if (current === 5) {
+      displayOptions = [exampleOptions]
     } else {
       displayOptions = [options[titles[current].title], options['共有']]
     }

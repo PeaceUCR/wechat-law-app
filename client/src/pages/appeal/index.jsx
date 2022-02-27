@@ -1,10 +1,7 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {View, Text, Picker, Image} from '@tarojs/components'
 import { AtSearchBar, AtActivityIndicator, AtFab, AtBadge, AtIcon, AtListItem, AtDivider } from 'taro-ui'
-import {isEmpty} from 'lodash';
-import {
-  targetImageSource, getExampleSearchTag
-} from '../../util/util'
+import moment from "moment";
 import '../examples/index.scss'
 import JudgementSearchItem from "../../components/judgementSearchItem"
 import Loading2 from "../../components/loading2/index.weapp";
@@ -101,6 +98,7 @@ export default class Index extends Component {
               title={`${example.title}`}
               text={example.text}
               category={example.category}
+              courtName={moment(example.effectiveDate).format('YYYY-MM-DD')}
               redirect={() => {
                 if (example.link) {
                   Taro.navigateTo({

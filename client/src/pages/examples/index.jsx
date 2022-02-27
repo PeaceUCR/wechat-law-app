@@ -157,13 +157,13 @@ export default class Index extends Component {
     return (<View>
       <View className='title'>最高检指导案例：</View>
       <View className='options'>
-        {Object.keys(procuratorateMap)
+        {Object.keys(procuratorateMap).reverse()
         .map((number, index )=>
         {return (<Text className={`procuratorate-option option ${isExpandLabel ? 'expand': ''}`} key={`procuratorate-option-${index}`} onClick={() => {this.onRedirect(procuratorateMap[number], 'procuratorate')}}>{isExpandLabel ? procuratorateExampleTitleMap[procuratorateMap[number]] : number}</Text>)})}
       </View>
       <View className='title'>最高法指导案例：</View>
       <View className='options'>
-        {Object.keys(courtMap)
+        {Object.keys(courtMap).reverse()
           .map((number, index )=>
           {return (<Text className={`court-option option ${invalidCourtExample.has(number) ? 'out-dated' : ''} ${isExpandLabel ? 'expand': ''}`} key={`court-option-${index}`} onClick={() => {this.onRedirect(courtMap[number], 'court')}}>{isExpandLabel ? courtExampleTitleMap[courtMap[number]] : number}</Text>)})}
       </View>

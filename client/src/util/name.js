@@ -58,6 +58,11 @@ export const homePageOptions = {
       url: '/pages/criminalComplement/index',
       type: '刑法'
     },
+    // {
+    //   title: '刑事执行检察',
+    //   url: '/pages/criminalExecution/index',
+    //   type: '刑法',
+    // },
     {
       title: '行政—刑事衔接',
       url: '/pages/adminCriminalLink/index',
@@ -92,12 +97,6 @@ export const homePageOptions = {
       sub:'2020年07月20日',
       type: '刑法'
     },
-    // {
-    //   title: otherLawNameMap['supervision-law'],
-    //   url: '/pages/otherLaw/index?law=supervision-law',
-    //   sub:'2018年3月20日',
-    //   type: '刑法',
-    // },
     {
       title: otherLawNameMap['police-law'],
       url: '/pages/otherLaw/index?law=police-law',
@@ -384,7 +383,6 @@ export const homePageOptions = {
     isNew: true
   }],
   '共有': [
-
     {
       title: '指导/典型/公报案例',
       url: '/pages/examples/index',
@@ -405,6 +403,47 @@ export const homePageOptions = {
     }
   ]
 }
+
+export const exampleOptions = [
+  {
+    title: '刑事审判参考',
+    url: '/pages/consultant/index',
+    type: '刑法'
+  },
+  {
+    title: '刑事裁判文书',
+    url: '/pages/judgement/index',
+    type: '刑法'
+  },
+  {
+    title: '民事裁判文书',
+    url: '/pages/judgement/index',
+    type: '民法典',
+    redirect: () => {
+      Taro.navigateToMiniProgram({
+        appId: 'wxa7f48cf2a65948d7',
+        path: '/pages/index/index'
+      });
+    }
+  },
+  {
+  title: '指导/典型/公报案例',
+  url: '/pages/examples/index',
+  type: '共有',
+  isUpdated: true
+},
+  {
+    title: '地方法律法规',
+    url: '/pages/localLaw/index',
+    type: '共有',
+    isNew: true
+  },
+  {
+    title: '检察文书',
+    url: '/pages/procuratorateDoc/index',
+    type: '共有',
+    isNew: true
+  }]
 
 export const searchHomePageOptions = (searchValue) => {
   if (isEmpty(searchValue)) {

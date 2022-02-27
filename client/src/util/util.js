@@ -51,6 +51,8 @@ export const appealIcon =
   'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU90JvM6aESqTCJl5Ip253m1GQDs61fDia9C3YrStUEBXQVTLzldapbZYH5Jajmgn4LrtR05tY1tNDUg/0?wx_fmt=png'
 export const supervisionIcon =
   'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU90JvM6aESqTCJl5Ip253m1GnGibnKy0rpswoW9aJZMNLUznrWapxoDzGXFbCxlEgjppj3Nia867bf6Q/0?wx_fmt=png'
+export const criminalExecutionIcon=
+  'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU91jULhMmKgHnaOaZ4ibgiaOM68EWwselYmj7bxsfCHdnpmh69JibukQ7r57zb8JpG7CF9iagYj7G2aXsQ/0?wx_fmt=png'
 
 export function getTodayDateString() {
   return new Date().toLocaleDateString()

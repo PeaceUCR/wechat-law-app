@@ -1,10 +1,10 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {View, Text, Picker, Image} from '@tarojs/components'
 import { AtSearchBar, AtActivityIndicator, AtFab, AtBadge, AtIcon, AtListItem, AtDivider } from 'taro-ui'
-import moment from "moment";
 import '../examples/index.scss'
-import JudgementSearchItem from "../../components/judgementSearchItem/index.weapp"
+import JudgementSearchItem from "../../components/judgementSearchItem"
 import Loading2 from "../../components/loading2/index.weapp";
+import moment from "moment";
 
 export default class Index extends Component {
 
@@ -17,12 +17,12 @@ export default class Index extends Component {
   }
 
   config = {
-    navigationBarTitleText: '纪监法规'
+    navigationBarTitleText: '刑事执行检察'
   }
 
   onShareAppMessage() {
     return {
-      path: 'pages/supervision/index'
+      path: 'pages/criminalExecution/index'
     };
   }
 
@@ -70,7 +70,7 @@ export default class Index extends Component {
     Taro.cloud.callFunction({
       name: 'searchCriminalComplement',
       data: {
-        type: 'supervision',
+        type: 'criminal-execution',
         isCategory,
         searchValue
       },
