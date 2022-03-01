@@ -36,7 +36,8 @@ const newLaws = {
   'help-law': otherLawNameMap['help-law'],
   'consumer-right-protect-law': otherLawNameMap['consumer-right-protect-law'],
   'public-interest-rule': otherLawNameMap['public-interest-rule'],
-  'fire-fighting': otherLawNameMap['fire-fighting']
+  'fire-fighting': otherLawNameMap['fire-fighting'],
+  'labor-conciliation': otherLawNameMap['labor-conciliation']
 }
 
 const typeMap = {

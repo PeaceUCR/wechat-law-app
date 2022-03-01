@@ -66,7 +66,8 @@ const otherLaws = [
   'consumer-right-protect-law',
   'public-interest-rule',
   'civil-law-regulation',
-  'fire-fighting'
+  'fire-fighting',
+  'labor-conciliation'
 ]
 
 const commonLawSet = new Set(
@@ -152,6 +153,20 @@ export default class RegulationDetail extends Component {
             });
 
           }
+
+          db.collection('other-law-explanation').where({number: term.number, type}).get({
+            success: (r) => {
+              if (r.data[0]) {
+                that.setState({explanation: r.data[0], isLoading: false});
+              }
+              that.setState({isLoading: false});
+            },
+            fail: () => {
+              console.log('fail')
+              that.setState({isLoading: false})
+            }
+          });
+
         },
         fail: () => {
           console.log('fail')

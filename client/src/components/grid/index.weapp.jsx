@@ -1,10 +1,8 @@
 import Taro from '@tarojs/taro'
-import {View,Image,RichText,Text} from "@tarojs/components";
-import { AtBadge, AtIcon } from "taro-ui";
+import {View,RichText,Text} from "@tarojs/components";
+import { AtBadge, AtIcon, AtTag } from "taro-ui";
 import throttle from 'lodash/throttle';
 import './index.scss'
-// import constructionIcon from '../../static/under-construction.png';
-import {isStartWith} from "../../util/util";
 
 const colors = {
   '刑法': '#F67B78',
@@ -55,6 +53,9 @@ const GridItem = (props) => {
     <AtBadge value={isNew?'NEW':(isHot?'Hot':'')} dot={isUpdated ? true : false}>
       <View className='grid-item' onClick={redirect} >
         <View className='float-item'>
+          {option.hasExplanation && <View className='float-item-tag'>
+            <AtTag size='small' active circle>释义</AtTag>
+          </View>}
           {(option.type === '共有' || option.type === '刑法') && <View className='tag criminal'>刑</View>}
           {(option.type === '共有' || option.type === '民法典') && <View className='tag'>民</View>}
           {(option.type === '共有' || option.type === '行政') && <View className='tag admin'>行</View>}

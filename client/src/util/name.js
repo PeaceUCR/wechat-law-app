@@ -50,8 +50,8 @@ export const homePageOptions = {
       title:'刑法',
       url: '/pages/criminalLaw/index',
       type: '刑法',
-      sub:'2021年3月1日'
-      // isHot: true
+      sub:'2021年3月1日',
+      hasExplanation: true
     },
     {
       title:'刑法相关解释、规定',
@@ -72,7 +72,8 @@ export const homePageOptions = {
       title: '刑事诉讼法',
       url: '/pages/litigationLaw/index',
       type: '刑法',
-      sub:'2018年10月26日'
+      sub:'2018年10月26日',
+      hasExplanation: true
     },
     {
       title: otherLawNameMap['criminal-litigation-explanation'],
@@ -123,7 +124,7 @@ export const homePageOptions = {
       url: '/pages/otherLaw/index?law=anti-drug-law',
       sub:'2008年6月1日',
       type: '刑法',
-
+      hasExplanation: true
     },
     {
       title: '刑事审判参考',
@@ -142,7 +143,7 @@ export const homePageOptions = {
       url: '/pages/civilLaw/index',
       sub:'2021年1月1日',
       type: '民法典',
-
+      hasExplanation: true
     },
     {
       title: '民法典相关司法解释',
@@ -186,8 +187,14 @@ export const homePageOptions = {
       url: '/pages/otherLaw/index?law=labor-contract-law',
       sub:'2013年7月1日',
       type: '民法典',
-
+      hasExplanation: true
       // isHot: true
+    },{
+      title: otherLawNameMap['labor-conciliation'],
+      url: '/pages/otherLaw/index?law=labor-conciliation',
+      sub:'2008年5月1日',
+      type: '民法典',
+      hasExplanation: true
     },
     {
       title: otherLawNameMap['company-law'],
@@ -201,7 +208,8 @@ export const homePageOptions = {
       url: '/pages/otherLaw/index?law=consumer-right-protect-law',
       sub:'2014年03月15日',
       type: '民法典',
-      isNew: true
+      isNew: true,
+      hasExplanation: true
     }
   ],
   '行政': [
@@ -223,7 +231,7 @@ export const homePageOptions = {
       url: '/pages/otherLaw/index?law=admin-force-law',
       sub:'2012年1月1日',
       type: '行政',
-
+      hasExplanation: true
     },
     {
       title: otherLawNameMap['admin-punish-law'],
@@ -305,7 +313,7 @@ export const homePageOptions = {
       url: '/pages/otherLaw/index?law=exit-entry-law',
       sub:'2013年7月1日',
       type: '行政',
-
+      hasExplanation: true
     },
     {
       title: otherLawNameMap['help-law'],

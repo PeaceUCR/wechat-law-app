@@ -6,6 +6,13 @@ cloud.init({
 })
 
 const lawMap = {
+    'labor-conciliation':{ '第一章　总则': { value: '第一章　总则', start: 1, end: 9 },
+        '第二章　调解': { value: '第二章　调解', start: 10, end: 16 },
+        '第三章　仲裁': { value: '第三章　仲裁', start: 17, end: 52 },
+        '第一节　一般规定': { value: '第一节　一般规定', start: 17, end: 26 },
+        '第二节　申请和受理': { value: '第二节　申请和受理', start: 27, end: 30 },
+        '第三节　开庭和裁决': { value: '第三节　开庭和裁决', start: 31, end: 51 },
+        '第四章　附则': { value: '第四章　附则', start: 52, end: 54 } },
     'fire-fighting': { '第一章　总则': { value: '第一章　总则', start: 1, end: 7 },
         '第二章　火灾预防': { value: '第二章　火灾预防', start: 8, end: 34 },
         '第三章　消防组织': { value: '第三章　消防组织', start: 35, end: 42 },
