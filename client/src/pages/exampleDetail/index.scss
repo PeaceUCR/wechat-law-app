@@ -192,11 +192,17 @@
   right: 80px;
   z-index: 999;
   background-color: rgba(0,0,0,0.8);
+  max-height: 60vh;
+  overflow-y: scroll;
   .float-category-item {
     z-index: 999;
     font-size: 36px;
     color: #6190E8;
     padding: 30px 30px 30px 30px;
+    max-width: 72vw;
+    //overflow: hidden;
+    //text-overflow: ellipsis;
+    //white-space: nowrap;
   }
 }
 
@@ -204,4 +210,12 @@
   position: fixed;
   bottom: 400px;
   right: 10px;
+}
+
+.static-category-item {
+  font-size: 36px;
+  padding-top: 30px;
+  text-decoration: underline;
+  text-decoration-color: #6190E8;
+  color: #6190E8 !important;
 }

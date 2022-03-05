@@ -6,6 +6,7 @@ import {
   invalidCourtExample, targetImageSource, getExampleSearchTag
 } from '../../util/util'
 import './index.scss'
+import Loading2 from "../../components/loading2/index.weapp";
 
 export default class Index extends Component {
 
@@ -224,9 +225,7 @@ export default class Index extends Component {
             {searchResult.length === 0 && <AtFab className='float' onClick={() => this.setState({isExpandLabel: !isExpandLabel})}>
               <Text>{`${isExpandLabel ? '收缩' : '展开'}`}</Text>
             </AtFab>}
-            {isLoading && <View className='loading-container'>
-              <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
-            </View>}
+            {isLoading && <Loading2 />}
           </View>
       </View>
     )

@@ -138,10 +138,7 @@ export default class RegulationDetail extends Component {
                 that.setState({isLoading: false})
               }
             });
-
-          }
-
-          if (type === 'consumer-right-protect-law') {
+          } else if (type === 'consumer-right-protect-law') {
             db.collection('consumer-right-protect-explanation').where({number: term.number}).get({
               success: (r) => {
                 that.setState({explanation: r.data[0], isLoading: false});
@@ -151,22 +148,20 @@ export default class RegulationDetail extends Component {
                 that.setState({isLoading: false})
               }
             });
-
-          }
-
-          db.collection('other-law-explanation').where({number: term.number, type}).get({
-            success: (r) => {
-              if (r.data[0]) {
-                that.setState({explanation: r.data[0], isLoading: false});
+          } else {
+            db.collection('other-law-explanation').where({number: term.number, type}).get({
+              success: (r) => {
+                if (r.data[0]) {
+                  that.setState({explanation: r.data[0], isLoading: false});
+                }
+                that.setState({isLoading: false});
+              },
+              fail: () => {
+                console.log('fail')
+                that.setState({isLoading: false})
               }
-              that.setState({isLoading: false});
-            },
-            fail: () => {
-              console.log('fail')
-              that.setState({isLoading: false})
-            }
-          });
-
+            });
+          }
         },
         fail: () => {
           console.log('fail')

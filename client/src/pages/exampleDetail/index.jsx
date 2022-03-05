@@ -406,7 +406,7 @@ export default class ExampleDetail extends Component {
 
   renderComplement = () => {
     const {example, keyword, zoomIn, selectedLine, enableAutoScroll, categories} = this.state;
-    const {text, title} = example;
+    const {text, title, categoryList} = example;
     const that = this
     const setKey = (line, key) => {
       if (line && key) {
@@ -435,15 +435,28 @@ export default class ExampleDetail extends Component {
 
     const lines = text ? text.split('\n').filter(line => line.trim() && line.trim().length > 0).map(line => refine(line)) : []
 
-    let c = categories
-    if (!categories && text) {
-      c = Array.from(new Set(lines.filter(l => isStartWith(l, highlights))))
-      that.setState({
-        categories: c
-      })
+    let c;
+    if (categoryList && categoryList.length > 0) {
+      c = categoryList
+      if (!categories) {
+        that.setState({
+          categories: categoryList
+        })
+      }
+    } else {
+      c = categories
+      if (!categories && text) {
+        c = Array.from(new Set(lines.filter(l => isStartWith(l, highlights))))
+        that.setState({
+          categories: c
+        })
+      }
     }
+
+
     return (<View  className={`text-section ${zoomIn ? 'zoom-in' : ''}`}>
       <View className='term-complement-title'>{title}</View>
+      {categoryList && categoryList.length > 0 && this.renderStaticCategory()}
       <View className='content'>{lines.map((line, index) => {
         return (<View id={setKey(line, keyword)}
                       className={`line ${index === selectedLine ? 'show-copy' : ''}`}
@@ -451,8 +464,8 @@ export default class ExampleDetail extends Component {
                       onTouchStart={() => this.touchStart(index)}
                       onTouchEnd={this.touchEnd}
         >
-          {isStartWith(line, highlights) && c && <View id={`category-${c.indexOf(line)}`}></View>}
-          <RichText nodes={findAndHighlight(line, index, keyword)} className={isStartWith(line, highlights) ? 'highlight': ''} ></RichText>
+          {isStartWith(line, c) && c && <View id={`category-${c.indexOf(line)}`}></View>}
+          <RichText nodes={findAndHighlight(line, index, keyword)} className={isStartWith(line, c) ? 'highlight': ''} ></RichText>
           {index === selectedLine && <View className='copy'><AtButton size='small' type='primary' onClick={() => copy(line)}>复制</AtButton></View>}
         </View>)
       })}</View>
@@ -502,9 +515,28 @@ export default class ExampleDetail extends Component {
       >{`${c}`}</View>))}
     </View>)
   }
+
+  renderStaticCategory = () => {
+    const {example} = this.state
+    const {categoryList} = example
+    return (<View >
+      <View>目录</View>
+      {categoryList.map((c, index) => (<View
+        className='static-category-item'
+        key={c}
+        onClick={() => {
+          console.log(`click ${index}`)
+          Taro.pageScrollTo({
+            selector: `#category-${index}`,
+            duration: 500
+          })
+        }}
+      >{`${c}`}</View>))}
+    </View>)
+  }
   render () {
     const {isSent, keyword, comment, example, zoomIn, isCollected, isReadMode, isLoading, type, enableAutoScroll, enableExampleDetailAd, categories, openCategory} = this.state;
-    const {special, text, title} = example
+    const {special, text, title, categoryList} = example
     return (
       <View>
         {(example._id === '89b4bfb25f7dbcac007cec4b1f087eb1' || example._id === '89b4bfb25f7dbcac007cec402fa9835f') &&

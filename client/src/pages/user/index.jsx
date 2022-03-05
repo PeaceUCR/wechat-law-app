@@ -1,13 +1,13 @@
 import Taro, { Component, setStorageSync, getStorageSync} from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import {AtSwitch,AtNoticebar,AtActivityIndicator, AtIcon, AtAvatar, AtDivider, AtBadge} from "taro-ui";
-import MyCollection from '../../components/myCollection'
+import {AtSwitch,AtNoticebar,AtActivityIndicator, AtIcon, AtAvatar, AtModal, AtBadge} from "taro-ui";
 import MyCollection2 from '../../components/myCollection2'
 import './index.scss'
 import {tmpId} from '../../util/util'
 import {ImageRecoginzer} from "../../components/imageRecoginzer/index.weapp";
 import {db} from "../../util/db";
-import {setLocation, getProvince, getCity, getUserAvatar, getUserNickname} from '../../util/login'
+import {setLocation, getProvince, getCity, getUserAvatar, getUserNickname, getCollectionLimit, getUserScore} from '../../util/login'
+import Loading2 from "../../components/loading2/index.weapp";
 
 export default class User extends Component {
 
@@ -20,7 +20,8 @@ export default class User extends Component {
     enableAds: false,
     province: undefined,
     city: undefined,
-    score: undefined
+    score: undefined,
+    showUpgradeModal: false
   }
 
   config = {
@@ -214,6 +215,29 @@ export default class User extends Component {
     })
   }
 
+  upgradeCollection = () => {
+    this.setState({
+      isLoading: true,
+      showUpgradeModal: false
+    })
+    const that = this;
+    const {score} = this.state
+    Taro.cloud.callFunction({
+      name: 'login',
+      data: {
+        score: score - 100,
+        collectionLimit: getCollectionLimit() + 10
+      },
+      complete: r => {
+        setStorageSync('user', r.result.data[0]);
+        that.setState({
+          isLoading: false,
+          score: getUserScore()
+        })
+      }
+    })
+  }
+
   removeCollectionAtIndex = (c, index) => {
     console.log(index)
     const that = this
@@ -239,7 +263,7 @@ export default class User extends Component {
 
   }
   render () {
-    const {isLoading, isReadMode, collection, showImageRecognize, token, enableAds, province, city, score} = this.state;
+    const {isLoading, isReadMode, collection, showImageRecognize, token, enableAds, province, city, score, showUpgradeModal} = this.state;
     return (
       <View className={`user-page page ${isReadMode ? 'read-mode' : ''}`}>
         {/*<AtNoticebar marquee speed={60}>*/}
@@ -312,6 +336,8 @@ export default class User extends Component {
               <View>{province && city ? `${province}-${city}` : '点我添加位置信息'}</View>
             </View>
           </View>
+          <View>当前收藏上限:{getCollectionLimit()}</View>
+          {score >= 100 && <View className='icon-line' onClick={() => this.setState({showUpgradeModal: true})}>升级收藏上限</View>}
         </View>
         <View>
           <AtSwitch title='护眼模式' checked={isReadMode} onChange={this.handleChange} />
@@ -324,8 +350,19 @@ export default class User extends Component {
           showImageRecognize && <ImageRecoginzer token={token} open={this.open} close={this.close} />
         }
         {
-          isLoading && <AtActivityIndicator mode='center' color='black' content='数据加载中...' size={62}></AtActivityIndicator>
+          isLoading && <Loading2 />
         }
+        {showUpgradeModal && <AtModal
+          isOpened
+          title='收藏升级'
+          cancelText='取消'
+          confirmText='确认'
+          onClose={() => this.setState({showUpgradeModal: false})}
+          onCancel={() => this.setState({showUpgradeModal: false})}
+          onConfirm={this.upgradeCollection}
+          content='消耗100点积分升级10个收藏上限?'
+        />}
+
       </View>
     )
   }

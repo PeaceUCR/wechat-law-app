@@ -50,7 +50,7 @@ export default class Index extends Component {
     showImageRecognize: false,
     token:'',
     // enablePosterAd: false
-    isNewVersion: getUserIsNewVersion() !== undefined ? getUserIsNewVersion() : true
+    isNewVersion: true
   }
 
   config = {
@@ -418,72 +418,13 @@ export default class Index extends Component {
               this.onSearch()
             }}
           />
-        {isNewVersion && <View>
+        <View>
           {current === 0 && <NewHome selectCurrent={this.selectCurrent} />}
           {current > 0 && <View>
             <View className='back' onClick={() => this.setState({current: 0})}>返回</View>
             {this.renderGridItems()}
           </View>}
-          <View
-            className='back'
-            onClick={() => {
-            this.setState({
-              isNewVersion: false
-            })
-            Taro.cloud.callFunction({
-                name: 'syncUser',
-                data: {
-                  isNewVersion: false
-                },
-                complete: r => {
-                  console.log(r)
-                  setUserIsNewVersion(false)
-                }
-              })
-          }}
-          >
-            点我返回旧版
-          </View>
-        </View>}
-        {!isNewVersion && <View>
-          <AtTabs animated={false} current={current} tabList={titles} onClick={this.handleClick}>
-            <AtTabsPane current={current} index={0} >
-              {this.renderGridItems()}
-            </AtTabsPane>
-            <AtTabsPane current={current} index={1} >
-              {this.renderGridItems()}
-            </AtTabsPane>
-            <AtTabsPane current={current} index={2} >
-              {this.renderGridItems()}
-            </AtTabsPane>
-            <AtTabsPane current={current} index={3} >
-              {this.renderGridItems()}
-            </AtTabsPane>
-            <AtTabsPane current={current} index={4} >
-              {this.renderGridItems()}
-            </AtTabsPane>
-          </AtTabs>
-          <View
-            className='back'
-            onClick={() => {
-              this.setState({
-                isNewVersion: true
-              })
-              Taro.cloud.callFunction({
-                name: 'syncUser',
-                data: {
-                  isNewVersion: true
-                },
-                complete: r => {
-                  console.log(r)
-                  setUserIsNewVersion(true)
-                }
-              })
-            }}
-          >
-            点我体验新版
-          </View>
-        </View>}
+        </View>
          {(!isSuperAdmin()) && getUserNickname() && <View className='qrcode-container' onClick={() => {
            Taro.previewImage({
              current: joinGroupUrl,

@@ -22,11 +22,23 @@ exports.main = async (event, context) => {
       openId
     }).update({
       data: {
-        avatarUrl: event.avatarUrl,
-        nickName: event.nickName,
+        score: event.score || res.data[0].score,
+        collectionLimit: event.collectionLimit || res.data[0].collectionLimit ,
+        avatarUrl: event.avatarUrl || res.data[0].avatarUrl,
+        nickName: event.nickName || res.data[0].nickName,
         lastTimeLogin: new Date()
       }
     });
+    return {
+      data: [{
+        openId: wxContext.OPENID,
+        score: event.score || res.data[0].score,
+        collectionLimit: event.collectionLimit || res.data[0].collectionLimit ,
+        avatarUrl: event.avatarUrl || res.data[0].avatarUrl,
+        nickName: event.nickName || res.data[0].nickName,
+        lastTimeLogin: new Date()
+      }]
+    }
   } else {
     await db.collection("user").add({
       data: {
@@ -34,18 +46,19 @@ exports.main = async (event, context) => {
         avatarUrl: event.avatarUrl,
         nickName: event.nickName,
         score: 3,
+        collectionLimit: 20,
         lastTimeLogin: new Date()
       }
     })
+    return {
+      data: [{
+        openId: wxContext.OPENID,//获取操作者_openid的方法
+        avatarUrl: event.avatarUrl,
+        nickName: event.nickName,
+        score: 3,
+        collectionLimit: 20,
+        lastTimeLogin: new Date()
+      }]
+    }
   }
-
-  return await db.collection('user').where({
-    //下面这3行，为筛选条件
-    openId
-  }).get()
-
-  //
-  // return {
-  //   openid: wxContext.OPENID
-  // }
 }
