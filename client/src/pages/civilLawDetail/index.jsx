@@ -8,7 +8,7 @@ import {getNumber} from '../../util/convertNumber'
 import './index.scss'
 import {copy, definitionIcon, exampleIcon, explanationIcon, judgementIcon, lawIdLabelMap} from "../../util/util";
 import {
-  checkIfNewUser,
+  checkIfNewUser, getCollectionLimit,
   getUserAvatar,
   getUserNickname,
   getUserOpenId,
@@ -84,7 +84,8 @@ export default class CivilLawDetail extends Component {
         data: {
           id: _id,
           type: 'civilLawTermDetail',
-          title: `${number} ${tag}`
+          title: `${number} ${tag}`,
+          collectionLimit: getCollectionLimit()
         },
         complete: (r) => {
           if (r && r.result && r.result.errMsg !== 'collection.add:ok') {

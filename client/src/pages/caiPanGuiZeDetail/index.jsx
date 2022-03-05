@@ -4,7 +4,7 @@ import {AtFab, AtIcon, AtActivityIndicator, AtDivider, AtButton, AtBadge} from "
 import { db } from '../../util/db'
 import TextSectionComponent from '../../components/textSectionComponent/index'
 import '../exampleDetail/index.scss'
-import {checkIfNewUser, redirectToIndexIfNewUser} from "../../util/login";
+import {checkIfNewUser, getCollectionLimit, redirectToIndexIfNewUser} from "../../util/login";
 import throttle from "lodash/throttle";
 import {DiscussionArea} from "../../components/discussionArea/index.weapp";
 
@@ -153,7 +153,8 @@ export default class ExampleDetail extends Component {
         data: {
           id: _id,
           type: type,
-          title: example.title
+          title: example.title,
+          collectionLimit: getCollectionLimit()
         },
         complete: (r) => {
           if (r && r.result && r.result.errMsg !== 'collection.add:ok') {

@@ -11,13 +11,15 @@ exports.main = async (event, context) => {
   const openId = wxContext.OPENID;
   const db = cloud.database()
 
+  const collectionLimit = event.collectionLimit || 20
+
   const res = await db.collection('collection').where({
     //下面这3行，为筛选条件
     openId
   }).get();
 
-  if (res.data && res.data.length >= 20) {
-    return {errMsg: '每个用户不能添加超过20个收藏！'};
+  if (res.data && res.data.length >= collectionLimit) {
+    return {errMsg: `当前用户不能添加超过${collectionLimit}个收藏！`};
   }
 
   return await db.collection("collection").add({

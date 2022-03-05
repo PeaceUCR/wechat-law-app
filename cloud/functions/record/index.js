@@ -23,7 +23,7 @@ exports.main = async (event, context) => {
     })
   }
 
-  const {location} = event
+  const {location, shouldAddScore} = event
   if (location) {
     const {province, city} = location
     return await db.collection('user').where({
@@ -38,19 +38,7 @@ exports.main = async (event, context) => {
     })
   }
 
-  const today = moment().format('YYYY-MM-DD')
-  const {total} = await db.collection('visit').where({
-    openId,
-    today
-  }).count()
-
-  await db.collection('visit').add({
-    data: {
-      openId,
-      today
-    }
-  })
-  if (total < 1) {
+  if (shouldAddScore) {
     return await db.collection('user').where({
       //下面这3行，为筛选条件
       openId

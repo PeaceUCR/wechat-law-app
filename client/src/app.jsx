@@ -1,6 +1,7 @@
 import Taro, { Component, getStorageSync, setStorageSync } from '@tarojs/taro'
+import moment from 'moment';
 import Index from './pages/index'
-
+import {getLastTimeLogin} from './util/login'
 import './app.scss'
 
 // 如果需要在 h5 环境中开启 React Devtools
@@ -88,13 +89,23 @@ class App extends Component {
   }
 
   componentDidShow () {
-    console.log('app jsx show')
+    const visitDate = getStorageSync('visitDate')
+    const today = moment().format('YYYY-MM-DD')
+    // const lastTimeLogin = getLastTimeLogin() && moment(getLastTimeLogin()).format('YYYY-MM-DD')
+    const shouldAddScore = visitDate !== today
+      // && lastTimeLogin !== undefined
+      // && today !== lastTimeLogin
+    console.log(visitDate, today, shouldAddScore)
     Taro.cloud.init({
       traceUser: true
     });
     Taro.cloud.callFunction({
-      name: 'record'
+      name: 'record',
+      data: {
+        shouldAddScore
+      }
     })
+    setStorageSync('visitDate', today);
   }
 
   componentDidHide () {}

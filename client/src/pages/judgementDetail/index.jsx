@@ -5,7 +5,7 @@ import { db } from '../../util/db'
 import TextSection from '../../components/textSection/index.weapp'
 import TextSectionComponent from '../../components/textSectionComponent/index'
 import './index.scss'
-import {checkIfNewUser, redirectToIndexIfNewUser} from "../../util/login";
+import {checkIfNewUser, getCollectionLimit, redirectToIndexIfNewUser} from "../../util/login";
 import throttle from "lodash/throttle";
 import {DiscussionArea} from "../../components/discussionArea/index.weapp";
 import {convertNumberToChinese} from "../../util/convertNumber"
@@ -217,7 +217,8 @@ export default class ExampleDetail extends Component {
         data: {
           rowKey: rowkey,
           type: type,
-          title: title
+          title: title,
+          collectionLimit: getCollectionLimit()
         },
         complete: (r) => {
           if (r && r.result && r.result.errMsg !== 'collection.add:ok') {

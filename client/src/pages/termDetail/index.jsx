@@ -5,7 +5,7 @@ import throttle from "lodash/throttle";
 import DataPopup from '../../components/dataPopup/index.weapp'
 import {DiscussionArea} from '../../components/discussionArea/index.weapp'
 import { db } from '../../util/db'
-import {checkIfNewUser, getUserAvatar, getUserNickname, getUserOpenId, redirectToIndexIfNewUser} from '../../util/login'
+import {checkIfNewUser, getUserAvatar, getUserNickname, getUserOpenId, redirectToIndexIfNewUser, getCollectionLimit} from '../../util/login'
 import {lawIdLabelMap, exampleIcon, sentencingIcon, explanationIcon, definitionIcon, consultIcon, judgementIcon, pDocIcon, evidenceIcon, copy} from '../../util/util'
 import './index.scss'
 import TextSectionComponent from "../../components/textSectionComponent/index";
@@ -336,7 +336,8 @@ export default class TermDetail extends Component {
         data: {
           id: _id,
           type: 'criminalLawTermDetail',
-          title: lawIdLabelMap[_id]
+          title: lawIdLabelMap[_id],
+          collectionLimit: getCollectionLimit()
         },
         complete: (r) => {
           if (r && r.result && r.result.errMsg !== 'collection.add:ok') {

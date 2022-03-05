@@ -1,7 +1,7 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import { View, Text, RichText, Input, Button, Image } from '@tarojs/components'
 import {AtFab,AtIcon,AtBadge,AtActivityIndicator, AtDivider} from "taro-ui";
-import {checkIfNewUser, redirectToIndexIfNewUser} from '../../util/login'
+import {checkIfNewUser, getCollectionLimit, redirectToIndexIfNewUser} from '../../util/login'
 import './index.scss'
 import throttle from "lodash/throttle";
 import {DiscussionArea} from "../../components/discussionArea/index.weapp";
@@ -209,7 +209,8 @@ export default class SentencingDetail extends Component {
           id: id,
           type: 'sentencing',
           title: `刑法第${criminalLawNumber}条量刑指导意见`,
-          criminalLawNumber
+          criminalLawNumber,
+          collectionLimit: getCollectionLimit()
         },
         complete: (r) => {
           if (r && r.result && r.result.errMsg !== 'collection.add:ok') {

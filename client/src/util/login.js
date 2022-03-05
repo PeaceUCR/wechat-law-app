@@ -41,6 +41,11 @@ export const getUserScore = () => {
   return user.score;
 }
 
+export const getLastTimeLogin = () => {
+  const user = getStorageSync('user');
+  return user.lastTimeLogin;
+}
+
 export const isSuperAdmin = () => {
   const user = getStorageSync('user');
   return user.openId === 'o00Y-5C_d5zfv685dF7SI0zy4mS4' || user.openId === 'o00Y-5ECkT-Pz6rMDXTpDLj5a0NQ';
