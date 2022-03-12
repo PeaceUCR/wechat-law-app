@@ -266,13 +266,6 @@ export default class Index extends Component {
 
   onChange = (searchValue) => {
     this.setState({searchValue})
-    if (searchValue && this.isNoOption()) {
-      Taro.showToast({
-        title: '未找到模块!注意这个只是首页过滤,不是全局搜索',
-        icon: 'none',
-        duration: 6000
-      })
-    }
   }
 
   onClear = () => {
@@ -410,7 +403,7 @@ export default class Index extends Component {
             </AtBadge>
           </View>
           <AtSearchBar
-            placeholder='搜模块,比如刑法'
+            placeholder='搜标题'
             value={searchValue}
             onChange={this.onChange}
             onClear={this.onClear}

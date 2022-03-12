@@ -212,10 +212,14 @@
   right: 10px;
 }
 
-.static-category-item {
-  font-size: 36px;
-  padding-top: 30px;
-  text-decoration: underline;
-  text-decoration-color: #6190E8;
-  color: #6190E8 !important;
+.static-category {
+  .static-category-item {
+    font-size: 36px;
+    padding-top: 30px;
+    text-decoration: underline;
+    text-decoration-color: #6190E8;
+    color: #6190E8 !important;
+  }
+  margin-bottom: 40px;
 }
+

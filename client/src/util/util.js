@@ -217,3 +217,7 @@ export const getSentencingTag = (crimeName, location, effectiveDate) => {
   }
   return `${moment(effectiveDate).format('YYYY')} 全国 ${crimeName}`
 }
+
+export const getValidArray = (a) => {
+  return a ? a : []
+}

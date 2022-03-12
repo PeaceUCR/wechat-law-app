@@ -520,8 +520,7 @@ export default class ExampleDetail extends Component {
   renderStaticCategory = () => {
     const {example} = this.state
     const {categoryList} = example
-    return (<View >
-      <View>目录</View>
+    return (<View className='static-category'>
       {categoryList.map((c, index) => (<View
         className='static-category-item'
         key={c}

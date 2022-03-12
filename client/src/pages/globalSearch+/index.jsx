@@ -3,11 +3,9 @@ import {View, Text, Button,Image, Swiper, SwiperItem} from '@tarojs/components'
 import { AtSearchBar, AtNoticebar, AtModal,AtModalHeader, AtModalContent,AtModalAction, AtRadio,AtDivider } from 'taro-ui'
 import {isEmpty, groupBy} from "lodash";
 import '../litigationRegulation/index.scss'
-import {otherLawNameMap} from '../../util/otherLaw'
-import {convertNumberToChinese} from '../../util/convertNumber'
 import Loading2 from '../../components/loading2/index.weapp'
 import GlobalSearchItem from '../../components/globalSearchItem/index.weapp'
-import {settingIcon} from "../../util/util";
+import {getValidArray} from "../../util/util";
 import {searchHomePageOptions} from '../../util/name'
 import {GridItem} from "../../components/grid/index.weapp";
 
@@ -85,7 +83,7 @@ export default class Index extends Component {
         <View className='type-result-title'>
           <Text className='title'>刑法</Text>
         </View>
-        {searchResult['terms'].map((
+        {getValidArray(searchResult['terms']).map((
           (item) => {
             return (
               <GlobalSearchItem
@@ -110,7 +108,7 @@ export default class Index extends Component {
         <View className='type-result-title'>
           <Text className='title'>民法典</Text>
         </View>
-        {searchResult['civil-law'].map((
+        {getValidArray(searchResult['civil-law']).map((
           (item) => {
             return (
               <GlobalSearchItem
@@ -136,7 +134,7 @@ export default class Index extends Component {
           <View className='type-result-title'>
             <Text className='title'>其他刑事法规</Text>
           </View>
-          {searchResult['complement'] && searchResult['complement'].map((
+          {getValidArray(searchResult['complement']).map((
             (item) => {
               return (
                 <GlobalSearchItem
@@ -162,7 +160,7 @@ export default class Index extends Component {
           <View className='type-result-title'>
             <Text className='title'>其他民事法规</Text>
           </View>
-          {searchResult['civil-law-explaination'] && searchResult['civil-law-explaination'].map((
+          {getValidArray(searchResult['civil-law-explaination']).map((
             (item) => {
               return (
                 <GlobalSearchItem
@@ -188,7 +186,7 @@ export default class Index extends Component {
           <View className='type-result-title'>
             <Text className='title'>行政法规</Text>
           </View>
-          {searchResult['admin-explanation'] && searchResult['admin-explanation'].map((
+          {getValidArray(searchResult['admin-explanation']).map((
             (item) => {
               return (
                 <GlobalSearchItem
@@ -215,7 +213,7 @@ export default class Index extends Component {
         <View className='type-result-title'>
           <Text className='title'>其他</Text>
         </View>
-        {searchResult['faxin-law'].map((
+        {getValidArray(searchResult['faxin-law']).map((
           (item) => {
             return (
               <GlobalSearchItem

@@ -104,12 +104,13 @@ export default class ExampleDetail extends Component {
   componentDidHide () { }
 
   renderExample = () => {
-    console.log('example')
     const {example, keyword, zoomIn} = this.state;
     const {text, judgeRule} = example;
     return (<View>
       <View className='term-complement-title'>裁判要旨:</View>
-      <View className='term-complement-title'>{judgeRule}</View>
+      <View className='term-complement-title'>
+        <TextSectionComponent data={judgeRule} keyword={keyword} zoomIn={zoomIn} />
+      </View>
       <AtDivider content='案例详情' />
       <TextSectionComponent data={text} keyword={keyword} zoomIn={zoomIn} />
     </View>)
