@@ -17,18 +17,28 @@ exports.main = async (event, context) => {
   const regexpString1 = `${searchValue.split('').join('.*')}`
   const regexpString2 = `.*${searchValue}`
 
-  result1 = await db.collection('example').where({
-    text: db.RegExp({
-      regexp: regexpString1,
-      options: 'i',
-    })}).limit(1000).get();
+  const result1 = await db.collection('example').where(_.or([
+    {title: db.RegExp({
+    regexp: regexpString1,
+    options: 'i',
+  })},
+    {text: db.RegExp({
+    regexp: regexpString1,
+    options: 'i',
+  })}
+  ])).limit(1000).get();
 
   // exact match
-  result2 = await db.collection('example').where({
-    text: db.RegExp({
-      regexp: regexpString2,
-      options: 'i',
-    })}).limit(1000).get();
+  const result2 = await db.collection('example').where(_.or([
+    {title: db.RegExp({
+        regexp: regexpString2,
+        options: 'i',
+      })},
+    {text: db.RegExp({
+        regexp: regexpString2,
+        options: 'i',
+      })}
+  ])).limit(1000).get();
 
   const exist = new Set(result2.data.map(item => item._id))
   const complement = result1.data.filter(item => !exist.has(item._id))
