@@ -3,7 +3,7 @@ import {View, Text, Picker, Image} from '@tarojs/components'
 import { AtSearchBar, AtActivityIndicator, AtFab, AtBadge, AtIcon, AtListItem, AtDivider } from 'taro-ui'
 import moment from "moment";
 import '../examples/index.scss'
-import JudgementSearchItem from "../../components/judgementSearchItem"
+import GlobalSearchItem from "../../components/globalSearchItem/index.weapp"
 import Loading2 from "../../components/loading2/index.weapp";
 
 export default class Index extends Component {
@@ -94,11 +94,11 @@ export default class Index extends Component {
       <View>
         {searchResult.map(((example) => {return (
           <View className='result-item' key={`example-${example._id}`}>
-            <JudgementSearchItem
+            <GlobalSearchItem
+              showFullTitle
               title={`${example.title}`}
-              text={example.text}
-              category={example.category}
-              courtName={moment(example.effectiveDate).format('YYYY-MM-DD')}
+              type={example.category}
+              publishInfo={moment(example.effectiveDate).format('YYYY-MM-DD')}
               redirect={() => {
                 if (example.link) {
                   Taro.navigateTo({

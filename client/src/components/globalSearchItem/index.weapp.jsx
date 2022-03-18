@@ -3,7 +3,7 @@ import {Text, View, Image} from "@tarojs/components";
 import './index.scss'
 
 const GlobalSearchItem = (props) => {
-  let {text,title, law, number, redirect, type, publishInfo, isCaiPanGuiZe} = props;
+  let {text,title, law, number, redirect, type, publishInfo, isCaiPanGuiZe, showFullTitle} = props;
   let displayedText = text;
   let showDot = false
   if (text && text.length > 40) {
@@ -11,14 +11,14 @@ const GlobalSearchItem = (props) => {
     displayedText = `${text.trim().substring(0, 40)}${showDot ? '...' : ''}`
   }
 
-  return (<View className='search-item' onClick={redirect} >
+  return (<View className={`search-item ${showFullTitle ? 'full-title' : ''}`} onClick={redirect} >
     {type && <View className='float-type'>{type}</View>}
     {/*<View className='line'>*/}
     {/*  <Text className='law'>{law}</Text>*/}
     {/*  <Text className='number'>{number}</Text>*/}
     {/*  <Image src={rightArrowIcon} className='right-arrow' />*/}
     {/*</View>*/}
-    {title && <View className='title'>{title}</View>}
+    {title && <View className={`title ${showFullTitle ? 'full-title' : ''}`}>{title}</View>}
     {(!title || isCaiPanGuiZe) && <View className='main-text'>
       {displayedText}
     </View>}
