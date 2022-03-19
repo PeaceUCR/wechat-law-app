@@ -39,7 +39,8 @@ const regulationDetailSet = new Set(
     'consumer-right-protect-law',
     'public-interest-rule',
     'fire-fighting',
-    'labor-conciliation'
+    'labor-conciliation',
+    'medical-malpractice-regulation'
   ])
 
 const TermSearchItem = (props) => {

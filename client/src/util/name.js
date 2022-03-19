@@ -197,19 +197,25 @@ export const homePageOptions = {
       hasExplanation: true
     },
     {
-      title: otherLawNameMap['company-law'],
-      url: '/pages/otherLaw/index?law=company-law',
-      sub:'2018年10月26日',
-      type: '民法典',
-      // isHot: true
-    },
-    {
       title: otherLawNameMap['consumer-right-protect-law'],
       url: '/pages/otherLaw/index?law=consumer-right-protect-law',
       sub:'2014年03月15日',
       type: '民法典',
       isNew: true,
       hasExplanation: true
+    },{
+      title: otherLawNameMap['medical-malpractice-regulation'],
+      url: '/pages/otherLaw/index?law=medical-malpractice-regulation',
+      sub:'2008年5月1日',
+      type: '民法典',
+      hasExplanation: true
+    },
+    {
+      title: otherLawNameMap['company-law'],
+      url: '/pages/otherLaw/index?law=company-law',
+      sub:'2018年10月26日',
+      type: '民法典',
+      // isHot: true
     }
   ],
   '行政': [

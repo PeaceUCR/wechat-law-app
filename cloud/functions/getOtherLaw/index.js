@@ -6,6 +6,13 @@ cloud.init({
 })
 
 const lawMap = {
+    'medical-malpractice-regulation':{ '第一章　总则': { value: '第一章　总则', start: 1, end: 4 },
+        '第二章　医疗事故的预防与处置': { value: '第二章　医疗事故的预防与处置', start: 5, end: 19 },
+        '第三章　医疗事故的技术鉴定': { value: '第三章　医疗事故的技术鉴定', start: 20, end: 34 },
+        '第四章　医疗事故的行政处理与监督': { value: '第四章　医疗事故的行政处理与监督', start: 35, end: 45 },
+        '第五章　医疗事故的赔偿': { value: '第五章　医疗事故的赔偿', start: 46, end: 52 },
+        '第六章　罚则': { value: '第六章　罚则', start: 53, end: 59 },
+        '第七章　附则': { value: '第七章　附则', start: 60, end: 63 } },
     'labor-conciliation':{ '第一章　总则': { value: '第一章　总则', start: 1, end: 9 },
         '第二章　调解': { value: '第二章　调解', start: 10, end: 16 },
         '第三章　仲裁': { value: '第三章　仲裁', start: 17, end: 52 },

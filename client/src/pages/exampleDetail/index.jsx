@@ -120,7 +120,13 @@ export default class ExampleDetail extends Component {
       db.collection(type).where({_id: id}).get({
         success: (res) => {
           if (res.data[0]) {
-            that.setState({example: res.data[0], isLoading: false, type, id, keyword});
+            const {special} = res.data[0]
+            if (special) {
+              const {title, subTitle} = res.data[0]
+              that.setState({example: res.data[0], isLoading: false, type, id, keyword, categories:[title, subTitle]});
+            } else {
+              that.setState({example: res.data[0], isLoading: false, type, id, keyword});
+            }
           } else {
             that.setState({isLoading: false, type})
           }
@@ -216,8 +222,10 @@ export default class ExampleDetail extends Component {
     const {example, keyword, zoomIn} = this.state;
     const {text, title, subTitle, subContent} = example;
     return (<View>
+      <View id='category-0'></View>
       <TextSection data={title} keyword={keyword} zoomIn={zoomIn} isTitle={true} />
       <TextSection data={text} keyword={keyword} zoomIn={zoomIn} />
+      <View id='category-1'></View>
       <TextSection data={subTitle} keyword={keyword} zoomIn={zoomIn} isTitle={true} />
       <TextSection data={subContent} keyword={keyword} zoomIn={zoomIn} />
     </View>)
