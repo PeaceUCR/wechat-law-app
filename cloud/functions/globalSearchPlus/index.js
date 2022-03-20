@@ -41,7 +41,7 @@ exports.main = async (event, context) => {
                         regexp: reg,
                         options: 'i',
                     })
-                }).limit(mode === 'faxin' ? 1000: limitPerLaw).get()
+                }).limit(mode === 'faxin' ? 1000: limitPerLaw).orderBy('effectiveDate', 'desc').get()
             }
 
             return result

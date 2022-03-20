@@ -308,62 +308,6 @@ export default class Index extends Component {
     });
   }
 
-  handleClose = () => {
-    const {selectedOption1, selectedOption2} = this.state
-    console.log(selectedOption1, selectedOption2)
-    this.setState({
-      isInvalid1: !selectedOption1,
-      isInvalid2: !selectedOption2
-    })
-    if (selectedOption1 && selectedOption2) {
-      if (selectedOption2 == 'example') {
-        Taro.navigateTo({
-          url: `/pages/examples/index`
-        });
-        return ;
-      }
-      if (selectedOption2 == 'open-example') {
-        Taro.navigateTo({
-          url: `/pages/courtOpen/index`
-        });
-        return ;
-      }
-
-      if (selectedOption2 == 'consult') {
-        Taro.navigateTo({
-          url: `/pages/consultant/index`
-        });
-        return ;
-      }
-
-      if (selectedOption1 == 'criminal' && selectedOption2 == 'complement') {
-        Taro.navigateTo({
-          url: `/pages/criminalComplement/index`
-        });
-        return ;
-      }
-
-      if (selectedOption1 == 'civil' && selectedOption2 == 'complement') {
-        Taro.navigateTo({
-          url: `/pages/civilLawExplaination/index`
-        });
-        return ;
-      }
-
-      this.setState({
-        showSetting: false
-      });
-      const {searchValue} = this.state
-      this.onSearch(searchValue)
-    } else {
-      Taro.showToast({
-        title: '请选择',
-        icon: 'none',
-        duration: 2000
-      })
-    }
-  }
-
   render () {
     const {searchValue, isLoading, isReadMode, showSetting} = this.state;
     return (
