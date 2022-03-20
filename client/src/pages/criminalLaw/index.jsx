@@ -1,6 +1,6 @@
 import Taro, {Component, getStorageSync } from '@tarojs/taro'
 import {View, Text, Picker, Image} from '@tarojs/components'
-import {AtSearchBar, AtActivityIndicator, AtFab, AtDivider, AtNoticebar} from 'taro-ui'
+import {AtSearchBar, AtActivityIndicator, AtFab, AtDivider, AtNoticebar, AtIcon} from 'taro-ui'
 import {isEmpty} from 'lodash';
 import { db } from '../../util/db'
 import { rank, rankBySearchValue } from '../../util/rank'
@@ -152,20 +152,19 @@ export default class Index extends Component {
     return (<View className='options'>
       <View className='option-title'>常用罪名关键字</View>
       <View className='sub-options'>{crimes && crimes.length > 0 && crimes.map((crime, index) => {
-        return (<View className='crime-option option' key={`crime-option-${index}`} onClick={() => that.onClickOptionItem("搜罪名", crime)}>
+        return (<View className='crime-option option' key={`crime-option-${index}`} onClick={() => that.onClickOptionItem(crime)}>
           {crime}
       </View>)})}</View>
       <View className='option-title'>常用法条关键字</View>
       <View className='sub-options'>{criminalLawTerms && criminalLawTerms.length >0 && criminalLawTerms.map((term, index) => {
-        return (<View className='term-option option' key={`term-option-${index}`} onClick={() => that.onClickOptionItem("搜序号", term)}>
+        return (<View className='term-option option' key={`term-option-${index}`} onClick={() => that.onClickOptionItem(term)}>
           {term}
         </View>)})}</View>
     </View>)
   }
 
-  onClickOptionItem = (category, searchValue) => {
+  onClickOptionItem = (searchValue) => {
     this.setState({
-      selected: category,
       searchValue
     }, () => {
       this.onSearch()
@@ -178,7 +177,7 @@ export default class Index extends Component {
 
   onSearch = () => {
     const that = this;
-    const { searchValue, selected } = this.state;
+    const { searchValue } = this.state;
     console.log(searchValue)
     if(!searchValue.trim()) {
       Taro.showToast({
@@ -189,69 +188,9 @@ export default class Index extends Component {
       return ;
     }
     this.setState({isLoading: true});
-    if (selected === '搜全文') {
-      if (!isNaN(parseInt(searchValue))) {
 
-        Taro.cloud.callFunction({
-          name: 'searchCriminalLaws',
-          data: {
-            type: '搜序号',
-            searchValue: isNumber(searchValue) ? parseInt(searchValue) : getNumber(searchValue)
-          },
-          complete: ({ result }) => {
-            if (isEmpty(result.data)) {
-              Taro.showToast({
-                title: `未找到序号${searchValue}的法条`,
-                icon: 'none',
-                duration: 3000
-              })
-            }
-            that.setState({searchResult: result.data, isLoading: false, hasSearched: true});
-          }
-        })
+    if (!isNaN(parseInt(searchValue))) {
 
-        return ;
-      }
-      Taro.cloud.callFunction({
-        name: 'searchCriminalLaws',
-        data: {
-          type: '搜全文',
-          searchValue
-        },
-        complete: ({ result }) => {
-          if (isEmpty(result.data)) {
-            Taro.showToast({
-              title: `未找到含有${searchValue}的法条`,
-              icon: 'none',
-              duration: 3000
-            })
-          }
-          that.setState({searchResult: rankBySearchValue(result.data, 'text', searchValue), isLoading: false, hasSearched: true});
-        }
-      })
-    }
-
-    if (selected === '搜罪名') {
-      Taro.cloud.callFunction({
-        name: 'searchCriminalLaws',
-        data: {
-          type: '搜罪名',
-          searchValue
-        },
-        complete: ({ result }) => {
-          if (isEmpty(result.data)) {
-            Taro.showToast({
-              title: `未找到含有${searchValue}的法条`,
-              icon: 'none',
-              duration: 3000
-            })
-          }
-          that.setState({searchResult: rank(result.data, 'crime'), isLoading: false, hasSearched: true});
-        }
-      })
-    }
-
-    if (selected === '搜序号') {
       Taro.cloud.callFunction({
         name: 'searchCriminalLaws',
         data: {
@@ -269,7 +208,27 @@ export default class Index extends Component {
           that.setState({searchResult: result.data, isLoading: false, hasSearched: true});
         }
       })
+
+      return ;
     }
+    Taro.cloud.callFunction({
+      name: 'searchCriminalLaws',
+      data: {
+        type: '搜全文',
+        searchValue
+      },
+      complete: ({ result }) => {
+        if (isEmpty(result.data)) {
+          Taro.showToast({
+            title: `未找到含有${searchValue}的法条`,
+            icon: 'none',
+            duration: 3000
+          })
+        }
+        that.setState({searchResult: rankBySearchValue(result.data, 'text', searchValue), isLoading: false, hasSearched: true});
+      }
+    })
+
   }
 
   onClear = () => {
@@ -294,13 +253,15 @@ export default class Index extends Component {
             中华人民共和国刑法修正案(十一)已于2021年3月1日起施行
           </AtNoticebar>
           <View className='header'>
-            <View className='select'>
-              <View>
-                <Picker mode='selector' mode='selector' range={options} onChange={this.onSelect}>
-                  <Text>{selected}</Text>
-                </Picker>
-              </View>
-              <Image src={clickIcon} className='icon-click' />
+            <View className='select' onClick={() => this.setState({showAllCategories: !showAllCategories, searchResult: []})}>
+              <AtIcon value='menu' size='32' color='#6190E8'></AtIcon>
+              <Text>目录</Text>
+              {/*<View>*/}
+              {/*  <Picker mode='selector' mode='selector' range={options} onChange={this.onSelect}>*/}
+              {/*    <Text>{selected}</Text>*/}
+              {/*  </Picker>*/}
+              {/*</View>*/}
+              {/*<Image src={clickIcon} className='icon-click' />*/}
             </View>
             <View className='search'>
               <AtSearchBar
@@ -328,7 +289,7 @@ export default class Index extends Component {
               {searchResult.length > 0 && this.renderSearchList()}
             </View>
             <View>
-              {searchResult.length === 0 && !searchValue && !showAllCategories && this.renderHintOptions()}
+              {searchResult.length === 0 && !showAllCategories && this.renderHintOptions()}
             </View>
             {/*<View>*/}
             {/*  {searchResult.length === 0 && this.renderHistories()}*/}
@@ -337,7 +298,7 @@ export default class Index extends Component {
               <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
             </View>}
           </View>
-          {searchResult.length === 0 && <AtFab className='float' onClick={() => this.setState({showAllCategories: !showAllCategories})}>
+          {searchResult.length === 0 && <AtFab className='float' onClick={() => this.setState({showAllCategories: !showAllCategories, searchResult: []})}>
             <Text>{`${showAllCategories ? '返回' : '目录'}`}</Text>
           </AtFab>}
       </View>

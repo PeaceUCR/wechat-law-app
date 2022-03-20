@@ -1,6 +1,6 @@
 import Taro, { Component, getStorageSync, setStorageSync } from '@tarojs/taro'
 import {View, Image, Text, Swiper, SwiperItem} from '@tarojs/components'
-import {AtIcon, AtDivider, AtBadge, AtNoticebar, AtTabs, AtTabsPane, AtCurtain, AtSearchBar } from "taro-ui";
+import {AtIcon, AtDivider, AtBadge, AtNoticebar, AtCurtain, AtSearchBar } from "taro-ui";
 import throttle from 'lodash/throttle';
 import moment from "moment";
 import { GridItem } from '../../components/grid/index.weapp'
@@ -9,7 +9,7 @@ import { LoginPopup } from '../../components/loginPopup/index.weapp'
 import { UserFloatButton } from '../../components/userFloatButton/index.weapp'
 import { ImageCropper } from '../../components/imageCropper/index.weapp'
 import qrcode from '../../static/qrcode.png';
-import {checkIfNewUser, getUserAvatar, getUserNickname, getUserOpenId, isSuperAdmin, setUserIsNewVersion, getUserIsNewVersion} from '../../util/login';
+import {checkIfNewUser, getUserAvatar, getUserNickname, getUserOpenId, isSuperAdmin} from '../../util/login';
 import './index.scss'
 import {db} from "../../util/db";
 import {tmpId, logoIcon, scanIcon} from '../../util/util'
@@ -98,7 +98,7 @@ export default class Index extends Component {
               complete: r => {
                 if (r &&  r.result && r.result.data && r.result.data.length > 0 ) {
                   setStorageSync('user', r.result.data[0]);
-                  that.setState({isUserLoaded: true, isNewVersion: getUserIsNewVersion()})
+                  that.setState({isUserLoaded: true})
 
                   if (getStorageSync('poster-shown') !== res.data[0].posterUrl) {
                     that.setState({showPoster: true})
@@ -328,7 +328,7 @@ export default class Index extends Component {
   render () {
     const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl,
       joinGroupUrl, posterRedirect, swiperPosters, canClose, enableMainVideoAd, enableMainBanner, searchValue,
-      enableMainBottomVideo, showImageRecognize, token, isNewVersion} = this.state;
+      enableMainBottomVideo, showImageRecognize, token} = this.state;
     return (
       <View className={`index-page page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
