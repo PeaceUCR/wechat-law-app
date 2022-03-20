@@ -1,6 +1,6 @@
 import Taro from '@tarojs/taro'
 import {View,Image} from "@tarojs/components";
-import {criminalIcon, civilIcon, adminIcon, publicInterestIcon, appealIcon, supervisionIcon, criminalExecutionIcon} from '../../util/util'
+import {criminalIcon, civilIcon, adminIcon, publicInterestIcon, appealIcon, supervisionIcon, criminalExecutionIcon, exampleHomeIcon} from '../../util/util'
 import './index.scss'
 
 const options = [
@@ -42,7 +42,7 @@ const options = [
     icon: publicInterestIcon
   },{
     title: '案例',
-    icon: adminIcon
+    icon: exampleHomeIcon
   }
 ]
 

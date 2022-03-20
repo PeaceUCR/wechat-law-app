@@ -7,7 +7,7 @@ import moment from "moment";
 const DataPopup = (props) => {
   let {data ,type, num, zoomIn} = props;
   data = data ? data: {};
-  const {name, number, title,  _id, sourceName, sourceId, crimeName, effectiveDate, special} = data;
+  const {name, number, title,  _id, sourceName, sourceId, crimeName, effectiveDate, special, link} = data;
   const isExample = type === 'procuratorate'
     || type === 'court'
     || type === 'complement-example'
@@ -36,6 +36,12 @@ const DataPopup = (props) => {
 
   return (<View className={`${zoomIn ? 'zoom-in' : ''}`}>
     <View className={`${isExample ? 'example': ''} line-center`} onClick={() => {
+      if (link) {
+        Taro.navigateTo({
+          url: link
+        })
+        return ;
+      }
       if (type === 'source') {
         Taro.navigateTo({
           url: `/pages/exampleDetail/index?type=complement&id=${sourceId}&keyword=${crimeName}`,

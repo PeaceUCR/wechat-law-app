@@ -38,19 +38,29 @@ export default class Index extends Component {
       })
     }
 
-    const that = this;
-    db.collection('configuration').where({}).get({
-      success: (res) => {
-        const { civilExplaination, civilExplainationTitles, civilExplainationIndex } = res.data[0]
+    const {searchValue} = this.$router.params;
+    if (searchValue && searchValue.trim()) {
+      this.setState({
+        searchValue
+      }, () => {
+        this.onSearch()
+      });
+    } else {
+      const that = this;
+      db.collection('configuration').where({}).get({
+        success: (res) => {
+          const { civilExplaination, civilExplainationTitles, civilExplainationIndex } = res.data[0]
 
-        that.setState({
-          civilExplaination,
-          civilExplainationTitles,
-          civilExplainationIndex,
-          isLoading: false,
-        });
-      }
-    });
+          that.setState({
+            civilExplaination,
+            civilExplainationTitles,
+            civilExplainationIndex,
+            isLoading: false,
+          });
+        }
+      });
+    }
+
   }
 
   componentDidMount () { }

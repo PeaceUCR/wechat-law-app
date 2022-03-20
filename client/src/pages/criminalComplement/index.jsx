@@ -36,23 +36,33 @@ export default class Index extends Component {
       })
     }
 
-    const that = this
-    this.setState({isLoading: true});
-    Taro.cloud.callFunction({
-      name: 'searchCriminalComplement',
-      data: {
-        type: 'all-initial'
-      },
-      complete: r => {
-        console.log(r)
-        that.setState({searchResult: [...r.result.data], isLoading: false});
-        Taro.showToast({
-          title: `加载20篇最近添加的法规`,
-          icon: 'none',
-          duration: 4000
-        })
-      }
-    })
+    const {searchValue} = this.$router.params;
+    if (searchValue && searchValue.trim()) {
+      this.setState({
+        searchValue
+      }, () => {
+        this.onSearch()
+      });
+    } else {
+      const that = this
+      this.setState({isLoading: true});
+      Taro.cloud.callFunction({
+        name: 'searchCriminalComplement',
+        data: {
+          type: 'all-initial'
+        },
+        complete: r => {
+          console.log(r)
+          that.setState({searchResult: [...r.result.data], isLoading: false});
+          Taro.showToast({
+            title: `加载20篇最近添加的法规`,
+            icon: 'none',
+            duration: 4000
+          })
+        }
+      })
+    }
+
   }
 
   componentDidMount () { }
@@ -80,6 +90,12 @@ export default class Index extends Component {
               note={complement.effectiveDate ? moment(complement.effectiveDate).format('YYYY-MM-DD') : ''}
               arrow='right'
               onClick={() => {
+                if (complement.link) {
+                  Taro.navigateTo({
+                    url: complement.link,
+                  })
+                  return ;
+                }
                 Taro.navigateTo({
                   url: `/pages/exampleDetail/index?type=complement&id=${complement._id}&keyword=${searchValue}`,
                 })

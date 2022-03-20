@@ -331,9 +331,9 @@ export default class Index extends Component {
       enableMainBottomVideo, showImageRecognize, token} = this.state;
     return (
       <View className={`index-page page ${isReadMode ? 'read-mode' : ''}`}>
-        <AtNoticebar marquee speed={60}>
+        {enableMainBanner && <AtNoticebar marquee speed={60}>
           本小程序数据信息均来源于最高检、最高法、公安部、司法部、人大等权威发布，仅供个人学习、研究等合理范围内使用
-        </AtNoticebar>
+        </AtNoticebar>}
         {/*{getUserNickname() !== 'echo' && <View className='cake-container' onClick={() => {*/}
         {/*  Taro.navigateTo({*/}
         {/*    url: '/pages/cake/index'*/}
@@ -432,10 +432,9 @@ export default class Index extends Component {
           {isNewUser && <LoginPopup handleLoginSuccess={this.handleLoginSuccess} handleCloseLogin={this.handleCloseLogin} canClose={canClose} />}
           {!isNewUser && this.renderUserFloatButton()}
 
-          <View onClick={this.jumpToMiniProgram}>
-            <AtDivider content='没有更多了' fontColor='#666' lineColor='#666' />
-          </View>
-
+          {enableMainBanner && <View onClick={this.jumpToMiniProgram}>
+            <AtDivider content='没有更多了' fontColor='#666' lineColor='#666' height='60' />
+          </View>}
           {/*<View>*/}
           {/*  <ImageCropper />*/}
           {/*</View>*/}

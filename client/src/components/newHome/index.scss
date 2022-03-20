@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  margin: 30px 10px;
+  margin: 30px 10px 10px 0;
   .option {
     display: flex;
     flex-direction: column;
@@ -10,13 +10,13 @@
     align-items: center;
     min-width: 20vw;
     border-radius: 8px;
-    margin: 10px 20px 60px 20px;
-    padding: 10px 20px;
+    margin: 6px 20px 20px 20px;
+    padding: 6px 20px;
     box-shadow: 0px 0px 5px 6px #6190E8;
     color: #000;
-    font-size: 46px;
+    font-size: 42px;
     .option-icon {
-      margin-bottom: 16px;
+      margin-bottom: 12px;
       width: 80px;
       height: 80px;
     }

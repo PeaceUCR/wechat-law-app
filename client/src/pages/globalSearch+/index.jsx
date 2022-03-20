@@ -144,6 +144,12 @@ export default class Index extends Component {
                   type='刑事'
                   number={item.number}
                   redirect={() => {
+                    if (item.link) {
+                      Taro.navigateTo({
+                        url: item.link,
+                      })
+                      return;
+                    }
                     Taro.navigateTo({
                       url: `/pages/exampleDetail/index?id=${item._id}&type=complement`,
                     })

@@ -37,19 +37,28 @@ export default class Index extends Component {
       })
     }
 
-    const that = this
-    that.setState({isLoading: true});
-    db.collection('admin-explanation').where({}).orderBy('effectiveDate', 'desc').get({
-      success: (r) => {
-        console.log(r)
-        that.setState({searchResult: r.data, isLoading: false})
-        Taro.showToast({
-          title: `加载20篇最近添加的法规`,
-          icon: 'none',
-          duration: 4000
-        })
-      }
-    });
+    const {searchValue} = this.$router.params;
+    if (searchValue && searchValue.trim()) {
+      this.setState({
+        searchValue
+      }, () => {
+        this.onSearch()
+      });
+    } else {
+      const that = this
+      that.setState({isLoading: true});
+      db.collection('admin-explanation').where({}).orderBy('effectiveDate', 'desc').get({
+        success: (r) => {
+          console.log(r)
+          that.setState({searchResult: r.data, isLoading: false})
+          Taro.showToast({
+            title: `加载20篇最近添加的法规`,
+            icon: 'none',
+            duration: 4000
+          })
+        }
+      });
+    }
   }
 
   componentDidMount () { }
