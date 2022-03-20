@@ -3,9 +3,10 @@ import {View, Text, Picker, Image} from '@tarojs/components'
 import {AtSearchBar, AtListItem, AtBadge, AtIcon, AtNoticebar, AtFab, AtIndexes} from 'taro-ui'
 import {isEmpty} from 'lodash';
 import clickIcon from '../../static/down.png';
-import { Loading } from '../../components/loading/index.weapp'
+import Loading2 from "../../components/loading2/index.weapp";
 import { targetImageSource } from '../../util/util'
 import './index.scss'
+import throttle from "lodash/throttle";
 
 export default class Index extends Component {
 
@@ -56,7 +57,7 @@ export default class Index extends Component {
 
   componentDidHide () { }
 
-  loadCategory = () => {
+  loadCategory = throttle(() => {
     console.log('load')
     this.setState({
       isLoading: true
@@ -74,7 +75,7 @@ export default class Index extends Component {
         })
       }
     })
-  }
+  }, 6000, { trailing: false })
 
   renderCategoryList = () => {
     const {categoryList} = this.state
@@ -270,15 +271,13 @@ export default class Index extends Component {
             <View>
               {!searchValue && searchResult.length === 0 && categoryList.length > 0 && this.renderCategoryList()}
             </View>
-            {isLoading && <Loading />}
+            {isLoading && <Loading2 />}
           </View>
-
           <Image
             src={targetImageSource}
             className='exact-match-hide'
             mode='widthFix'
           />
-
           <AtFab className='float-category' onClick={() => this.loadCategory()}>
             <Text>目录</Text>
           </AtFab>

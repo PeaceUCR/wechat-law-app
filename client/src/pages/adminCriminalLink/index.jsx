@@ -1,16 +1,11 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {View, Text, Picker, Image} from '@tarojs/components'
 import { AtSearchBar, AtActivityIndicator, AtFab, AtBadge, AtIcon, AtListItem, AtDivider } from 'taro-ui'
-import {isEmpty} from 'lodash';
-import {
-  targetImageSource, getExampleSearchTag
-} from '../../util/util'
+
 import '../examples/index.scss'
-import {db} from "../../util/db";
-import {getNumber} from "../../util/convertNumber";
-import JudgementSearchItem from "../../components/judgementSearchItem"
-import {getUserOpenId} from "../../../.temp/util/login";
-import Loading2 from "../../components/loading2/index.weapp";
+import GlobalSearchItem from "../../components/globalSearchItem/index.weapp"
+import Loading2 from "../../components/loading2/index.weapp"
+import moment from "moment"
 
 export default class Index extends Component {
 
@@ -100,10 +95,11 @@ export default class Index extends Component {
       <View>
         {searchResult.map(((example) => {return (
           <View className='result-item' key={`example-${example._id}`}>
-            <JudgementSearchItem
+            <GlobalSearchItem
+              showFullTitle
               title={`${example.title}`}
-              text={example.text}
-              category={example.category}
+              publishInfo={moment(example.effectiveDate).format('YYYY-MM-DD')}
+              type={example.category}
               redirect={() => {
                 Taro.navigateTo({
                   url: `/pages/exampleDetail/index?type=complement&id=${example._id}&keyword=${searchValue}`,

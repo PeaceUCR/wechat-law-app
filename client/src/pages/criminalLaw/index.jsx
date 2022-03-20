@@ -255,7 +255,7 @@ export default class Index extends Component {
           <View className='header'>
             <View className='select' onClick={() => this.setState({showAllCategories: !showAllCategories, searchResult: []})}>
               <AtIcon value='menu' size='32' color='#6190E8'></AtIcon>
-              <Text>目录</Text>
+              <Text>{`${showAllCategories ? '返回' : '目录'}`}</Text>
               {/*<View>*/}
               {/*  <Picker mode='selector' mode='selector' range={options} onChange={this.onSelect}>*/}
               {/*    <Text>{selected}</Text>*/}

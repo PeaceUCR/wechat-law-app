@@ -30,8 +30,9 @@ export default class Index extends Component {
   }
 
   onShareAppMessage() {
+    const { law } = this.state
     return {
-      path: 'pages/index/index'
+      path: `pages/otherLaw/index?law=${law}`
     };
   }
   componentWillMount () {
