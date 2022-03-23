@@ -179,6 +179,11 @@
 
 .sentencings {
   font-size: 32px;
+  .source {
+    font-size: 28px;
+    color: #5200cc;
+    margin: 10px 0;
+  }
   .line-title {
     display: flex;
     align-items: center;

@@ -21,9 +21,9 @@ const DataPopup = (props) => {
     }
   } else if (type === 'procuratorate') {
     if (number) {
-      displayName = `检例第(${number})号:${name}`
+      displayName = `检例第(${number})号:${title}`
     } else {
-      displayName = name
+      displayName = title
     }
 
   } else if (type === 'source') {

@@ -38,3 +38,8 @@ export const rank = (list, property, searchValue) => {
 
   return list;
 };
+
+
+const getScore = (criminalLaw, searchValue) => {
+
+}

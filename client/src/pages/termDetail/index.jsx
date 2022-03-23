@@ -10,6 +10,7 @@ import {lawIdLabelMap, exampleIcon, sentencingIcon, explanationIcon, definitionI
 import './index.scss'
 import TextSectionComponent from "../../components/textSectionComponent/index";
 import TextSectionLinked from "../../components/textSectionLinked/index.weapp";
+import {otherLawExplanationSource} from "../../util/otherLaw";
 
 const getTermNumber = (text) => {
   return text.substring(0, text.indexOf('条') + 1);
@@ -99,20 +100,17 @@ export default class TermDetail extends Component {
           .orderBy('number', 'desc')
           .where({
           criminalLaw: db.RegExp({
-            regexp: '.*' + getTermNumber(term.text),
+            regexp: '.*' + term.chnNumber,
             options: 'i',
           })}).get({
           success: (res) => {
             const courts = [];
             const procuratorates = [];
-            const other = []
             res.data.forEach(item => {
               if (item.type === 'guide-examples-court') {
                 courts.push(item)
-              } else if (item.type === 'guide-examples-procuratorate') {
-                procuratorates.push(item)
               } else {
-                other.push(item)
+                procuratorates.push(item)
               }
             })
             that.setState({examples: procuratorates, courtExamples: courts, isCourtExampleLoading: false, isProcuratorateExampleLoading: false});
@@ -473,6 +471,7 @@ export default class TermDetail extends Component {
   renderTermExplanation = () => {
     const {termExplanations, zoomIn} = this.state
     return <View className='sentencings'>
+      <View className='source'>来源：《中华人民共和国刑法》释解与适用2021</View>
       {termExplanations.map((sentencing, index) => {
         const {text} = sentencing
         return (<View className='sentencing' key={`sentencing-key-${index}`}>

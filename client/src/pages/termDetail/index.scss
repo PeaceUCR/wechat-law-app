@@ -65,6 +65,11 @@
 
   .sentencings {
     font-size: 32px;
+    .source {
+      font-size: 28px;
+      color: #5200cc;
+      margin: 10px 0;
+    }
     .sentencing {
       .line {
         margin-bottom: 20px;

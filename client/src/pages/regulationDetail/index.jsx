@@ -10,7 +10,7 @@ import TextSection from "../../components/textSection/index.weapp";
 import TextSectionComponent from "../../components/textSectionComponent/index";
 import {convertNumberToChinese, isNumber} from "../../util/convertNumber";
 import {copy, definitionIcon, getText} from "../../util/util";
-import {otherLawNameMap} from "../../util/otherLaw";
+import {otherLawNameMap, otherLawExplanationSource} from "../../util/otherLaw";
 
 const typeCollectionMap = {
   'police': 'police-regulation',
@@ -249,16 +249,13 @@ export default class RegulationDetail extends Component {
     const {explanation, type, zoomIn} = this.state
     return <View className='sentencings'>
       <AtDivider height='40' lineColor='#fff' />
-      {type === 'litigation-law' && <View className='line-title'>
-        <AtIcon value='alert-circle' size={zoomIn ? 24 : 18} color='#c6823b'></AtIcon>
-        <Text>人大刑事诉讼法释义</Text>
-      </View>}
       <View className='sentencing'>
-      <View className='line'>
-        <TextSectionComponent data={explanation.text} zoomIn={zoomIn} />
+        {otherLawExplanationSource[type] && <View className='source'>来源：{otherLawExplanationSource[type]}</View>}
+        <View className='line'>
+          <TextSectionComponent data={explanation.text} zoomIn={zoomIn} />
+        </View>
+        <AtDivider height='40' lineColor='#fff' />
       </View>
-      <AtDivider height='40' lineColor='#fff' />
-    </View>
     </View>
   }
 

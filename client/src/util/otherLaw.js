@@ -105,3 +105,23 @@ export const otherLawCategoryMap = {
   'labor-conciliation': [{"level":1,"value":"第一章　总则"},{"level":1,"value":"第二章　调解"},{"level":1,"value":"第三章　仲裁"},{"level":2,"value":"第一节　一般规定"},{"level":2,"value":"第二节　申请和受理"},{"level":2,"value":"第三节　开庭和裁决"},{"level":1,"value":"第四章　附则"}],
   'medical-malpractice-regulation': [{"level":1,"value":"第一章　总则"},{"level":1,"value":"第二章　医疗事故的预防与处置"},{"level":1,"value":"第三章　医疗事故的技术鉴定"},{"level":1,"value":"第四章　医疗事故的行政处理与监督"},{"level":1,"value":"第五章　医疗事故的赔偿"},{"level":1,"value":"第六章　罚则"},{"level":1,"value":"第七章　附则"}]
 }
+
+export const otherLawExplanationSource = {
+  'litigation-law': '全国人大常委会法工委《中华人民共和国刑事诉讼法》释义及实用指南2012',
+  'anti-drug-law': '全国人大常委会法工委《中华人民共和国禁毒法》释义及实用指南（第2版）2013',
+  'labor-contract-law': '全国人大常委会法工委《中华人民共和国劳动合同法》释义及实用指南',
+  'labor-conciliation': '全国人大常委会法工委《中华人民共和国劳动争议调解仲裁法》条文释义与案例精解',
+  'consumer-right-protect-law':'全国人大常委会法工委《中华人民共和国消费者权益保护法》释义及实用指南',
+  'medical-malpractice-regulation':'最高人民法院医疗事故处理法律及配套规定新释新解',
+  'admin-force-law':'全国人大常委会法工委《中华人民共和国行政强制法》释义与案例',
+  'exit-entry-law':'全国人大常委会法工委《中国人民共和国出境入境管理法》释义及实用指南',
+  'civil-law-regulation':'全国人大常委会法工委《中华人民共和国民事诉讼法》释义及实用指南2012',
+  'admin-punish-law':'全国人大常委会法工委《中华人民共和国行政处罚法》释义及实用指南2009',
+  'admin-reconsider-law':'全国人大常委会法工委《中华人民共和国行政复议法》释义及实用指南2009',
+  'admin-allow-law':'全国人大常委会法工委《中华人民共和国行政许可法》释义及实用指南（第2版）2013',
+  'public-order-admin-penalty-law':'全国人大常委会法工委《中华人民共和国治安管理处罚法》释义及实用指南2012',
+  'admin-litigation-law':'最高人民法院《中华人民共和国行政诉讼法及司法解释条文理解与适用》2015',
+  'road-safe-law':'全国人大常委会法工委《中华人民共和国道路交通安全法》释义及实用指南2012',
+  'national-compensation':'最高人民法院《中华人民共和国国家赔偿法》条文理解与适用2010',
+  'fire-fighting':'全国人大常委会法工委《中华人民共和国消防法》释义及实用指南（第2版）2013',
+}

@@ -155,7 +155,7 @@ export const homePageOptions = {
       url: '/pages/otherLaw/index?law=civil-law-regulation',
       sub:'2022年1月1日',
       type: '民法典',
-      isNew: true
+      hasExplanation: true
     },
     {
       title: otherLawNameMap['civil-litigation-explanation'],
@@ -224,13 +224,13 @@ export const homePageOptions = {
       url: '/pages/otherLaw/index?law=admin-litigation-law',
       sub:'2017年7月1日',
       type: '行政',
+      hasExplanation: true
     },
     {
       title: otherLawNameMap['admin-litigation-explaination'],
       url: '/pages/otherLaw/index?law=admin-litigation-explaination',
       sub:'2018年2月8日',
       type: '行政',
-
     },
     {
       title: otherLawNameMap['admin-force-law'],
@@ -244,7 +244,7 @@ export const homePageOptions = {
       url: '/pages/otherLaw/index?law=admin-punish-law',
       sub:'2021年7月15日',
       type: '行政',
-
+      hasExplanation: true
       // isHot: true
     },
     {
@@ -252,7 +252,7 @@ export const homePageOptions = {
       url: '/pages/otherLaw/index?law=admin-reconsider-law',
       sub:'2017年9月1日',
       type: '行政',
-
+      hasExplanation: true
       // isHot: true
     },
     {
@@ -268,7 +268,7 @@ export const homePageOptions = {
       url: '/pages/otherLaw/index?law=admin-allow-law',
       sub:'2019年4月23日',
       type: '行政',
-
+      hasExplanation: true
       // isHot: true
     },
     {
@@ -276,7 +276,7 @@ export const homePageOptions = {
       url: '/pages/otherLaw/index?law=public-order-admin-penalty-law',
       sub:'2013年1月1日',
       type: '行政',
-
+      hasExplanation: true
       // isHot: true
     },
     {
@@ -284,7 +284,7 @@ export const homePageOptions = {
       url: '/pages/otherLaw/index?law=road-safe-law',
       sub:'2021年4月29日',
       type: '行政',
-
+      hasExplanation: true
     },
     {
       title: otherLawNameMap['road-safe-regulation'],
@@ -312,7 +312,7 @@ export const homePageOptions = {
       url: '/pages/otherLaw/index?law=national-compensation',
       sub:'2013年1月1日',
       type: '行政',
-
+      hasExplanation: true
     },
     {
       title: otherLawNameMap['exit-entry-law'],
@@ -380,7 +380,8 @@ export const homePageOptions = {
       url: '/pages/otherLaw/index?law=fire-fighting',
       sub:'2021年4月29日',
       type: '行政',
-      isNew: true
+      isNew: true,
+      hasExplanation: true
     },
   ],
   '公益':[{
