@@ -138,6 +138,7 @@ export default class Index extends Component {
             (item) => {
               return (
                 <GlobalSearchItem
+                  showFullTitle
                   key={item._id}
                   text={item.text}
                   title={item.title}
@@ -170,6 +171,7 @@ export default class Index extends Component {
             (item) => {
               return (
                 <GlobalSearchItem
+                  showFullTitle
                   key={item._id}
                   text={item.text}
                   title={item.title}
@@ -196,6 +198,7 @@ export default class Index extends Component {
             (item) => {
               return (
                 <GlobalSearchItem
+                  showFullTitle
                   key={item._id}
                   text={item.text}
                   title={item.title}
@@ -223,6 +226,7 @@ export default class Index extends Component {
           (item) => {
             return (
               <GlobalSearchItem
+                showFullTitle
                 key={item._id}
                 text={item.text}
                 title={item.title}
