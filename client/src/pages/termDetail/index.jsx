@@ -6,7 +6,7 @@ import DataPopup from '../../components/dataPopup/index.weapp'
 import {DiscussionArea} from '../../components/discussionArea/index.weapp'
 import { db } from '../../util/db'
 import {checkIfNewUser, getUserAvatar, getUserNickname, getUserOpenId, redirectToIndexIfNewUser, getCollectionLimit} from '../../util/login'
-import {lawIdLabelMap, exampleIcon, sentencingIcon, explanationIcon, definitionIcon, consultIcon, judgementIcon, pDocIcon, evidenceIcon, copy} from '../../util/util'
+import {lawIdLabelMap, exampleIcon, sentencingIcon, explanationIcon, definitionIcon, consultIcon, judgementIcon, pDocIcon, evidenceIcon, policeIcon, allFileCaseNumber, copy} from '../../util/util'
 import './index.scss'
 import TextSectionComponent from "../../components/textSectionComponent/index";
 import TextSectionLinked from "../../components/textSectionLinked/index.weapp";
@@ -550,6 +550,25 @@ export default class TermDetail extends Component {
     });
   };
 
+  jumpToFileCase = () => {
+    const {term} = this.state
+    const redirectStr = `/pages/fileCaseDetail/index?id=${term._id}&criminalLawNumber=${term.chnNumber}`
+    Taro.navigateTo({
+      url: redirectStr
+    });
+  };
+
+  renderFileCase = () => {
+    return (<View className='judgement-line left' onClick={this.jumpToFileCase}>
+      <Image
+        src={policeIcon}
+        className='title-icon'
+        mode='widthFix'
+      />
+      <View className='text'>立案追诉标准</View>
+    </View>)
+  }
+
   renderSentencingLine = () => {
     return (<View className='judgement-line' onClick={this.jumpToSentencing}>
       <Image
@@ -653,6 +672,7 @@ export default class TermDetail extends Component {
                 onClick={this.openYiBenTong}
               />}
             </View>
+            {(allFileCaseNumber.has(term.chnNumber)) && this.renderFileCase()}
           </View>
           {termExplanations.length > 0 &&
           <View className='module-container'>
