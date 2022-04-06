@@ -28,6 +28,7 @@ const newLaws = {
   'company-law': '公司法',
   'criminal-litigation-explanation': otherLawNameMap['criminal-litigation-explanation'],
   'civil-litigation-explanation': otherLawNameMap['civil-litigation-explanation'],
+  'civil-litigation-explanation-2022-04-10': otherLawNameMap['civil-litigation-explanation-2022-04-10'],
   'road-safe-violation-handling': otherLawNameMap['road-safe-violation-handling'],
   'police-law':otherLawNameMap['police-law'],
   'police-enforce-detail': otherLawNameMap['police-enforce-detail'],

@@ -39,6 +39,7 @@ const shared = [
 const otherLaws = [
   'criminal-litigation-explanation',
   'civil-litigation-explanation',
+  'civil-litigation-explanation-2022-04-10',
   'road-safe-violation-handling',
   'police-admin-regulation',
   'road-safe-regulation',

@@ -158,6 +158,8 @@ export const getExampleSearchTag = (example) => {
     return `最高法公报案例 ${date}`
   } else if (type === 'typical-examples-court') {
     return `最高法典型案例 ${date}`
+  } else if (type === 'typical-examples-procuratorate') {
+    return `最高检典型案例 ${date}`
   }
   return ''
 }

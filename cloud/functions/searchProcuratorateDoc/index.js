@@ -33,7 +33,7 @@ exports.main = async (event, context) => {
                 })
             }
         ])).orderBy('time', 'desc').limit(limit).get()
-        if (cityResult.data.length > 0) {
+        if (cityResult.data.length > 2) {
             return cityResult
         }
         const provinceResult = await db.collection('procuratorate-doc').where(_.and([

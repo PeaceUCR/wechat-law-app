@@ -28,6 +28,7 @@ const regulationDetailSet = new Set(
     'company-law',
     'criminal-litigation-explanation',
     'civil-litigation-explanation',
+    'civil-litigation-explanation-2022-04-10',
     'road-safe-violation-handling',
     'police-regulation',
     'litigation-regulation',

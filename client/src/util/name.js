@@ -158,9 +158,9 @@ export const homePageOptions = {
       hasExplanation: true
     },
     {
-      title: otherLawNameMap['civil-litigation-explanation'],
-      url: '/pages/otherLaw/index?law=civil-litigation-explanation',
-      sub:'2020年12月23日',
+      title: otherLawNameMap['civil-litigation-explanation-2022-04-10'],
+      url: '/pages/otherLaw/index?law=civil-litigation-explanation-2022-04-10',
+      sub:'2022年04月10日',
       type: '民法典'
     },
     {
