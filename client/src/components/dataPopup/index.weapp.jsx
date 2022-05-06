@@ -53,7 +53,7 @@ const DataPopup = (props) => {
       })
     }}
     >
-      <Text className='title'>{displayName}</Text>
+      <Text className={`${type === 'source' ? 'title source' : 'title'}`}>{displayName}</Text>
       <AtIcon value='external-link' size='16' color='#4d4dff'></AtIcon>
     </View>
     {effectiveDate && <View className='time'>{moment(effectiveDate).format('YYYY-MM-DD')}</View>}

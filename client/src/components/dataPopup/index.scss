@@ -19,6 +19,9 @@
     text-overflow: ellipsis;
     display: inline-block;
     white-space: nowrap;
+    &.source {
+      color: #6190E8;
+    }
   }
 }
 .time {

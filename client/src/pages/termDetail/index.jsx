@@ -11,6 +11,7 @@ import './index.scss'
 import TextSectionComponent from "../../components/textSectionComponent/index";
 import TextSectionLinked from "../../components/textSectionLinked/index.weapp";
 import {otherLawExplanationSource} from "../../util/otherLaw";
+import Loading2 from "../../components/loading2/index.weapp";
 
 const getTermNumber = (text) => {
   return text.substring(0, text.indexOf('条') + 1);
@@ -50,7 +51,8 @@ export default class TermDetail extends Component {
     isConsultLoading: true,
     isCollected: false,
     isReadMode: false,
-    zoomIn: false
+    zoomIn: false,
+    isLoading: false
   }
 
   config = {
@@ -649,7 +651,7 @@ export default class TermDetail extends Component {
       isCollectedLoading, isCollected, isReadMode, zoomIn,
       isTermExplanationLoading, isConsultLoading,
       showTermExplanation, showComplement, showExample, showConsult,
-      showYiBenTong, enableYiBenTong, isYiBenTongLoading, evidence, showEvidence} = this.state;
+      showYiBenTong, enableYiBenTong, isYiBenTongLoading, evidence, showEvidence, isLoading} = this.state;
     return (
       <View className={`term-detail-page page ${isReadMode ? 'read-mode' : ''} ${zoomIn ? 'zoom-in' : ''}`}>
           <View className='copy-icon-container' onClick={this.copyToClipboard}>
@@ -781,9 +783,7 @@ export default class TermDetail extends Component {
 
         {(isProcuratorateExampleLoading || isCourtExampleLoading
           || isComplementLoading || isCollectedLoading
-          || isTermExplanationLoading || isConsultLoading || isYiBenTongLoading) && <View className='loading-container'>
-          <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>
-        </View>}
+          || isTermExplanationLoading || isConsultLoading || isYiBenTongLoading || isLoading) && <Loading2 />}
 
         <AtFloatLayout isOpened={showYiBenTong} scrollY title='YiBenTong' onClose={() => {this.setState({showYiBenTong: false})}}>
           {this.renderYiBenTong()}
