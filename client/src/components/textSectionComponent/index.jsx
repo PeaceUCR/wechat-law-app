@@ -1,6 +1,6 @@
 import Taro, { Component, getStorageSync} from '@tarojs/taro'
 import { View, Text, Swiper,SwiperItem, RichText } from '@tarojs/components'
-import {AtButton} from "taro-ui";
+import {AtButton, AtIcon} from "taro-ui";
 import './index.scss'
 import {findAndHighlight, isStartWith, refine, highlights, copy} from "../../util/util";
 
@@ -92,7 +92,10 @@ export default class TextSectionComponent extends Component {
                       onTouchEnd={this.touchEnd}
         >
           <RichText nodes={findAndHighlight(line, index, keyword)} className={isStartWith(line, highlights) ? 'highlight': ''} ></RichText>
-          {index === selectedLine && <View className='copy'><AtButton size='small' type='primary' onClick={() => copy(line, this.resetSelectedLine)}>复制</AtButton></View>}
+          {index === selectedLine && <View className='copy'>
+            <AtButton size='small' type='primary' onClick={() => copy(line, this.resetSelectedLine)}>复制</AtButton>
+            <AtIcon value='close' size='28' color='#e60000' onClick={() => this.resetSelectedLine()}></AtIcon>
+          </View>}
         </View>)
       })}</View>
     </View>)

@@ -530,8 +530,9 @@ export default class ExampleDetail extends Component {
           {index === selectedLine && <View className='copy'>
             <AtButton size='small' type='primary' onClick={() => {
               copy(line, this.resetSelectedLine)
-          }
-          }>复制</AtButton></View>}
+          }}>复制</AtButton>
+            <AtIcon value='close' size='28' color='#e60000' onClick={() => this.resetSelectedLine()}></AtIcon>
+          </View>}
         </View>)
       })}</View>
     </View>)
