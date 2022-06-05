@@ -68,12 +68,18 @@ export default class TextSectionComponent extends Component {
       //     })
       //   }
       // });
-    }, 2000);
+    }, 1000);
   }
 
   touchEnd = () => {
     console.log('end')
     clearTimeout(this.pressTime);
+  }
+
+  resetSelectedLine = () => {
+    this.setState({
+      selectedLine: -1
+    })
   }
 
   render () {
@@ -86,7 +92,7 @@ export default class TextSectionComponent extends Component {
                       onTouchEnd={this.touchEnd}
         >
           <RichText nodes={findAndHighlight(line, index, keyword)} className={isStartWith(line, highlights) ? 'highlight': ''} ></RichText>
-          {index === selectedLine && <View className='copy'><AtButton size='small' type='primary' onClick={() => copy(line)}>复制</AtButton></View>}
+          {index === selectedLine && <View className='copy'><AtButton size='small' type='primary' onClick={() => copy(line, this.resetSelectedLine)}>复制</AtButton></View>}
         </View>)
       })}</View>
     </View>)

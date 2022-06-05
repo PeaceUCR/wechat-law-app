@@ -165,7 +165,7 @@ export const getExampleSearchTag = (example) => {
   return ''
 }
 
-export const copy = (text) => {
+export const copy = (text, callback) => {
   Taro.showLoading({
     title: '复制中',
   })
@@ -184,6 +184,9 @@ export const copy = (text) => {
               icon: 'none',
               duration: 2000
             })
+            if (callback) {
+              callback()
+            }
           }
         });
       } else {
@@ -195,14 +198,15 @@ export const copy = (text) => {
         Taro.hideLoading()
       }
 
+    },
+    fail: err => {
+      // handle error
+      Taro.showToast({
+        title: '复制失败: 未登录或其他原因',
+        icon: 'none',
+        duration: 4000
+      })
     }
-  }).catch(err => {
-    // handle error
-    Taro.showToast({
-      title: '复制失败: 未登录或其他原因',
-      icon: 'none',
-      duration: 4000
-    })
   })
 
 }

@@ -326,12 +326,13 @@ exports.main = async (event, context) => {
     //         end:470
     //     }
     // ]
-    const categoryList = [
+    const isMostRecent = event.type === 'most-recent'
+    let categoryList = [
         {
             title:'',
             key: 130,
             start: 1448,
-            end: 1463
+            end: 1464
         },
         {
             title:'',
@@ -445,6 +446,10 @@ exports.main = async (event, context) => {
             end:470
         }
     ]
+
+    if (isMostRecent) {
+        categoryList = categoryList.slice(0, categoryList.length - 2)
+    }
     console.log(event)
     const wxContext = cloud.getWXContext();
     const db = cloud.database()

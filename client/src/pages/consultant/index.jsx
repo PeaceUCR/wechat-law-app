@@ -1,6 +1,6 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {View, Text, Picker, Image} from '@tarojs/components'
-import {AtSearchBar, AtListItem, AtBadge, AtIcon, AtNoticebar, AtFab, AtIndexes} from 'taro-ui'
+import {AtSearchBar, AtListItem, AtBadge, AtButton, AtNoticebar, AtFab, AtIndexes} from 'taro-ui'
 import {isEmpty} from 'lodash';
 import clickIcon from '../../static/down.png';
 import Loading2 from "../../components/loading2/index.weapp";
@@ -17,7 +17,8 @@ export default class Index extends Component {
     selected: '搜全文',
     options: ['搜全文', '搜案例名', '搜案例号'],
     isReadMode: false,
-    categoryList: []
+    categoryList: [],
+    type: 'most-recent'
   }
 
   config = {
@@ -62,8 +63,12 @@ export default class Index extends Component {
     this.setState({
       isLoading: true
     })
+    const that = this;
     Taro.cloud.callFunction({
       name: 'getConsultsCategory',
+      data: {
+        type: that.state.type
+      },
       complete: ({result}) => {
 
         const {categoryList} = result
@@ -77,8 +82,17 @@ export default class Index extends Component {
     })
   }, 6000, { trailing: false })
 
+  loadAll = () => {
+    this.setState({type: ''},() => {
+      this.loadCategory()
+      Taro.pageScrollTo({
+        scrollTop: 0,
+        duration: 0
+      })
+    })
+  }
   renderCategoryList = () => {
-    const {categoryList} = this.state
+    const {categoryList, type} = this.state
     return (<View style='height:100vh'>
       <AtIndexes
         list={categoryList}
@@ -91,6 +105,7 @@ export default class Index extends Component {
       >
         <View className='category-divider'>刑事审判参考全目录</View>
       </AtIndexes>
+      {type === 'most-recent' && <AtButton type='primary' onClick={() => this.loadAll()}>加载更多</AtButton>}
     </View>)
   }
 
@@ -242,7 +257,7 @@ export default class Index extends Component {
     return (
       <View className={`example-page page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
-          刑事审判参考1-1433号案例已补全
+          刑事审判参考1-1464号案例已补全
         </AtNoticebar>
           <View className='header'>
             <View className='select'>

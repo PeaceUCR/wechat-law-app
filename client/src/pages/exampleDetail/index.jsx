@@ -451,12 +451,18 @@ export default class ExampleDetail extends Component {
       //     })
       //   }
       // });
-    }, 2000);
+    }, 1000);
   }
 
   touchEnd = () => {
     console.log('end')
     clearTimeout(this.pressTime);
+  }
+
+  resetSelectedLine = () => {
+    this.setState({
+      selectedLine: -1
+    })
   }
 
   renderComplement = () => {
@@ -521,11 +527,16 @@ export default class ExampleDetail extends Component {
         >
           {isStartWith(line, c) && c && <View id={`category-${c.indexOf(line)}`}></View>}
           <RichText nodes={findAndHighlight(line, index, keyword)} className={isStartWith(line, c) ? 'highlight': ''} ></RichText>
-          {index === selectedLine && <View className='copy'><AtButton size='small' type='primary' onClick={() => copy(line)}>复制</AtButton></View>}
+          {index === selectedLine && <View className='copy'>
+            <AtButton size='small' type='primary' onClick={() => {
+              copy(line, this.resetSelectedLine)
+          }
+          }>复制</AtButton></View>}
         </View>)
       })}</View>
     </View>)
   }
+
 
   changeKeyword = (keyword) => {
     const {example} = this.state

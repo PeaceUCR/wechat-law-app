@@ -25,14 +25,6 @@ export default class User extends Component {
   }
   onPullDownRefresh () {
     console.log('pull')
-    if (wx.createRewardedVideoAd) {
-      videoAd = wx.createRewardedVideoAd({
-        adUnitId: 'adunit-f8070b31831d3c12'
-      })
-      videoAd.onLoad(() => {})
-      videoAd.onError((err) => {})
-      videoAd.onClose((res) => {})
-    }
     if (videoAd) {
       videoAd.show().catch(() => {
         // 失败重试
@@ -174,11 +166,11 @@ export default class User extends Component {
         {/*    <ad unit-id='adunit-aa47163462e4442f' ad-type='video' ad-theme='white'></ad>*/}
         {/*  </SwiperItem>*/}
         {/*</Swiper>*/}
-        <Swiper className='video-container'>
-          <SwiperItem >
-            <ad unit-id='adunit-b09895fd83835652' ad-intervals='30'></ad>
-          </SwiperItem>
-        </Swiper>
+        {/*<Swiper className='video-container'>*/}
+        {/*  <SwiperItem >*/}
+        {/*    <ad unit-id='adunit-b09895fd83835652' ad-intervals='30'></ad>*/}
+        {/*  </SwiperItem>*/}
+        {/*</Swiper>*/}
         <View className='search'>
           <AtSearchBar
             // fixed
