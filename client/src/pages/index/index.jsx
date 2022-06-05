@@ -402,12 +402,12 @@ export default class Index extends Component {
               <AtIcon value='help' size='30' color='#000'></AtIcon>
             </AtBadge>
           </View>
-          <View className='float-scan' onClick={this.open}
-          >
-            <AtBadge value='图文识别'>
-              <Image src={scanIcon} className='scan-icon' mode='widthFix' />
-            </AtBadge>
-          </View>
+          {/*<View className='float-scan' onClick={this.open}*/}
+          {/*>*/}
+          {/*  <AtBadge value='图文识别'>*/}
+          {/*    <Image src={scanIcon} className='scan-icon' mode='widthFix' />*/}
+          {/*  </AtBadge>*/}
+          {/*</View>*/}
           <AtSearchBar
             placeholder='搜标题'
             value={searchValue}

@@ -36,7 +36,7 @@ export default class Index extends Component {
       criminalLawNumber,
       criminalLaw
     }, () => {
-      that.onSearch()
+      // that.onSearch()
     })
   }
 
@@ -138,7 +138,7 @@ export default class Index extends Component {
                 onActionClick={() => this.onSearch(0)}
                 onBlur={() => this.onSearch(0)}
                 onClear={this.onClear}
-                placeholder='搜案例名或主旨'
+                placeholder='请输入关键词'
               />
             </View>
           </View>

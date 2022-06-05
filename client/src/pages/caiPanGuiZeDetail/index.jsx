@@ -105,12 +105,14 @@ export default class ExampleDetail extends Component {
 
   renderExample = () => {
     const {example, keyword, zoomIn} = this.state;
-    const {text, judgeRule} = example;
+    const {text, judgeRule, publishInfo} = example;
     return (<View>
       <View className='term-complement-title'>裁判要旨:</View>
       <View className='term-complement-title'>
         <TextSectionComponent data={judgeRule} keyword={keyword} zoomIn={zoomIn} />
       </View>
+      <AtDivider content='来源' />
+      <TextSectionComponent data={publishInfo} keyword={keyword} zoomIn={zoomIn} />
       <AtDivider content='案例详情' />
       <TextSectionComponent data={text} keyword={keyword} zoomIn={zoomIn} />
     </View>)
