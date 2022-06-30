@@ -531,7 +531,7 @@ export default class ExampleDetail extends Component {
             <AtButton size='small' type='primary' onClick={() => {
               copy(line, this.resetSelectedLine)
           }}>复制</AtButton>
-            <AtIcon value='close' size='28' color='#e60000' onClick={() => this.resetSelectedLine()}></AtIcon>
+            <Button className='copy-cancel' onClick={() => this.resetSelectedLine()}>取消</Button>
           </View>}
         </View>)
       })}</View>

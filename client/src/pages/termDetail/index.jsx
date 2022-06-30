@@ -1,6 +1,6 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import { View, Text, Input, Button, Image } from '@tarojs/components'
-import {AtActivityIndicator, AtIcon, AtFab, AtButton, AtBadge, AtDivider, AtAccordion, AtFloatLayout} from "taro-ui";
+import {AtIcon, AtFab, AtButton, AtBadge, AtDivider, AtAccordion, AtFloatLayout} from "taro-ui";
 import throttle from "lodash/throttle";
 import DataPopup from '../../components/dataPopup/index.weapp'
 import {DiscussionArea} from '../../components/discussionArea/index.weapp'
@@ -19,6 +19,10 @@ const getTermNumber = (text) => {
 
 const criminalLawNumberHasSentence = new Set(
   [133, 176, 192, 196, 224, 234, 236, 238, 263, 264, 266, 267, 271, 274, 277, 292, 293, 312, 347, 348, 354, 359]
+)
+
+const criminalLawNumberHasExplanationLink = new Set(
+  [17,37,120,133,134,135,139,142,162,169,175,177,185,205,210,219,224,234,236,244,253,260,262,276,280,284,286,287,291,293,299,307,308,334,336,342,344,355,388,390,399,408],
 )
 
 export default class TermDetail extends Component {
@@ -470,8 +474,18 @@ export default class TermDetail extends Component {
     </View>
   }
 
+  loadMoreTermExplanation = () => {
+    const that = this;
+    const {term} = this.state
+    that.setState({isTermExplanationLoading: true})
+    db.collection('term-explanation-faxin-2020-zhi-yi').where({number: term.number + ""}).get({
+      success: (res) => {
+        that.setState({termExplanations: [...that.state.termExplanations, ...res.data], isTermExplanationLoading: false, showTermExplanationLoadMore: false});
+      }
+    });
+  }
   renderTermExplanation = () => {
-    const {termExplanations, zoomIn} = this.state
+    const {termExplanations, zoomIn, term} = this.state
     return <View className='sentencings'>
       <View className='source'>来源：《中华人民共和国刑法》释解与适用2021</View>
       {termExplanations.map((sentencing, index) => {
@@ -482,6 +496,7 @@ export default class TermDetail extends Component {
           </View>
         </View>)
       })}
+      {criminalLawNumberHasExplanationLink.has(term.number) && <View className='load-more-explanation' onClick={this.jumpToTermExplanation}>更多释义</View>}
     </View>
   }
 
@@ -555,6 +570,14 @@ export default class TermDetail extends Component {
   jumpToFileCase = () => {
     const {term} = this.state
     const redirectStr = `/pages/fileCaseDetail/index?id=${term._id}&criminalLawNumber=${term.chnNumber}`
+    Taro.navigateTo({
+      url: redirectStr
+    });
+  };
+
+  jumpToTermExplanation = () => {
+    const {term} = this.state
+    const redirectStr = `/pages/termDetailExplanation/index?id=${term._id}&number=${term.number}`
     Taro.navigateTo({
       url: redirectStr
     });

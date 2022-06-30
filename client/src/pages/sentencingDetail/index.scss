@@ -192,4 +192,8 @@
   text-decoration: underline;
   text-decoration-color: #6190E8;
   color: #6190E8 !important;
+  &.source {
+    color: #5200cc !important;
+    text-decoration: none;
+  }
 }

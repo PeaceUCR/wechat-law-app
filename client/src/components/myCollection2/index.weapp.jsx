@@ -79,6 +79,11 @@ const MyCollection2 = (props) => {
           url: `/pages/fileCaseDetail/index?id=${collectionId}&criminalLawNumber=${c.criminalLawNumber}`,
         })
         break;
+      case 'termDetailExplanation':
+        Taro.navigateTo({
+          url: `/pages/termDetailExplanation/index?id=${collectionId}&number=${c.criminalLawNumber}`,
+        })
+        break;
       case 'sentencing':
         Taro.navigateTo({
           url: `/pages/sentencingDetail/index?id=${collectionId}&criminalLawNumber=${c.criminalLawNumber}`,
