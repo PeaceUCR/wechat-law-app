@@ -3,7 +3,7 @@ import {View, Text, Picker, Image} from '@tarojs/components'
 import {AtSearchBar, AtActivityIndicator, AtFab, AtDivider, AtNoticebar, AtIcon} from 'taro-ui'
 import {isEmpty} from 'lodash';
 import { db } from '../../util/db'
-import { rank, rankBySearchValue } from '../../util/rank'
+import {rank, rankBySearchValue, rankCriminalList} from '../../util/rank'
 import { TermSearchItem } from '../../components/termSearchItem/index.weapp'
 import { LawCategory } from '../../components/lawCategory/index.weapp'
 import { getNumber, isNumber} from '../../util/convertNumber'
@@ -235,7 +235,7 @@ export default class Index extends Component {
             duration: 3000
           })
         }
-        that.setState({searchResult: rankBySearchValue(result.data, 'text', searchValue), isLoading: false, hasSearched: true});
+        that.setState({searchResult: rankCriminalList(result.data, searchValue), isLoading: false, hasSearched: true});
       }
     })
 
