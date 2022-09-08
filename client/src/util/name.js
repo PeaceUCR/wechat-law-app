@@ -403,18 +403,6 @@ export const homePageOptions = {
       url: '/pages/examples/index',
       type: '共有',
       isUpdated: true
-    },
-    {
-      title: '地方法律法规',
-      url: '/pages/localLaw/index',
-      type: '共有',
-      isNew: true
-    },
-    {
-      title: '检察文书',
-      url: '/pages/procuratorateDoc/index',
-      type: '共有',
-      isNew: true
     }
   ]
 }
@@ -446,19 +434,7 @@ export const exampleOptions = [
   url: '/pages/examples/index',
   type: '共有',
   isUpdated: true
-},
-  {
-    title: '地方法律法规',
-    url: '/pages/localLaw/index',
-    type: '共有',
-    isNew: true
-  },
-  {
-    title: '检察文书',
-    url: '/pages/procuratorateDoc/index',
-    type: '共有',
-    isNew: true
-  }]
+}]
 
 export const searchHomePageOptions = (searchValue) => {
   if (isEmpty(searchValue)) {
