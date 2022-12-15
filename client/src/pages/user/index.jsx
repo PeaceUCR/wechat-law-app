@@ -40,13 +40,13 @@ export default class User extends Component {
       province: getProvince(),
       city: getCity()
     })
-    db.collection('configuration').where({}).get({
-      success: (res) => {
-        that.setState({
-          enableAds: res.data[0].enableAds
-        })
-      }
-    });
+    // db.collection('configuration').where({}).get({
+    //   success: (res) => {
+    //     that.setState({
+    //       enableAds: res.data[0].enableAds
+    //     })
+    //   }
+    // });
 
     const setting = getStorageSync('setting');
     this.setState({isReadMode: setting && setting.isReadMode})

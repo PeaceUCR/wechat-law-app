@@ -12,7 +12,7 @@ import qrcode from '../../static/qrcode.png';
 import {checkIfNewUser, getUserAvatar, getUserNickname, getUserOpenId, isSuperAdmin} from '../../util/login';
 import './index.scss'
 import {db} from "../../util/db";
-import {tmpId, logoIcon, scanIcon} from '../../util/util'
+import {tmpId, logoIcon, scanIcon, getConfiguration} from '../../util/util'
 import {ImageRecoginzer} from "../../components/imageRecoginzer/index.weapp";
 import {homePageOptions, exampleOptions} from '../../util/name'
 
@@ -68,64 +68,70 @@ export default class Index extends Component {
       path: 'pages/index/index'
     };
   }
+
+  handleConfiguration = (res) => {
+    this.setState({
+      posterUrlForLoading: res.data[0].posterUrl,
+      posterRedirect: res.data[0].posterRedirect,
+      joinGroupUrl: res.data[0].joinGroupUrl,
+      canClose: res.data[0].canClose,
+      enableMainVideoAd: res.data[0].enableMainVideoAd,
+      enableMainBanner: res.data[0].enableMainBanner,
+      enableMainBottomVideo: res.data[0].enableMainBottomVideo
+      // enablePosterAd: res.data[0].enablePosterAd
+    })
+  }
   componentWillMount () {
+    const today = moment().format('YYYY-MM-DD');
+    console.log('today', today);
     const that = this;
-    db.collection('configuration').where({}).get({
-      success: (res) => {
-        that.setState({
-          posterUrlForLoading: res.data[0].posterUrl,
-          posterRedirect: res.data[0].posterRedirect,
-          joinGroupUrl: res.data[0].joinGroupUrl,
-          canClose: res.data[0].canClose,
-          enableMainVideoAd: res.data[0].enableMainVideoAd,
-          enableMainBanner: res.data[0].enableMainBanner,
-          enableMainBottomVideo: res.data[0].enableMainBottomVideo
-          // enablePosterAd: res.data[0].enablePosterAd
-        })
 
-        setStorageSync('enableYiBenTong', res.data[0].enableYiBenTong);
+    getConfiguration().then((res) => {
+      console.log('getConfiguration', res);
+      that.handleConfiguration(res);
 
-        if (res.data[0].enableAutoScroll) {
-          setStorageSync('enableAutoScroll', true);
-        } else {
-          setStorageSync('enableAutoScroll', false);
-        }
+      setStorageSync('enableYiBenTong', res.data[0].enableYiBenTong);
 
-        if(res.data[0].forceLogin) {
-          if(checkIfNewUser()) {
-            Taro.cloud.callFunction({
-              name: 'getUserInfo',
-              complete: r => {
-                if (r &&  r.result && r.result.data && r.result.data.length > 0 ) {
-                  setStorageSync('user', r.result.data[0]);
-                  that.setState({isUserLoaded: true})
-
-                  if (getStorageSync('poster-shown') !== res.data[0].posterUrl) {
-                    that.setState({showPoster: true})
-                  }
-
-                } else {
-                  that.setState({isNewUser: true});
-                }
-              }
-            })
-          } else {
-            if (getStorageSync('poster-shown') !== res.data[0].posterUrl) {
-              that.setState({showPoster: true})
-            } else {
-              // that.setState({enablePosterAd: res.data[0].enablePosterAd})
-            }
-          }
-        } else {
-          that.setState({showFooter: false})
-          // Taro.showModal({
-          //   title: '关于我们',
-          //   content: '这是一个法律学习，法律信息查询的工具小程序, 祝大家司法考试顺利！',
-          //   showCancel: false
-          // })
-        }
+      if (res.data[0].enableAutoScroll) {
+        setStorageSync('enableAutoScroll', true);
+      } else {
+        setStorageSync('enableAutoScroll', false);
       }
-    });
+
+      if(res.data[0].forceLogin) {
+        if(checkIfNewUser()) {
+          Taro.cloud.callFunction({
+            name: 'getUserInfo',
+            complete: r => {
+              if (r &&  r.result && r.result.data && r.result.data.length > 0 ) {
+                setStorageSync('user', r.result.data[0]);
+                that.setState({isUserLoaded: true})
+
+                if (getStorageSync('poster-shown') !== res.data[0].posterUrl) {
+                  that.setState({showPoster: true})
+                }
+
+              } else {
+                that.setState({isNewUser: true});
+              }
+            }
+          })
+        } else {
+          if (getStorageSync('poster-shown') !== res.data[0].posterUrl) {
+            that.setState({showPoster: true})
+          } else {
+            // that.setState({enablePosterAd: res.data[0].enablePosterAd})
+          }
+        }
+      } else {
+        that.setState({showFooter: false})
+        // Taro.showModal({
+        //   title: '关于我们',
+        //   content: '这是一个法律学习，法律信息查询的工具小程序, 祝大家司法考试顺利！',
+        //   showCancel: false
+        // })
+      }
+    })
   }
 
   isNoOption = () => {

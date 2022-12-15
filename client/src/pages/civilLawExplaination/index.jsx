@@ -5,6 +5,7 @@ import { db } from '../../util/db'
 import './index.scss'
 import {isEmpty} from "lodash";
 import moment from "moment";
+import {getConfiguration} from "../../util/util";
 
 export default class Index extends Component {
 
@@ -47,18 +48,29 @@ export default class Index extends Component {
       });
     } else {
       const that = this;
-      db.collection('configuration').where({}).get({
-        success: (res) => {
-          const { civilExplaination, civilExplainationTitles, civilExplainationIndex } = res.data[0]
 
-          that.setState({
-            civilExplaination,
-            civilExplainationTitles,
-            civilExplainationIndex,
-            isLoading: false,
-          });
-        }
+      getConfiguration().then((res) => {
+        const { civilExplaination, civilExplainationTitles, civilExplainationIndex } = res.data[0]
+
+        that.setState({
+          civilExplaination,
+          civilExplainationTitles,
+          civilExplainationIndex,
+          isLoading: false,
+        });
       });
+      // db.collection('configuration').where({}).get({
+      //   success: (res) => {
+      //     const { civilExplaination, civilExplainationTitles, civilExplainationIndex } = res.data[0]
+      //
+      //     that.setState({
+      //       civilExplaination,
+      //       civilExplainationTitles,
+      //       civilExplainationIndex,
+      //       isLoading: false,
+      //     });
+      //   }
+      // });
     }
 
   }

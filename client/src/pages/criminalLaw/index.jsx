@@ -7,7 +7,7 @@ import { rank, rankBySearchValue } from '../../util/rank'
 import { TermSearchItem } from '../../components/termSearchItem/index.weapp'
 import { LawCategory } from '../../components/lawCategory/index.weapp'
 import { getNumber, isNumber} from '../../util/convertNumber'
-import {lawMap, keys} from '../../util/util'
+import {lawMap, keys, getConfiguration} from '../../util/util'
 import clickIcon from '../../static/down.png';
 import './index.scss'
 
@@ -54,18 +54,28 @@ export default class Index extends Component {
 
     const that = this;
     that.setState({isLoading: true});
-    db.collection('configuration').where({}).get({
-      success: (res) => {
-        const {crimes, criminalLawTerms, categoryLines, criminalTermsComplement, singleCriminalLaw} = res.data[0]
-        that.setState({
-          crimes,
-          criminalLawTerms,
-          categoryLines,
-          criminalTermsComplement,
-          singleCriminalLaw,
-          isLoading: false});
-      }
+    getConfiguration().then((res) => {
+      const {crimes, criminalLawTerms, categoryLines, criminalTermsComplement, singleCriminalLaw} = res.data[0]
+      that.setState({
+        crimes,
+        criminalLawTerms,
+        categoryLines,
+        criminalTermsComplement,
+        singleCriminalLaw,
+        isLoading: false});
     });
+    // db.collection('configuration').where({}).get({
+    //   success: (res) => {
+    //     const {crimes, criminalLawTerms, categoryLines, criminalTermsComplement, singleCriminalLaw} = res.data[0]
+    //     that.setState({
+    //       crimes,
+    //       criminalLawTerms,
+    //       categoryLines,
+    //       criminalTermsComplement,
+    //       singleCriminalLaw,
+    //       isLoading: false});
+    //   }
+    // });
 
     const setting = getStorageSync('setting');
     this.setState({isReadMode: setting && setting.isReadMode})

@@ -12,6 +12,7 @@ import {
 import JudgementSearchItem from '../../components/judgementSearchItem/index.weapp'
 import {convertNumberToChinese} from '../../util/convertNumber'
 import throttle from "lodash/throttle";
+import {getConfiguration} from "../../util/util";
 
 const settingIcon =
   'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU92UYROmCwI9kIRFU6pnKzycaPtbJdQ4ibwv99ttVwWNj2GkAib2icbrPD3cyGLWuTNMjs8I3pB1X6QOw/0?wx_fmt=png'
@@ -55,15 +56,21 @@ export default class Index extends Component {
       number
     })
     const that = this
-    db.collection('configuration').where({}).get({
-      success: (res) => {
-        console.log(res.data[0])
-        const {enableMainAd} = res.data[0]
-        that.setState({
-          enableMainAd: enableMainAd
-        })
-      }
+    getConfiguration().then((res) => {
+      const {enableMainAd} = res.data[0]
+      that.setState({
+        enableMainAd: enableMainAd
+      })
     });
+    // db.collection('configuration').where({}).get({
+    //   success: (res) => {
+    //     console.log(res.data[0])
+    //     const {enableMainAd} = res.data[0]
+    //     that.setState({
+    //       enableMainAd: enableMainAd
+    //     })
+    //   }
+    // });
   }
 
   componentDidMount () {

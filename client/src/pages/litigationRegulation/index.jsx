@@ -7,7 +7,7 @@ import { LitigationSearchItem } from '../../components/litigationSearchItem/inde
 import { HierarchicalOptions } from '../../components/hierarchicalOptions/index.weapp'
 import {convertNumberToChinese, getNumber} from '../../util/convertNumber'
 import './index.scss'
-import {processLitigationOptions} from '../../util/util';
+import {getConfiguration, processLitigationOptions} from '../../util/util';
 
 export default class Index extends Component {
 
@@ -66,14 +66,21 @@ export default class Index extends Component {
   componentDidShow () {
     const that = this;
     that.setState({isLoading: true});
-    db.collection('configuration').where({}).get({
-      success: (res) => {
-        that.setState({
-          litigationRegulationChapters: res.data[0].litigationRegulationChapters,
-          litigationRegulationSections: res.data[0].litigationRegulationSections,
-          isLoading: false});
-      }
+    getConfiguration().then((res) => {
+      that.setState({
+        litigationRegulationChapters: res.data[0].litigationRegulationChapters,
+        litigationRegulationSections: res.data[0].litigationRegulationSections,
+        isLoading: false});
     });
+
+    // db.collection('configuration').where({}).get({
+    //   success: (res) => {
+    //     that.setState({
+    //       litigationRegulationChapters: res.data[0].litigationRegulationChapters,
+    //       litigationRegulationSections: res.data[0].litigationRegulationSections,
+    //       isLoading: false});
+    //   }
+    // });
   }
 
   componentDidHide () { }

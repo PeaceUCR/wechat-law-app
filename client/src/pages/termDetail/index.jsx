@@ -778,7 +778,7 @@ export default class TermDetail extends Component {
           </View>
         }
         {criminalLawNumberHasSentence.has(term.number) && this.renderSentencingLine()}
-        {(term.number >=114 && term.number <=419) && this.renderProcuratorateDoc()}
+        {/*{(term.number >=114 && term.number <=419) && this.renderProcuratorateDoc()}*/}
         {(term.number >=114 && term.number <=419) && this.renderJudgementLine()}
 
         {(isProcuratorateExampleLoading || isCourtExampleLoading
