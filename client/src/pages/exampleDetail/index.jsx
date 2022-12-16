@@ -656,10 +656,10 @@ export default class ExampleDetail extends Component {
               </AtBadge>
             </View>
           </View>
-          {enableExampleDetailAd && !isLoading && !demoSet.has(type) && <View>
+          {enableExampleDetailAd && !isLoading && demoSet.has(type) && <View>
             <ad unit-id="adunit-aa47163462e4442f" ad-type="video" ad-theme="white"></ad>
           </View>}
-          {enableExampleDetailAd && !isLoading && demoSet.has(type) && <View>
+          {enableExampleDetailAd && !isLoading && !demoSet.has(type) && <View>
             <ad unit-id="adunit-918b26ec218137ab"></ad>
           </View>}
           <DiscussionArea topicId={example._id}  isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />
