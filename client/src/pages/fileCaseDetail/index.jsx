@@ -11,6 +11,7 @@ import DataPopup from "../../components/dataPopup/index.weapp";
 import moment from "moment";
 import Loading2 from "../../components/loading2/index.weapp";
 import {db} from "../../util/db";
+import {addScore, deleteCollection, saveCollection} from "../../util/userCollection";
 
 export default class SentencingDetail extends Component {
 
@@ -32,12 +33,8 @@ export default class SentencingDetail extends Component {
 
   onShareAppMessage() {
     const {criminalLawNumber, id} = this.state
-    Taro.cloud.callFunction({
-      name: 'share',
-      data: {
-        url: `pages/fileCaseDetail/index?id=${id}&criminalLawNumber=${criminalLawNumber}`
-      }
-    })
+    // TODO correct later
+    addScore();
     return {
       path: `pages/fileCaseDetail/index?id=${id}&criminalLawNumber=${criminalLawNumber}`
     };
@@ -173,49 +170,32 @@ export default class SentencingDetail extends Component {
 
     that.setState({isSentencingLoading: true})
     if (isCollected) {
-      Taro.cloud.callFunction({
-        name: 'deleteCollection',
-        data: {
-          id: id,
-          type: 'fileCase'
-        },
-        complete: () => {
-          Taro.showToast({
-            title: '收藏取消',
-            icon: 'none',
-            duration: 1000
-          })
-          that.setState({isSentencingLoading: false, isCollected: false});
-        }
+      deleteCollection(id).then(() => {
+        Taro.showToast({
+          title: '收藏取消',
+          icon: 'none',
+          duration: 1000
+        })
+        that.setState({isSentencingLoading: false, isCollected: false});
       })
     } else {
-      Taro.cloud.callFunction({
-        name: 'collect',
-        data: {
-          id: id,
-          type: 'fileCase',
-          title: `刑法${criminalLawNumber}立案追诉标准`,
-          criminalLawNumber,
-          collectionLimit: getCollectionLimit()
-        },
-        complete: (r) => {
-          if (r && r.result && r.result.errMsg !== 'collection.add:ok') {
-            Taro.showToast({
-              title: `收藏失败:${r.result.errMsg}`,
-              icon: 'none',
-              duration: 3000
-            })
-            that.setState({isSentencingLoading: false})
-            return ;
-          }
-          Taro.showToast({
-            title: '收藏成功',
-            icon: 'none',
-            duration: 1000
-          })
-          that.setState({isSentencingLoading: false, isCollected: true});
-        }
-      })
+
+      saveCollection(id, 'fileCase', `刑法${criminalLawNumber}立案追诉标准`).then(() => {
+        Taro.showToast({
+          title: '收藏成功',
+          icon: 'none',
+          duration: 1000
+        })
+        that.setState({isSentencingLoading: false, isCollected: true});
+      }).catch(() => {
+        Taro.showToast({
+          title: `收藏失败`,
+          icon: 'none',
+          duration: 3000
+        })
+        that.setState({isSentencingLoading: false})
+        return ;
+      });
     }
   }, 3000, { trailing: false })
 

@@ -6,8 +6,18 @@ import './index.scss'
 import {tmpId} from '../../util/util'
 import {ImageRecoginzer} from "../../components/imageRecoginzer/index.weapp";
 import {db} from "../../util/db";
-import {setLocation, getProvince, getCity, getUserAvatar, getUserNickname, getCollectionLimit, getUserScore} from '../../util/login'
+import {
+  setLocation,
+  getProvince,
+  getCity,
+  getUserAvatar,
+  getUserNickname,
+  getCollectionLimit,
+  getUserScore,
+  getScore, getUserOpenId
+} from '../../util/login'
 import Loading2 from "../../components/loading2/index.weapp";
+import {deleteCollection, getUserCollections, saveUser} from "../../util/userCollection";
 
 export default class User extends Component {
 
@@ -65,16 +75,8 @@ export default class User extends Component {
       }
     })
 
-    Taro.cloud.callFunction({
-      name: 'login',
-      complete: r => {
-        console.log(r.result.data[0])
-        const {score} = r.result.data[0]
-        that.setState({
-          score
-        })
-        setStorageSync('user', r.result.data[0]);
-      }
+    that.setState({
+      score: getScore()
     })
   }
 
@@ -87,22 +89,11 @@ export default class User extends Component {
     console.log('did show')
     const that =this;
     that.setState({isLoading: true})
-    Taro.cloud.callFunction({
-      name: 'getCollections',
-      complete: (r) => {
-        console.log(r)
-        that.setState({collection: r.result.data, isLoading: false})
-        // if (r && r.result && r.result.data && r.result.data.length > 0) {
-        //   that.setState({isCollected: true})
-        // }
-      },
-      fail: (e) => {
-        Taro.showToast({
-          title: `获取收藏数据失败:${JSON.stringify(e)}`,
-          icon: 'none',
-          duration: 1000
-        })
-      }
+    getUserCollections().then((r) => {
+      that.setState({collection: r, isLoading: false});
+    })
+    that.setState({
+      score: getScore()
     })
   }
 
@@ -183,6 +174,14 @@ export default class User extends Component {
   }
 
   refreshUserInfo = () => {
+    // TODO later
+    Taro.showToast({
+      title: '功能维护中,敬请期待',
+      icon: 'none',
+      duration: 2000
+    });
+    return;
+
     const that = this;
     wx.getUserProfile({
       desc: '用于更新最新的个人信息',
@@ -198,24 +197,26 @@ export default class User extends Component {
         that.setState({
           isLoading: true
         })
-        Taro.cloud.callFunction({
-          name: 'login',
-          data: {
-            nickName: res.userInfo.nickName,
-            avatarUrl: res.userInfo.avatarUrl
-          },
-          complete: r => {
-            setStorageSync('user', r.result.data[0]);
-            that.setState({
-              isLoading: false
-            })
-          }
-        })
+
+        saveUser(getUserOpenId, res.userInfo.nickName, res.userInfo.avatarUrl).then((r) => {
+          setStorageSync('user', r);
+          that.setState({
+            isLoading: false
+          })
+        });
       }
     })
   }
 
   upgradeCollection = () => {
+    // TODO later
+    Taro.showToast({
+      title: '功能维护中,敬请期待',
+      icon: 'none',
+      duration: 2000
+    });
+    return;
+
     this.setState({
       isLoading: true,
       showUpgradeModal: false
@@ -242,23 +243,16 @@ export default class User extends Component {
     console.log(index)
     const that = this
     const {collection} = this.state
-    Taro.cloud.callFunction({
-      name: 'deleteCollection',
-      data: {
-        id: c.collectionId,
-        type: c.type
-      },
-      complete: (res) => {
-        console.log(res)
-        Taro.showToast({
-          title: '删除收藏成功',
-          icon: 'none',
-          duration: 1000
-        })
 
-        collection.splice(index, 1)
-        that.setState({collection: [...collection]});
-      }
+    deleteCollection(c.collectionId).then(() => {
+      Taro.showToast({
+        title: '删除收藏成功',
+        icon: 'none',
+        duration: 1000
+      })
+
+      collection.splice(index, 1)
+      that.setState({collection: [...collection]});
     })
 
   }
@@ -284,13 +278,21 @@ export default class User extends Component {
           <View>{getUserNickname()}</View>
           <View className='icon-line' onClick={() => {
             Taro.showToast({
-              title: '每天使用/分享可获得积分!',
+              title: '每天分享可获得积分!',
               icon: 'none',
               duration: 2000
             });
           }}>我的积分: {score ? score : '暂无'}</View>
           <View>
             <View className='icon-line' onClick={() => {
+
+              Taro.showToast({
+                title: '功能维护中,敬请期待',
+                icon: 'none',
+                duration: 2000
+              });
+              return;
+
               Taro.showLoading({
                 title: '获取地理位置中...',
               });

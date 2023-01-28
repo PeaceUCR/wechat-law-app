@@ -15,6 +15,7 @@ import {db} from "../../util/db";
 import {tmpId, logoIcon, scanIcon, getConfiguration} from '../../util/util'
 import {ImageRecoginzer} from "../../components/imageRecoginzer/index.weapp";
 import {homePageOptions, exampleOptions} from '../../util/name'
+import {addScore, getUserByOpenId, STATIC_POSTER_REDIRECT, STATIC_POSTER_URL} from "../../util/userCollection";
 
 const titles = [
   {title:'全部'},
@@ -40,7 +41,7 @@ export default class Index extends Component {
     posterRedirect: '',
     swiperPosters: [
       'https://mmbiz.qpic.cn/mmbiz_gif/6fKEyhdZU92cC8JPU4xto4nia1UyLRqGvAia11YorBoNrN8WO4bFRIROZNsqGfGicaz6hZ660MUf5ia1sfEXeJeWgQ/0?wx_fmt=gif',
-      'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU92Iz6PPMWHuyFOLUv3vhY65auk6goic8ZibQibnaIRVXyjiczU1orwBqvknGBT6fniaHgJkUty2t9lV4Fg/0?wx_fmt=png'
+      'https://mmbiz.qpic.cn/mmbiz_jpg/6fKEyhdZU92NrHJmOCNglksEgxbnlKlZsibn8ic5yl2LwRtibZa3UGms20XBQ03wOU1nhBgXSA0mOY8j3KEN1P0vQ/0?wx_fmt=jpeg'
     ],
     canClose: false,
     enableMainVideoAd: false,
@@ -50,7 +51,8 @@ export default class Index extends Component {
     showImageRecognize: false,
     token:'',
     // enablePosterAd: false
-    isNewVersion: true
+    isNewVersion: true,
+    openId: undefined,
   }
 
   config = {
@@ -58,12 +60,8 @@ export default class Index extends Component {
   }
 
   onShareAppMessage() {
-    Taro.cloud.callFunction({
-      name: 'share',
-      data: {
-        url: 'pages/index/index'
-      }
-    })
+    // TODO correct later
+    addScore();
     return {
       path: 'pages/index/index'
     };
@@ -71,8 +69,8 @@ export default class Index extends Component {
 
   handleConfiguration = (res) => {
     this.setState({
-      posterUrlForLoading: res.data[0].posterUrl,
-      posterRedirect: res.data[0].posterRedirect,
+      posterUrlForLoading: STATIC_POSTER_URL,
+      posterRedirect: STATIC_POSTER_REDIRECT,
       joinGroupUrl: res.data[0].joinGroupUrl,
       canClose: res.data[0].canClose,
       enableMainVideoAd: res.data[0].enableMainVideoAd,
@@ -101,23 +99,28 @@ export default class Index extends Component {
       if(res.data[0].forceLogin) {
         if(checkIfNewUser()) {
           Taro.cloud.callFunction({
-            name: 'getUserInfo',
+            name: 'getOpenId',
             complete: r => {
-              if (r &&  r.result && r.result.data && r.result.data.length > 0 ) {
-                setStorageSync('user', r.result.data[0]);
-                that.setState({isUserLoaded: true})
+              const openId = r.result;
+              that.setState({openId})
+              getUserByOpenId(openId).then((response) => {
+                if (response) {
+                  setStorageSync('user', response);
+                  that.setState({isUserLoaded: true})
 
-                if (getStorageSync('poster-shown') !== res.data[0].posterUrl) {
-                  that.setState({showPoster: true})
+                  if (getStorageSync('poster-shown') !== STATIC_POSTER_URL) {
+                    that.setState({showPoster: true})
+                  }
+
+                } else {
+                  that.setState({isNewUser: true});
                 }
 
-              } else {
-                that.setState({isNewUser: true});
-              }
+              })
             }
           })
         } else {
-          if (getStorageSync('poster-shown') !== res.data[0].posterUrl) {
+          if (getStorageSync('poster-shown') !== STATIC_POSTER_URL) {
             that.setState({showPoster: true})
           } else {
             // that.setState({enablePosterAd: res.data[0].enablePosterAd})
@@ -334,7 +337,7 @@ export default class Index extends Component {
   render () {
     const {isNewUser, isReadMode, showFooter, current, showPoster, posterUrlForLoading, isPosterLoading, posterUrl,
       joinGroupUrl, posterRedirect, swiperPosters, canClose, enableMainVideoAd, enableMainBanner, searchValue,
-      enableMainBottomVideo, showImageRecognize, token} = this.state;
+      enableMainBottomVideo, showImageRecognize, token, openId} = this.state;
     return (
       <View className={`index-page page ${isReadMode ? 'read-mode' : ''}`}>
         {enableMainBanner && <AtNoticebar marquee speed={60}>
@@ -435,7 +438,7 @@ export default class Index extends Component {
              <Image className='qrcode' src={qrcode} mode='aspectFill' />
            </AtBadge>
          </View>}
-          {isNewUser && <LoginPopup handleLoginSuccess={this.handleLoginSuccess} handleCloseLogin={this.handleCloseLogin} canClose={canClose} />}
+          {isNewUser && <LoginPopup handleLoginSuccess={this.handleLoginSuccess} handleCloseLogin={this.handleCloseLogin} canClose={canClose} openId={openId} />}
           {!isNewUser && this.renderUserFloatButton()}
 
           {enableMainBanner && <View onClick={this.jumpToMiniProgram}>
@@ -447,12 +450,6 @@ export default class Index extends Component {
           <AtCurtain isOpened={showPoster && !isPosterLoading && posterUrl} onClose={() => {
             this.setState({showPoster: false})
             setStorageSync('poster-shown', posterUrl)
-            db.collection("poster").add({
-              data: {
-                name: getUserNickname(),
-                time: moment().format('YYYY-MM-DD HH:mm:ss')
-              }
-            })
           }}
           >
             <Image

@@ -7,6 +7,7 @@ import throttle from "lodash/throttle";
 import TextSectionComponent from "../../components/textSectionComponent/index";
 import Loading2 from "../../components/loading2/index.weapp";
 import {db} from "../../util/db";
+import {addScore, deleteCollection, isCollected, saveCollection} from "../../util/userCollection";
 
 export default class SentencingDetail extends Component {
 
@@ -28,12 +29,8 @@ export default class SentencingDetail extends Component {
 
   onShareAppMessage() {
     const {number, id} = this.state
-    Taro.cloud.callFunction({
-      name: 'share',
-      data: {
-        url: `pages/termDetailExplanation/index?id=${id}&number=${number}`
-      }
-    })
+    // TODO correct later
+    addScore();
     return {
       path: `pages/termDetailExplanation/index?id=${id}&number=${number}`
     };
@@ -69,25 +66,9 @@ export default class SentencingDetail extends Component {
       }
     });
 
-
-    Taro.cloud.callFunction({
-      name: 'isCollected',
-      data: {
-        id: id,
-        type: 'termDetailExplanation'
-      },
-      complete: (r) => {
-
-        if (r && r.result && r.result.data && r.result.data.length > 0) {
-          that.setState({isCollected: true})
-        }
-      },
-      fail: (e) => {
-        Taro.showToast({
-          title: `获取收藏数据失败:${JSON.stringify(e)}`,
-          icon: 'none',
-          duration: 1000
-        })
+    isCollected(id, 'termDetailExplanation').then((flag) => {
+      if (flag) {
+        that.setState({isCollected: true})
       }
     })
 
@@ -175,49 +156,32 @@ export default class SentencingDetail extends Component {
 
     that.setState({isSentencingLoading: true})
     if (isCollected) {
-      Taro.cloud.callFunction({
-        name: 'deleteCollection',
-        data: {
-          id: id,
-          type: 'termDetailExplanation'
-        },
-        complete: () => {
-          Taro.showToast({
-            title: '收藏取消',
-            icon: 'none',
-            duration: 1000
-          })
-          that.setState({isSentencingLoading: false, isCollected: false});
-        }
+      deleteCollection(id).then(() => {
+        Taro.showToast({
+          title: '收藏取消',
+          icon: 'none',
+          duration: 1000
+        })
+        that.setState({isSentencingLoading: false, isCollected: false});
       })
+
     } else {
-      Taro.cloud.callFunction({
-        name: 'collect',
-        data: {
-          id: id,
-          type: 'termDetailExplanation',
-          title: `刑法第${number}条释义`,
-          criminalLawNumber: number,
-          collectionLimit: getCollectionLimit()
-        },
-        complete: (r) => {
-          if (r && r.result && r.result.errMsg !== 'collection.add:ok') {
-            Taro.showToast({
-              title: `收藏失败:${r.result.errMsg}`,
-              icon: 'none',
-              duration: 3000
-            })
-            that.setState({isSentencingLoading: false})
-            return ;
-          }
-          Taro.showToast({
-            title: '收藏成功',
-            icon: 'none',
-            duration: 1000
-          })
-          that.setState({isSentencingLoading: false, isCollected: true});
-        }
-      })
+
+      saveCollection(id, 'termDetailExplanation', `刑法第${number}条释义`).then(() => {
+        Taro.showToast({
+          title: '收藏成功',
+          icon: 'none',
+          duration: 1000
+        })
+        that.setState({isSentencingLoading: false, isCollected: true});
+      }).catch(() => {
+        Taro.showToast({
+          title: `收藏失败:${r.result.errMsg}`,
+          icon: 'none',
+          duration: 3000
+        })
+        that.setState({isSentencingLoading: false})
+      });
     }
   }, 3000, { trailing: false })
 

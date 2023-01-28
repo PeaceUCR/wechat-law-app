@@ -11,6 +11,7 @@ import {DiscussionArea} from "../../components/discussionArea/index.weapp";
 import {convertNumberToChinese} from "../../util/convertNumber"
 import {lawIcon} from "../../util/name"
 import Loading2 from "../../components/loading2/index.weapp";
+import {addScore} from "../../util/userCollection";
 
 export default class ExampleDetail extends Component {
 
@@ -105,25 +106,25 @@ export default class ExampleDetail extends Component {
 
     }
 
-    Taro.cloud.callFunction({
-      name: 'isCollected',
-      data: {
-        rowKey: id
-      },
-      complete: (r) => {
-        console.log(r)
-        if (r && r.result && r.result.data && r.result.data.length > 0) {
-          that.setState({isCollected: true})
-        }
-      },
-      fail: (e) => {
-        Taro.showToast({
-          title: `获取收藏数据失败:${JSON.stringify(e)}`,
-          icon: 'none',
-          duration: 1000
-        })
-      }
-    })
+    // Taro.cloud.callFunction({
+    //   name: 'isCollected',
+    //   data: {
+    //     rowKey: id
+    //   },
+    //   complete: (r) => {
+    //     console.log(r)
+    //     if (r && r.result && r.result.data && r.result.data.length > 0) {
+    //       that.setState({isCollected: true})
+    //     }
+    //   },
+    //   fail: (e) => {
+    //     Taro.showToast({
+    //       title: `获取收藏数据失败:${JSON.stringify(e)}`,
+    //       icon: 'none',
+    //       duration: 1000
+    //     })
+    //   }
+    // })
 
     const setting = getStorageSync('setting');
     this.setState({isReadMode: setting && setting.isReadMode})
@@ -138,12 +139,8 @@ export default class ExampleDetail extends Component {
 
   onShareAppMessage() {
     const {type, id, keyword} = this.state;
-    Taro.cloud.callFunction({
-      name: 'share',
-      data: {
-        url: `/pages/judgementDetail/index?type=${type}&id=${id}&keyword=${keyword}`
-      }
-    })
+    // TODO correct later
+    addScore();
     return {
       path: `/pages/judgementDetail/index?type=${type}&id=${id}&keyword=${keyword}`
     };
@@ -195,6 +192,8 @@ export default class ExampleDetail extends Component {
     that.setState({isLoading: true});
 
     if (isCollected) {
+      // TODO ID???
+
       Taro.cloud.callFunction({
         name: 'deleteCollection',
         data: {

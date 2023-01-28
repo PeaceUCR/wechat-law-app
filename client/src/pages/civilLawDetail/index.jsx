@@ -18,6 +18,7 @@ import {DiscussionArea} from "../../components/discussionArea/index.weapp";
 import {CivilLawLinkExplanation} from "../../components/civilLawLinkExplanation/index.weapp"
 import TextSection from "../../components/textSection/index.weapp";
 import TextSectionComponent from "../../components/textSectionComponent/index";
+import {addScore, deleteCollection, isCollected, saveCollection} from "../../util/userCollection";
 
 
 const getTermNumber = (text) => {
@@ -63,61 +64,39 @@ export default class CivilLawDetail extends Component {
     that.setState({isLoading: true})
 
     if (isCollected) {
-      Taro.cloud.callFunction({
-        name: 'deleteCollection',
-        data: {
-          id: _id,
-          type: 'civilLawTermDetail'
-        },
-        complete: () => {
-          Taro.showToast({
-            title: '收藏取消',
-            icon: 'none',
-            duration: 1000
-          })
-          that.setState({isLoading: false, isCollected: false});
-        }
+      deleteCollection(_id).then(() => {
+        Taro.showToast({
+          title: '收藏取消',
+          icon: 'none',
+          duration: 1000
+        })
+        that.setState({isLoading: false, isCollected: false});
       })
     } else {
-      Taro.cloud.callFunction({
-        name: 'collect',
-        data: {
-          id: _id,
-          type: 'civilLawTermDetail',
-          title: `${number} ${tag}`,
-          collectionLimit: getCollectionLimit()
-        },
-        complete: (r) => {
-          if (r && r.result && r.result.errMsg !== 'collection.add:ok') {
-            Taro.showToast({
-              title: `收藏失败:${r.result.errMsg}`,
-              icon: 'none',
-              duration: 3000
-            })
-            that.setState({isLoading: false})
-            return;
-          }
+      saveCollection(_id, 'civilLawTermDetail', `${number} ${tag}`).then(() => {
+        Taro.showToast({
+          title: '收藏成功',
+          icon: 'none',
+          duration: 1000
+        })
+        that.setState({isLoading: false, isCollected: true});
+      }).catch(() => {
+        Taro.showToast({
+          title: `收藏失败`,
+          icon: 'none',
+          duration: 3000
+        })
+        that.setState({isLoading: false})
+      });
 
-          Taro.showToast({
-            title: '收藏成功',
-            icon: 'none',
-            duration: 1000
-          })
-          that.setState({isLoading: false, isCollected: true});
-        }
-      })
     }
 
   }, 3000, {trailing: false})
 
   onShareAppMessage() {
     const {term, number} = this.state
-    Taro.cloud.callFunction({
-      name: 'share',
-      data: {
-        url: `pages/civilLawDetail/index?id=${term._id}&number=${number}`
-      }
-    })
+    // TODO correct later
+    addScore();
     return {
       path: `pages/civilLawDetail/index?id=${term._id}&number=${number}`
     };
@@ -199,27 +178,12 @@ export default class CivilLawDetail extends Component {
     }
 
     that.setState({isLoading: true})
-    Taro.cloud.callFunction({
-      name: 'isCollected',
-      data: {
-        id: id,
-        type: 'civilLawTermDetail'
-      },
-      complete: (r) => {
 
-        if (r && r.result && r.result.data && r.result.data.length > 0) {
-          that.setState({isCollected: true})
-        }
-        that.setState({isLoading: false})
-      },
-      fail: (e) => {
-        that.setState({isLoading: false})
-        Taro.showToast({
-          title: `获取收藏数据失败:${JSON.stringify(e)}`,
-          icon: 'none',
-          duration: 1000
-        })
+    isCollected(id, 'civilLawTermDetail').then((flag) => {
+      if (flag) {
+        that.setState({isCollected: true})
       }
+      that.setState({isLoading: false})
     })
 
     // const setting = getStorageSync('setting');
@@ -288,6 +252,12 @@ export default class CivilLawDetail extends Component {
   }
 
   handleSend = () => {
+    Taro.showToast({
+      title: '评论系统升级中，尽请谅解',
+      icon: 'none',
+      duration: 1000
+    });
+    return;
 
     if (checkIfNewUser()) {
       redirectToIndexIfNewUser()
@@ -539,7 +509,7 @@ export default class CivilLawDetail extends Component {
             </AtBadge>
           </View>
         </View>
-        <DiscussionArea topicId={term._id} isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded}/>
+        {/*<DiscussionArea topicId={term._id} isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded}/>*/}
         <View id='comments'></View>
       </View>
     )

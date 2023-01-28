@@ -1,6 +1,8 @@
 import Taro, { getStorageSync, setStorageSync }from '@tarojs/taro'
 import moment from "moment";
 import {db} from "./db";
+import {getUserOpenId} from "./login";
+import {BASE_REQUEST_URL, checkBeforeCopy} from "./userCollection";
 
 export const tmpId = 'cZWxYVaMH0JFtk2NIxjsEBLZcpazvU5vkYJcQlKsnBo'
 
@@ -169,46 +171,23 @@ export const copy = (text, callback) => {
   Taro.showLoading({
     title: '复制中',
   })
-  Taro.cloud.callFunction({
-    name: 'checkBeforeCopy',
-    complete: r => {
-      console.log(r)
-      const {result} = r
-      if (result.isValid) {
-        Taro.setClipboardData({
-          data: text,
-          success: function () {
-            Taro.hideLoading()
-            Taro.showToast({
-              title: '文字已复制到剪贴板',
-              icon: 'none',
-              duration: 2000
-            })
-            if (callback) {
-              callback()
-            }
-          }
-        });
-      } else {
-        Taro.showToast({
-          title: '复制失败: 无积分或其他原因',
-          icon: 'none',
-          duration: 4000
-        })
+
+  checkBeforeCopy().then(() => {
+    Taro.setClipboardData({
+      data: text,
+      success: function () {
         Taro.hideLoading()
+        Taro.showToast({
+          title: '文字已复制到剪贴板',
+          icon: 'none',
+          duration: 2000
+        })
+        if (callback) {
+          callback()
+        }
       }
-
-    },
-    fail: err => {
-      // handle error
-      Taro.showToast({
-        title: '复制失败: 未登录或其他原因',
-        icon: 'none',
-        duration: 4000
-      })
-    }
-  })
-
+    });
+  });
 }
 
 export const highlights = ['指导案例', '裁判要点', '相关法条', '相关法律规定', '基本案情', '裁判结果', '裁判理由', '刑法',
@@ -247,10 +226,27 @@ export const getConfiguration = () => new Promise((resolve, reject) => {
   if (local) {
     resolve(JSON.parse(local));
   } else {
-    db.collection('configuration').where({}).get({
-      success: (res) => {
-        setStorageSync('configuration', JSON.stringify(res));
-        resolve(res);
-      }});
+    Taro.request({
+      url: `${BASE_REQUEST_URL}/wechat-miniprogram-configuration.json`,
+      method: 'GET',
+      success: function (res) {
+        if (res.statusCode > 399) {
+          Taro.showToast({
+            title: '获取配置数据失败！',
+            icon: 'none',
+            duration: 3000
+          });
+          reject();
+          return ;
+        }
+
+        const response = {
+          data: [res.data]
+        };
+        setStorageSync('configuration', JSON.stringify(response));
+        resolve(response);
+      }
+    });
   }
 });
+

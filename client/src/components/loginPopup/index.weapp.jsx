@@ -3,12 +3,13 @@ import {Image, Text, View, Button} from "@tarojs/components";
 import {AtIcon} from "taro-ui";
 import {avatarUrl} from '../../util/util';
 import './index.scss'
+import {saveUser} from "../../util/userCollection";
 
 const FAIL_AUTH_DENY = 'getUserInfo:fail auth deny';
 const title = '首次使用，点我登录';
 
 const LoginPopup = (props) => {
-  const {canClose, handleCloseLogin} = props
+  const {canClose, handleCloseLogin, openId} = props
   const handleLogin = () => {
     // if (res.detail && res.detail.errMsg === FAIL_AUTH_DENY){
     //   return Taro.showToast({
@@ -32,21 +33,18 @@ const LoginPopup = (props) => {
         Taro.showLoading({
           title: '登录中',
         });
-        Taro.cloud.callFunction({
-          name: 'login',
-          data: {
-            nickName: res.userInfo.nickName,
-            avatarUrl: res.userInfo.avatarUrl
-          },
-          complete: r => {
-            setStorageSync('user', r.result.data[0]);
-            props.handleLoginSuccess();
-            Taro.showToast({
-              title: `欢迎${r.result.data[0].nickName},首次使用点击屏幕右上角的帮助查看使用指南`,
-              icon: 'none',
-              duration: 8000
-            });
-          }
+        saveUser(
+          openId,
+          res.userInfo.nickName,
+          res.userInfo.avatarUrl,
+        ).then(r => {
+          setStorageSync('user', r);
+          props.handleLoginSuccess();
+          Taro.showToast({
+            title: `欢迎${r.result.data[0].nickName},首次使用点击屏幕右上角的帮助查看使用指南`,
+            icon: 'none',
+            duration: 8000
+          });
         })
       }
     })

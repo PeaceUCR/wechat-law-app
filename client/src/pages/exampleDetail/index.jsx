@@ -11,6 +11,7 @@ import {DiscussionArea} from "../../components/discussionArea/index.weapp";
 import {FloatSearch} from "../../components/floatSearch/index.weapp";
 import {copy, findAndHighlight, getConfiguration, highlights, isStartWith, refine} from "../../util/util";
 import {noTitleExampleTypes, getFirstLine} from "../../util/name";
+import {addScore, deleteCollection, isCollected, saveCollection} from "../../util/userCollection";
 
 const typeCollectionMap = {
   'court': 'example',
@@ -65,39 +66,40 @@ export default class ExampleDetail extends Component {
         setStorageSync('enableAutoScroll', false);
       }
 
-      if(res.data[0].forceLogin) {
-        if(checkIfNewUser()) {
-          Taro.cloud.callFunction({
-            name: 'getUserInfo',
-            complete: r => {
-              if (r &&  r.result && r.result.data && r.result.data.length > 0 ) {
-                setStorageSync('user', r.result.data[0]);
-                that.setState({isUserLoaded: true})
-
-                if (getStorageSync('poster-shown') !== res.data[0].posterUrl) {
-                  that.setState({showPoster: true})
-                }
-
-              } else {
-                that.setState({isNewUser: true});
-              }
-            }
-          })
-        } else {
-          if (getStorageSync('poster-shown') !== res.data[0].posterUrl) {
-            that.setState({showPoster: true})
-          } else {
-            // that.setState({enablePosterAd: res.data[0].enablePosterAd})
-          }
-        }
-      } else {
-        that.setState({showFooter: false})
-        // Taro.showModal({
-        //   title: '关于我们',
-        //   content: '这是一个法律学习，法律信息查询的工具小程序, 祝大家司法考试顺利！',
-        //   showCancel: false
-        // })
-      }
+      // ??? what's this for
+      // if(res.data[0].forceLogin) {
+      //   if(checkIfNewUser()) {
+      //     Taro.cloud.callFunction({
+      //       name: 'getUserInfo',
+      //       complete: r => {
+      //         if (r &&  r.result && r.result.data && r.result.data.length > 0 ) {
+      //           setStorageSync('user', r.result.data[0]);
+      //           that.setState({isUserLoaded: true})
+      //
+      //           if (getStorageSync('poster-shown') !== res.data[0].posterUrl) {
+      //             that.setState({showPoster: true})
+      //           }
+      //
+      //         } else {
+      //           that.setState({isNewUser: true});
+      //         }
+      //       }
+      //     })
+      //   } else {
+      //     if (getStorageSync('poster-shown') !== res.data[0].posterUrl) {
+      //       that.setState({showPoster: true})
+      //     } else {
+      //       that.setState({enablePosterAd: res.data[0].enablePosterAd})
+      //     }
+      //   }
+      // } else {
+      //   that.setState({showFooter: false})
+      //   // Taro.showModal({
+      //   //   title: '关于我们',
+      //   //   content: '这是一个法律学习，法律信息查询的工具小程序, 祝大家司法考试顺利！',
+      //   //   showCancel: false
+      //   // })
+      // }
     });
 
     // db.collection('configuration').where({}).get({
@@ -189,24 +191,10 @@ export default class ExampleDetail extends Component {
     // that.setState({
     //   isCollected: collection[id] === true
     // })
-    Taro.cloud.callFunction({
-      name: 'isCollected',
-      data: {
-        id: id,
-        type: type
-      },
-      complete: (r) => {
 
-        if (r && r.result && r.result.data && r.result.data.length > 0) {
-          that.setState({isCollected: true})
-        }
-      },
-      fail: (e) => {
-        Taro.showToast({
-          title: `获取收藏数据失败:${JSON.stringify(e)}`,
-          icon: 'none',
-          duration: 1000
-        })
+    isCollected(id, type).then((flag) => {
+      if (flag) {
+        that.setState({isCollected: true})
       }
     })
 
@@ -230,12 +218,8 @@ export default class ExampleDetail extends Component {
 
   onShareAppMessage() {
     const {type, id, keyword} = this.state;
-    Taro.cloud.callFunction({
-      name: 'share',
-      data: {
-        url: `/pages/exampleDetail/index?type=${type}&id=${id}&keyword=${keyword}`
-      }
-    })
+    // TODO correct later
+    addScore();
     return {
       path: `/pages/exampleDetail/index?type=${type}&id=${id}&keyword=${keyword}`
     };
@@ -283,6 +267,7 @@ export default class ExampleDetail extends Component {
   }
 
   handleCollect = throttle(() => {
+
     if (checkIfNewUser()) {
       redirectToIndexIfNewUser()
       return ;
@@ -294,21 +279,16 @@ export default class ExampleDetail extends Component {
     that.setState({isLoading: true});
 
     if (isCollected) {
-      Taro.cloud.callFunction({
-        name: 'deleteCollection',
-        data: {
-          id: _id,
-          type: type
-        },
-        complete: () => {
-          that.setState({isLoading: false, isCollected: false});
-          Taro.showToast({
-            title: '收藏取消',
-            icon: 'none',
-            duration: 1000
-          })
-        }
+
+      deleteCollection(_id).then(() => {
+        that.setState({isLoading: false, isCollected: false});
+        Taro.showToast({
+          title: '收藏取消',
+          icon: 'none',
+          duration: 1000
+        })
       })
+
     } else {
       let title;
       if (type === 'explanation') { title = example.name }
@@ -316,33 +296,23 @@ export default class ExampleDetail extends Component {
       else if (type === 'consultant') { title = `第${example.number}号${example.name}` }
       else if (type === 'civilLawExample') { title = example.text.split('\n').filter(line => line.trim() && line.trim().length > 0)[0] }
       else {title = example.title}
-      Taro.cloud.callFunction({
-        name: 'collect',
-        data: {
-          id: _id,
-          type: type,
-          title: noTitleExampleTypes[type] ? getFirstLine(text): title.trim(),
-          collectionLimit: getCollectionLimit()
-        },
-        complete: (r) => {
-          if (r && r.result && r.result.errMsg !== 'collection.add:ok') {
-            Taro.showToast({
-              title: `收藏失败:${r.result.errMsg}`,
-              icon: 'none',
-              duration: 3000
-            })
-            that.setState({isLoading: false})
-            return ;
-          }
 
-          that.setState({isLoading: false, isCollected: true});
-          Taro.showToast({
-            title: '收藏成功',
-            icon: 'none',
-            duration: 1000
-          })
-        }
-      })
+      saveCollection(_id, type, noTitleExampleTypes[type] ? getFirstLine(text): title.trim()).then(() => {
+        that.setState({isLoading: false, isCollected: true});
+        Taro.showToast({
+          title: '收藏成功',
+          icon: 'none',
+          duration: 1000
+        })
+      }).catch(() => {
+        Taro.showToast({
+          title: `收藏失败`,
+          icon: 'none',
+          duration: 3000
+        })
+        that.setState({isLoading: false})
+        return ;
+      });
     }
   }, 3000, { trailing: false })
 
@@ -358,6 +328,13 @@ export default class ExampleDetail extends Component {
   }
 
   handleSend = () => {
+    Taro.showToast({
+      title: '评论系统升级中，尽请谅解',
+      icon: 'none',
+      duration: 1000
+    });
+    return;
+
     if (checkIfNewUser()) {
       redirectToIndexIfNewUser()
       return ;
@@ -662,7 +639,7 @@ export default class ExampleDetail extends Component {
           {enableExampleDetailAd && !isLoading && !demoSet.has(type) && <View>
             <ad unit-id="adunit-918b26ec218137ab"></ad>
           </View>}
-          <DiscussionArea topicId={example._id}  isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />
+          {/*<DiscussionArea topicId={example._id}  isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />*/}
           <View id='comments'></View>
           {isLoading && <View className='loading-container'>
             <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>

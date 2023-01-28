@@ -69,3 +69,8 @@ export const getCity = () => {
   return user.city;
 }
 
+export const getScore = () => {
+  const user = getStorageSync('user');
+  return user.score;
+}
+

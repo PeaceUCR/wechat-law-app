@@ -11,6 +11,7 @@ import TextSectionComponent from "../../components/textSectionComponent/index";
 import {convertNumberToChinese, isNumber} from "../../util/convertNumber";
 import {copy, definitionIcon, getText} from "../../util/util";
 import {otherLawNameMap, otherLawExplanationSource} from "../../util/otherLaw";
+import {addScore, deleteCollection, isCollected, saveCollection} from "../../util/userCollection";
 
 const typeCollectionMap = {
   'police': 'police-regulation',
@@ -110,12 +111,8 @@ export default class RegulationDetail extends Component {
 
   onShareAppMessage() {
     const {term,type} = this.state
-    Taro.cloud.callFunction({
-      name: 'share',
-      data: {
-        url: `pages/regulationDetail/index?id=${term._id}&type=${type}`
-      }
-    })
+    // TODO correct later
+    addScore();
     return {
       path: `pages/regulationDetail/index?id=${term._id}&type=${type}`
     };
@@ -214,24 +211,9 @@ export default class RegulationDetail extends Component {
       })
     }
 
-    Taro.cloud.callFunction({
-      name: 'isCollected',
-      data: {
-        id: id,
-        type: type
-      },
-      complete: (r) => {
-
-        if (r && r.result && r.result.data && r.result.data.length > 0) {
-          that.setState({isCollected: true})
-        }
-      },
-      fail: (e) => {
-        Taro.showToast({
-          title: `获取收藏数据失败:${JSON.stringify(e)}`,
-          icon: 'none',
-          duration: 1000
-        })
+    isCollected(id, type).then((flag) => {
+      if (flag) {
+        that.setState({isCollected: true})
       }
     })
 
@@ -282,21 +264,16 @@ export default class RegulationDetail extends Component {
 
     that.setState({isLoading: true})
     if (isCollected) {
-      Taro.cloud.callFunction({
-        name: 'deleteCollection',
-        data: {
-          id: _id,
-          type: type
-        },
-        complete: () => {
-          Taro.showToast({
-            title: '收藏取消',
-            icon: 'none',
-            duration: 1000
-          })
-          that.setState({isLoading: false, isCollected: false});
-        }
+
+      deleteCollection(_id).then(() => {
+        Taro.showToast({
+          title: '收藏取消',
+          icon: 'none',
+          duration: 1000
+        })
+        that.setState({isLoading: false, isCollected: false});
       })
+
     } else {
       let title;
       if (collectionCommonLawSet.has(type)) {
@@ -308,32 +285,22 @@ export default class RegulationDetail extends Component {
       } else {
         title = item
       }
-      Taro.cloud.callFunction({
-        name: 'collect',
-        data: {
-          id: _id,
-          type: type,
-          title: title,
-          collectionLimit: getCollectionLimit()
-        },
-        complete: (r) => {
-          if (r && r.result && r.result.errMsg !== 'collection.add:ok') {
-            Taro.showToast({
-              title: `收藏失败:${r.result.errMsg}`,
-              icon: 'none',
-              duration: 3000
-            })
-            that.setState({isLoading: false})
-            return ;
-          }
-          Taro.showToast({
-            title: '收藏成功',
-            icon: 'none',
-            duration: 1000
-          })
-          that.setState({isLoading: false, isCollected: true});
-        }
-      })
+
+      saveCollection(_id, type, title).then(() => {
+        Taro.showToast({
+          title: '收藏成功',
+          icon: 'none',
+          duration: 1000
+        })
+        that.setState({isLoading: false, isCollected: true});
+      }).catch(() => {
+        Taro.showToast({
+          title: `收藏失败`,
+          icon: 'none',
+          duration: 3000
+        })
+        that.setState({isLoading: false})
+      });
     }
   }, 3000, { trailing: false })
 
@@ -396,6 +363,13 @@ export default class RegulationDetail extends Component {
   }
 
   handleSend = () => {
+    Taro.showToast({
+      title: '评论系统升级中，尽请谅解',
+      icon: 'none',
+      duration: 1000
+    });
+    return;
+
     if (checkIfNewUser()) {
       redirectToIndexIfNewUser()
       return ;
@@ -556,7 +530,7 @@ export default class RegulationDetail extends Component {
             </AtBadge>
           </View>
         </View>
-        <DiscussionArea topicId={term._id}  isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />
+        {/*<DiscussionArea topicId={term._id}  isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />*/}
         <View id='comments'></View>
 
         {isLoading && <View className='loading-container'>

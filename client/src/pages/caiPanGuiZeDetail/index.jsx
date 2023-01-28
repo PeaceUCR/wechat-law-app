@@ -7,6 +7,8 @@ import '../exampleDetail/index.scss'
 import {checkIfNewUser, getCollectionLimit, redirectToIndexIfNewUser} from "../../util/login";
 import throttle from "lodash/throttle";
 import {DiscussionArea} from "../../components/discussionArea/index.weapp";
+import {addScore, deleteCollection, isCollected, saveCollection} from "../../util/userCollection";
+import {lawIdLabelMap} from "../../util/util";
 
 
 export default class ExampleDetail extends Component {
@@ -48,24 +50,10 @@ export default class ExampleDetail extends Component {
       }
     });
     const {type} = this.state
-    Taro.cloud.callFunction({
-      name: 'isCollected',
-      data: {
-        id: id,
-        type: type
-      },
-      complete: (r) => {
 
-        if (r && r.result && r.result.data && r.result.data.length > 0) {
-          that.setState({isCollected: true})
-        }
-      },
-      fail: (e) => {
-        Taro.showToast({
-          title: `获取收藏数据失败:${JSON.stringify(e)}`,
-          icon: 'none',
-          duration: 1000
-        })
+    isCollected(id, type).then((flag) => {
+      if (flag) {
+        that.setState({isCollected: true})
       }
     })
 
@@ -83,12 +71,8 @@ export default class ExampleDetail extends Component {
 
   onShareAppMessage() {
     const {type, id, keyword} = this.state;
-    Taro.cloud.callFunction({
-      name: 'share',
-      data: {
-        url: `/pages/exampleDetail/index?type=${type}&id=${id}&keyword=${keyword}`
-      }
-    })
+    // TODO correct later
+    addScore();
     return {
       path: `/pages/exampleDetail/index?type=${type}&id=${id}&keyword=${keyword}`
     };
@@ -135,49 +119,30 @@ export default class ExampleDetail extends Component {
     that.setState({isLoading: true});
 
     if (isCollected) {
-      Taro.cloud.callFunction({
-        name: 'deleteCollection',
-        data: {
-          id: _id,
-          type: type
-        },
-        complete: () => {
-          that.setState({isLoading: false, isCollected: false});
-          Taro.showToast({
-            title: '收藏取消',
-            icon: 'none',
-            duration: 1000
-          })
-        }
+      deleteCollection(_id).then(() => {
+        that.setState({isLoading: false, isCollected: false});
+        Taro.showToast({
+          title: '收藏取消',
+          icon: 'none',
+          duration: 1000
+        })
       })
     } else {
-      Taro.cloud.callFunction({
-        name: 'collect',
-        data: {
-          id: _id,
-          type: type,
-          title: example.title,
-          collectionLimit: getCollectionLimit()
-        },
-        complete: (r) => {
-          if (r && r.result && r.result.errMsg !== 'collection.add:ok') {
-            Taro.showToast({
-              title: `收藏失败:${r.result.errMsg}`,
-              icon: 'none',
-              duration: 3000
-            })
-            that.setState({isLoading: false})
-            return ;
-          }
-
-          that.setState({isLoading: false, isCollected: true});
-          Taro.showToast({
-            title: '收藏成功',
-            icon: 'none',
-            duration: 1000
-          })
-        }
-      })
+      saveCollection(_id, type, example.title).then(() => {
+        that.setState({isLoading: false, isCollected: true});
+        Taro.showToast({
+          title: '收藏成功',
+          icon: 'none',
+          duration: 1000
+        })
+      }).catch(() => {
+        Taro.showToast({
+          title: `收藏失败:${r.result.errMsg}`,
+          icon: 'none',
+          duration: 3000
+        })
+        that.setState({isLoading: false})
+      });
     }
   }, 3000, { trailing: false })
 
@@ -193,6 +158,13 @@ export default class ExampleDetail extends Component {
   }
 
   handleSend = () => {
+    Taro.showToast({
+      title: '评论系统升级中，尽请谅解',
+      icon: 'none',
+      duration: 1000
+    });
+    return;
+
     if (checkIfNewUser()) {
       redirectToIndexIfNewUser()
       return ;
@@ -307,7 +279,7 @@ export default class ExampleDetail extends Component {
               </AtBadge>
             </View>
           </View>
-          <DiscussionArea topicId={example._id}  isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />
+          {/*<DiscussionArea topicId={example._id}  isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />*/}
           <View id='comments'></View>
           {isLoading && <View className='loading-container'>
             <AtActivityIndicator mode='center' color='black' content='加载中...' size={62}></AtActivityIndicator>

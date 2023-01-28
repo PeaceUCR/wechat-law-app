@@ -3,6 +3,7 @@ import moment from 'moment';
 import Index from './pages/index'
 import {getLastTimeLogin} from './util/login'
 import './app.scss'
+import {addScore, recordUser} from "./util/userCollection";
 
 // 如果需要在 h5 环境中开启 React Devtools
 // 取消以下注释：
@@ -101,12 +102,10 @@ class App extends Component {
     Taro.cloud.init({
       traceUser: true
     });
-    Taro.cloud.callFunction({
-      name: 'record',
-      data: {
-        shouldAddScore
-      }
-    })
+    recordUser();
+    if (shouldAddScore) {
+      addScore();
+    }
     setStorageSync('visitDate', today);
   }
 
