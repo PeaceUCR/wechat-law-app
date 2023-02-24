@@ -12,6 +12,7 @@ import {FloatSearch} from "../../components/floatSearch/index.weapp";
 import {copy, findAndHighlight, getConfiguration, highlights, isStartWith, refine} from "../../util/util";
 import {noTitleExampleTypes, getFirstLine} from "../../util/name";
 import {addScore, deleteCollection, isCollected, saveCollection} from "../../util/userCollection";
+import {getConsultById} from "../../util/consult";
 
 const typeCollectionMap = {
   'court': 'example',
@@ -150,6 +151,11 @@ export default class ExampleDetail extends Component {
     //   }
     // });
 
+    if (type.includes('consult')) {
+      getConsultById(id).then((res) => {
+        that.setState({example: res, isLoading: false, type, id, keyword})
+      })
+    }
     if (typeCollectionMap[type]) {
       db.collection(typeCollectionMap[type]).where({_id: id}).get({
         success: (res) => {

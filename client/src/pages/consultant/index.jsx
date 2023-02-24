@@ -7,6 +7,7 @@ import Loading2 from "../../components/loading2/index.weapp";
 import { targetImageSource } from '../../util/util'
 import './index.scss'
 import throttle from "lodash/throttle";
+import {getConsultCategory} from "../../util/consult";
 
 export default class Index extends Component {
 
@@ -64,21 +65,18 @@ export default class Index extends Component {
       isLoading: true
     })
     const that = this;
-    Taro.cloud.callFunction({
-      name: 'getConsultsCategory',
-      data: {
-        type: that.state.type
-      },
-      complete: ({result}) => {
+    getConsultCategory().then(result => {
+      let {categoryList} = result
+      categoryList.forEach(c => c.title = `第${c.key}辑 ${c.title ? c.title:''}`)
 
-        const {categoryList} = result
-        categoryList.forEach(c => c.title = `第${c.key}辑 ${c.title ? c.title:''}`)
-
-        this.setState({
-          categoryList,
-          isLoading: false
-        })
+      if (that.state.type === 'most-recent') {
+        categoryList = categoryList.slice(0, categoryList.length - 2);
       }
+
+      that.setState({
+        categoryList,
+        isLoading: false
+      })
     })
   }, 6000, { trailing: false })
 
@@ -257,7 +255,7 @@ export default class Index extends Component {
     return (
       <View className={`example-page page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
-          刑事审判参考1-1464号案例已补全
+          刑事审判参考1-1475号案例已补全
         </AtNoticebar>
           <View className='header'>
             <View className='select'>
