@@ -123,7 +123,7 @@ export default class TermDetail extends Component {
         db.collection('complement').where({criminalLaw: db.RegExp({
             regexp: '.*' + getTermNumber(term.text),
             options: 'i',
-          })}).get({
+          })}).orderBy('effectiveDate','desc').get({
           success: (res) => {
             if (res.data.length > 0) {
               const complementExamples = res.data.filter(item => item.title.indexOf('案例') !== -1).map(e => {

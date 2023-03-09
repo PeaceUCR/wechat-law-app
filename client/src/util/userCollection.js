@@ -1,8 +1,8 @@
 import Taro, { setStorageSync }  from '@tarojs/taro'
 import { getUserOpenId } from "./login";
 
-export const STATIC_POSTER_URL = 'https://mmbiz.qpic.cn/mmbiz_jpg/6fKEyhdZU93uF3JQicicicV4oYUfPJFaEercEPYY9USfxiaJNBWEtdgJnCH1XzNGwHFicuVlVnShYxUv02kckUEEibXg/0?wx_fmt=jpeg';
-export const STATIC_POSTER_REDIRECT = '';
+export const STATIC_POSTER_URL = 'https://mmbiz.qpic.cn/mmbiz_jpg/6fKEyhdZU902FOeWUWBSqo3nic5TBDRmNQfADTdBY03DpicCz9hhcnxpr4mSyCmgcHrcAWPA5C1bZWC8GWUcTNcw/0?wx_fmt=jpeg';
+export const STATIC_POSTER_REDIRECT = '/pages/exampleDetail/index?type=complement&id=99b41a67640843e300a553b92eb78e1b';
 
 
 export const BASE_REQUEST_URL = 'https://www.best-sofa.top'
