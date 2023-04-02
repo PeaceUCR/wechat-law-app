@@ -12,6 +12,7 @@ import {convertNumberToChinese} from "../../util/convertNumber"
 import {lawIcon} from "../../util/name"
 import Loading2 from "../../components/loading2/index.weapp";
 import {addScore} from "../../util/userCollection";
+import {getJudgmentDetailByRowKey} from "../../util/judgment";
 
 export default class ExampleDetail extends Component {
 
@@ -61,70 +62,12 @@ export default class ExampleDetail extends Component {
         }
       });
 
-      db.collection('criminal-case-detail').where({rowKey: id}).get({
-        success: (res1) => {
-          const detail1 = res1.data[0]
-
-          db.collection('criminal-case-detail-2').where({rowKey: id}).get({
-            success: (res2) => {
-
-              const detail2 = res2.data[0]
-              db.collection('criminal-case-detail-3').where({rowKey: id}).get({
-                success: (res3) => {
-
-                  const detail3 = res3.data[0]
-                  let example
-                  if (detail1) {
-                    example = detail1
-                  }
-                  if (detail2) {
-                    example = detail2
-                  }
-                  if (detail3) {
-                    example = detail3
-                  }
-                  that.setState({example: example ? example: undefined, isExampleLoading: false, type, id});
-                },
-                fail: () => {
-                  console.log('fail')
-                  that.setState({isExampleLoading: false})
-                }
-              });
-
-            },
-            fail: () => {
-              console.log('fail')
-              that.setState({isExampleLoading: false})
-            }
-          });
-        },
-        fail: () => {
-          console.log('fail')
-          that.setState({isExampleLoading: false})
-        }
+      getJudgmentDetailByRowKey(id).then(r => {
+        that.setState({example: r, isExampleLoading: false, type, id});
+      }).finally(() => {
+        that.setState({isExampleLoading: false})
       });
-
     }
-
-    // Taro.cloud.callFunction({
-    //   name: 'isCollected',
-    //   data: {
-    //     rowKey: id
-    //   },
-    //   complete: (r) => {
-    //     console.log(r)
-    //     if (r && r.result && r.result.data && r.result.data.length > 0) {
-    //       that.setState({isCollected: true})
-    //     }
-    //   },
-    //   fail: (e) => {
-    //     Taro.showToast({
-    //       title: `获取收藏数据失败:${JSON.stringify(e)}`,
-    //       icon: 'none',
-    //       duration: 1000
-    //     })
-    //   }
-    // })
 
     const setting = getStorageSync('setting');
     this.setState({isReadMode: setting && setting.isReadMode})

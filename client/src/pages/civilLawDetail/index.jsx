@@ -364,7 +364,7 @@ export default class CivilLawDetail extends Component {
 
   jumpToMiniProgram = () => {
     const {term} = this.state
-    const redirectStr = `/pages/index/index?userOpenId=${getUserOpenId()}&userName=${getUserNickname()}&userAvatar=${encodeURIComponent(getUserAvatar())}&law=civil&number=${term.numberIndex}`
+    const redirectStr = `/pages/civilJudgment/index?userOpenId=${getUserOpenId()}&userName=${getUserNickname()}&userAvatar=${encodeURIComponent(getUserAvatar())}&law=civil&number=${term.numberIndex}`
     console.log(redirectStr)
 
     Taro.navigateToMiniProgram({

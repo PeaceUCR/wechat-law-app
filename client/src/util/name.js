@@ -170,7 +170,7 @@ export const homePageOptions = {
       redirect: () => {
         Taro.navigateToMiniProgram({
           appId: 'wxa7f48cf2a65948d7',
-          path: '/pages/index/index'
+          path: '/pages/civilJudgment/index'
         });
       }
     },
@@ -425,7 +425,7 @@ export const exampleOptions = [
     redirect: () => {
       Taro.navigateToMiniProgram({
         appId: 'wxa7f48cf2a65948d7',
-        path: '/pages/index/index'
+        path: '/pages/civilJudgment/index'
       });
     }
   },
