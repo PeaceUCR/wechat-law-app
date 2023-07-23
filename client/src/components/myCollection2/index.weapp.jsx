@@ -111,7 +111,9 @@ const MyCollection2 = (props) => {
     <View className='my-collection-list'>
       {collection.map((c, index)=> (<View className='my-collection-list-item' key={c._id}>
 
-        <View className='time'>{moment(c.time).format('YYYY-MM-DD HH:mm')}</View>
+        <View className='time'>{
+          Array.isArray(c.time) ? `${c.time[0]}-${c.time[1]}-${c.time[2]} ${c.time[3]}:${c.time[4]}` : moment(c.time).format('YYYY-MM-DD HH:mm')
+        }</View>
         <View className='item-line'>
           <View className='main'>
             <AtListItem

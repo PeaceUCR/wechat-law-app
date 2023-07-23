@@ -217,6 +217,33 @@ export default class Index extends Component {
             })
           }}>去行政法规搜索更多...</View>
         </View>
+        <View className='type-container'>
+          <View className='type-result-title'>
+            <Text className='title'>部分案例</Text>
+          </View>
+          {getValidArray(searchResult['example']).map((
+            (item) => {
+              return (
+                <GlobalSearchItem
+                  showFullTitle
+                  key={item._id}
+                  text={item.text}
+                  title={item.title}
+                  type='案例'
+                  number={item.number}
+                  redirect={() => {
+                    Taro.navigateTo({
+                      url: `/pages/exampleDetail/index?id=${item._id}&type=example`,
+                    })
+                  }}
+                />
+              )}))}
+          <View className='more' onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/adminComplement/index?searchValue=${searchValue}`,
+            })
+          }}>去行政法规搜索更多...</View>
+        </View>
       </View>}
       {searchResult['faxin-law'] && searchResult['faxin-law'].length > 0 && <View className='type-container'>
         <View className='type-result-title'>

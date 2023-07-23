@@ -18,6 +18,7 @@ exports.main = async (event, context) => {
         'complement',
         'civil-law-explaination',
         'admin-explanation',
+        'example',
         'faxin-law'
     ]
 
@@ -34,6 +35,14 @@ exports.main = async (event, context) => {
                         options: 'i',
                     }),
                 }).limit(limitPerLaw).orderBy('number', 'asc').get()
+
+            } else if (name === 'example') {
+            result = await db.collection(name).where({
+                title: db.RegExp({
+                    regexp: reg,
+                    options: 'i',
+                }),
+            }).limit(limitPerLaw).orderBy('effectiveDate', 'desc').get()
 
             } else {
                 result = await db.collection(name).where({

@@ -318,12 +318,12 @@ export default class TermDetail extends Component {
         })
         that.setState({isLoading: false, isCollected: true});
       }).catch(() => {
-        Taro.showToast({
-          title: `收藏失败:${r.result.errMsg}`,
-          icon: 'none',
-          duration: 3000
-        })
-        that.setState({isLoading: false})
+        that.setState({isLoading: false});
+        // Taro.showToast({
+        //   title: `收藏失败:${r.result.errMsg}`,
+        //   icon: 'none',
+        //   duration: 3000
+        // })
       });
     }
   }, 3000, { trailing: false })
