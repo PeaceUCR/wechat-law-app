@@ -45,7 +45,8 @@ export default class ExampleDetail extends Component {
     enableExampleDetailAd: false,
     selectedLine: -1,
     categories: undefined,
-    openCategory: false
+    openCategory: false,
+    showDefaultAd: true
   }
 
   config = {
@@ -282,7 +283,7 @@ export default class ExampleDetail extends Component {
     const that = this;
     const { isCollected, example, type } = this.state;
     const {_id, text} = example;
-    that.setState({isLoading: true});
+    that.setState({isLoading: true, showDefaultAd: false});
 
     if (isCollected) {
 
@@ -584,7 +585,7 @@ export default class ExampleDetail extends Component {
     </View>)
   }
   render () {
-    const {isSent, keyword, comment, example, zoomIn, isCollected, isReadMode, isLoading, type, enableAutoScroll, enableExampleDetailAd, categories, openCategory} = this.state;
+    const {isSent, keyword, comment, example, zoomIn, isCollected, isReadMode, isLoading, type, enableAutoScroll, enableExampleDetailAd, categories, openCategory, showDefaultAd} = this.state;
     const {special, text, title, categoryList} = example
     return (
       <View>
@@ -639,10 +640,10 @@ export default class ExampleDetail extends Component {
               </AtBadge>
             </View>
           </View>
-          {enableExampleDetailAd && !isLoading && demoSet.has(type) && <View>
+          {enableExampleDetailAd && showDefaultAd && !isLoading && demoSet.has(type) && <View>
             <ad unit-id="adunit-aa47163462e4442f" ad-type="video" ad-theme="white"></ad>
           </View>}
-          {enableExampleDetailAd && !isLoading && !demoSet.has(type) && <View>
+          {enableExampleDetailAd && showDefaultAd && !isLoading && !demoSet.has(type) && <View>
             <ad unit-id="adunit-918b26ec218137ab"></ad>
           </View>}
           {/*<DiscussionArea topicId={example._id}  isSent={isSent} handleCommentsLoaded={this.handleCommentsLoaded} />*/}

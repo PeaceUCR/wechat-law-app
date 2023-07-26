@@ -71,7 +71,22 @@ export const getUserCollections = async () => {
   }
 }
 
+export const showPopupAd = () => {
+  let interstitialAd = null;
+  if (wx.createInterstitialAd) {
+    interstitialAd = wx.createInterstitialAd({
+      adUnitId: 'adunit-25f5d95e7a759687'
+    })
+  }
+  if(interstitialAd) {
+    interstitialAd.show().catch((err) => {
+      console.error(err);
+    })
+  }
+}
+
 export const saveCollection = async (collectionId, type, title) => {
+  showPopupAd();
   const openId = getUserOpenId();
   if (!openId) {
     Taro.showToast({
@@ -106,6 +121,7 @@ export const saveCollection = async (collectionId, type, title) => {
 }
 
 export const deleteCollection = async (collectionId) => {
+  showPopupAd();
   const openId = getUserOpenId();
   if (!openId) {
     Taro.showToast({
