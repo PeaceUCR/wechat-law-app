@@ -72,7 +72,7 @@ export default class Index extends Component {
       if (that.state.type === 'most-recent') {
         categoryList = categoryList.slice(0, categoryList.length - 2);
       }
-
+      categoryList.forEach(c => c.items.sort((a, b) => b.number - a.number));
       that.setState({
         categoryList,
         isLoading: false
