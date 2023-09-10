@@ -17,7 +17,7 @@ exports.main = async (event, context) => {
   if (isCategory === true && specialSet.has(type)) {
     return await db.collection('complement').limit(1000).where({
       type
-    }).get()
+    }).orderBy('effectiveDate', 'desc').get()
   }
 
   if (type === "all-initial") {
