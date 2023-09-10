@@ -255,7 +255,7 @@ export default class Index extends Component {
     return (
       <View className={`example-page page ${isReadMode ? 'read-mode' : ''}`}>
         <AtNoticebar marquee speed={60}>
-          刑事审判参考1-1475号案例已补全
+          刑事审判参考1-1505号案例已补全
         </AtNoticebar>
           <View className='header'>
             <View className='select'>
