@@ -15,7 +15,13 @@ import {db} from "../../util/db";
 import {tmpId, logoIcon, scanIcon, getConfiguration} from '../../util/util'
 import {ImageRecoginzer} from "../../components/imageRecoginzer/index.weapp";
 import {homePageOptions, exampleOptions} from '../../util/name'
-import {addScore, getUserByOpenId, STATIC_POSTER_REDIRECT, STATIC_POSTER_URL} from "../../util/userCollection";
+import {
+  addScore,
+  getUserByOpenId,
+  JOIN_GROUP_URL,
+  STATIC_POSTER_REDIRECT,
+  STATIC_POSTER_URL
+} from "../../util/userCollection";
 
 const titles = [
   {title:'全部'},
@@ -429,8 +435,8 @@ export default class Index extends Component {
         </View>
          {(!isSuperAdmin()) && getUserNickname() && <View className='qrcode-container' onClick={() => {
            Taro.previewImage({
-             current: joinGroupUrl,
-             urls: [joinGroupUrl]
+             current: JOIN_GROUP_URL,
+             urls: [JOIN_GROUP_URL]
            })
          }}
          >
