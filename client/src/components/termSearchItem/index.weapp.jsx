@@ -17,12 +17,14 @@ const regulationDetailSet = new Set(
     'road-safe-law',
     'road-safe-regulation',
     'civil-law-regulation',
+    'civil-law-regulation-2024',
     'anti-terrorism-law',
     'anti-drug-law',
     'admin-litigation-law',
     'admin-litigation-explaination',
     'admin-force-law',
     'admin-reconsider-law',
+    'admin-reconsider-law-2024',
     'admin-reconsider-regulation',
     'admin-allow-law',
     'company-law',
@@ -48,7 +50,7 @@ const TermSearchItem = (props) => {
   let {term, disableRedirect, type, isReadMode, keyword} = props;
   term = term ? term : {};
   let {text, crime, tag, _id, isDeleted, number} = term;
-  if (type === 'civil-law-regulation') {
+  if (type === 'civil-law-regulation-2024') {
     text = getText(text)
   }
 

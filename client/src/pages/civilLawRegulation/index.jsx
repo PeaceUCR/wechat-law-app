@@ -86,14 +86,14 @@ export default class Index extends Component {
     const {civilLawRegulationLines} = this.state
     return civilLawRegulationLines
       .map((catgoryLine, index)=> {
-        return (<LawCategory catgoryLine={catgoryLine} key={`all-civil-regulation-line-${index}`} type='civil-law-regulation' />)
+        return (<LawCategory catgoryLine={catgoryLine} key={`all-civil-regulation-line-${index}`} type='civil-law-regulation-2024' />)
       })
   }
 
   renderSearchList = () => {
     const {searchResult,isReadMode,searchValue} = this.state
     return (<View>
-      {searchResult.map(((term) => {return (<TermSearchItem isReadMode={isReadMode} term={term} key={`term${term._id}`} type='civil-law-regulation' keyword={searchValue} />)}))}
+      {searchResult.map(((term) => {return (<TermSearchItem isReadMode={isReadMode} term={term} key={`term${term._id}`} type='civil-law-regulation-2024' keyword={searchValue} />)}))}
     </View>)
   }
 

@@ -152,8 +152,8 @@ export const homePageOptions = {
     },
     {
       title: '民事诉讼法',
-      url: '/pages/otherLaw/index?law=civil-law-regulation',
-      sub:'2022年1月1日',
+      url: '/pages/otherLaw/index?law=civil-law-regulation-2024',
+      sub:'2024年1月1日',
       type: '民法典',
       hasExplanation: true
     },
@@ -248,9 +248,9 @@ export const homePageOptions = {
       // isHot: true
     },
     {
-      title: otherLawNameMap['admin-reconsider-law'],
-      url: '/pages/otherLaw/index?law=admin-reconsider-law',
-      sub:'2017年9月1日',
+      title: otherLawNameMap['admin-reconsider-law-2024'],
+      url: '/pages/otherLaw/index?law=admin-reconsider-law-2024',
+      sub:'2024年1月1日',
       type: '行政',
       hasExplanation: true
       // isHot: true

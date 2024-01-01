@@ -13,7 +13,7 @@ const LawCategory = (props) => {
   const getLabel = (law) => {
     if (type === 'civil') {
       return `${law} ${getGlobalData('civilTagMap')[law]}`
-    } else if (type === 'civil-law-regulation' || type === 'litigation-law') {
+    } else if (type === 'civil-law-regulation-2024' || type === 'litigation-law') {
       return law
     }
     return lawLabelMap[law]
@@ -37,7 +37,7 @@ const LawCategory = (props) => {
                 Taro.navigateTo({
                   url: `/pages/civilLawDetail/index?id=${getGlobalData('civilLawIdMap')[law]}`,
                 })
-              } else if (type === 'civil-law-regulation') {
+              } else if (type === 'civil-law-regulation-2024') {
                 Taro.navigateTo({
                   url: `/pages/regulationDetail/index?id=${civilLawRegulationIdMap[law]}&type=${type}`,
                 })

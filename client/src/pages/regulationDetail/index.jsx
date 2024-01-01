@@ -33,6 +33,7 @@ const shared = [
   'admin-litigation-explaination',
   'admin-force-law',
   'admin-reconsider-law',
+  'admin-reconsider-law-2024',
   'admin-reconsider-regulation',
   'admin-allow-law',
   'company-law'
@@ -49,6 +50,7 @@ const otherLaws = [
   'admin-allow-law',
   'admin-reconsider-regulation',
   'admin-reconsider-law',
+  'admin-reconsider-law-2024',
   'admin-punish-law',
   'admin-force-law',
   'admin-litigation-explaination',
@@ -68,6 +70,7 @@ const otherLaws = [
   'consumer-right-protect-law',
   'public-interest-rule',
   'civil-law-regulation',
+  'civil-law-regulation-2024',
   'fire-fighting',
   'labor-conciliation',
   'medical-malpractice-regulation'
@@ -278,7 +281,7 @@ export default class RegulationDetail extends Component {
       let title;
       if (collectionCommonLawSet.has(type)) {
         title = number
-      } else if (type === 'civil-law-regulation') {
+      } else if (type === 'civil-law-regulation-2024') {
         title = `${chnNumber} ${tag}`
       } else if (type === 'litigation-law') {
         title = `${item} ${tag}`
@@ -456,7 +459,7 @@ export default class RegulationDetail extends Component {
     let lawLabel
     if (otherLawSet.has(type)) {
       lawLabel = otherLawNameMap[type]
-    } else if (type === 'civil-law-regulation') {
+    } else if (type === 'civil-law-regulation-2024') {
       lawLabel = '民事诉讼法'
     } else if (type === 'litigation-law') {
       lawLabel = '刑事诉讼法'
@@ -474,7 +477,7 @@ export default class RegulationDetail extends Component {
             mode='widthFix'
           />
         </View>
-        {(type === 'civil-law-regulation' || type === 'litigation-law') && term.tag && <View className='tag-line'><Text className='pre-tag'>法条要旨:</Text><Text className='tag'>{term.tag}</Text></View>}
+        {(type === 'civil-law-regulation-2024' || type === 'litigation-law') && term.tag && <View className='tag-line'><Text className='pre-tag'>法条要旨:</Text><Text className='tag'>{term.tag}</Text></View>}
         <View className='main section'>
             <View>
               {commonLawSet.has(type) && this.renderAdminText()}

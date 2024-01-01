@@ -1,6 +1,6 @@
 import Taro, { Component, getStorageSync } from '@tarojs/taro'
 import {View, Text, Picker, Image} from '@tarojs/components'
-import {AtSearchBar, AtListItem, AtBadge, AtButton, AtNoticebar, AtFab, AtIndexes} from 'taro-ui'
+import {AtSearchBar, AtListItem, AtButton, AtNoticebar, AtFab, AtIndexes} from 'taro-ui'
 import {isEmpty} from 'lodash';
 import clickIcon from '../../static/down.png';
 import Loading2 from "../../components/loading2/index.weapp";

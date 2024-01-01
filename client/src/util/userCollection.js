@@ -1,11 +1,16 @@
 import Taro, { setStorageSync }  from '@tarojs/taro'
 import { getUserOpenId } from "./login";
 
-export const STATIC_POSTER_URL = 'https://mmbiz.qpic.cn/mmbiz_jpg/6fKEyhdZU90G2YmI57L1QTJKUmhfSO9jDEjK4IWic2MgpMG6x9HN9aAwrGdWjVXNEVpicyx8unkSunIHlSoqISVQ/640?wx_fmt=jpeg';
-export const STATIC_POSTER_REDIRECT = '/pages/examples/index';
+export const JOIN_GROUP_URL = 'https://mmbiz.qpic.cn/mmbiz_jpg/6fKEyhdZU93icqHcZb0EWEEnUGOyMKAX2SHr9FzJp2o74JsMFzIlCU2bwUAKibIWa0k4AjVxhUmzT4wiboFQ2KxWw/640?wx_fmt=jpeg'
+
+export const STATIC_POSTER_URL = 'https://mmbiz.qpic.cn/mmbiz_jpg/6fKEyhdZU90LYdxSlnd2Xia3VXnRsLaMN2saVksN70FNVib2PDiaicsiaeeOjwj84AugS8cMrdY9UBfTsk1SQQJTrIQ/640?wx_fmt=jpeg&amp;from=appmsg'
+export const STATIC_POSTER_REDIRECT = '/pages/otherLaw/index?law=civil-law-regulation-2024';
+// export const STATIC_POSTER_REDIRECT = '/pages/exampleDetail/index?type=complement&id=dddb1aef65806a87028f981c48afc255';
+// export const STATIC_POSTER_REDIRECT = '/pages/exampleDetail/index?type=complement&id=8182da276522c80102bc62c30b91e5ab';
+// export const STATIC_POSTER_REDIRECT = '/pages/exampleDetail/index?type=civil-law-explaination&id=dddb1aef657826fb01c97fed0b84c863';
 
 
-export const BASE_REQUEST_URL = 'https://www.best-sofa.top'
+export const BASE_REQUEST_URL = 'https://www.sofa-app.asia'
 
 export const isCollected = async (id, type) => {
   const openId = getUserOpenId();
@@ -85,8 +90,9 @@ export const showPopupAd = () => {
   }
 }
 
+// TODO save loading NOT working!
 export const saveCollection = async (collectionId, type, title) => {
-  showPopupAd();
+  // showPopupAd();
   const openId = getUserOpenId();
   if (!openId) {
     Taro.showToast({
@@ -108,7 +114,9 @@ export const saveCollection = async (collectionId, type, title) => {
   }
 
   const res = await Taro.request(params);
+  console.log('res', res);
   if (res.statusCode > 399) {
+    console.log('error');
     Taro.showToast({
       title: '收藏失败！',
       icon: 'none',

@@ -15,7 +15,13 @@ import {db} from "../../util/db";
 import {tmpId, logoIcon, scanIcon, getConfiguration} from '../../util/util'
 import {ImageRecoginzer} from "../../components/imageRecoginzer/index.weapp";
 import {homePageOptions, exampleOptions} from '../../util/name'
-import {addScore, getUserByOpenId, STATIC_POSTER_REDIRECT, STATIC_POSTER_URL} from "../../util/userCollection";
+import {
+  addScore,
+  getUserByOpenId,
+  JOIN_GROUP_URL,
+  STATIC_POSTER_REDIRECT,
+  STATIC_POSTER_URL
+} from "../../util/userCollection";
 
 const titles = [
   {title:'全部'},
@@ -380,16 +386,16 @@ export default class Index extends Component {
             <ad unit-id='adunit-806ae2093227c183' ad-type='video' ad-theme='white'></ad>
           </SwiperItem>
         </Swiper>}
-          {isSuperAdmin() && <View className='float-analytics' onClick={() => {
-            Taro.navigateTo({
-              url: '/pages/usage/index'
-            })
-          }}
-          >
-            <AtBadge value='统计'>
-              <AtIcon value='analytics' size='30' color='#000'></AtIcon>
-            </AtBadge>
-          </View>}
+          {/*{isSuperAdmin() && <View className='float-analytics' onClick={() => {*/}
+          {/*  Taro.navigateTo({*/}
+          {/*    url: '/pages/usage/index'*/}
+          {/*  })*/}
+          {/*}}*/}
+          {/*>*/}
+          {/*  <AtBadge value='统计'>*/}
+          {/*    <AtIcon value='analytics' size='30' color='#000'></AtIcon>*/}
+          {/*  </AtBadge>*/}
+          {/*</View>}*/}
           {/*{(!checkIfNewUser()) && <View className='float-subscribe' onClick={this.handleSubscribe}>*/}
           {/*  <AtBadge value='订阅'>*/}
           {/*    <AtIcon value='bell' size='30' color='#000'></AtIcon>*/}
@@ -427,17 +433,17 @@ export default class Index extends Component {
             {this.renderGridItems()}
           </View>}
         </View>
-         {(!isSuperAdmin()) && getUserNickname() && <View className='qrcode-container' onClick={() => {
+        <View className='qrcode-container' onClick={() => {
            Taro.previewImage({
-             current: joinGroupUrl,
-             urls: [joinGroupUrl]
+             current: JOIN_GROUP_URL,
+             urls: [JOIN_GROUP_URL]
            })
          }}
          >
            <AtBadge value='加群'>
              <Image className='qrcode' src={qrcode} mode='aspectFill' />
            </AtBadge>
-         </View>}
+         </View>
           {isNewUser && <LoginPopup handleLoginSuccess={this.handleLoginSuccess} handleCloseLogin={this.handleCloseLogin} canClose={canClose} openId={openId} />}
           {!isNewUser && this.renderUserFloatButton()}
 

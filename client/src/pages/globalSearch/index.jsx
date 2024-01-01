@@ -215,11 +215,11 @@ export default class Index extends Component {
           })
         }}>去民法典搜索更多...</View>
       </View>}
-      {searchResult['civil-law-regulation'] && searchResult['civil-law-regulation'].length > 0 && <View className='type-container'>
+      {searchResult['civil-law-regulation-2024'] && searchResult['civil-law-regulation-2024'].length > 0 && <View className='type-container'>
         <View className='type-result-title'>
           <Text className='title'>民事诉讼法</Text>
         </View>
-        {searchResult['civil-law-regulation'].map((
+        {searchResult['civil-law-regulation-2024'].map((
           (item) => {
             return (
               <GlobalSearchItem
@@ -229,7 +229,7 @@ export default class Index extends Component {
                 number={item.chnNumber}
                 redirect={() => {
                   Taro.navigateTo({
-                    url: `/pages/regulationDetail/index?id=${item._id}&type=civil-law-regulation`,
+                    url: `/pages/regulationDetail/index?id=${item._id}&type=civil-law-regulation-2024`,
                   })
                 }}
               />
