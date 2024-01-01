@@ -224,10 +224,11 @@ export default class ExampleDetail extends Component {
   }
 
   onShareAppMessage() {
-    const {type, id, keyword} = this.state;
+    const {type, id, keyword, example} = this.state;
     // TODO correct later
     addScore();
     return {
+      title: example && example.title ? example.title : '搜法',
       path: `/pages/exampleDetail/index?type=${type}&id=${id}&keyword=${keyword}`
     };
   }
