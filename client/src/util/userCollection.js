@@ -3,8 +3,8 @@ import { getUserOpenId } from "./login";
 
 export const JOIN_GROUP_URL = 'https://mmbiz.qpic.cn/mmbiz_jpg/6fKEyhdZU93icqHcZb0EWEEnUGOyMKAX2SHr9FzJp2o74JsMFzIlCU2bwUAKibIWa0k4AjVxhUmzT4wiboFQ2KxWw/640?wx_fmt=jpeg'
 
-export const STATIC_POSTER_URL = 'https://mmbiz.qpic.cn/mmbiz_jpg/6fKEyhdZU90LYdxSlnd2Xia3VXnRsLaMN2saVksN70FNVib2PDiaicsiaeeOjwj84AugS8cMrdY9UBfTsk1SQQJTrIQ/640?wx_fmt=jpeg&amp;from=appmsg'
-export const STATIC_POSTER_REDIRECT = '/pages/otherLaw/index?law=civil-law-regulation-2024';
+export const STATIC_POSTER_URL = 'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU905eCWy1MQBbhHog1Ea9v7jBncIQD065SDjuYZjo4FPianZ34MXR1XrQ2iaKOqr0Na5eWppR4ugAa8g/640?wx_fmt=png&amp;from=appmsg'
+export const STATIC_POSTER_REDIRECT = '/pages/criminalLaw/index';
 // export const STATIC_POSTER_REDIRECT = '/pages/exampleDetail/index?type=complement&id=dddb1aef65806a87028f981c48afc255';
 // export const STATIC_POSTER_REDIRECT = '/pages/exampleDetail/index?type=complement&id=8182da276522c80102bc62c30b91e5ab';
 // export const STATIC_POSTER_REDIRECT = '/pages/exampleDetail/index?type=civil-law-explaination&id=dddb1aef657826fb01c97fed0b84c863';

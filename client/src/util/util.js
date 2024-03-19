@@ -223,7 +223,9 @@ export const allFileCaseNumber = new Set(["第三百五十条","第一百六十�
 
 export const getConfiguration = () => new Promise((resolve, reject) => {
   const local = getStorageSync('configuration');
-  if (local) {
+  const useCache = moment().isAfter('2024-03-20', 'day');
+  console.log('useCache', useCache);
+  if (local && useCache) {
     resolve(JSON.parse(local));
   } else {
     Taro.request({

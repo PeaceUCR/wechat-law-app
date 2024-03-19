@@ -47,7 +47,7 @@ export default class Index extends Component {
     posterRedirect: '',
     swiperPosters: [
       'https://mmbiz.qpic.cn/mmbiz_gif/6fKEyhdZU92cC8JPU4xto4nia1UyLRqGvAia11YorBoNrN8WO4bFRIROZNsqGfGicaz6hZ660MUf5ia1sfEXeJeWgQ/0?wx_fmt=gif',
-      'https://mmbiz.qpic.cn/mmbiz_jpg/6fKEyhdZU92NrHJmOCNglksEgxbnlKlZsibn8ic5yl2LwRtibZa3UGms20XBQ03wOU1nhBgXSA0mOY8j3KEN1P0vQ/0?wx_fmt=jpeg'
+      'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU912nIicFjZAYolfgdHBdK6FDJbLLNn9X8QY8MdV7IvZz695D3HT3HfD8QgmzM6ajs5j856Kd0iaEuGg/640?wx_fmt=png&amp;from=appmsg'
     ],
     canClose: false,
     enableMainVideoAd: false,

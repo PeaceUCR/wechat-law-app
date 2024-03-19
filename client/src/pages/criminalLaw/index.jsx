@@ -260,7 +260,7 @@ export default class Index extends Component {
     return (
       <View className={`criminal-page page ${isReadMode ? 'read-mode' : ''}`}>
           <AtNoticebar marquee speed={60}>
-            中华人民共和国刑法修正案(十一)已于2021年3月1日起施行
+            中华人民共和国刑法修正案（十二）已于2024年3月1日起施行
           </AtNoticebar>
           <View className='header'>
             <View className='select' onClick={() => this.setState({showAllCategories: !showAllCategories, searchResult: []})}>
