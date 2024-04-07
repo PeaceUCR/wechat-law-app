@@ -153,7 +153,7 @@ export default class RegulationDetail extends Component {
           } else {
             db.collection('other-law-explanation').where({
               number: term.number,
-              type: 'civil-law-regulation-2024' ? 'civil-law-regulation' : type
+              type: type === 'civil-law-regulation-2024' ? 'civil-law-regulation' : type
             }).get({
               success: (r) => {
                 if (r.data[0]) {
