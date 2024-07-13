@@ -205,3 +205,13 @@
   text-decoration-color: #6190E8;
   color: #6190E8;
 }
+.eleme-container {
+  position: relative;
+  height: 260px;
+  width: 100vw;
+}
+.eleme {
+  height: 260px;
+  width: 100vw;
+  display: block;
+}

@@ -82,6 +82,7 @@ class App extends Component {
       navigationBarBackgroundColor: '#fff',
       navigationBarTextStyle: 'black'
     },
+    embeddedAppIdList: ["wxece3a9a4c82f58c9"],
     cloud: true
   }
 

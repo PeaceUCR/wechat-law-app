@@ -64,7 +64,7 @@ export default class Index extends Component {
         (data) => {
           return (
             <TermSearchItem
-              type='company-law'
+              type='company-law-2024'
               keyword={searchValue}
               isReadMode={isReadMode}
               term={data}

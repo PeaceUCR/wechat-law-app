@@ -36,7 +36,8 @@ const shared = [
   'admin-reconsider-law-2024',
   'admin-reconsider-regulation',
   'admin-allow-law',
-  'company-law'
+  'company-law',
+  'company-law-2024',
 ]
 const otherLaws = [
   'criminal-litigation-explanation',
@@ -56,6 +57,7 @@ const otherLaws = [
   'admin-litigation-explaination',
   'admin-litigation-law',
   'company-law',
+  'company-law-2024',
   'labor-contract-law',
   'labor-law',
   'anti-drug-law',

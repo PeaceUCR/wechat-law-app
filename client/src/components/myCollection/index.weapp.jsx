@@ -40,6 +40,7 @@ const newLaws = {
   'admin-reconsider-regulation': '行政复议法实施条例',
   'admin-allow-law': '行政许可法',
   'company-law': '公司法',
+  'company-law-2024': '公司法',
   'criminal-litigation-explanation': otherLawNameMap['criminal-litigation-explanation'],
   'civil-litigation-explanation': otherLawNameMap['civil-litigation-explanation'],
   'road-safe-violation-handling': otherLawNameMap['road-safe-violation-handling'],

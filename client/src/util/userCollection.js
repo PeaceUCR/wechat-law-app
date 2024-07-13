@@ -1,11 +1,14 @@
 import Taro, { setStorageSync }  from '@tarojs/taro'
 import { getUserOpenId } from "./login";
 
+export const ELEME = 'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU91UzoFnAKIDXib7P1XDvnvu5T52TGbo4WcxibLzWTgsIE3rUbdbOxvWvmvod4THibZCjz0t7RxWhTF3g/640?wx_fmt=png&amp;from=appmsg';
 export const JOIN_GROUP_URL = 'https://mmbiz.qpic.cn/mmbiz_jpg/6fKEyhdZU93icqHcZb0EWEEnUGOyMKAX2SHr9FzJp2o74JsMFzIlCU2bwUAKibIWa0k4AjVxhUmzT4wiboFQ2KxWw/640?wx_fmt=jpeg'
 
-export const STATIC_POSTER_URL = 'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU905eCWy1MQBbhHog1Ea9v7jBncIQD065SDjuYZjo4FPianZ34MXR1XrQ2iaKOqr0Na5eWppR4ugAa8g/640?wx_fmt=png&amp;from=appmsg'
-export const STATIC_POSTER_REDIRECT = '/pages/criminalLaw/index';
-// export const STATIC_POSTER_REDIRECT = '/pages/exampleDetail/index?type=complement&id=dddb1aef65806a87028f981c48afc255';
+export const STATIC_POSTER_URL = 'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU90oBRwP9ricUGI9MwpJGm6JEhnj4qM40ZsaGkgyXicIkPgwLqhXXibm9BrnAesHbt5Tkib78PibmQicQLKg/640?wx_fmt=png&amp;from=appmsg'
+export const STATIC_POSTER_REDIRECT = '/pages/otherLaw/index?law=civil-law-regulation-2024';
+// export const STATIC_POSTER_REDIRECT = '/pages/examples/index';
+// export const STATIC_POSTER_REDIRECT = '/pages/criminalLaw/index';
+// export const STATIC_POSTER_REDIRECT = '/pages/exampleDetail/index?type=example&id=16a8ee886632ffa4018ef5fb5f96d6df';
 // export const STATIC_POSTER_REDIRECT = '/pages/exampleDetail/index?type=complement&id=8182da276522c80102bc62c30b91e5ab';
 // export const STATIC_POSTER_REDIRECT = '/pages/exampleDetail/index?type=civil-law-explaination&id=dddb1aef657826fb01c97fed0b84c863';
 
@@ -76,6 +79,30 @@ export const getUserCollections = async () => {
   }
 }
 
+// TODO 饿了吗
+export const showEleme = () => {
+  console.log('wx.openEmbeddedMiniProgram', wx.openEmbeddedMiniProgram);
+  if (wx.openEmbeddedMiniProgram) {
+    trackElemeClick();
+    wx.openEmbeddedMiniProgram({
+      appId: 'wx4c4e0cfafb295cae',
+      path: 'pages/guide/index'
+    });
+  }
+}
+
+const trackElemeClick = () => {
+  const openId = getUserOpenId();
+  const params = {
+    url: `${BASE_REQUEST_URL}/api/track`,
+    method: 'POST',
+    data: {
+      openId
+    }
+  }
+  Taro.request(params);
+}
+
 export const showPopupAd = () => {
   let interstitialAd = null;
   if (wx.createInterstitialAd) {
@@ -93,6 +120,7 @@ export const showPopupAd = () => {
 // TODO save loading NOT working!
 export const saveCollection = async (collectionId, type, title) => {
   // showPopupAd();
+  showEleme();
   const openId = getUserOpenId();
   if (!openId) {
     Taro.showToast({
@@ -129,7 +157,8 @@ export const saveCollection = async (collectionId, type, title) => {
 }
 
 export const deleteCollection = async (collectionId) => {
-  showPopupAd();
+  // showPopupAd();
+  showEleme();
   const openId = getUserOpenId();
   if (!openId) {
     Taro.showToast({

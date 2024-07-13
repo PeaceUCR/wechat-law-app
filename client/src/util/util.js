@@ -2,7 +2,7 @@ import Taro, { getStorageSync, setStorageSync }from '@tarojs/taro'
 import moment from "moment";
 import {db} from "./db";
 import {getUserOpenId} from "./login";
-import {BASE_REQUEST_URL, checkBeforeCopy} from "./userCollection";
+import {BASE_REQUEST_URL, checkBeforeCopy, showEleme} from "./userCollection";
 
 export const tmpId = 'cZWxYVaMH0JFtk2NIxjsEBLZcpazvU5vkYJcQlKsnBo'
 
@@ -168,26 +168,46 @@ export const getExampleSearchTag = (example) => {
 }
 
 export const copy = (text, callback) => {
-  Taro.showLoading({
-    title: '复制中',
-  })
+  // Taro.showLoading({
+  //   title: '复制中',
+  // })
+  showEleme();
 
-  checkBeforeCopy().then(() => {
-    Taro.setClipboardData({
-      data: text,
-      success: function () {
-        Taro.hideLoading()
-        Taro.showToast({
-          title: '文字已复制到剪贴板',
-          icon: 'none',
-          duration: 2000
-        })
-        if (callback) {
-          callback()
-        }
+  Taro.setClipboardData({
+    data: text,
+    success: function () {
+      Taro.hideLoading()
+      Taro.showToast({
+        title: '文字已复制到剪贴板',
+        icon: 'none',
+        duration: 2000
+      })
+      if (callback) {
+        callback()
       }
-    });
+    },
+    fail: function (error) {
+      Taro.showLoading({
+          title: 'Error:' + error.errMsg,
+        })
+    }
   });
+  // checkBeforeCopy().then(() => {
+  //   Taro.setClipboardData({
+  //     data: text,
+  //     success: function () {
+  //       Taro.hideLoading()
+  //       Taro.showToast({
+  //         title: '文字已复制到剪贴板',
+  //         icon: 'none',
+  //         duration: 2000
+  //       })
+  //       if (callback) {
+  //         callback()
+  //       }
+  //     }
+  //   });
+  // });
 }
 
 export const highlights = ['指导案例', '裁判要点', '相关法条', '相关法律规定', '基本案情', '裁判结果', '裁判理由', '刑法',

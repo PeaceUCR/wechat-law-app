@@ -38,6 +38,7 @@ exports.main = async (event, context) => {
         'admin-litigation-explaination',
         'admin-litigation-law',
         'company-law',
+        'company-law-2024',
         'labor-contract-law',
         'labor-law',
         'anti-drug-law',
@@ -70,6 +71,7 @@ exports.main = async (event, context) => {
         otherLawNames = [
             'civil-litigation-explanation',
             'company-law',
+            'company-law-2024',
             'labor-contract-law',
             'labor-law',
         ]

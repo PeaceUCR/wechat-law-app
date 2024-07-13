@@ -211,9 +211,9 @@ export const homePageOptions = {
       hasExplanation: true
     },
     {
-      title: otherLawNameMap['company-law'],
-      url: '/pages/otherLaw/index?law=company-law',
-      sub:'2018年10月26日',
+      title: otherLawNameMap['company-law-2024'],
+      url: '/pages/otherLaw/index?law=company-law-2024',
+      sub:'2024年07月01日',
       type: '民法典',
       // isHot: true
     }

@@ -16,9 +16,9 @@ import {tmpId, logoIcon, scanIcon, getConfiguration} from '../../util/util'
 import {ImageRecoginzer} from "../../components/imageRecoginzer/index.weapp";
 import {homePageOptions, exampleOptions} from '../../util/name'
 import {
-  addScore,
+  addScore, ELEME,
   getUserByOpenId,
-  JOIN_GROUP_URL,
+  JOIN_GROUP_URL, showEleme,
   STATIC_POSTER_REDIRECT,
   STATIC_POSTER_URL
 } from "../../util/userCollection";

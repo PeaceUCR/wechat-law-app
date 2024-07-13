@@ -23,7 +23,7 @@ export const getUserAvatar = () => {
 
 export const getUserOpenId = () => {
   const user = getStorageSync('user');
-  return user.openId;
+  return user ? user.openId : undefined;
 }
 
 export const getUserNickname = () => {

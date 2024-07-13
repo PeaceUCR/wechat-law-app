@@ -38,18 +38,18 @@ exports.main = async (event, context) => {
         '第十三章 附则': { value: '第十三章 附则', start: 216, end: 218 } }
 
     if (!isNaN(parseInt(searchValue))) {
-        return await db.collection('company-law')
+        return await db.collection('company-law-2024')
             .where({number: parseInt(searchValue)}).orderBy('number', 'asc').limit(1000).get()
     }
 
     if (type === 'category') {
         const {start, end} = numberMap[searchValue]
-        return await db.collection('company-law').where({
+        return await db.collection('company-law-2024').where({
             number: _.and(_.gte(start),_.lte(end))
         }).orderBy('number', 'asc').limit(1000).get()
     }
 
-    return await db.collection('company-law')
+    return await db.collection('company-law-2024')
         .where({
             text: db.RegExp({
                 regexp: '.*' + searchValue,

@@ -28,6 +28,7 @@ const regulationDetailSet = new Set(
     'admin-reconsider-regulation',
     'admin-allow-law',
     'company-law',
+    'company-law-2024',
     'criminal-litigation-explanation',
     'civil-litigation-explanation',
     'civil-litigation-explanation-2022-04-10',
