@@ -47,7 +47,7 @@ export default class Index extends Component {
     posterRedirect: '',
     swiperPosters: [
       'https://mmbiz.qpic.cn/mmbiz_gif/6fKEyhdZU92cC8JPU4xto4nia1UyLRqGvAia11YorBoNrN8WO4bFRIROZNsqGfGicaz6hZ660MUf5ia1sfEXeJeWgQ/0?wx_fmt=gif',
-      'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU912nIicFjZAYolfgdHBdK6FDJbLLNn9X8QY8MdV7IvZz695D3HT3HfD8QgmzM6ajs5j856Kd0iaEuGg/640?wx_fmt=png&amp;from=appmsg'
+      'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU91vxy80bm6cS4uRo9ib9B8AhBV123GTpZ7Id8rqFiayxIQBwQPbvVGt2q3RJw1RnZS9ZaMCgic3WXUgQ/640?wx_fmt=png&amp;from=appmsg'
     ],
     canClose: false,
     enableMainVideoAd: false,
@@ -450,6 +450,9 @@ export default class Index extends Component {
           {enableMainBanner && <View onClick={this.jumpToMiniProgram}>
             <AtDivider content='没有更多了' fontColor='#666' lineColor='#666' height='60' />
           </View>}
+          {/*<View onClick={showEleme} className='eleme-container'>*/}
+          {/*  <Image className='eleme' src={ELEME} mode='aspectFill' />*/}
+          {/*</View>*/}
           {/*<View>*/}
           {/*  <ImageCropper />*/}
           {/*</View>*/}
