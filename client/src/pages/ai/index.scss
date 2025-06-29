@@ -1,0 +1,112 @@
+.chatbot-page {
+  display: flex;
+  flex-direction: column;
+  background-color: #F4ECD8;
+  padding: 16px;
+  overflow-y: auto;
+  padding-bottom: 360px;
+
+  .chat-window {
+    min-height: calc(100vh - 460px);
+    background-color: #F4ECD8;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    .weapp--label {
+      margin-top: 20px;
+    }
+  }
+
+  .message {
+    margin: 8px 0;
+    padding: 10px 15px;
+    border-radius: 10px;
+    word-break: break-word;
+    display: block;
+    color: #666666;
+    &.thinking {
+    }
+    &.user {
+      max-width: 80%;
+      background-color: #d4edda;  // Light green background for user messages
+      align-self: flex-end;
+      margin-left: auto;
+      color: black;
+    }
+
+    &.bot {
+      max-width: 92%;
+      background-color: #f8d7da;  // Light red/pink background for bot messages
+      align-self: flex-start;
+      margin-right: auto;
+      color: black;
+    }
+  }
+
+  .sofa-title {
+    position: relative;
+    font-size: 32px;
+    padding: 16px 0px 16px 20px;
+    margin-top: 20px;
+    border-left: 10px solid #6190E8;
+    font-weight: bold;
+  }
+  .at-input__container {
+    text-align: left;
+  }
+  .at-input {
+    margin-left: 0px;
+    padding: 20px;
+    margin-bottom: 10px;
+    input {
+      font-size: 34px;
+      //color: #6190E8;
+    }
+  }
+
+  .back {
+    position: absolute;
+    top: 120px;
+    left: 60px;
+    z-index: 999;
+  }
+
+  .footer {
+    z-index: 9;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    //align-items: center;
+    padding: 20px 10px 50px 10px;
+    //background: #faf5eb;
+    background: white;
+  }
+
+  .avatar {
+    position: relative;
+    top: 10px;
+    width: 60px;
+    height: 60px;
+    margin-right: 20px;
+  }
+
+  .version {
+    width: 80%;
+    text-align: center;
+    font-size: 28px;
+    margin: 10px auto;
+    color: green;
+    &.disabled {
+      color: darkred;
+    }
+  }
+}
+
+.at-button {
+  width: 80%;
+}
+
+

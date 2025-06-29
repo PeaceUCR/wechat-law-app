@@ -4,13 +4,13 @@ import './index.scss'
 import {rightArrowIcon} from "../../util/util";
 
 const RenderLabel = (props) => {
-  let {label} = props
+  let {label, onClick} = props
   label = label ? label : ''
   const fragments = label.split('条')
   const n = fragments.shift()
   const t = fragments.join('条')
   if (n && t) {
-    return (<View className='label'>
+    return (<View className='label' onClick={onClick ? onClick : undefined}>
       <Text className='number'>{`${n}条 ${t.trim()}`}</Text>
       {/*<Text className='law'>{t.trim()}</Text>*/}
       {/*<Image*/}
@@ -21,7 +21,7 @@ const RenderLabel = (props) => {
     </View>)
   }
 
-  return (<View className='label'><Text className='number'>{label}</Text></View>)
+  return (<View className='label' onClick={onClick ? onClick : undefined}><Text className='number'>{label}</Text></View>)
 }
 
 export default RenderLabel;

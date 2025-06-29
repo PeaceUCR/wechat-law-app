@@ -10,6 +10,7 @@ const regulationDetailSet = new Set(
     'police',
     'police-admin-regulation',
     'public-order-admin-penalty-law',
+    'public-order-admin-penalty-law-2026',
     'supervision-law',
     'admin-punish-law',
     'labor-law',

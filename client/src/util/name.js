@@ -50,7 +50,7 @@ export const homePageOptions = {
       title:'刑法',
       url: '/pages/criminalLaw/index',
       type: '刑法',
-      sub:'2021年3月1日',
+      sub:'2024年3月1日',
       hasExplanation: true
     },
     {
@@ -275,6 +275,14 @@ export const homePageOptions = {
       title: otherLawNameMap['public-order-admin-penalty-law'],
       url: '/pages/otherLaw/index?law=public-order-admin-penalty-law',
       sub:'2013年1月1日',
+      type: '行政',
+      hasExplanation: true
+      // isHot: true
+    },
+    {
+      title: otherLawNameMap['public-order-admin-penalty-law-2026'],
+      url: '/pages/otherLaw/index?law=public-order-admin-penalty-law-2026',
+      sub:'2026年1月1日',
       type: '行政',
       hasExplanation: true
       // isHot: true

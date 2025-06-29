@@ -1,5 +1,5 @@
 import Taro, { setStorageSync }  from '@tarojs/taro'
-import { getUserOpenId } from "./login";
+import {getUserNickname, getUserOpenId} from "./login";
 
 export const ELEME = 'https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU91UzoFnAKIDXib7P1XDvnvu5T52TGbo4WcxibLzWTgsIE3rUbdbOxvWvmvod4THibZCjz0t7RxWhTF3g/640?wx_fmt=png&amp;from=appmsg';
 export const JOIN_GROUP_URL = 'https://mmbiz.qpic.cn/mmbiz_jpg/6fKEyhdZU93icqHcZb0EWEEnUGOyMKAX2SHr9FzJp2o74JsMFzIlCU2bwUAKibIWa0k4AjVxhUmzT4wiboFQ2KxWw/640?wx_fmt=jpeg'
@@ -99,6 +99,21 @@ const trackElemeClick = () => {
     method: 'POST',
     data: {
       openId
+    }
+  }
+  Taro.request(params);
+}
+
+export const aiRecordClick = (text) => {
+  const openId = getUserOpenId();
+  const nickname = getUserNickname();
+  const params = {
+    url: `${BASE_REQUEST_URL}/api/ai`,
+    method: 'POST',
+    data: {
+      openId,
+      nickname,
+      text
     }
   }
   Taro.request(params);

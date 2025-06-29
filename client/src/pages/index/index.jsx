@@ -386,17 +386,27 @@ export default class Index extends Component {
             <ad unit-id='adunit-806ae2093227c183' ad-type='video' ad-theme='white'></ad>
           </SwiperItem>
         </Swiper>}
-          {/*{isSuperAdmin() && <View className='float-analytics' onClick={() => {*/}
-          {/*  Taro.navigateTo({*/}
-          {/*    url: '/pages/usage/index'*/}
-          {/*  })*/}
-          {/*}}*/}
-          {/*>*/}
-          {/*  <AtBadge value='统计'>*/}
-          {/*    <AtIcon value='analytics' size='30' color='#000'></AtIcon>*/}
-          {/*  </AtBadge>*/}
-          {/*</View>}*/}
-          {/*{(!checkIfNewUser()) && <View className='float-subscribe' onClick={this.handleSubscribe}>*/}
+        {/*{isSuperAdmin() && <View className='float-analytics' onClick={() => {*/}
+        {/*  Taro.navigateTo({*/}
+        {/*    url: '/pages/cake/index'*/}
+        {/*  })*/}
+        {/*}}*/}
+        {/*>*/}
+        {/*  <AtBadge value='Cake'>*/}
+        {/*    <AtIcon value='message' size='30' color='#000'></AtIcon>*/}
+        {/*  </AtBadge>*/}
+        {/*</View>}*/}
+          {isSuperAdmin() && <View className='float-subscribe' onClick={() => {
+            Taro.navigateTo({
+              url: '/pages/ai/index'
+            })
+          }}
+          >
+            <AtBadge value='AI'>
+              <AtIcon value='message' size='30' color='#000'></AtIcon>
+            </AtBadge>
+          </View>}
+          {/*{(!checkIfNewUser()) && <View className='float-analytics' onClick={this.handleSubscribe}>*/}
           {/*  <AtBadge value='订阅'>*/}
           {/*    <AtIcon value='bell' size='30' color='#000'></AtIcon>*/}
           {/*  </AtBadge>*/}

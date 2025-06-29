@@ -1,10 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, Image, Video, Text} from '@tarojs/components'
 import {AtAvatar,AtButton, AtBadge, AtIcon, AtMessage} from 'taro-ui'
-import wife from '../../static/wife.png';
 import SentUsers from '../../components/sentUsers'
 import {audio} from '../../util/audio';
 import './index.scss'
+import {saveUser} from "../../util/userCollection";
 
 const FAIL_AUTH_DENY = 'getUserInfo:fail auth deny';
 const parseNum = (num) => {
@@ -40,7 +40,7 @@ export default class Other extends Component {
   }
 
   count = () => {
-    const millis = Date.parse('2021-03-14T00:00:00+08:00') - Date.now()
+    const millis = Date.parse('2025-03-14T00:00:00+08:00') - Date.now()
     const ms = millis % 1000
     const s = (millis - ms) / 1000
     const second = s % 60
@@ -122,15 +122,8 @@ export default class Other extends Component {
       duration: 3000
     })
   }
-  handleLogin = (res) => {
+  handleLoginSuccess = (res) => {
     const that = this;
-    if (res.detail && res.detail.errMsg === FAIL_AUTH_DENY){
-      return Taro.showToast({
-        title: '授权失败',
-        icon: 'none',
-        duration: 1000
-      });
-    }
     Taro.showLoading();
     Taro.cloud.callFunction({
       name: 'addCongrat',
@@ -171,6 +164,23 @@ export default class Other extends Component {
     })
   }
 
+  handleLogin = () => {
+    const that = this;
+    wx.getUserProfile({
+      desc: '用于登录', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+      fail: () => {
+        Taro.showToast({
+          title: '授权失败',
+          icon: 'none',
+          duration: 1000
+        });
+      },
+      success: (res) => {
+        that.handleLoginSuccess(res);
+      }
+    })
+  }
+
   render () {
     const { millis, second, minute, hour, day, record, loaded,
       countVisit,
@@ -179,7 +189,7 @@ export default class Other extends Component {
     return (
       <View className='other-page'>
         <View className='center'>
-          <AtAvatar size='large' circle image={wife}></AtAvatar>
+          <AtAvatar size='large' circle image='https://mmbiz.qpic.cn/mmbiz_png/6fKEyhdZU93gU3PaEaEDML0Oibia9Rmq6RJ3BwkM0ia1hfTXHfTkxmHDdMJWMhmiczH18mF0aia3ibick67LBEvTicmk4Q/640?wx_fmt=png&amp;from=appmsg'></AtAvatar>
         </View>
         {millis > 0 && <View className='center'>
           <View className='text-container'>

@@ -11,6 +11,7 @@ const newLaws = {
   'police': '公安机关办理刑事案件程序规定',
   'police-admin-regulation': '公安机关办理行政案件程序规定',
   'public-order-admin-penalty-law': '治安管理处罚法',
+  'public-order-admin-penalty-law-2026': '治安管理处罚法2026',
   'supervision-law': '监察法',
   'admin-punish-law': '行政处罚法',
   'labor-law': '劳动法',

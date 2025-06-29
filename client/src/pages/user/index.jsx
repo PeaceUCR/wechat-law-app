@@ -90,6 +90,7 @@ export default class User extends Component {
     const that =this;
     that.setState({isLoading: true})
     getUserCollections().then((r) => {
+      console.log('collection', r);
       that.setState({collection: r, isLoading: false});
     })
     that.setState({
